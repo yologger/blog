@@ -19,6 +19,7 @@ const createSidebar = () => {
 
 module.exports = {
   // base: '/en/',
+  base: '/blog/',
   title: "Yologger's Blog",
   description: "yologger's blog",
   head: [
