@@ -1,5 +1,6 @@
 ---
 title: "Java Compiler, JVM, JRE, JDK"
+lang: ko
 showOnSidebar: true
 ---
 

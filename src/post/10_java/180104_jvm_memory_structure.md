@@ -1,5 +1,6 @@
 ---
 title: "JVM 메모리 구조"
+lang: ko
 showOnSidebar: true
 ---
 

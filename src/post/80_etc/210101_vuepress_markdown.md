@@ -1,9 +1,9 @@
 ---
-title: "마크다운 문법 정리 in Vuepress"
+title: "Vuepress 마크다운 문법 정리"
 showOnSidebar: true
 ---
 
-# 마크다운 문법 정리
+# Vuepress 마크다운 문법 정리
 Vuepress에서 마크다운 문법을 사용하는 방법에 대해 정리합니다.
 
 ## 코드 블록

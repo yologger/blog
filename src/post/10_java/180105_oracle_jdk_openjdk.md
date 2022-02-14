@@ -1,5 +1,6 @@
 ---
 title: "Oracle JDK와 OpenJDK"
+lang: ko
 showOnSidebar: true
 ---
 

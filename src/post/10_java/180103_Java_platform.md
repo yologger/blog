@@ -1,5 +1,6 @@
 ---
 title: "Java Platform의 종류"
+lang: ko
 showOnSidebar: true
 ---
 
