@@ -51,6 +51,7 @@ Hello Wolrd
 ![](./180102_java_compiler_jvm_jre_jdk/2.png)
 
 서로 다른 운영체제라도 JVM만 설치되어 있다면, 같은 자바 어플리케이션을 다른 운영체제에서 실행할 수 있다. 단, JVM은 운영체제에 종속적이므로 각 운영체제에 맞는 JVM을 설치해야한다.
+
 ![](./180102_java_compiler_jvm_jre_jdk/3.png)
 
 ## JRE

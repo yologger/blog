@@ -4,6 +4,7 @@ showOnSidebar: true
 ---
 
 # 마크다운 문법 정리
+Vuepress에서 마크다운 문법을 사용하는 방법에 대해 정리합니다.
 
 ## 코드 블록
 
@@ -33,4 +34,29 @@ su -
 ps
 ```
 
-## 컨테이너
+## 컨테이너 
+::: tip
+This is a tip
+:::
+
+::: warning
+This is a warning
+:::
+
+::: danger
+This is a dangerous warning
+:::
+
+::: details
+This is a details block, which does not work in IE / Edge
+:::
+
+::: danger STOP
+Danger zone, do not proceed
+:::
+
+::: details Click me to view the code
+```js
+console.log('Hello, VuePress!')
+```
+:::
