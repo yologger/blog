@@ -7,7 +7,7 @@ const routes = [
   "52_linux",
   "53_docker",
   "54_kubernetes",
-  "80_etc"
+  "80_more"
   // "31_maven",
   // "32_gradle",
 ];
@@ -30,6 +30,17 @@ module.exports = {
     ["meta", { name: "apple-mobile-web-app-status-bar-style", content: "black" }],
     ["link", { rel: "icon", href: "/favicon.ico" }] // Favicon
   ],
+  markdown: {
+    // options for markdown-it-anchor
+    // anchor: { permalink: false },
+    // options for markdown-it-toc
+    // toc: { includeLevel: [1, 2] },
+    extendMarkdown: md => {
+      // use more markdown-it plugins!
+      // md.use(taskLists, {enabled: true})
+      md.use(require('markdown-it-task-lists'))
+    }
+  },
   themeConfig: {
     logo: "/logo.jpg",
     repo: "",
@@ -56,7 +67,7 @@ module.exports = {
           { text: "Kubernetes", link: "/post/54_kubernetes/" },      
         ],
       },
-      { text: "Etc", link: "/post/80_etc/" },
+      { text: "More", link: "/post/80_more/" },
       { text: "Github", link: "https://github.com/yologger" },
     ],
     sidebar: createSidebar(),
