@@ -7,6 +7,7 @@ const routes = [
   "52_linux",
   "53_docker",
   "54_kubernetes",
+  "55_algorithm",
   "80_more"
   // "31_maven",
   // "32_gradle",
@@ -34,7 +35,8 @@ module.exports = {
     // options for markdown-it-anchor
     // anchor: { permalink: false },
     // options for markdown-it-toc
-    // toc: { includeLevel: [1, 2] },
+    // extractHeaders: [ 'h2', 'h3', 'h4' ],
+    toc: { includeLevel: [] },
     extendMarkdown: md => {
       // use more markdown-it plugins!
       // md.use(taskLists, {enabled: true})
@@ -67,6 +69,7 @@ module.exports = {
           { text: "Kubernetes", link: "/post/54_kubernetes/" },      
         ],
       },
+      { text: "Algorithm", link: "/post/55_algorithm/" },
       { text: "More", link: "/post/80_more/" },
       { text: "Github", link: "https://github.com/yologger" },
     ],
