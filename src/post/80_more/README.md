@@ -9,19 +9,19 @@ showOnSidebar: true
 앞으로 공부할 주제를 기록합니다.
 
 ## Vuepress
-- [ ] Utterances
+- [ ] 댓글 기능 추가 - Utterances
 - [ ] Google Analytics
 - [ ] Google Adsense
-- [ ] Internalization
+- [ ] 다국어 지원
 - [ ] 왼쪽 사이드바 Markdown Header Anchor 제거
 - [ ] 오른쪽 사이드바 ToC 추가 
 - [ ] Dark mode
 - [ ] Tag 페이지 추가
 
 ## Android
-- [ ] Fastlane
-- [ ] Bitrise
-- [x] GitHub Actions
+- [ ] CI/CD Pipeline - Fastlane
+- [ ] CI/CD Pipeline - Bitrise
+- [x] CI/CD Pipeline - GitHub Actions
 - [ ] Firebase App Distribution
 
 ## Spring
