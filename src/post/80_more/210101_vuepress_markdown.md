@@ -60,3 +60,14 @@ Danger zone, do not proceed
 console.log('Hello, VuePress!')
 ```
 :::
+
+## Header Anchor Depth
+```
+---
+title: "Vuepress 마크다운 문법 정리"
+showOnSidebar: true
+sidebarDepth: 0     // disable header links
+sidebarDepth: 1     // extracts the h2 headers (default)
+sidebarDepth: 2     // extracts both h2 and h3 headers
+---
+```

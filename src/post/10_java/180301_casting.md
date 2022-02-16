@@ -1,5 +1,5 @@
 ---
-title: "형 변환(Type Casting)"
+title: "Java 형 변환"
 lang: ko
 showOnSidebar: true
 ---

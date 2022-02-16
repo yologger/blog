@@ -35,7 +35,7 @@ module.exports = {
     // options for markdown-it-anchor
     // anchor: { permalink: false },
     // options for markdown-it-toc
-    // extractHeaders: [ 'h2', 'h3', 'h4' ],
+    extractHeaders: [ 'h2', 'h3', 'h4' ],
     // toc: { includeLevel: [] },
     extendMarkdown: md => {
       // use more markdown-it plugins!

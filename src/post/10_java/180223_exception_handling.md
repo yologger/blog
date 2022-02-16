@@ -1,5 +1,5 @@
 ---
-title: "예외 처리(Exception & Error Handling)"
+title: "Java 예외 처리"
 lang: ko
 showOnSidebar: true
 ---

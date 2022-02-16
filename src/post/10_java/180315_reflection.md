@@ -1,5 +1,5 @@
 ---
-title: "리플렉션(Reflection)"
+title: "Java 리플렉션(Reflection)"
 lang: ko
 showOnSidebar: true
 ---
