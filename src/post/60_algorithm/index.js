@@ -1,5 +1,5 @@
 module.exports = require("../../.vuepress/getBuild")({
-  title: "/post/55_algorithm/",
+  title: "/post/60_algorithm/",
   collapsable: true,
-  dirName: "55_algorithm"
+  dirName: "60_algorithm"
 });
