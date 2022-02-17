@@ -4,13 +4,16 @@ lang: ko
 showOnSidebar: true
 ---
 
-# 직렬화
+# Table of Contents
+[[toc]]
+
+## 직렬화
 운영체제나 네트워크에는 Java의 객체의 개념이 없다. 그렇다면 어떻게 객체를 운영체제의 파일 시스템에 저장하거나 네트워크로 전송할 수 있을까?
 
 `직렬화(Serialization)`는 객체를 바이트로 변환하여 저장하는 기술을 의미한다. `역직렬화(Deserialization)`는 바이트를 다시 Java 객체로 변환하는 것이다.
 
 
-# Serializable
+## Serializable
 직렬화할 클래스는 `Serializable`를 구현해야한다.
 ``` java Person.java
 class Person implements Serializable {
@@ -50,7 +53,7 @@ class Person implements Serializable {
 } 
 ```
 
-# ObjectInputStream, ObjectOutputStream
+## ObjectInputStream, ObjectOutputStream
 직렬화와 역직렬화에는 보통 `ObjectInputStream`, `ObjectOutputStream`을 사용한다.
 ``` java App.java
 import java.io.*;
@@ -99,7 +102,7 @@ public class App {
 }
 ```
 
-# transient
+## transient
 멤버변수에 `transient`을 붙이면 직렬화 대상에서 제외된다.
 ``` java Person.java
 class Person implements Serializable{

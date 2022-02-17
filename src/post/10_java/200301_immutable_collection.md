@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 # Immutable Collection
 Java 9에는 `컬렉션(Collection)`을 [불변 객체](/post/10_java/180114_collection.html#list)로 생성할 수 있도록 `List`, `Set`, `Map`에 새로운 메소드들이 추가되었다. 
 

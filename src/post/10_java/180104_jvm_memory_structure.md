@@ -5,7 +5,11 @@ showOnSidebar: true
 sidebarDepth: 2
 ---
 
+# Table of Contents
+[[toc]]
+
 # JVM 메모리 구조
+
 JVM의 메모리 구조는 다음과 같다.
 ![](./180104_jvm_memory_structure/1.png)
 

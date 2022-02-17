@@ -5,6 +5,9 @@ showOnSidebar: true
 sidebarDepth: 2
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 일급 객체 
 다음 세 가지 조건을 모두 충족하면 일급 객체라고 한다.
 1. 변수나 상수에 할당할 수 있어야 한다.

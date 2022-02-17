@@ -4,11 +4,12 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
 
-# Throwable
+## Throwable
 Java는 오류가 발생하면 `Error`나 `Exception`을 발생시킨다. `Error`와 `Exception`은 모두 `Throwable`클래스를 상속한다.
 ![](./180223_exception_handling/1.png)
-
 
 ## Error
 `Error`는 코드에서 잡아낼 수 없으며 어플리케이션 자체가 다운된다. 대표적으로 메모리가 부족하여 발생하는 `OutOfMemoryError`, `StackOveflowError`가 있다.

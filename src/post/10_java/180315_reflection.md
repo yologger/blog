@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 # Reflection
 `리플렉션(Reflection)`은 <u>런타임에서 클래스의 구체적인 타입을 몰라도 그 클래스의 멤버변수, 메소드 등을 분석하고 접근할 수 있도록 하는 자바 API와 기법</u>이다. 리플렉션과 관련된 API는 `java.lang.reflect.*`패키지에 있다.
 

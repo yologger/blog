@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 # 형 변환
 `형 변환`은 <u>자료형을 다른 자료형으로 변환하는 것</u>이다.
 

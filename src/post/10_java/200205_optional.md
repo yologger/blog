@@ -5,6 +5,9 @@ showOnSidebar: true
 sidebarDepth: 2
 ---
 
+# Table of Contents
+[[toc]]
+
 ## NullPointException
 Java 언어로 개발을 할 때 가장 많이 발생하는 예외 중 하나가 바로 `NullPointException`이다. 
 ``` java

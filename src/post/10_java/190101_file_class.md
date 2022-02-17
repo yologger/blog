@@ -4,6 +4,8 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
 
 # File 클래스
 `File`클래스를 사용하면 파일이라 디렉토리를 쉽게 다룰 수 있다.

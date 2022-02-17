@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 가변 객체
 객체 지향 프로그래밍에서 `가변 객체(Mutable Object)`는 생성 후 상태를 바꿀 수 있는 객체를 의미한다.
 

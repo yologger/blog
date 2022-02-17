@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 ## Primitive Type 비교하기
 Java에서 Primitive Type를 비교할 때는 `==`을 사용한다.
 ``` java

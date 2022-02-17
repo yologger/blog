@@ -5,6 +5,9 @@ showOnSidebar: true
 sidebarDepth: 2
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 제네릭이란?
 `제네릭(Generic)`은 <u>클래스나 메서드 내부에서 사용할 데이터의 자료형을 외부에서 지정하는 것</u>이다. 제네릭을 사용하면 다음과 같은 장점이 있다.
 

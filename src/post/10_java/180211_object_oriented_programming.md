@@ -5,6 +5,9 @@ showOnSidebar: true
 sidebarDepth: 2
 ---
 
+# Table of Contents
+[[toc]]
+
 # 객체지향 프로그래밍
 자바는 모든 대상을 `객체(Object)`로 바라본다. 이러한 점에서 자바는 `객체지향 프로그래밍(Object-oriented Programming)`언어다. 객체지향 프로그래밍을 이해하려면 클래스와 인스턴스에 대해 알아야한다.
 

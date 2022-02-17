@@ -4,8 +4,10 @@ lang: ko
 showOnSidebar: true
 ---
 
-# Java Platform
+# Table of Contents
+[[toc]]
 
+# Java Platform
 `Java Platform`은 크게 세 가지 에디션으로 나뉜다.
 
 ## Java SE

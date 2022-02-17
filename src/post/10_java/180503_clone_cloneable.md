@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 원시 타입의 값 복사
 예제를 살펴보자. 다음과 같이 `int`타입의 변수 a를 생성하고 값을 할당하자.
 ``` java

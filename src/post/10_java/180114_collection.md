@@ -5,7 +5,11 @@ showOnSidebar: true
 sidebarDepth: 2
 ---
 
-# 컬렉션 프레임워크
+# Table of Contents
+[[toc]]
+
+
+## 컬렉션 프레임워크
 Java API는 같은 타입의 여러 데이터를 한꺼번에 효율적으로 관리하기 위해 `컬렉션 프레임워크(Collection Framework)`를 지원한다. 
 ![](./180114_collection/1.png)
 

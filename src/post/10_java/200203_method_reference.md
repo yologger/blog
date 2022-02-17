@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 메소드 참조
 `메소드 참조(Method Reference)`은 람다식이 단 하나의 메소드만을 호출하는 경우, 람다식에서 불필요한 매개변수를 줄여 사용할 수 있게 한다. 
 

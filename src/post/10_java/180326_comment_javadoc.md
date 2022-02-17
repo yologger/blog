@@ -1,8 +1,11 @@
 ---
-title: "Java 주석, javadoc 사용법"
+title: "Java 주석, javadoc"
 lang: ko
 showOnSidebar: true
 ---
+
+# Table of Contents
+[[toc]]
 
 ## 한 줄 주석
 `한 줄 주석(Single-line Comment)`을 작성할 때는 `//`을 사용한다.

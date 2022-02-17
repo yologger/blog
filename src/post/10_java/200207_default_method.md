@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 인터페이스
 `인터페이스`는 메소드 선언만 할 뿐 구현부는 포함하지 않는다.
 ``` java Person.java
