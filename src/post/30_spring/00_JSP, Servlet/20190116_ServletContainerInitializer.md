@@ -47,7 +47,7 @@ public class AppInitializer implements ServletContainerInitializer {
     }
 }
 ```
-이제 `META-INFO/services` 디렉토리에 `javax.servlet.ServletContainerInitializer`라는 파일을 생성한다. 그리고 `AppInitializer`클래스의 경로를 입력한다.
+그리고 `META-INFO/services` 디렉토리에 `javax.servlet.ServletContainerInitializer`라는 파일을 생성한다. 그 다음 `AppInitializer`클래스의 경로를 입력한다.
 ``` text javax.servlet.ServletContainerInitializer
 com.yologger.app.config.AppInitializer
 ```
