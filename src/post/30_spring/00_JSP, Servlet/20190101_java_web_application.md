@@ -17,7 +17,8 @@ sidebarDepth: 2
 [`maven`](/post/80_more/02_Maven/200102_maven_project.html)과 maven에서 제공하는 `maven-archtype-webapp` 탬플릿을 사용하면 Java Web Application 프로젝트를 쉽게 구성할 수 있다.
 ``` bash
 $ mvn archetype:generate -DarchetypeArtifactId=maven-archetype-webapp
-
+```
+``` bash
 ....
 Define value for property 'groupId': com.yologger
 Define value for property 'artifactId': web_app
@@ -77,6 +78,7 @@ $  tree
 `JSP`, `Servlet` 등 Java Web Application의 핵심 요소들을 사용하려면 의존성을 추가해야한다.
 ``` xml
 <!-- pom.xml -->
+
 <project>
   <dependencies>
     <!-- Java Servlet API -->
@@ -117,6 +119,7 @@ $  tree
 ```
 ``` java
 // Controller.java
+
 package com.yologger.app;
 
 import java.io.IOException;

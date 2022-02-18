@@ -13,28 +13,39 @@ sidebarDepth: 2
 
 ### @WebServlet 어노테이션
 `@WebServlet` 어노테이션의 `initParams` 속성으로 초기화 파라미터를 전달한다.
-``` java Controller.java
+``` java{4-10}
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.WebInitParam;
 
-@WebServlet(urlPatterns = {"/Controller"}, initParams={@WebInitParam(name="name", value="Paul"), @WebInitParam(name="nation", value="England")})
+@WebServlet(
+    urlPatterns={"/Controller"}, 
+    initParams={
+        @WebInitParam(name="name", value="Paul"), 
+        @WebInitParam(name="nation", value="England")
+    }
+)
 public class Controller extends HttpServlet {
     // ..
 }
 ```
 이제 다음과 같이 사용할 수 있다.
-``` java Controller.java
+``` java{16-18}
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.annotation.WebInitParam;
 
-@WebServlet(urlPatterns = {"/Controller"}, initParams={@WebInitParam(name="name", value="Paul"), @WebInitParam(name="nation", value="England")})
+@WebServlet(
+    urlPatterns={"/Controller"}, 
+    initParams={
+        @WebInitParam(name="name", value="Paul"), 
+        @WebInitParam(name="nation", value="England")
+    }
+)
 public class Controller extends HttpServlet {
 
     // ..
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletConfig servletConfig = getServletConfig();
-
         String name = servletConfig.getInitParameter("name");       // Paul
         String nation = servletConfig.getInitParameter("nation");   // England
     }
@@ -42,8 +53,8 @@ public class Controller extends HttpServlet {
 ```
 
 ### web.xml
-서블릿 초기화 파라미터는 `web.xml`에 정의할 수도 있다.
-``` xml web.xml
+서블릿 초기화 파라미터는 `web.xml`에도 정의할 수도 있다.
+``` xml{9-24}
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="http://xmlns.jcp.org/xml/ns/javaee"
@@ -82,7 +93,6 @@ public class Controller extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ServletConfig servletConfig = getServletConfig();
-
         String name = servletConfig.getInitParameter("name");       // Paul
         String nation = servletConfig.getInitParameter("nation");   // England
     }
@@ -93,7 +103,7 @@ public class Controller extends HttpServlet {
 `ServletContext` WAS에서 실행 중인 Web Application 한 개에 대한 상태 정보를 의미한다. 모든 Servlet이 ServletContext에 접근할 수 있으며, Servlet 간의 데이터 공유에도 사용할 수 있다.
 
 `ServletContext`는 `web.xml`에 정의한다. ServletContext는 Servlet이 생성되기 전에 미리 구성되어야한다. 따라서 Servlet 매핑보다 위에 정의한다.
-``` xml web.xml
+``` xml{7-16}
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
@@ -136,7 +146,9 @@ public class Controller extends HttpServlet {
 ```
 
 `ServletContext`는 다음과 같이 접근한다.
-``` java MyController.java
+``` java {8-10}
+// MyController.java
+
 public class MyController extends HttpServlet {
 
     // ..
@@ -149,7 +161,9 @@ public class MyController extends HttpServlet {
 }
 ```
 `ServletContext`는 동일한 웹 애플리케이션 내 어떠한 Servlet에서도 접근할 수 있다.
-``` java Controller2.java
+``` java 
+// YourController.java
+
 public class YourController extends HttpServlet {
 
     // ..
