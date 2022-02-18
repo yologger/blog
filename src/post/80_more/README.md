@@ -33,6 +33,9 @@ showOnSidebar: true
 
 
 ## Spring
+- [ ] Spring Batch
+- [ ] Spring Cloud
+- [ ] Spring WebFlux
 - [ ] WebRTC (Zoom, Google Meet)
 - [ ] RTMP (Africa TV, YouTube)
 - [ ] Web Socket
@@ -40,12 +43,12 @@ showOnSidebar: true
 - [ ] CORS
 - [ ] CSRF
 - [ ] gRPC
-- [ ] Spring Batch
-- [ ] Spring Cloud
 - [ ] View Resolver
 
 ## Infra
-- [ ] Elastic Search
+- [ ] 계층형 아키텍처
+- [ ] MSA
+- [ ] Kafka
 
 ## Java
 - [ ] StringUtils
@@ -53,11 +56,14 @@ showOnSidebar: true
 - [ ] volatile
 - [ ] Enumeration
 - [ ] Properties
+- [ ] Collections 클래스
 
 ## Kotlin
+
+## Database
+- [ ] Redis
+- [ ] Elastic Search
 
 ## IntelliJ
 - [ ] WorkBench, 성능 분석
 - [ ] Test Coverage
-
-
