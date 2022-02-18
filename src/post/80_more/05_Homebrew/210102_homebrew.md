@@ -1,7 +1,11 @@
 ---
 title: "Homebrew 사용법 정리"
 showOnSidebar: true
+sidebarDepth: 2
 ---
+
+# Table of Contents
+[[toc]]
 
 # Homebrew
 `Homebrew`는 MacOS용 패키지 관리자다. Homebrew를 사용하면 패키지를 쉽게 설치, 관리, 업데이트, 제거할 수 있다.

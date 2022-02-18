@@ -3,7 +3,11 @@ title: "Gradle 시작하기"
 lang: ko
 showOnSidebar: true
 collapsible: true
+sidebarDepth: 2
 ---
+
+# Table of Contents
+[[toc]]
 
 # Gradle 시작하기
 `Gradle`은 그루비 언어를 기반으로 한 빌드 도구다. Gradle은 Ant나 Maven같은 이전 세대의 빌드 도구의 단점을 보완하고 장점을 취합하여 만든 오픈소스 빌드 도구다.

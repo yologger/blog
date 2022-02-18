@@ -3,7 +3,11 @@ title: "Maven 플러그인"
 lang: ko
 showOnSidebar: true
 collapsible: true
+sidebarDepth: 2
 ---
+
+# Table of Contents
+[[toc]]
 
 ## Maven 플러그인
 `Maven 플러그인`은 pom.xml에 다음과 같은 형태로 추가한다.

@@ -3,7 +3,11 @@ title: "Maven Project 생성하기"
 lang: ko
 showOnSidebar: true
 collapsible: true
+sidebarDepth: 2
 ---
+
+# Table of Contents
+[[toc]]
 
 ## Maven 설치
 MacOS 환경에서는 `Homebrew`를 통해 `Maven`을 설치할 수 있다.

@@ -3,7 +3,11 @@ title: "Gradle Task"
 lang: ko
 showOnSidebar: true
 collapsible: true
+sidebarDepth: 2
 ---
+
+# Table of Contents
+[[toc]]
 
 # Task
 `Task`는 빌드를 위한 <u>작업 단위</u>다. Task는 크게 두 종류가 있다.

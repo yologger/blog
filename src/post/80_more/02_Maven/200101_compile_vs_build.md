@@ -3,7 +3,11 @@ title: "Compile, Build 차이점"
 lang: ko
 showOnSidebar: true
 collapsible: true
+sidebarDepth: 2
 ---
+
+# Table of Contents
+[[toc]]
 
 ## Compile
 `컴파일(Compile)` 개발자가 작성한 소스코드를 컴퓨터가 이해할 수 있는 기계어로 변환하는 과정을 의미한다.

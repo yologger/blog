@@ -3,7 +3,11 @@ title: "Build Lifecycle, Phase, Binding"
 lang: ko
 showOnSidebar: true
 collapsible: true
+sidebarDepth: 2
 ---
+
+# Table of Contents
+[[toc]]
 
 ## Build Lifecycle
 Maven은 사전에 정의된 순서대로 프로젝트를 빌드한 후 배포한다. 이 과정을 `Build Lifecycle`이라고 한다. Maven은 기본적으로 사전에 정의된 세 개의 Lifecycle을 제공한다.
