@@ -1,0 +1,73 @@
+---
+title: "Stream, Data Flow"
+description: "Subject"
+lang: ko
+showOnSidebar: true
+sidebarDepth: 2
+---
+
+# Table of Contents
+
+[[toc]]
+
+# 스트림
+이전 포스트에서 살펴본 것 처럼 `Observable`은 구독하고 있는 대상에게 데이터를 연속적, 순차적으로 흘려줍니다. 이러한 동작을 프로그래밍 언어에서 `스트림(Stream)` 또는 `데이터 흐름(Data Flow)`이라고 합니다. 
+
+## 콜드 스트림
+`콜드 스트림(Cold Stream)`은 누군가 관찰하기 전까지 데이터를 방출하지 않습니다.
+``` kotlin
+val observable = Observable.create<String> { 
+    it.onNext("Data 1")
+    it.onNext("Data 2")
+    it.onNext("Data 3")
+}
+```
+이제 `콜드 스트림(Cold Stream)`을 관찰하면 데이터가 방출됩니다.
+``` kotlin
+val observable = Observable.create<String> { 
+    it.onNext("Data 1")
+    it.onNext("Data 2")
+    it.onNext("Data 3")
+}
+
+// 데이터 관찰
+observable
+    .subscribeBy(onNext = { value ->
+        println(value)
+    }, onError = { error ->
+
+    }, onComplete = {
+        
+    })
+```
+출력 결과는 다음과 같습니다.
+```
+Data 1
+Data 2
+Data 3
+```
+
+## 핫 스트림
+`핫 스트림(Hot Stream)`은 구독자의 관찰와 상관없이 데이터를 방출합니다. 이전 포스트에서 살펴본 `Reactive X`의 `Subject`가 대표적인 `핫 스트림`입니다.
+``` kotlin
+val publishSubject = PublishSubject.create<Int>()
+
+// 구독 전 이벤트 방출
+publishSubject.onNext(1)
+publishSubject.onNext(2)
+
+// 구독
+publishSubject
+    .subscribe {
+        println(it)
+    }
+
+// 구독 후 이벤트 방출
+publishSubject.onNext(3)
+publishSubject.onNext(4)
+```
+결과는 다음과 같습니다.
+```
+3
+4
+```
