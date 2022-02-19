@@ -10,7 +10,6 @@ sidebarDepth: 2
 
 [[toc]]
 
-
 ## Data Binding 등장 배경
 다음과 같은 `레이아웃 XML 파일`이 있다고 가정합시다.
 ``` xml
