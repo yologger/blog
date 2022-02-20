@@ -1,7 +1,7 @@
 const routes = [
   "10_java",
   "11_kotlin",
-  // "20_android",
+  "20_android",
   "30_spring",
   "51_git_github",
   "52_linux",
@@ -9,8 +9,6 @@ const routes = [
   "54_kubernetes",
   "60_algorithm",
   "80_more"
-  // "31_maven",
-  // "32_gradle",
 ];
 
 const createSidebar = () => {
@@ -58,7 +56,7 @@ module.exports = {
           { text: "Kotlin", link: "/post/11_kotlin/" },
         ]
       },
-      // { text: "Android", link: "/post/20_android/" },
+      { text: "Android", link: "/post/20_android/" },
       { text: "Spring", link: "/post/30_spring/" },
       {
         text: "DevOps",
