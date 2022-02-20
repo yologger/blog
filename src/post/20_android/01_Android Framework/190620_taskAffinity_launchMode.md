@@ -9,7 +9,7 @@ sidebarDepth: 2
 # Table of Contents
 [[toc]]
 
-## taskAffinity, launchMode
+# taskAffinity, launchMode
 `taskAffinity`와 `launchMode`를 이해하기 위해 다음과 같은 프로젝트를 생성합시다.
 
 세 개의 액티비티로 구성된 앱이 있습니다. `Activity A`에서 버튼을 누르면 `Activity B`로 화면이 전환됩니다. `Activity B`에서 버튼을 누르면 `Activity C`로 화면이 전환됩니다.
@@ -152,13 +152,19 @@ Display #0 (activities from top to bottom):
 만약 Activity B와 Activity C는 또 다른 태스크에서 실행하려면 어떻게 해야할까요? 이러한 경우 `launchMode`를 사용할 수 있습니다.
 
 ## launchMode
-`AndroidManifest.xml`의 `launchMode`속성을 사용하면 태스크와 액티비티 실행의 흐름을 제어할 수 있습니다. `launchMode`는 다음과 같이 네 개의 값 중 하나를 설정할 수 있습니다.
+`AndroidManifest.xml`의 `launchMode`속성을 사용하면 태스크와 액티비티 실행의 흐름을 제어할 수 있습니다. 
 ``` xml
 <activity 
     android:name="your_activity_name"
-    android:launchMode=["singleTask" | "singleInstance" | "multiple" | "singleTop"]>
+    android:launchMode="singleTask">
 </activity>
 ```
+`launchMode`는 다음과 같이 네 개의 값 중 하나를 설정할 수 있습니다.
+- singleTask
+- singleInstance
+- multiple
+- singleTop
+
 ### singleTask
 `android:launchMode="singleTask"`는 새로운 태스크를 생성하고 그 곳에 액티비티를 추가합니다. 주의할 점은 새로운 태스크의 이름을 `taskAffinity`속성으로 설정해주어야 한다는 것입니다. `taskAffinity`속성을 설정하지 않으면 새로운 액티비티를 호출하는 액티비티의 태스크에 추가됩니다.
 
