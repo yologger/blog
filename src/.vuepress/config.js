@@ -59,7 +59,7 @@ module.exports = {
       { text: "Android", link: "/post/20_android/" },
       { text: "Spring", link: "/post/30_spring/" },
       {
-        text: "DevOps",
+        text: "Infra/DevOps",
         items: [
           { text: "Git/GitHub", link: "/post/51_git_github/" },
           { text: "Linux", link: "/post/52_linux/" },
