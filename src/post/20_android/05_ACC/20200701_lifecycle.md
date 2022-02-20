@@ -50,7 +50,9 @@ class LifeCycleOwner {
 
 ## Lifecycle-aware Compoent
 [`Lifecycle-aware Compoent`](https://developer.android.com/topic/libraries/architecture/lifecycle)를 사용하면 `Lifecycle`의 상태 변화를 탐지할 수 있습니다. Lifecycle-aware Compoent를 사용하려면 모듈 수준의 `build.gradle`에 의존성을 추가해야합니다.
-``` groovy 모듈 수준의 build.gradle
+
+``` groovy 
+// 모듈 수준의 build.gradle
 apply plugin: 'kotlin-kapt'
 
 dependencies {
@@ -60,7 +62,8 @@ dependencies {
 ```
 
 그 다음 `LifecycleObserver`클래스를 구현하는 클래스를 정의합니다. 생명주기가 변할 때 마다 결과를 출력하는 커스텀 로그를 정의해봅시다.
-``` kotlin CustomLogger.kt
+``` kotlin 
+// CustomLogger.kt
 class CustomLogger : LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)

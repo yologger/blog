@@ -27,6 +27,7 @@ sidebarDepth: 2
 우선 간단한 카운터 앱을 살펴봅시다. 코드는 다음과 같습니다.
 ``` xml
 // activity_main.xml
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -62,6 +63,7 @@ sidebarDepth: 2
 
 ``` kotlin
 // MainActivity.kt
+
 class MainActivity : AppCompatActivity() {
 
     private var value = 0
