@@ -8,6 +8,9 @@ sidebarDepth: 2
 # Table of Contents
 [[toc]]
 
+# Optional API
+Java 8부터 도입된 `Optional API`를 사용하면 `NullPointException`을 더 쉽게 핸들링할 수 있다.
+
 ## NullPointException
 Java 언어로 개발을 할 때 가장 많이 발생하는 예외 중 하나가 바로 `NullPointException`이다. 
 ``` java
@@ -81,7 +84,9 @@ Optional<Person> optional = Optional.ofNullable(person);
 System.out.println(optional.isPresent());   // true
 ```
 
-# Null 체크
+## Null 체크
+`Optional` 클래스에는 Null 체크를 위한 메소드가 존재한다.
+
 ### isPresent()
 `isPresent()`를 사용하면 객체가 null인지 확인할 수 있다.
 ``` java
@@ -176,7 +181,7 @@ Optional.of("ABCD")
 ```
 
 
-# 기타
+## 기타
 ### orElse()
 `orElse()`는 Optional이 비어있다면 `orElse()`로 지정한 값을 반환한다.
 ``` java

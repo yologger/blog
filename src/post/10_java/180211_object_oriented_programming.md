@@ -577,7 +577,7 @@ person.printName();
 
 ### static 초기화 블록
 `static 초기화 블록`은 클래스가 메모리에 로드될 때 호출되며, 다음과 같이 선언한다.
-``` java
+``` java{4-7}
 class Counter {
     static int count = 0;
 

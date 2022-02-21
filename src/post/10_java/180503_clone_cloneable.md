@@ -7,25 +7,33 @@ showOnSidebar: true
 # Table of Contents
 [[toc]]
 
+# 복사
+객체 지향 프로그래밍에서는 `얕은 복사`와 `깊은 복사`를 구분해야한다.
+
 ## 원시 타입의 값 복사
 예제를 살펴보자. 다음과 같이 `int`타입의 변수 a를 생성하고 값을 할당하자.
 ``` java
 int a = 10;
 ```
 메모리 구조는 다음과 같다.
+
 ![](./180503_clone_cloneable/1.png)
+
 변수 b를 설정하고 값을 할당하자.
 ``` java
 int a = 10;
 int b = a;
 ```
+
 ![](./180503_clone_cloneable/2.png)
+
 이제 변수 a의 값을 변경하자. a를 변경해도 b는 영향받지 않는다.
 ``` java
 int a = 10;
 int b = a;
 a = 20;
 ```
+
 ![](./180503_clone_cloneable/3.png)
 
 이처럼 원시타입의 값 복사는 대입연산자(`=`)를 사용해도 문제가 없다.
@@ -36,13 +44,16 @@ a = 20;
 Person p1 = new Person("Paul");
 ```
 메모리 구조는 다음과 같다.
+
 ![](./180503_clone_cloneable/4.png)
+
 참조 타입의 `얕은 복사(shallow copy)`는 대입 연산자(`=`)를 사용한다
 ``` java
 Person p1 = new Person("Paul");
 Person p2 = p1;
 ```
 메모리 구조는 다음과 같다.
+
 ![](./180503_clone_cloneable/5.png)
 
 ## 얕은 복사의 문제점
@@ -112,4 +123,5 @@ public class Main {
 }
 ```
 메모리 구조는 다음과 같다.
+
 ![](./180503_clone_cloneable/6.png)

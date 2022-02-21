@@ -7,6 +7,9 @@ showOnSidebar: true
 # Table of Contents
 [[toc]]
 
+# 객체 비교하기
+Java 에서는 데이터가 원시타입이냐 참조타입이냐에 따라 비교하는 방식이 다르다.
+
 ## Primitive Type 비교하기
 Java에서 Primitive Type를 비교할 때는 `==`을 사용한다.
 ``` java

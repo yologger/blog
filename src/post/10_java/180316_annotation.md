@@ -8,7 +8,7 @@ sidebarDepth: 2
 # Table of Contents
 [[toc]]
 
-## 어노테이션
+# 어노테이션
 Java로 개발을 하다 보면 클래스, 메서드, 변수 앞에 `@Override` 같은 `@` 표시를 많이 봤을 것이다. `@`를 `어노테이션(Annotation)`이라고 한다.
 
 어노테이션은 <u>컴파일 타임이나 런타임에 특정 처리를 하도록 컴파일러에게 정보를 제공</u>한다. 이를 통해 소스코드 작성 단계에서 보일러코드를 제거하고 소스코드를 간결하게 작성할 수 있다. 컴파일 과정에서 어노테이션을 처리하여 데이터를 검증할 수 있으며, 소스코드를 추가하거나 변경할 수도 있기 때문이다. 
@@ -18,6 +18,7 @@ Java로 개발을 하다 보면 클래스, 메서드, 변수 앞에 `@Override` 
 2. 컴파일 과정에서 특정 코드를 생성하도록 컴파일러에게 정보를 제공
 3. 런타임에서 특정 기능을 실행하도록 정보를 제공
 
+## 어노테이션 사용법
 어노테이션을 통해 데이터를 검증하는 예제를 살펴보자. 아래 코드는 두 인자의 합을 반환하는 함수다. 
 ``` java
 int sum(int a, int b) {
@@ -115,25 +116,25 @@ int result = sum(30, 10)
 ![](./180316_annotation/1.png)
 
 각 모듈에 의존성을 추가한다.
-{% tabbed_codeblock app/build.gradle%}
-<!-- tab groovy -->
+
+``` groovy
+// app/build.gradle
 implementation project(':annotation')
 annotationProcessor project(':annotation_processor')
-<!-- endtab -->
-{% endtabbed_codeblock %}
+```
 
-
-{% tabbed_codeblock annotation_processor/build.gradle%}
-<!-- tab groovy -->
+``` groovy
+// annotation_processor/build.gradle
 dependencies {
     implementation project(':annotation')
 }
-<!-- endtab -->
-{% endtabbed_codeblock %}
+```
 
 ### 어노테이션 만들기
 설정이 끝났다면 `annotation`모듈에 `MyAnnotation.java`파일을 생성한다.
+
 ![](./180316_annotation/2.png)
+
 ``` java
 package com.yologger.annotation;
 
@@ -143,8 +144,11 @@ public @interface MyAnnotation {
 ```
 ### 어노테이션 프로세서 만들기
 `annotation_processor`모듈에 다음과 같이 `MyAnnotation.java`파일을 생성하자.
+
 ![](./180316_annotation/3.png)
+
 어노테이션을 프로세서를 구현할 땐 `AbstractProcessor`를 상속해야한다. 또한 `process()`메소드를 구현해야한다. 이 메소드 안에서 실제로 어노테이션 처리를 하게된다. 
+
 ``` java
 public class MyAnnotationProcessor extends AbstractProcessor {
 
@@ -205,12 +209,15 @@ annotation_processor/src/main/resources/META-INF/services
 ```
 javax.annotation.processing.Processor
 ```
+
 ![](./180316_annotation/4.png)
+
 이제 파일을 열어 위에서 작성한 어노테이션 프로세서를 등록하자. 이때 반드시 프로젝트의 패키지명을 포함해서 작성해야한다.
 ```
 com.yologger.annotation_processor.MyAnnotationProcessor
 ```
 이제 `app`모듈을 빌드해보자. 어노테이션 프로세서가 정상적으로 작동되었다면, 다음과 같은 로그를 확인할 수 있다.
+
 ![](./180316_annotation/5.png)
 
 

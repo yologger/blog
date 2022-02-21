@@ -8,14 +8,14 @@ sidebarDepth: 2
 # Table of Contents
 [[toc]]
 
-## 제네릭이란?
+# 제네릭
 `제네릭(Generic)`은 <u>클래스나 메서드 내부에서 사용할 데이터의 자료형을 외부에서 지정하는 것</u>이다. 제네릭을 사용하면 다음과 같은 장점이 있다.
 
 - 타입에 종속되지 않은 유연한 로직
 - 타입 안정성
 - 자동 형변환 
 
-### 제너릭을 사용하지 않았을 때의 문제점
+## 제너릭을 사용하지 않았을 때의 문제점
 제네릭을 사용하면 특정 타입에 종속되지 않은 유연한 로직을 구현할 수 있다. 
 
 아래 `Stack`클래스 예제를 살펴보자.
@@ -119,7 +119,7 @@ stack.pop();
 이제 `String`, `Integer`뿐만 아니라 더 다양한 타입의 데이터를 취급한다고 가정해보자. 그럼 타입이 추가될 때 마다 새로운 클래스를 정의해야 할까? 바로 이러한 경우 `제네릭`을 사용할 수 있다.
 
 
-### 장점 1. 특정 타입에 종속되지 않은 유연한 로직
+## 장점 1. 특정 타입에 종속되지 않은 유연한 로직
 아래 코드는 제네릭을 적용한 `Stack`클래스다.
 ``` java
 class Stack<E> {
@@ -186,7 +186,7 @@ scores.push(3);
 ```
 이처럼 제네릭을 사용하면 특정 타입에 종속되지 않은 유연한 로직을 작성할 수 있다.
 
-### 장점 2. 타입 안정성
+## 장점 2. 타입 안정성
 `타입 안정성`은 <u>런타임에 발생할 에러를 컴파일 타임에 찾아낼 수 있음</u>을 의미한다.
 
 예제를 살펴보자. 자바 API에서 기본적으로 제공하는 `ArrayList`를 쉽고 간단하게 재구현하고 있다.
@@ -231,9 +231,9 @@ Exception in thread "main" java.lang.ClassCastException: java.lang.String cannot
 ```
 형 변환이 제대로 이루어지지 않았다는 오류 메시지다. 
 
-{% alert danger icon %}
+::: warning
 오류는 <u>컴파일 타임</u>에서 찾아내는 것이 가장 좋다. <u>런타임</u>에 오류가 발생하여 어플리케이션이 다운되면 비즈니스에 큰 문제가 생기기 때문이다.
-{% endalert %}
+:::
 
 이러한 문제점을 해결하는데 제네릭을 사용할 수 있다. 제네릭을 사용하여 `CustomArrayList`를 정의해보자.
 ``` java
@@ -266,7 +266,7 @@ CustomArrayList<Integer> list = new CustomArrayList<Integer>();
 list.add("10");  // 컴파일 시점에 다음과 같은 에러가 발생한다.
 ```
 
-### 장점 3. 자동 형변환
+## 장점 3. 자동 형변환
 제네릭을 사용하면 자동으로 형변환을 해준다는 장점이 있다. 제네릭을 사용하지 않은 `CustomArrayList`클래스를 다시 살펴보자.
 ``` java
 class CustomArrayList {
@@ -364,7 +364,8 @@ Box<String> box2 = new Box<String>("Hello World");
 // element의 데이터 타입을 Person으로 설정
 Box<Person> box3 = new Box<Person>(new Person("Paul"));
 ```
-## 제너릭 인터페이스와 
+
+## 제너릭 인터페이스
 제너릭은 클래스 뿐만 아니라 인터페이스와도 사용할 수 있다. 이를 `제너릭 인터페이스(Generic Interface)`라고 한다.
 ``` java
 interface Box<E> {

@@ -7,6 +7,9 @@ showOnSidebar: true
 # Table of Contents
 [[toc]]
 
+# Java 예외 처리
+Java의 예외 처리에 대해 알아보자.
+
 ## Throwable
 Java는 오류가 발생하면 `Error`나 `Exception`을 발생시킨다. `Error`와 `Exception`은 모두 `Throwable`클래스를 상속한다.
 ![](./180223_exception_handling/1.png)
@@ -26,6 +29,7 @@ person.printName();
 ```
 값이 `null`인 변수에 접근하고 있다. 위 코드를 실행하면 `NullPointException`이 발생하고 어플리케이션이 다운된다.
 
+## try catch 
 이때 `try-catch`구문으로 `Exception`이 발생할 가능성이 있는 부분을 감싸주면 `Exception`이 발생해도 어플리케이션을 다운시키지 않고 에러 처리를 할 수 있다.
 
 ``` java

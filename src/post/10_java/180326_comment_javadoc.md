@@ -7,6 +7,9 @@ showOnSidebar: true
 # Table of Contents
 [[toc]]
 
+# 주석
+`주석(Comment)` 사용법에 대해 알아보자.
+
 ## 한 줄 주석
 `한 줄 주석(Single-line Comment)`을 작성할 때는 `//`을 사용한다.
 ``` java
