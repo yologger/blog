@@ -8,6 +8,9 @@ sidebarDepth: 2
 # Table of Contents
 [[toc]]
 
+# Java 데이터 타입
+Java의 데이터 타입에 대해 정리한다.
+
 ## 데이터 타입
 `데이터 타입`은 데이터의 종류를 의미한다. 예를 들어 나이는 숫자고 이름은 문자열이다. 여기서 숫자와 문자열을 데이터 타입이라고 한다. 이를 Java에서 다음과 같이 표현한다.
 ``` java
@@ -15,7 +18,7 @@ int age = 30;
 String name = "Paul";
 ``` 
 
-## 정수형 숫자
+### 정수형 숫자
 `10진수 정수형 숫자`는 다음과 같이 사용한다.
 ``` java
 byte age = 24;      // 1 byte
@@ -91,8 +94,8 @@ AGE = 25;   // Error
 
 ## 원시 타입과 참조 타입
 Java에는 크게 두 종류의 자료형이 있다.
-- 원시 타입(Primitive Type)
-- 참조 타입(Reference Type)
+- 원시 타입
+- 참조 타입
 
 ::: tip
 [JVM의 메모리 구조](/post/10_java/180104_jvm_memory_structure.html)에 관한 포스트를 먼저 읽고 오길 권장한다.

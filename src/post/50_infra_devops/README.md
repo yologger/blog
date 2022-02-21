@@ -6,4 +6,4 @@ showOnSidebar: true
 ---
 
 # Introduction
-`Docker`에 대해 공부하고 정리합니다.
+`Infra`, `DevOps`에 대해 공부하고 정리합니다.
