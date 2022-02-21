@@ -7,7 +7,7 @@ const routes = [
   // "51_git_github",
   // "52_linux",
   // "53_docker",
-  "54_kubernetes",
+  // "54_kubernetes",
   "60_algorithm",
   "80_more",
 ];

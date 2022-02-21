@@ -257,7 +257,7 @@ class Realm implements Database {
 ```
 위 예제에서는 `Database`라는 규격을 따르도록 강제하고있다. 이렇게 하면 `Database`를 사용하는 입장에서 실제 구현체가 무엇인지 신경쓰지 않고 사용할 수 있다. 이를 이처럼 인터페이스에 다양한 구현체를 할당할 수 있는 것을 어려운 용어로 `다형성(Polymorphism)`이라고 한다.
 
-다형성을 예제를 통해 살펴보겠습니다.
+다형성을 예제를 통해 살펴보자.
 ``` java
 class LoginViewModel implements ViewModel {
 
@@ -544,7 +544,7 @@ Counter.printCount();   // 3
 ## 초기화 블록
 ### 인스턴스 초기화 블록
 `인스턴스 초기화 블록`은 클래스의 인스턴스가 생성될 때 호출되며, <u>생성자보다도 먼저 호출된다</u>.
-``` java
+``` java{5-8}
 class Person {
 
     String name;
