@@ -68,3 +68,8 @@ showOnSidebar: true
 ## IntelliJ
 - [ ] WorkBench, 성능 분석
 - [ ] Test Coverage
+
+## Toy Project
+- [ ] Blog GitHub Actions Slack 메시지 추가
+- [ ] Heart to Heart Android App Slack 메시지 추가
+- [ ] Heart to Heart, Firebase App Distribution을 위한 CI/CD Pipeline 구축
