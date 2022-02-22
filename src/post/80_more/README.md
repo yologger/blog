@@ -33,6 +33,7 @@ showOnSidebar: true
 
 
 ## Spring
+- [ ] IntelliJ Hot reload & Hot Swap
 - [ ] Spring Batch
 - [ ] Spring Cloud
 - [ ] Spring WebFlux
