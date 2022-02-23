@@ -13,8 +13,11 @@ showOnSidebar: true
 - [ ] Google Analytics
 - [ ] Google Adsense
 - [ ] 다국어 지원
+- [ ] SEO
 - [ ] 왼쪽 사이드바 Markdown Header Anchor 제거
 - [ ] 오른쪽 사이드바 ToC 추가 
+    - [ ] 데스크탑 환경에서는 오른쪽에 사이드바 배치
+    - [ ] 테블릿, 모바일 환경에서는 포스트 상단에 배치
 - [ ] Dark mode
 - [ ] Tag 페이지 추가
 - [ ] SEO
@@ -28,8 +31,6 @@ showOnSidebar: true
 - [ ] Looper, Handler
 - [ ] WorkManager
 - [ ] UI Animator, UI Animator Viewer
-- [ ] NIO
-- [ ] Netty
 
 
 ## Spring
@@ -45,6 +46,8 @@ showOnSidebar: true
 - [ ] CSRF
 - [ ] gRPC
 - [ ] View Resolver
+- [ ] NIO
+- [ ] Netty
 
 ## Infra
 - [ ] 계층형 아키텍처
@@ -52,12 +55,12 @@ showOnSidebar: true
 - [ ] Kafka
 
 ## Java
-- [ ] StringUtils
 - [ ] ForkAndJoin 프레임워크
-- [ ] volatile
+- [ ] 키워드 volatile
+- [x] Collections 클래스
+- [x] Lombok
 - [ ] Enumeration
 - [ ] Properties
-- [ ] Collections 클래스
 
 ## Kotlin
 

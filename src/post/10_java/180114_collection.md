@@ -736,3 +736,142 @@ System.out.println(priorityQueue.remove().toString());      // [name='Phoebe', a
 System.out.println(priorityQueue.remove().toString());      // [name='Chandler', age=26]
 System.out.println(priorityQueue.remove().toString());      // [name='Ross', age=27]
 ```
+
+## Collections 클래스
+`Collections`클래스는 `List`, `Set`, `Map`처럼 `Collection`인터페이스를 상속한 객체를 조작하기 위한 유용한 메소드들을 제공한다.
+
+### max()
+최대값을 반환한다.
+``` java
+List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
+Collections.max(list);  // 8
+```
+
+### min()
+최소값을 반환한다.
+``` java
+List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
+Collections.min(list);  // 1
+```
+
+### fill()
+List의 모든 요소를 특정 값으로 대체한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
+Collections.fill(list, 5);
+System.out.println(list);   // [5, 5, 5, 5]
+```
+
+### addAll()
+Collection에 요소들을 추가한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
+Collections.addAll(list, 5, 6, 7);
+System.out.println(list);   // [1, 2, 3, 4, 5, 6, 7]
+```
+
+### replaceAll()
+특정 요소를 다른 요소로 대체한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 1, 1, 2, 2, 2, 2));
+Collections.replaceAll(list, 2, 3);
+System.out.println(list);   // [1, 1, 1, 3, 3, 3, 3]
+```
+
+### unmodifiableList()
+`List`를 불변 객체로 만들어 반환한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
+list.add(5);        // Success
+List immutable = Collections.unmodifiableList(list);
+immutable.add(6);   // Error, UnsupportedOperationException
+```
+
+### unmodifiableMap()
+`Map`을 불변 객체로 만들어 반환한다.
+
+### unmodifiableSet()
+`Set`을 불변 객체로 만들어 반환한다.
+
+### nCopies()
+첫 번째 인자로 전달된 크기의 List를 두 번째 인자로 전달된 객체로 초기화하여 반환한다.
+``` java
+List list = Collections.nCopies(10, 1);
+System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+```
+주의할 점은 `Collections.nCopies()`를 불변 리스트를 반환하므로 변경할 수 없다.
+
+### emptyList()
+빈 불변 List를 반환한다.
+``` java
+List list = Collections.emptyList();    // UnsupportedOperationException
+list.add(1);
+```
+
+### emptyMap()
+빈 불변 Map을 반환한다.
+
+### emptySet()
+빈 불변 Set을 반환한다.
+
+### binarySearch()
+정렬된 List에서 요소를 찾는다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+
+System.out.println(Collections.binarySearch(list, 1));      // 0
+System.out.println(Collections.binarySearch(list, 4));      // 3
+System.out.println(Collections.binarySearch(list, 10));     // -6
+```
+요소가 검색된 경우 인덱스를, 요소가 존재하지 않으면 음수를 반환한다.
+
+### swap()
+두 요소의 위치를 스왑한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+Collections.swap(list, 1, 3);
+System.out.println(list);   // [1, 4, 3, 2, 5]
+```
+
+### copy()
+List를 복사한다.
+``` java
+List src = new ArrayList(Arrays.asList(1, 1, 1));
+List dest = new ArrayList(Arrays.asList(2, 2, 2, 2, 2));
+Collections.copy(dest, src);    
+System.out.println(dest);       // [1, 1, 1, 2, 2]
+```
+목적지 List는 출발지 List보다 크거나 같아야한다. 그렇지 않으면 `IndexOutOfBoundsException`가 발생한다.
+
+### sort()
+`List`를 정렬한다.
+``` java
+List list = new ArrayList(Arrays.asList(3, 7, 1, 9));
+Collections.sort(list);
+System.out.println(list);   // [1, 3, 7, 9]
+```
+요소가 객체인 경우, 요소가 `Comparable` 인터페이스를 구현하거나 `sort()`의 두 번째 인자로 `Comparator`를 전달하여 정렬 기준을 지정할 수 있다.
+
+### reverse()
+`List`의 순서를 뒤집는다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+Collections.reverse(list);
+System.out.println(list);   // [5, 4, 3, 2, 1]
+```
+
+### shuffle()
+요소의 순서를 무작위로 섞는다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+Collections.shuffle(list);
+System.out.println(list);   // [3, 1, 4, 2, 5]
+```
+
+### rotate()
+두 번째 인자로 전달된 값만큼 배열을 회전시킨다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+Collections.rotate(list, 2);
+System.out.println(list);   // [4, 5, 1, 2, 3]
+```
