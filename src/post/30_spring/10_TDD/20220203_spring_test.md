@@ -226,8 +226,6 @@ class UserRepositoryTest {
 }
 ```
 
-
-
 ## @SpringBootTest
 `@SpringBootTest`는 통합 테스트로 모든 컴포넌트를 컨테이너에 등록하기 때문에 속도가 느리다. 
 
