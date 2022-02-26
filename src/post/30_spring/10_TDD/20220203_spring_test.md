@@ -68,6 +68,9 @@ class TestControllerTest {
 }
 ```
 
+### MockMvc
+`MockMvc`는 테스트를 위한 Spring MVC의 진입점이다. 쉽게 말해 가상의 테스트용 `Spring MVC 웹 서버`를 실행시키고 이 곳에 GET, POST 같은 HTTP Request를 보내는 것이다. 
+
 ### Mocking
 만약 다음과 같이 의존관계가 존재한다면 어떻게 할까?
 ``` java{7,16}
@@ -233,15 +236,23 @@ class UserRepositoryTest {
 
 `@Transctional` 어노테이션을 명시하면 테스트가 실행된 후 롤백 처리 된다.
 
-@AutoConfigureMockMvc
-@AutoConfigureWebTestClient
+`@AutoConfigureMockMvc`
+`@AutoConfigureWebTestClient`
 
-## @MockMvnTest
-
-
-## 슬라이스 테스트
-
+## @MockMvcTest
 
 ## @RestClientTest
 
 ## @JsonTest
+
+## 어떤 테스트를 사용해야할까?
+일반적으로 스프링 애플리케이션은 `Controller Layer`, `Service Layer`, `Data Layer`로 폴더나 모듈을 나눈다. 응집도(Cohension)을 높이고 결합도(Coupling)을 줄이기 위해서다. 
+
+계층을 분리하면 해당 계층만을 독립적으로 테스트할 수 있으며, 이를 `슬라이스 테스트(Slice Test)`라고 한다.
+- `@WebMvcTest`
+- `@DataJpaTest`
+
+반면 어플리케이션을 구성하는 요소를 모두 로드하여 테스트하는 것을 `통합 테스트(Integration Test)`라고 한다.
+- `@SpringBootTest`
+
+어플리케이션의 규모가 커질 수록 통합 테스트에 많은 시간이 소요된다. 따라서 계층을 적절히 분리하고 필요한 컴포넌트만 로드하는 `슬라이스 테스트`를 사용하는 것이 좋겠다.
