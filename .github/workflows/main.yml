@@ -17,7 +17,7 @@ jobs:
         BUILD_SCRIPT: npm install && npm run build
         BUILD_DIR: src/.vuepress/dist
 
-[   # Slack
+    # Slack
     - name: Send result to slack
       uses: 8398a7/action-slack@v3
       with:
