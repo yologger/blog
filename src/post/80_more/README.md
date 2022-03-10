@@ -58,6 +58,7 @@ showOnSidebar: true
 - [ ] ForkAndJoin 프레임워크
 - [ ] 키워드 volatile
 - [x] Collections 클래스
+- [x] Strings 클래스
 - [x] Lombok
 - [ ] Enumeration
 - [ ] Properties
