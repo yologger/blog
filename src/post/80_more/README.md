@@ -34,6 +34,7 @@ showOnSidebar: true
 
 
 ## Spring
+- [ ] Swagger
 - [ ] IntelliJ Hot reload & Hot Swap
 - [ ] Spring Batch
 - [ ] Spring Cloud
