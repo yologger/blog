@@ -17,6 +17,7 @@ showOnSidebar: true
 - [ ] Google Adsense
 - [ ] 다국어 지원
 - [ ] SEO
+- [ ] 다크 모드 추가
 - [ ] 왼쪽 사이드바 Markdown Header Anchor 제거
 - [ ] 오른쪽 사이드바 ToC 추가 
     - [ ] 데스크탑 환경에서는 오른쪽에 사이드바 배치
