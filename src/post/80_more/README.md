@@ -18,14 +18,14 @@ showOnSidebar: true
 - [ ] 오른쪽 사이드바 ToC 추가 
     - [ ] 데스크탑 환경에서는 오른쪽에 사이드바 배치
     - [ ] 테블릿, 모바일 환경에서는 포스트 상단에 배치
-- [ ] Dark mode
+- [ ] 다크 테마 지원
 - [ ] Tag 페이지 추가
 - [ ] SEO
 
 ## Android
+- [x] CI/CD Pipeline - GitHub Actions
 - [ ] CI/CD Pipeline - Fastlane
 - [ ] CI/CD Pipeline - Bitrise
-- [x] CI/CD Pipeline - GitHub Actions
 - [ ] Firebase App Distribution
 - [ ] Robolectric
 - [ ] Looper, Handler
@@ -35,25 +35,23 @@ showOnSidebar: true
 
 ## Spring
 - [ ] Swagger
-- [ ] IntelliJ Hot reload & Hot Swap
+- [x] IntelliJ Hot reload & Hot Swap
 - [ ] Spring Batch
 - [ ] Spring Cloud
-- [ ] Spring WebFlux
+- [ ] Spring WebFlux, Netty
 - [ ] WebRTC (Zoom, Google Meet)
 - [ ] RTMP (Africa TV, YouTube)
 - [ ] Web Socket
-- [ ] socket.io 
-- [ ] CORS
-- [ ] CSRF
+- [ ] Socket.io 
 - [ ] gRPC
 - [ ] View Resolver
 - [ ] NIO
-- [ ] Netty
 
 ## Infra
-- [ ] 계층형 아키텍처
+- [ ] Layered Architecture
 - [ ] MSA
 - [ ] Kafka
+- [ ] Kubernetes
 
 ## Java
 - [ ] ForkAndJoin 프레임워크
