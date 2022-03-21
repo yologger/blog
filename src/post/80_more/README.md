@@ -58,7 +58,7 @@ showOnSidebar: true
 - [ ] NIO
 
 ## Infra
-- [ ] Layered Architecture
+- [x] Layered Architecture
 - [ ] MSA
 - [ ] Apache Kafka
 - [ ] Kubernetes
