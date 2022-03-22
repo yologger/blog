@@ -1,5 +1,5 @@
 module.exports = require("../../.vuepress/getBuild")({
-  title: "/post/10_java/",
+  title: "/post/01_java/",
   collapsable: false,
-  dirName: "10_java"
+  dirName: "01_java"
 });

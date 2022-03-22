@@ -2,7 +2,7 @@
 title: "머스터치(Mustache) 사용법"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # 머스터치(Mustache)

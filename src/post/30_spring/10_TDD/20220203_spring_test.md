@@ -2,7 +2,7 @@
 title: "스프링 부트 테스트 코드 작성하기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

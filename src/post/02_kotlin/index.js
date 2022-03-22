@@ -1,5 +1,5 @@
 module.exports = require("../../.vuepress/getBuild")({
-  title: "/post/11_kotlin/",
+  title: "/post/02_kotlin/",
   collapsable: true,
-  dirName: "11_kotlin"
+  dirName: "02_kotlin"
 });

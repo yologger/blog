@@ -2,7 +2,7 @@
 title: "web.xml 파일 없애기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

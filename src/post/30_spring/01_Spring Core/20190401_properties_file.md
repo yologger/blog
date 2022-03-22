@@ -2,7 +2,7 @@
 title: "외부 파일에서 설정값 읽어오기 - properties 파일"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents
