@@ -2,7 +2,7 @@
 title: "Java 클래스패스(classpath)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # 클래스패스
