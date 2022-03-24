@@ -103,7 +103,43 @@ $ java -Dspring.profiles.active=dev -jar [app_name].jar
 $ java -Dspring.profiles.active=prod -jar [app_name].jar
 ```
 
-보통 `application.propeties`에는 환경에 관계없는 공통 설정값을 작성한다. 그리고 `application-xxx.properties`에는 환경에 따라 달라지는 설정값을 작성한다. 또한 `application.propeties`의 속성값을 `application-xxx.properties`에도 정의하면 덮어쓰게 된다.
+보통 `application.properties`에는 환경에 관계없는 공통 설정값을 작성한다. 그리고 `application-xxx.properties`에는 환경에 따라 달라지는 설정값을 작성한다. 또한 `application.propeties`의 속성값을 `application-xxx.properties`에도 정의하면 덮어쓰게 된다.
+
+### 다른 application-xxx.properties 포함하기
+`application.properties`는 다른 `application-xxx.properties`를 포함할 수도 있다.
+
+``` properties{2}
+# application.properteis
+spring.profiles.include=sub
+
+origin.name1=originValue1
+origin.name2=originValue2
+```
+``` properties
+# application-sub.properties
+origin.name2=subValue2
+sub.name1=subValue1
+```
+``` java
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @Value("${origin.name1}")
+    String originName1;     // originValue1
+
+    @Value("${origin.name2}")
+    String originName2;     // subValue2
+
+    @Value("${sub.name1}")
+    String subName1;        // subValue1
+
+    // ...
+}
+
+```
+
+
 
 ### 단위 테스트
 `test/java/resources`에 `application.properties`를 생성하면 `main/java/resources`의 `application.properties`를 덮어쓰게 된다. 테스트 환경에서 다른 속성값을 지정할 때 유용하게 사용할 수 있다.
