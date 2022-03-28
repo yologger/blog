@@ -71,7 +71,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 }
 ```
 
-# @Query
+## @Query
 `Query Method`의 `@Query` 어노테이션을 사용하면 쿼리를 직접 정의할 수 있다.
 ``` java
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -83,7 +83,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     List<MemberEntity> findByEmailAndName(@Param("email") String email, @Param("name") String name);
 ```
 
-# Sorting
+## Sorting
 `Spring Data JPA`는 `Query Method`에서 정렬 기능을 사용하기 위해 `Sort`클래스를 제공한다.
 ``` java
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -107,7 +107,7 @@ memberRepository.findByAge(30, Sort.by(Sort.Direction.DESC, "nation"));
 memberRepository.findByNation("England", Sort.by(Sort.Direction.DESC, "name").and(Sort.by(Sort.Direction.ASC, "age")));
 ```
 
-# Paging
+## Paging
 `Spring Data JPA`는 페이징 기능을 위해 `Pageable`, `PageRequest`클래스를 제공한다.
 ``` java
 import org.springframework.data.jpa.repository.JpaRepository;

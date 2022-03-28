@@ -37,7 +37,7 @@ import lombok.Builder;
 
 @Entity
 @Table(name= "member")
-public class MemberEntity extends BaseEntity {
+public class MemberEntity {
 
     @Id
     @Column(name="id")
