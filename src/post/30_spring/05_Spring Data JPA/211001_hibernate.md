@@ -87,6 +87,10 @@ public class MemberEntity {
     @Column
     private String password;
 
+    public MemberEntity() {
+
+    }
+
     public MemberEntity(String email, String name, String password) {
         this.email = email;
         this.name = name;
@@ -120,6 +124,22 @@ public class MemberEntity {
     public String getPassword() {
         return password;
     }
+}
+```
+주의할 점이 있다. `Hibernate`는 `리플렉션`으로 엔티티를 생성하기 때문에 반드시 `기본 생성자`를 정의해야한다.
+``` java{8-10}
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    // 중략...
+
+    // 기본 생성자
+    public MemberEntity() {
+
+    }
+
+    // 중략...
 }
 ```
 
@@ -200,6 +220,7 @@ entityManager.remove(member);
 ## 데이터 한 개 조회
 데이터 한 개를 조회할 때는 `find()`메소드를 사용한다.
 ``` java
+Long id = 1L;
 MemberEntity member = entityManager.find(MemberEntity.class, id);
 ```
-데이터 여러 개를 조회할 때는 `JPQL`, `QueryDSL` 등의 기술을 사용할 수 있다.
+데이터 여러 개 또는 조인 작업이 필요할 때는 `JPQL`, `QueryDSL` 등의 기술을 사용할 수 있다.
