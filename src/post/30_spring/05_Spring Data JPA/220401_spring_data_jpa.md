@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 # Spring Data JPA
-`Spring Data JPA`는 스프링 프레임워크에서 JPA를 좀 더 편하게 사용할 수 있도록 하는 프로젝트다. 내부적으로 `Hibernate`을 포함하고 있기 때문에 `Hibernate`의 기능을 모두 사용할 수 있으며, 추가적인 API도 제공한다.
+`Spring Data JPA`는 스프링 프레임워크에서 `JPA`를 좀 더 편하게 사용할 수 있도록 하는 프로젝트다. 내부적으로 `Hibernate`을 포함하고 있기 때문에 `Hibernate`의 기능을 모두 사용할 수 있으며, 추가적인 기능도 제공한다.
 
 ## 설정
 `Spring Data JPA`를 사용하려면 의존성을 추가해야한다.
