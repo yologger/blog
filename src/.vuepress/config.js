@@ -31,7 +31,7 @@ module.exports = {
     // anchor: { permalink: false },
     // options for markdown-it-toc
     // extractHeaders: ["h2", "h3", "h4"],
-    // toc: { includeLevel: [] },
+    toc: { includeLevel: [1, 2, 3, 4] },
     extendMarkdown: (md) => {
       // use more markdown-it plugins!
       // md.use(taskLists, {enabled: true})

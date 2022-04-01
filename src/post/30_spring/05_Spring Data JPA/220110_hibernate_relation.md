@@ -185,6 +185,43 @@ post2.setWriter(null);  // post2의 연관관계 제거
 entitiManager.remove(member);   // member 엔티티 제거
 ```
 
+## 양방향 연관관계
+`MemberEntity` 코드를 다시 살펴보자.
+``` java{11-12}
+@Entity
+@Table(name= "member")
+@Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class MemberEntity extends BaseEntity {
+
+    // 중략 ..
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    private List<PostEntity> posts;
+}
+```
+`MemberEntity`에서 `PostEntity`로 연관관계를 매핑하고 있다. 이를 <b>`단방향 연관관계`</b>라고 한다.
+
+이제 `PostEntity` 코드를 살펴보자.
+``` java{11-13}
+@Table(name= "post")
+@ToString
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PostEntity extends BaseEntity {
+
+    // 중략 ...
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer_id")
+    private MemberEntity writer;
+}
+```
+`PostEntity`에서 `MemberEntity`로 연관관계를 매핑했다. 이제 양쪽으로 연관관계가 매핑되었으며, 이를 <b>`양방향 연관관계`</b>라고 한다.
 
 ## 연관관계의 주인
 관계형 데이터베이스는 투 테이블 간의 연관관계를 `외래 키(Foreign Key)`로 표현한다. 위의 `MemberEntity`, `PostEntity`로 생성된 데이터베이스 스키마에서 이를 확인할 수 있다.
@@ -212,7 +249,7 @@ public class PostEntity extends BaseEntity {
     private MemberEntity writer;
 }
 ``` 
-두 엔티티를 양방향 연관관계로 매핑하면 객체의 참조는 둘인데 외래 키는 하나가 된다. 이러한 차이 때문에 JPA에서는 두 객체 중 하나를 <b>`연관관계의 주인`</b>으로 설정해서 테이블 외래키를 관리하도록 해야한다.
+두 엔티티를 `양방향 연관관계`로 매핑하면 객체의 참조는 둘인데 외래 키는 하나가 된다. 이러한 차이 때문에 JPA에서는 두 객체 중 하나를 <b>`연관관계의 주인`</b>으로 설정해서 테이블 외래키를 관리하도록 해야한다.
 
 <b>`연관관계의 주인`</b>은 외래키가 생성되는 테이블로 지정한다. 주인이 아닌 쪽에서는 `mappedBy` 속성으로 다른 엔티티를 주인으로 지정한다.
 ``` java {5}
@@ -224,5 +261,3 @@ public class MemberEntity extends BaseEntity {
     private List<PostEntity> posts;
 }
 ``` 
-
-## 양방향 매핑과 주의사항
