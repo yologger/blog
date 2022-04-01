@@ -72,7 +72,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 ```
 
 ## @Query
-`Query Method`의 `@Query` 어노테이션을 사용하면 쿼리를 직접 정의할 수 있다.
+`Query Method`의 `@Query` 어노테이션을 사용하면 `JPQL` 문자열로 쿼리를 정의할 수 있다.
 ``` java
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

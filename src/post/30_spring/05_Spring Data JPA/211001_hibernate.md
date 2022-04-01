@@ -38,26 +38,70 @@ dependencies {
 
 ![](./211001_hibernate/2.png)
 
-``` xml
+``` xml {5-10}
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
     <persistence-unit name="test_persistence">
-        <class>com.yologger.project.MemberEntity</class>
         <properties>
+            <!-- 필수 속성-->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
             <property name="javax.persistence.jdbc.password" value="root"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://127.0.0.1:3306/test_db"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+```
+만약 `java.lang.IllegalArgumentException: Unknown entity` 에러가 발생한다면 다음과 같이 엔티티를 등록해준다.
 
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+``` xml {4}
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    <persistence-unit name="test_persistence">
+        <class>com.yologger.project.MemberEntity</class>
+        <properties>
+            // ...
         </properties>
     </persistence-unit>
 </persistence>
 ```
 
-## Entity 설계하기
+필수 속성 외에도 다양한 옵션을 추가할 수 있다.
+``` xml {9-11}
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+    <persistence-unit name="test_persistence">
+        <properties>
+            <!-- 필수 속성 -->
+            <!-- 중략... -->
+
+            <!-- 옵션 -->
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+</persistence>
+```
+- `hibernate.show_sql`: 실행되는 데이터베이스 쿼리를 로그에 보여준다.
+- `hibernate.format_sql`: 출력되는 로그를 보기 좋게 포맷팅해준다.
+- `hibernate.hbm2ddl.auto`: 이 속성은 다음과 같은 값들을 가질 수 있다.
+
+|속성값|설명|
+|------|---|
+|`create`|무조건 테이블을 새로 생성한다.|
+|`create-drop`|기존 테이블이 존재하는 경우 `drop`을 먼저 수행한다.|
+|`update`|테이블이 없는 경우 테이블을 생성하고, 있는 경우 테이블 스키마를 변경한다.|
+|`validation`|테이블 스키마의 유효성을 확인하기만 한다.|
+|`none`|사용하지 않음|
+
+`hibernate.hbm2ddl.auto` 옵션은 매우 신중하게 설정해야한다. 특히 운영 환경에서는 `create`, `create-drop`, `update`를 절대 사용하면 안된다. 보통 속성값을 다음과 같이 설정한다.
+- 개발 초기 단계에는 `create` 또는 `update`를 사용한다.
+- 테스트 환경에서는 `create` 또는 `update`를 사용한다.
+- 운영 환경에서는 `validate` 또는 `none`을 사용한다.
+
+## Entity 설계
 이제 관계형 데이터베이스의 테이블과 매핑할 엔티티를 작성하자.
 ``` java
 package com.yologger.project;
@@ -144,7 +188,7 @@ public class MemberEntity {
 ```
 
 ## 데이터 등록
-`Hibernate`는 `EntityManager` 객체를 통해 CRUD 작업을 수행한다.
+`Hibernate`는 `EntityManager` 객체를 통해 CRUD 작업을 수행한다. 데이터 등록을 해보자.
 ``` java
 package com.yologger.project;
 
@@ -169,7 +213,7 @@ public class App {
             // Transaction 생성
             transaction.begin();
 
-            // 엔티디 생성
+            // 엔티티 생성
             MemberEntity member = new MemberEntity("paul@gmail.com", "paul", "1234");
 
             // 데이터 삽입
