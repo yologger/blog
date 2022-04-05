@@ -2,7 +2,7 @@
 title: "Java 집합자료형(Collection)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents
@@ -18,7 +18,7 @@ Java API는 같은 타입의 여러 데이터를 한꺼번에 효율적으로 �
 컬렉션 프레임워크는 `java.util` 패키지에 포함되어있으며, 가장 중요한 요소는 `List`, `Set`, `Map`이다.
 
 ## List
-배열은 생성할 때 크기가 결정된다. 따라서 배열이 생성되면 동적으로 데이터를 추가하거나 삭제할 수 없다. 데이터를 동적으로 추가, 삭제하려면 `List`를 사용해야한다.
+배열은 생성할 때 크기가 결정된다. 따라서 배열이 생성되면 동적으로 데이터를 추가하거나 삭제할 수 없다. 데이터를 동적으로 추가, 삭제하려면 <b>`List`</b>를 사용해야한다.
 
 컬렉션 프레임워크가 제공하는 `List`의 정의는 다음과 같다.
 ``` java
@@ -33,10 +33,10 @@ public interface List<E> extends Collection<E> {
     ...
 }
 ``` 
-`List`는 Interface이므로 인스턴스를 생성할 수 없다. 따라서 List의 구현체가 필요하다. 다행히 자바 API에서는 `Vector`, `ArrayList`, `LinkedList` 등 다양한 구현체를 제공한다.
+<b>`List`</b>는 `Interface`이므로 인스턴스를 생성할 수 없다. 따라서 List의 구현체가 필요하다. 다행히 자바 API에서는 `Vector`, `ArrayList`, `LinkedList` 등 다양한 구현체를 제공한다.
 
 ### Vector
-`Vector`는 다음과 같이 선언하고 초기화한다.
+<b>`Vector`</b>는 다음과 같이 선언하고 초기화한다.
 ``` java
 List<String> vector = new Vector<String>();
 ```
@@ -66,7 +66,7 @@ System.out.println(vector.get(0));   // Joey
 ```
 
 ### ArrayList
-`ArrayList`는 가장 많이 사용되는 List의 구현체다. ArrayList는 다음과 같이 선언하고 초기화한다.
+<b>`ArrayList`</b>는 가장 많이 사용되는 List의 구현체다. `ArrayList`는 다음과 같이 선언하고 초기화한다.
 ``` java
 List<String> list = new ArrayList<String>();
 ```
@@ -96,7 +96,7 @@ System.out.println(list.get(0));        // Son
 ```
 
 ### LinkedList
-`LinkedList`는 다음과 같이 선언하고 초기화한다.
+<b>`LinkedList`</b>는 다음과 같이 선언하고 초기화한다.
 ``` java
 List<String> linkedList = new LinkedList<String>();
 ```
@@ -139,7 +139,7 @@ public class ArrayList<E> {
     private int size;
 }
 ```
-ArrayList를 생성할 때 크기가 고정된 배열을 생성한다. 그리고 고정된 배열이 꽉 차면 더 큰 크기의 새로운 배열을 생성하고 복사한다.
+`ArrayList`를 생성할 때 내부적으로 크기가 고정된 배열을 생성한다. 그리고 고정된 배열이 꽉 차면 더 큰 크기의 새로운 배열을 생성하고 복사한다.
 
 반면 `LinkedList`는 내부적으로 `Node`를 사용한다.
 ``` java LinkedList
@@ -154,7 +154,7 @@ public class LinkedList<E> {
 
 ### List 깊은 복사
 `List`의 깊은 복사는 다음과 같이 할 수 있다.
-``` java
+``` java{7}
 List<Integer> list = new ArrayList<Integer>();
 list.add(1);
 list.add(2);
@@ -172,7 +172,7 @@ System.out.println(copy.hashCode());    // 955331
 
 ### List를 특정 크기의 값으로 초기화하기
 `Collections`클래스의 `nCopies()`메소드를 사용하면 `List`를 특정 크기의 값으로 쉽게 초기화할 수 있다.
-``` java
+``` java{1}
 List<Integer> list = new ArrayList<Integer>(Collections.nCopies(10, 1));
 
 System.out.println(list.toString());    // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -192,7 +192,7 @@ public interface Set<E> extends Collection<E> {
     void clear();
 }
 ``` 
-Set은 Interface이므로 인스턴스를 생성할 수 없다. 따라서 Set의 구현체가 필요하다. 다행히 자바 API에서는 `HashSet`, `TreeSet`, `LinkedHashSet`이라는 구현체를 제공한다. 
+<b>`Set`</b>은 `Interface`이므로 인스턴스를 생성할 수 없다. 따라서 `Set`의 구현체가 필요하다. 다행히 자바 API에서는 `HashSet`, `TreeSet`, `LinkedHashSet`이라는 구현체를 제공한다. 
 
 ### HashSet
 `HashSet`은 다음과 같이 생성한다.
@@ -447,8 +447,8 @@ System.out.println(linkedHashMap.toString());
 데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashMap`을 사용한다. 반면 순서 보장이나 정렬이 필요하면 `LinkedHashMap`이나 `TreeMap`을 사용한다.
 
 ### Map 깊은 복사
-Map의 깊은 복사는 다음과 같이 할 수 있다.
-``` java
+`Map`의 깊은 복사는 다음과 같이 할 수 있다.
+``` java{6}
 Map<String, String> map = new HashMap<String, String>();
 map.put("name", "Paul");
 map.put("nation", "USA");
@@ -465,7 +465,7 @@ System.out.println(copy.hashCode());    // 974907474
 ```
 
 ## Stack
-Java에서 Stack을 사용할 때는 `Stack`클래스를 사용한다.
+`Stack`을 사용할 때는 <b>`Stack`</b>클래스를 사용한다.
 ``` java
 Stack<Integer> stack = new Stack<Integer>();
 ```
@@ -485,7 +485,7 @@ Integer value = stack.pop();
 ```
 
 ## Queue
-Queue는 `Queue`인터페이스와 `LinkedList`클래스로 구현한다.
+`Queue`를 사용할 때는 <b>`Queue`</b>인터페이스와 <b>`LinkedList`</b>클래스로 구현한다.
 ``` java
 public interface Queue<E> extends Collection<E> {
     boolean add(E e);
@@ -500,11 +500,10 @@ public interface Queue<E> extends Collection<E> {
 ``` java
 Queue<Integer> queue = new LinkedList<Integer>();
 ```
-Enqueue 작업은 `add()`나 `offer()`를 사용한다.
+데이터 삽입은 `add()`를 사용한다.
 ``` java
 Queue<Integer> queue = new LinkedList<Integer>();
 queue.add(1);
-queue.offer(2);
 
 System.out.println(queue.toString());   // [1, 2]
 ```
@@ -514,18 +513,18 @@ System.out.println(queue.toString());   // [1, 2, 3]
 
 Integer result = queue.peek();          // 1
 ```
-Dequeue 작업은 `remove()`나 `poll()`을 사용한다.
+데이터 삭제는 `remove()`를 사용한다.
 ``` java
 System.out.println(queue.toString());   // [1, 2, 3, 4]
 
 System.out.println(queue.remove());     // 1
-System.out.println(queue.poll());       // 2
+System.out.println(queue.remove());       // 2
 
 System.out.println(queue.toString());   // [3, 4]
 ```
 
 ## Deque
-Java에서 Deque는 `Deque`인터페이스와 `ArrayDeque`로 구현한다.
+`Deque`는 <b>`Deque`</b>인터페이스와 <b>`ArrayDeque`</b>로 구현한다.
 ``` java Deque.java
 public interface Deque<E> extends Queue<E> {
     void addFirst(E e);
@@ -568,22 +567,22 @@ System.out.println(deque.toString());       // [5, 1]
 ```
 
 ## Heap, Priority Queue
-Heap과 Priority Queue는 데이터를 Enqueue한 순서에 상관없이 우선순위가 높은 데이터가 먼저 Dequeue되는 자료구조다. Java에서는 `PriorityQueue`클래스로 Heap과 Priority Queue를 구현할 수 있다.
+`Heap`과 `Priority Queue`는 데이터를 삽입한 순서에 상관없이 우선순위가 높은 데이터가 먼저 제거되는 자료구조다. <b>`PriorityQueue`</b>클래스로 `Heap`과 `Priority Queue`를 구현할 수 있다.
 
 ### 사용법
 
-Priority Queue는 `PriorityQueue`클래스를 사용하여 생성한다.
+<b>`PriorityQueue`</b>클래스를 사용하여 생성한다.
 ``` java
 PriorityQueue<Integer> priorityQueue = new PriorityQueue<Integer>();
 ```
-`add()` 또는 `offer()`를 사용하여 Enqueue한다.
+`add()`를 사용하여 Enqueue를 한다.
 ``` java
 priorityQueue.add(3);
 priorityQueue.add(1);
 priorityQueue.add(7);
-priorityQueue.offer(4);
-priorityQueue.offer(9);
-priorityQueue.offer(5);
+priorityQueue.add(4);
+priorityQueue.add(9);
+priorityQueue.add(5);
 ```
 정렬 기준을 별도로 설정하지 않으면 가장 낮은 값이 높은 우선순위를 갖는다. 따라서 오름차순으로 졍렬된 것과 동일하게 된다.
 ``` java
@@ -594,12 +593,12 @@ System.out.println(priorityQueue.toString());   // [1, 3, 5, 4, 9, 7]
 ``` java
 System.out.println(priorityQueue.peek());       // 1
 ```
-`remove()`, `poll()`을 사용하여 우선순위가 가장 높은 데이터를 Dequeue한다.
+`remove()`을 사용하여 우선순위가 가장 높은 데이터를 Dequeue한다.
 ``` java
 System.out.println(priorityQueue.toString());   // [1, 3, 5, 4, 9, 7]
 
 System.out.println(priorityQueue.remove());     // 1
-System.out.println(priorityQueue.poll());       // 3
+System.out.println(priorityQueue.remove());       // 3
 System.out.println(priorityQueue.toString());   // [4, 7, 5, 9]
 ```
 
@@ -617,12 +616,12 @@ priorityQueue.add(5);
 System.out.println(priorityQueue.toString());   // [9, 7, 5, 1, 4, 3]
 
 System.out.println(priorityQueue.remove());     // 9
-System.out.println(priorityQueue.poll());       // 7
+System.out.println(priorityQueue.remove());       // 7
 System.out.println(priorityQueue.toString());   // [5, 4, 3, 1]
 ```
 
 ### 우선순위 기준 직접 지정하기
-요소가 객체인 경우 [Comparable](/post/10_java/180504_comparable_comparator.html#comparable) 또는 [Comparator](/post/10_java/180504_comparable_comparator.html#comparator)를 사용하여 정렬 기준을 설정할 수 있다.
+요소가 객체인 경우 `Comparable` 또는 `Comparator`를 사용하여 정렬 기준을 설정할 수 있다.
 
 `Comparator` 예제는 다음과 같다.
 ``` java Person.java
@@ -681,7 +680,7 @@ System.out.println(priorityQueue.remove().toString());      // [name='Ross', age
 ```
 
 `Comparable` 예제는 다음과 같다. 어린 나이에 높은 우선순위를 부여하고 있다.
-``` java Person.java
+``` java{1,32-35}
 class Person implements Comparable<Person> {
 
     private String name;
@@ -738,7 +737,23 @@ System.out.println(priorityQueue.remove().toString());      // [name='Ross', age
 ```
 
 ## Collections 클래스
-`Collections`클래스는 `List`, `Set`, `Map`처럼 `Collection`인터페이스를 상속한 객체를 조작하기 위한 유용한 메소드들을 제공한다.
+<b>`Collections`</b>클래스는 `List`, `Set`, `Map`처럼 `Collection`인터페이스를 상속한 객체를 조작하기 위한 유용한 메소드들을 제공한다.
+
+### fill()
+List의 모든 요소를 특정 값으로 대체한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
+Collections.fill(list, 5);
+System.out.println(list);   // [5, 5, 5, 5]
+```
+
+### nCopies()
+첫 번째 인자로 전달된 크기의 List를 두 번째 인자로 전달된 객체로 초기화하여 반환한다.
+``` java
+List list = Collections.nCopies(10, 1);
+System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+```
+주의할 점은 `Collections.nCopies()`를 불변 리스트를 반환하므로 변경할 수 없다.
 
 ### max()
 최대값을 반환한다.
@@ -752,14 +767,6 @@ Collections.max(list);  // 8
 ``` java
 List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
 Collections.min(list);  // 1
-```
-
-### fill()
-List의 모든 요소를 특정 값으로 대체한다.
-``` java
-List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
-Collections.fill(list, 5);
-System.out.println(list);   // [5, 5, 5, 5]
 ```
 
 ### addAll()
@@ -792,14 +799,6 @@ immutable.add(6);   // Error, UnsupportedOperationException
 
 ### unmodifiableSet()
 `Set`을 불변 객체로 만들어 반환한다.
-
-### nCopies()
-첫 번째 인자로 전달된 크기의 List를 두 번째 인자로 전달된 객체로 초기화하여 반환한다.
-``` java
-List list = Collections.nCopies(10, 1);
-System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-```
-주의할 점은 `Collections.nCopies()`를 불변 리스트를 반환하므로 변경할 수 없다.
 
 ### emptyList()
 빈 불변 List를 반환한다.
