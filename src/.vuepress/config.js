@@ -56,7 +56,7 @@ module.exports = {
       { text: "Spring", link: "/post/30_spring/" },
       { text: "Android", link: "/post/20_android/" },
       { text: "Infra/DevOps", link: "/post/50_infra_devops/" },
-      { text: "Computer Science", link: "/post/60_cs/" },
+      { text: "CS", link: "/post/60_cs/" },
       { text: "More", link: "/post/80_more/" },
       { text: "Github", link: "https://github.com/yologger" },
     ],
