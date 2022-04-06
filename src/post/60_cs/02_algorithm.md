@@ -4,6 +4,7 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
 [[toc]]
 
 ## 알고리즘 출제 유형
@@ -258,77 +259,97 @@ System.out.println(binarySearch.search(list, 3));
 System.out.println(binarySearch.search(list, 7));
 System.out.println(binarySearch.search(list, 20));
 ```
-## 완전 탐색(Brute Force)
-- 무식하게 모든 경우의 수를 탐색하는 전략
-- 컴퓨터의 빠른 연산 속도를 이용
-- 비밀번호 4자리 찾기
-- N과 M 문제 (중복 허용)
-- N과 M 문제 (중복 미허용)
 
-## 백 트래킹(Backtracking)
-- Brute Force + 가지 치기
-- [N과 M 문제](https://www.acmicpc.net/problem/15649)
-- [부분수열의 합](https://www.acmicpc.net/problem/1182)
-- [로또](https://www.acmicpc.net/problem/6603)
-- N Queens 문제
-    - 첫번째 행의 첫번째 요소 선택검증 (Promising)
-    - 두번째 행의 세번째 요소 선택검증 (Promising)
-    - 세번째 행에는 가능한 요소 없다
-    - 따라서 네번째 행은 검사하지않고 가지치기 (Pruning)
-    - 두번째 행의 네번째 요소 선택
-    
-    - 상태 공간 트리 (State Space Tree)
-    
-    ![](./02_algorithm/3.png)
-    
-    - 코드
-        
 
-    ![](./02_algorithm/4.png)
-        
-```java
-public class NQueens {
 
-    public void dsf(Integer N, Integer currentRow, ArrayList<Integer> currentCandidates) {
-        // currentCandidate: 윗 행들에서 선택한 요소들
-        if (currentRow == N) {
-            System.out.println(currentCandidates);
+
+## 재귀(Recursion)
+자기 자신을 호출
+``` java
+function(입력) {
+		if (입력 <= 일정값) {
+				return function(입력-1);
+		} else {
+				// 탈출 조건이 있어야 한다.
+				return 탈출을 위한 특정값;
+		}
+}
+```
+Factorial
+``` java
+public class Factorial {
+    public Integer factorial(Integer n) {
+        if (n>0) {
+            return n * factorial(n-1);
+        } else {
+            return 1;
         }
-
-        for (int index=0; index<N; index++) {
-            if (isAvailable(currentCandidates, index)) {
-                currentCandidates.add(index);
-                dsf(N, currentRow+1, currentCandidates);
-
-                // Pruning
-                currentCandidates.remove(currentCandidates.size() - 1);
-            }
-        }
-    }
-
-    // Promising
-    public boolean isAvailable(ArrayList<Integer> candidate, Integer currentColumn) {
-        Integer currentRow = candidate.size();
-        for (int index=0; index<currentRow; index++) {
-            if(
-                (candidate.get(index)== currentColumn)
-                ||
-                ((Math.abs(candidate.get(index) - currentColumn)) == (currentRow - index))
-            ) {
-                return false;
-            }
-        }
-        return true;
     }
 }
 ```
+``` java
+Factorial factorial = new Factorial();
 
-```java
-NQueens nQueens = new NQueens();
-nQueens.dsf(4, 0, new ArrayList<Integer>());
-// [1, 3, 0, 2]    1행은 1, 2행은 3, 3행은 0, 4행은 2
-// [2, 0, 3, 1]    1행은 2, 2행은 0, 3행은 3, 4행은 1
+System.out.println(factorial.factorial(1)); // 1
+System.out.println(factorial.factorial(2)); // 1*2
+System.out.println(factorial.factorial(3)); // 1*2*3
+System.out.println(factorial.factorial(4)); // 1*2*3*4
 ```
+재귀 함수는 스택에 순차적으로 싸인다.
+f(1)
+
+f(2)
+
+f(3)
+
+...
+
+f(n-1)
+
+f(n)
+
+배열의 합을 구하라
+``` java
+public int sum(ArrayList<Integer> dataList) {
+    if (dataList.size() <= 0) {
+        return 0;
+    }
+    return dataList.get(0) + sum(new ArrayList<Integer>(dataList.subList(1, dataList.size())));
+}
+```
+``` java
+sum(new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5)));
+```
+
+- 정수 4를 1, 2, 3으로 나타낼 수 있는 조합은 다음과 같다.
+    - 1, 1, 1, 1
+    - 1, 1, 2
+    - 1, 2, 1
+    - 2, 1, 1
+    - 1, 3
+    - 3, 1
+    - 2, 2
+    
+    이 때 $n$을 1, 2, 3의 조합으로 나타낼 수 있는 방법의 수를 구하시오.
+    
+    - n=1 일 때 1개
+    - n=2 일 때 2개
+    - n=3 일 때 4개
+    - n=4 일 때 7개
+
+``` java
+public int solution(int n) {
+    if (n==1) {
+        return 1;
+    } else if (n==2) {
+        return 2;
+    } else if (n==3) {
+        return 4;
+    } 
+    return solution(n-1) + solution(n-2) + solution(n-3);
+}
+```
+
 
 ## 탐욕 알고리즘 (Greedy Algorithm)
 - 지금 이 순간에서의 최적의 답을 구하는 전략
@@ -429,92 +450,78 @@ knapsack(items, 30.0);
 // 총 담을 수 있는 가치: 24.5
 ```
 
-## 재귀(Recursion)
-자기 자신을 호출
-``` java
-function(입력) {
-		if (입력 <= 일정값) {
-				return function(입력-1);
-		} else {
-				// 탈출 조건이 있어야 한다.
-				return 탈출을 위한 특정값;
-		}
-}
-```
-Factorial
-``` java
-public class Factorial {
-    public Integer factorial(Integer n) {
-        if (n>0) {
-            return n * factorial(n-1);
-        } else {
-            return 1;
+## 완전 탐색(Brute Force)
+- 무식하게 모든 경우의 수를 탐색하는 전략
+- 컴퓨터의 빠른 연산 속도를 이용
+- 비밀번호 4자리 찾기
+- N과 M 문제 (중복 허용)
+- N과 M 문제 (중복 미허용)
+
+## 백 트래킹(Backtracking)
+- Brute Force + 가지 치기
+- [N과 M 문제](https://www.acmicpc.net/problem/15649)
+- [부분수열의 합](https://www.acmicpc.net/problem/1182)
+- [로또](https://www.acmicpc.net/problem/6603)
+- N Queens 문제
+    - 첫번째 행의 첫번째 요소 선택검증 (Promising)
+    - 두번째 행의 세번째 요소 선택검증 (Promising)
+    - 세번째 행에는 가능한 요소 없다
+    - 따라서 네번째 행은 검사하지않고 가지치기 (Pruning)
+    - 두번째 행의 네번째 요소 선택
+    
+    - 상태 공간 트리 (State Space Tree)
+    
+    ![](./02_algorithm/3.png)
+    
+    - 코드
+        
+
+    ![](./02_algorithm/4.png)
+        
+```java
+public class NQueens {
+
+    public void dsf(Integer N, Integer currentRow, ArrayList<Integer> currentCandidates) {
+        // currentCandidate: 윗 행들에서 선택한 요소들
+        if (currentRow == N) {
+            System.out.println(currentCandidates);
+        }
+
+        for (int index=0; index<N; index++) {
+            if (isAvailable(currentCandidates, index)) {
+                currentCandidates.add(index);
+                dsf(N, currentRow+1, currentCandidates);
+
+                // Pruning
+                currentCandidates.remove(currentCandidates.size() - 1);
+            }
         }
     }
-}
-```
-``` java
-Factorial factorial = new Factorial();
 
-System.out.println(factorial.factorial(1)); // 1
-System.out.println(factorial.factorial(2)); // 1*2
-System.out.println(factorial.factorial(3)); // 1*2*3
-System.out.println(factorial.factorial(4)); // 1*2*3*4
-```
-재귀 함수는 스택에 순차적으로 싸인다.
-f(1)
-
-f(2)
-
-f(3)
-
-...
-
-f(n-1)
-
-f(n)
-
-배열의 합을 구하라
-``` java
-public int sum(ArrayList<Integer> dataList) {
-    if (dataList.size() <= 0) {
-        return 0;
+    // Promising
+    public boolean isAvailable(ArrayList<Integer> candidate, Integer currentColumn) {
+        Integer currentRow = candidate.size();
+        for (int index=0; index<currentRow; index++) {
+            if(
+                (candidate.get(index)== currentColumn)
+                ||
+                ((Math.abs(candidate.get(index) - currentColumn)) == (currentRow - index))
+            ) {
+                return false;
+            }
+        }
+        return true;
     }
-    return dataList.get(0) + sum(new ArrayList<Integer>(dataList.subList(1, dataList.size())));
 }
 ```
-``` java
-sum(new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5)));
+
+```java
+NQueens nQueens = new NQueens();
+nQueens.dsf(4, 0, new ArrayList<Integer>());
+// [1, 3, 0, 2]    1행은 1, 2행은 3, 3행은 0, 4행은 2
+// [2, 0, 3, 1]    1행은 2, 2행은 0, 3행은 3, 4행은 1
 ```
 
-- 정수 4를 1, 2, 3으로 나타낼 수 있는 조합은 다음과 같다.
-    - 1, 1, 1, 1
-    - 1, 1, 2
-    - 1, 2, 1
-    - 2, 1, 1
-    - 1, 3
-    - 3, 1
-    - 2, 2
-    
-    이 때 $n$을 1, 2, 3의 조합으로 나타낼 수 있는 방법의 수를 구하시오.
-    
-    - n=1 일 때 1개
-    - n=2 일 때 2개
-    - n=3 일 때 4개
-    - n=4 일 때 7개
-
-``` java
-public int solution(int n) {
-    if (n==1) {
-        return 1;
-    } else if (n==2) {
-        return 2;
-    } else if (n==3) {
-        return 4;
-    } 
-    return solution(n-1) + solution(n-2) + solution(n-3);
-}
-```
 
 ## 분할 정복 (Divide & Conquer)
 - 큰 문제를 부분 문제로 나누어 계산하는 전략

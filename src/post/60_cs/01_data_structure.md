@@ -4,6 +4,9 @@ lang: ko
 showOnSidebar: true
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 자료 구조의 종류
 `자료 구조`는 크게 `선형 구조`와 `비선형 구조`로 나뉜다.
 - `선형 구조`
@@ -138,6 +141,7 @@ deque.addLast(3);
 deque.removeFirst();    // 1
 deque.removeLast();     // 3
 ```
+
 
 ## Hash Table
 
@@ -668,7 +672,8 @@ public class BST {
 ## Priority Quene & Heap
 ### Proirity Queue
 - 들어온 순서에 상관없이 우선순위가 높은 데이터가 먼저 나오는 자료구조
-- 우선순위 큐는 보통 `힙(Heap)`을 통해 구현한다
+- 우선순위 큐는 보통 `힙(Heap)`이라는 자료구조로 구현한다.
+- Java에서는 `PriorityQueue`클래스로 구현할 수 있다.
 
 ### Heap
 - 최대값과 최소값을 빠르게 찾기 위한 `완전이진트리`
