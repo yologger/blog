@@ -20,7 +20,8 @@
     "directory-tree": "^3.2.0",
     "vuepress": "^1.5.3",
     "vuepress-bar": "^0.4.4",
-    "vuepress-plugin-code-copy": "^1.0.6"
+    "vuepress-plugin-code-copy": "^1.0.6",
+    "vuepress-plugin-mathjax": "^1.2.8"
   },
   "dependencies": {
     "markdown-it-task-lists": "^2.1.1",

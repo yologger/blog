@@ -4,7 +4,7 @@ const routes = [
   "20_android",
   "30_spring",
   "50_infra_devops",
-  "60_algorithm",
+  "60_cs",
   "80_more",
 ];
 
@@ -31,7 +31,7 @@ module.exports = {
     // anchor: { permalink: false },
     // options for markdown-it-toc
     // extractHeaders: ["h2", "h3", "h4"],
-    toc: { includeLevel: [1, 2, 3, 4] },
+    toc: { includeLevel: [2, 3, 4] },
     extendMarkdown: (md) => {
       // use more markdown-it plugins!
       // md.use(taskLists, {enabled: true})
@@ -56,7 +56,7 @@ module.exports = {
       { text: "Spring", link: "/post/30_spring/" },
       { text: "Android", link: "/post/20_android/" },
       { text: "Infra/DevOps", link: "/post/50_infra_devops/" },
-      { text: "Algorithm", link: "/post/60_algorithm/" },
+      { text: "Computer Science", link: "/post/60_cs/" },
       { text: "More", link: "/post/80_more/" },
       { text: "Github", link: "https://github.com/yologger" },
     ],
@@ -67,5 +67,12 @@ module.exports = {
     "@vuepress/nprogress",
     "@vuepress/plugin-medium-zoom",
     // "vuepress-plugin-code-copy",
+    'vuepress-plugin-mathjax',
+    {
+      target: 'svg',
+      macros: {
+        '*': '\\times',
+      },
+    },
   ],
 };
