@@ -450,8 +450,8 @@ map.get(2);
 - 레벨의 왼쪽에서부터 순차적으로 노드를 추가한다.
 - 레벨 N이 다 채워지지 않았는데 레벨 N+1에 노드를 추가할 수 있다.
 
-### 검색 이진 트리
-`검색 이진 트리(Binary Search)`는 다음과 같은 특성을 갖는다.
+### 이진 검색 트리
+`BST(Binary Serach Tree, 이진 검색 트리)`는 다음과 같은 특성을 갖는다.
 - 빠른 검색(`O(logn)`)에 사용된다. 
 - Left < Root < Right
 
@@ -669,13 +669,13 @@ public class BST {
 }
 ```
 
-## Priority Quene & Heap
-### Proirity Queue
+### Priority Quene & Heap
+#### Proirity Queue
 - 들어온 순서에 상관없이 우선순위가 높은 데이터가 먼저 나오는 자료구조
 - 우선순위 큐는 보통 `힙(Heap)`이라는 자료구조로 구현한다.
 - Java에서는 `PriorityQueue`클래스로 구현할 수 있다.
 
-### Heap
+#### Heap
 - 최대값과 최소값을 빠르게 찾기 위한 `완전이진트리`
 - 힙의 특징
     - 최대 힙, 최소 힙이 존재한다.
@@ -697,7 +697,7 @@ public class BST {
     - 왼쪽 자식의 인덱스 번호 = 부모 노드의 인덱스 번호 * 2
     - 오른쪽 자식의 인덱스 번호 = (부모 노드의 인덱스 번호 * 2) + 1
 
-### 최소힙
+##### 최소힙
 ``` java
 PriorityQueue<Integer> heap = new PriorityQueue<>();
 
@@ -714,7 +714,7 @@ System.out.println(heap.remove());    // 5
 System.out.println(heap.remove());    // 6
 ```
 
-### 최대힙
+##### 최대힙
 ``` java
 PriorityQueue<Integer> heap = new PriorityQueue<>(Collections.reverseOrder());
 
@@ -772,7 +772,12 @@ System.out.println(graph);
 
 ```
 
-### BFS(너비 우선 탐색)
+### 그래프 탐색
+시작점으로부터 모든 정점을 한번씩 방문하는 방법을 `그래프 탐색`이라고 한다.
+- BFS
+- DFS
+
+#### BFS(너비 우선 탐색)
         
 ```java
 import java.util.ArrayList;
@@ -822,7 +827,7 @@ System.out.println(bfs(graph, "A"));
 // [A, B, C, D, G, H, I, E, F, J]
 ```
         
-### DFS(깊이 우선 탐색)
+#### DFS(깊이 우선 탐색)
         
 ```java
 import java.util.ArrayList;
@@ -972,10 +977,13 @@ HashMap<String, Integer> result = dijkstra(graph, "A");     // {A=0, B=6, C=1, D
 ### 신장트리
 `신장트리 (Spanning Tree)`는 그래프의 모든 노드를 사이클 없이 연결한 트리다.
     
-### 최소신장트리
+#### 최소신장트리
 - 가중치 그래프에서 모든 노드를 사이클 없이 최소 비용으로 연결하는 트리
+- 최소신장트리를 찾는 방법에는 두 가지가 있다.
+    - 크루스컬 알고리즘
+    - 프림 알고리즘
 
-### 크루스컬 알고리즘
+#### 크루스컬 알고리즘
 - 모든 간선을 오름차순으로 연결한다.
 - 최소 비용의 간선부터 선택한다.
 - 사이클이 생기는 간선은 선택하지 않는다.
@@ -1112,7 +1120,7 @@ System.out.println(result);
 ```
         
     
-### 프림 알고리즘
+#### 프림 알고리즘
 - 시작 노드를 선택한다.
 - 노드에 연결된 간선 중 가장 낮은 가중치를 선택한다.
 - 선택된 노드에 연결된 간선도 포함하여 가장 낮은 가중치의 간선을 선택한다.

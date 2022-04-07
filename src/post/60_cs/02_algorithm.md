@@ -450,78 +450,6 @@ knapsack(items, 30.0);
 // 총 담을 수 있는 가치: 24.5
 ```
 
-## 완전 탐색(Brute Force)
-- 무식하게 모든 경우의 수를 탐색하는 전략
-- 컴퓨터의 빠른 연산 속도를 이용
-- 비밀번호 4자리 찾기
-- N과 M 문제 (중복 허용)
-- N과 M 문제 (중복 미허용)
-
-## 백 트래킹(Backtracking)
-- Brute Force + 가지 치기
-- [N과 M 문제](https://www.acmicpc.net/problem/15649)
-- [부분수열의 합](https://www.acmicpc.net/problem/1182)
-- [로또](https://www.acmicpc.net/problem/6603)
-- N Queens 문제
-    - 첫번째 행의 첫번째 요소 선택검증 (Promising)
-    - 두번째 행의 세번째 요소 선택검증 (Promising)
-    - 세번째 행에는 가능한 요소 없다
-    - 따라서 네번째 행은 검사하지않고 가지치기 (Pruning)
-    - 두번째 행의 네번째 요소 선택
-    
-    - 상태 공간 트리 (State Space Tree)
-    
-    ![](./02_algorithm/3.png)
-    
-    - 코드
-        
-
-    ![](./02_algorithm/4.png)
-        
-```java
-public class NQueens {
-
-    public void dsf(Integer N, Integer currentRow, ArrayList<Integer> currentCandidates) {
-        // currentCandidate: 윗 행들에서 선택한 요소들
-        if (currentRow == N) {
-            System.out.println(currentCandidates);
-        }
-
-        for (int index=0; index<N; index++) {
-            if (isAvailable(currentCandidates, index)) {
-                currentCandidates.add(index);
-                dsf(N, currentRow+1, currentCandidates);
-
-                // Pruning
-                currentCandidates.remove(currentCandidates.size() - 1);
-            }
-        }
-    }
-
-    // Promising
-    public boolean isAvailable(ArrayList<Integer> candidate, Integer currentColumn) {
-        Integer currentRow = candidate.size();
-        for (int index=0; index<currentRow; index++) {
-            if(
-                (candidate.get(index)== currentColumn)
-                ||
-                ((Math.abs(candidate.get(index) - currentColumn)) == (currentRow - index))
-            ) {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-```
-
-```java
-NQueens nQueens = new NQueens();
-nQueens.dsf(4, 0, new ArrayList<Integer>());
-// [1, 3, 0, 2]    1행은 1, 2행은 3, 3행은 0, 4행은 2
-// [2, 0, 3, 1]    1행은 2, 2행은 0, 3행은 3, 4행은 1
-```
-
 
 ## 분할 정복 (Divide & Conquer)
 - 큰 문제를 부분 문제로 나누어 계산하는 전략
@@ -687,3 +615,77 @@ nQueens.dsf(4, 0, new ArrayList<Integer>());
         fibonacci(5);   // 5
         fibonacci(6);   // 8
         ```
+
+
+
+## 완전 탐색(Brute Force)
+- 무식하게 모든 경우의 수를 탐색하는 전략
+- 컴퓨터의 빠른 연산 속도를 이용
+- 비밀번호 4자리 찾기
+- N과 M 문제 (중복 허용)
+- N과 M 문제 (중복 미허용)
+
+## 백 트래킹(Backtracking)
+- Brute Force + 가지 치기
+- [N과 M 문제](https://www.acmicpc.net/problem/15649)
+- [부분수열의 합](https://www.acmicpc.net/problem/1182)
+- [로또](https://www.acmicpc.net/problem/6603)
+- N Queens 문제
+    - 첫번째 행의 첫번째 요소 선택검증 (Promising)
+    - 두번째 행의 세번째 요소 선택검증 (Promising)
+    - 세번째 행에는 가능한 요소 없다
+    - 따라서 네번째 행은 검사하지않고 가지치기 (Pruning)
+    - 두번째 행의 네번째 요소 선택
+    
+    - 상태 공간 트리 (State Space Tree)
+    
+    ![](./02_algorithm/3.png)
+    
+    - 코드
+        
+
+    ![](./02_algorithm/4.png)
+        
+```java
+public class NQueens {
+
+    public void dsf(Integer N, Integer currentRow, ArrayList<Integer> currentCandidates) {
+        // currentCandidate: 윗 행들에서 선택한 요소들
+        if (currentRow == N) {
+            System.out.println(currentCandidates);
+        }
+
+        for (int index=0; index<N; index++) {
+            if (isAvailable(currentCandidates, index)) {
+                currentCandidates.add(index);
+                dsf(N, currentRow+1, currentCandidates);
+
+                // Pruning
+                currentCandidates.remove(currentCandidates.size() - 1);
+            }
+        }
+    }
+
+    // Promising
+    public boolean isAvailable(ArrayList<Integer> candidate, Integer currentColumn) {
+        Integer currentRow = candidate.size();
+        for (int index=0; index<currentRow; index++) {
+            if(
+                (candidate.get(index)== currentColumn)
+                ||
+                ((Math.abs(candidate.get(index) - currentColumn)) == (currentRow - index))
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+```java
+NQueens nQueens = new NQueens();
+nQueens.dsf(4, 0, new ArrayList<Integer>());
+// [1, 3, 0, 2]    1행은 1, 2행은 3, 3행은 0, 4행은 2
+// [2, 0, 3, 1]    1행은 2, 2행은 0, 3행은 3, 4행은 1
+```
