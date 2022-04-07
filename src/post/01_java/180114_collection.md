@@ -134,9 +134,9 @@ linkedList.get(1);
 `ArrayList`는 내부적으로 배열을 사용한다. 
 ``` java ArrayList.java
 public class ArrayList<E> {
-    // ...
     transient Object[] elementData; 
     private int size;
+    // 생략 ...
 }
 ```
 `ArrayList`를 생성할 때 내부적으로 크기가 고정된 배열을 생성한다. 그리고 고정된 배열이 꽉 차면 더 큰 크기의 새로운 배열을 생성하고 복사한다.
@@ -147,6 +147,7 @@ public class LinkedList<E> {
     transient int size = 0;
     transient Node<E> first;
     transient Node<E> last;
+    // 생략 ...
 }
 ``` 
 
@@ -194,29 +195,6 @@ public interface Set<E> extends Collection<E> {
 ``` 
 <b>`Set`</b>은 `Interface`이므로 인스턴스를 생성할 수 없다. 따라서 `Set`의 구현체가 필요하다. 다행히 자바 API에서는 `HashSet`, `TreeSet`, `LinkedHashSet`이라는 구현체를 제공한다. 
 
-### HashSet
-`HashSet`은 다음과 같이 생성한다.
-``` java
-Set<Integer> hashSet = new HashSet<Integer>();
-```
-다음과 같이 데이터를 추가한다.
-``` java
-hashSet.add(1);
-```
-`Set`은 중복을 허용하지 않는다. 동일한 데이터를 여러 개 추가해도 한 개만 유지된다.
-``` java
-Set<Integer> hashSet = new HashSet<Integer>();
-
-hashSet.add(3);
-hashSet.add(1);
-hashSet.add(1);
-hashSet.add(1);
-hashSet.add(2);
-hashSet.add(2);
-
-System.out.println(hashSet.toString());     // [1, 2, 3]
-```
-
 ### TreeSet
 `TreeSet`은 다음과 같이 생성한다.
 ``` java
@@ -240,6 +218,29 @@ treeSet.add(2);
 System.out.println(treeSet.toString());     // [1, 2, 3]
 ```
 
+### HashSet
+`HashSet`은 다음과 같이 생성한다.
+``` java
+Set<Integer> hashSet = new HashSet<Integer>();
+```
+다음과 같이 데이터를 추가한다.
+``` java
+hashSet.add(1);
+```
+`Set`은 중복을 허용하지 않는다. 동일한 데이터를 여러 개 추가해도 한 개만 유지된다.
+``` java
+Set<Integer> hashSet = new HashSet<Integer>();
+
+hashSet.add(3);
+hashSet.add(1);
+hashSet.add(1);
+hashSet.add(1);
+hashSet.add(2);
+hashSet.add(2);
+
+System.out.println(hashSet.toString());     // [1, 2, 3]
+```
+
 ### LinkedHashSet
 `LinkedHashSet`은 다음과 같이 생성한다.
 ``` java
@@ -261,6 +262,13 @@ linkedHashSet.add(2);
 
 System.out.println(linkedHashSet.toString());   // [3, 1, 2]
 ``` 
+
+### TreeSet vs. HashSet
+`HashSet`은 내부적으로 Hash Table을 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 데이터가 임의의 순서로 배치된다.
+
+반면 `TreeSet`은 내부적으로 Binary Search Tree를 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 Binary Search Tree를 사용하기 때문에 데이터가 정렬된다.  
+
+데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashSet`을 사용한다. 반면 순서 보장이나 정렬이 필요하면 `LinkedHashSet`이나 `TreeSet`을 사용한다.
 
 ### HashSet vs. LinkedHashSet
 `HashSet`은 데이터 삽입 순서를 보장하지 않는다.
@@ -288,13 +296,6 @@ linkedHashSet.add(4);
 System.out.println(linkedHashSet.toString());   // [5, 3, 1, 2, 4]
 ```
 
-
-### HashSet vs. TreeSet
-`HashSet`은 내부적으로 Hash Table을 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 데이터가 임의의 순서로 배치된다.
-
-반면 `TreeSet`은 내부적으로 Binary Search Tree를 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 Binary Search Tree를 사용하기 때문에 데이터가 정렬된다.  
-
-데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashSet`을 사용한다. 반면 순서 보장이나 정렬이 필요하면 `LinkedHashSet`이나 `TreeSet`을 사용한다.
 
 ### Set 깊은 복사
 `Set`의 깊은 복사는 다음과 같이 할 수 있다.
@@ -332,6 +333,31 @@ public interface Map<K, V> {
 ``` 
 위에서 보는 것처럼 Map은 Interface이므로 인스턴스를 생성할 수 없다. 따라서 `Map`의 구현체가 필요하다. 다행히 Java API에서는 `HashMap`, `TreeMap`, `LinkedMap`이라는 구현체를 제공한다.
 
+### TreeMap
+`TreeMap`은 다음과 같이 선언하고 초기화한다.
+``` java
+Map<Integer, String> players = new TreeMap<Integer, String>();
+```
+다음과 같이 데이터를 추가한다.
+``` java
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+players.toString(); // {7=Ronaldo, 9=Benzema, 11=Bale}
+```
+다음과 같이 데이터를 변경할 수 있다.
+``` java
+players.set(7, "Son");
+
+System.out.println(players.toString()); // {7=Son, 9=Benzema, 11=Bale}
+```
+다음과 같이 데이터를 삭제할 수 있다.
+``` java
+players.remove(7);
+System.out.println(players.toString()); // {9=Benzema, 11=Bale}
+```
+
 ### HashMap
 `HashMap`은 다음과 같이 선언하고 초기화한다.
 ``` java
@@ -355,31 +381,6 @@ System.out.println(players.toString()); // {7=Son, 9=Benzema, 11=Bale}
 ``` java
 players.remove(7);
 
-System.out.println(players.toString()); // {9=Benzema, 11=Bale}
-```
-
-### TreeMap
-`TreeMap`은 다음과 같이 선언하고 초기화한다.
-``` java
-Map<Integer, String> players = new TreeMap<Integer, String>();
-```
-다음과 같이 데이터를 추가한다.
-``` java
-players.put(7, "Ronaldo");
-players.put(9, "Benzema");
-players.put(11, "Bale");
-
-players.toString(); // {7=Ronaldo, 9=Benzema, 11=Bale}
-```
-다음과 같이 데이터를 변경할 수 있다.
-``` java
-players.set(7, "Son");
-
-System.out.println(players.toString()); // {7=Son, 9=Benzema, 11=Bale}
-```
-다음과 같이 데이터를 삭제할 수 있다.
-``` java
-players.remove(7);
 System.out.println(players.toString()); // {9=Benzema, 11=Bale}
 ```
 
@@ -408,6 +409,13 @@ players.remove(7);
 
 System.out.println(players.toString()); // {9=Benzema, 11=Bale}
 ```
+
+### TreeMap vs. HashMap
+`HashMap`은 내부적으로 Hash Table을 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 데이터가 임의의 순서로 배치된다.
+
+반면 `TreeMap`은 내부적으로 Binary Search Tree를 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 Binary Search Tree를 사용하기 때문에 데이터가 정렬된다. 
+
+데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashMap`을 사용한다. 반면 순서 보장이나 정렬이 필요하면 `LinkedHashMap`이나 `TreeMap`을 사용한다.
 
 ### HashMap vs. LinkedHashMap
 `HashMap`은 데이터 삽입 순서를 보장하지 않는다.
@@ -439,12 +447,6 @@ linkedHashMap.put(8, "Kroos");
 System.out.println(linkedHashMap.toString()); 
 // {11=Bale, 7=Ronaldo, 1=Courtois, 9=Benzema, 4=Ramos, 8=Kroos}
 ```
-### HashMap vs. TreeMap
-`HashMap`은 내부적으로 Hash Table을 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 데이터가 임의의 순서로 배치된다.
-
-반면 `TreeMap`은 내부적으로 Binary Search Tree를 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 Binary Search Tree를 사용하기 때문에 데이터가 정렬된다. 
-
-데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashMap`을 사용한다. 반면 순서 보장이나 정렬이 필요하면 `LinkedHashMap`이나 `TreeMap`을 사용한다.
 
 ### Map 깊은 복사
 `Map`의 깊은 복사는 다음과 같이 할 수 있다.
@@ -755,6 +757,69 @@ System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 주의할 점은 `Collections.nCopies()`를 불변 리스트를 반환하므로 변경할 수 없다.
 
+### swap()
+두 요소를 스왑한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
+
+System.out.println(list);   // [1, 2, 3, 4]
+
+Collections.swap(list, 0, 3);
+
+System.out.println(list);   // [4, 2, 3, 1]
+```
+
+### emptyList()
+빈 불변 List를 반환한다.
+``` java
+List list = Collections.emptyList();    // UnsupportedOperationException
+list.add(1);
+```
+
+### emptyMap()
+빈 불변 Map을 반환한다.
+
+### emptySet()
+빈 불변 Set을 반환한다.
+
+### unmodifiableList()
+`List`를 불변 객체로 만들어 반환한다.
+``` java
+List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
+list.add(5);        // Success
+List immutable = Collections.unmodifiableList(list);
+immutable.add(6);   // Error, UnsupportedOperationException
+```
+
+### unmodifiableMap()
+`Map`을 불변 객체로 만들어 반환한다.
+
+### unmodifiableSet()
+`Set`을 불변 객체로 만들어 반환한다.
+
+### copy()
+List를 복사한다. 목적지 List는 출발지 List보다 크거나 같아야한다. 그렇지 않으면 `IndexOutOfBoundsException`가 발생한다.
+``` java
+List src = new ArrayList(Arrays.asList(1, 1, 1));
+List dest = new ArrayList(Arrays.asList(2, 2, 2, 2, 2));
+Collections.copy(dest, src);    
+System.out.println(dest);       // [1, 1, 1, 2, 2]
+```
+`Collections.copy()` 대신 다음과 같은 방법으로 배열을 복사할 수도 있다.
+``` java
+Integer[] arr = {1, 2, 3};
+List<Integer> list = new ArrayList<Integer>(Arrays.asList(arr));
+
+// 깊은 복사
+List<Integer> copied = new ArrayList<Integer>(list);
+copy.add(4);
+
+System.out.println(list.toString());        // [1, 2, 3]
+System.out.println(copied.toString());      // [1, 2, 3, 4]
+System.out.println(list.hashCode());        // 30817
+System.out.println(copied.hashCode());      // 955331
+```
+
 ### max()
 최대값을 반환한다.
 ``` java
@@ -785,33 +850,6 @@ Collections.replaceAll(list, 2, 3);
 System.out.println(list);   // [1, 1, 1, 3, 3, 3, 3]
 ```
 
-### unmodifiableList()
-`List`를 불변 객체로 만들어 반환한다.
-``` java
-List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
-list.add(5);        // Success
-List immutable = Collections.unmodifiableList(list);
-immutable.add(6);   // Error, UnsupportedOperationException
-```
-
-### unmodifiableMap()
-`Map`을 불변 객체로 만들어 반환한다.
-
-### unmodifiableSet()
-`Set`을 불변 객체로 만들어 반환한다.
-
-### emptyList()
-빈 불변 List를 반환한다.
-``` java
-List list = Collections.emptyList();    // UnsupportedOperationException
-list.add(1);
-```
-
-### emptyMap()
-빈 불변 Map을 반환한다.
-
-### emptySet()
-빈 불변 Set을 반환한다.
 
 ### binarySearch()
 정렬된 List에서 요소를 찾는다.
@@ -823,24 +861,6 @@ System.out.println(Collections.binarySearch(list, 4));      // 3
 System.out.println(Collections.binarySearch(list, 10));     // -6
 ```
 요소가 검색된 경우 인덱스를, 요소가 존재하지 않으면 음수를 반환한다.
-
-### swap()
-두 요소의 위치를 스왑한다.
-``` java
-List list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
-Collections.swap(list, 1, 3);
-System.out.println(list);   // [1, 4, 3, 2, 5]
-```
-
-### copy()
-List를 복사한다.
-``` java
-List src = new ArrayList(Arrays.asList(1, 1, 1));
-List dest = new ArrayList(Arrays.asList(2, 2, 2, 2, 2));
-Collections.copy(dest, src);    
-System.out.println(dest);       // [1, 1, 1, 2, 2]
-```
-목적지 List는 출발지 List보다 크거나 같아야한다. 그렇지 않으면 `IndexOutOfBoundsException`가 발생한다.
 
 ### sort()
 `List`를 정렬한다.

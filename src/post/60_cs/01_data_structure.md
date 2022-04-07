@@ -1,5 +1,5 @@
 ---
-title: "Data Structure"
+title: "자료구조"
 lang: ko
 showOnSidebar: true
 ---

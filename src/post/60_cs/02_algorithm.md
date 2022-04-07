@@ -1,5 +1,5 @@
 ---
-title: "Algorithm"
+title: "알고리즘"
 lang: ko
 showOnSidebar: true
 ---
