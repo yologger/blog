@@ -6,6 +6,7 @@ const routes = [
   "50_infra_devops",
   "60_cs",
   "80_more",
+  "93_issue"
 ];
 
 const createSidebar = () => {
@@ -58,8 +59,18 @@ module.exports = {
       { text: "Infra/DevOps", link: "/post/50_infra_devops/" },
       { text: "CS", link: "/post/60_cs/" },
       { text: "More", link: "/post/80_more/" },
+      {
+        text: "Life",
+        items: [
+          // { text: "여행", link: "/post/92_travel/" },
+          // { text: "리뷰", link: "/post/92_review/" },
+          { text: "시사 이슈", link: "/post/93_issue/" },
+          // { text: "생각정리", link: "/post/94_memory/" },
+        ]
+      },
       { text: "Github", link: "https://github.com/yologger" },
     ],
+    
     sidebar: createSidebar(),
   },
   plugins: [
