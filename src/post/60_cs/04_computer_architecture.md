@@ -5,3 +5,4 @@ showOnSidebar: true
 ---
 
 RAID
+캐시와 지역성

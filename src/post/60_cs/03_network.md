@@ -166,6 +166,5 @@ showOnSidebar: true
 - `Dynamic Host Configuration Protocol`
 - `LAN(Ethernet) 환경에서` 동적으로 사설 IP를 할당해주는 프로토콜
 
-
 ## 포트
 한 호스트에서 어플리케이션을 구분하기 위한 포트번호
