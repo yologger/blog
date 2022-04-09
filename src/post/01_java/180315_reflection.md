@@ -2,6 +2,7 @@
 title: "Java 리플렉션(Reflection)"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Table of Contents

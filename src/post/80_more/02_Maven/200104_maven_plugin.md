@@ -3,7 +3,7 @@ title: "Maven 플러그인"
 lang: ko
 showOnSidebar: true
 collapsible: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -2,6 +2,7 @@
 title: "리눅스 명령어 정리"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # 명령어 종류

@@ -3,7 +3,7 @@ title: "코드에서 환경변수 분리하기 - BuildConfig"
 description: "코드에서 환경변수 분리하기 - BuildConfig"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

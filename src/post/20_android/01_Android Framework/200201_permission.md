@@ -3,7 +3,7 @@ title: "안드로이드 권한 관리"
 description: "안드로이드 권한 관리"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table Of Contents

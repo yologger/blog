@@ -2,6 +2,7 @@
 title: "GitHub Pull Request"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # GitHub Pull Request

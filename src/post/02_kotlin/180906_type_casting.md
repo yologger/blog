@@ -2,7 +2,7 @@
 title: "Kotlin 형 변환(Type Casting)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table Of Contents

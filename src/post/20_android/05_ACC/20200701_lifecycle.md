@@ -3,7 +3,7 @@ title: "Lifecycle Owner, Lifecycle-aware Component"
 description: "Lifecycle Owner, Lifecycle-aware Component"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -3,7 +3,7 @@ title: "알림(Notification)"
 description: "알림(Notification)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table Of Contents

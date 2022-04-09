@@ -2,6 +2,7 @@
 title: "리눅스 Permission 관리"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 ## 리눅스 권한 관리

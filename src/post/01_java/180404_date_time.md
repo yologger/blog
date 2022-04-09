@@ -2,7 +2,7 @@
 title: "Java 시간, 날짜 처리하기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

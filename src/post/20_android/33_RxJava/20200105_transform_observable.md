@@ -3,7 +3,7 @@ title: "Observable 변형하기"
 description: "Observable 변형하기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

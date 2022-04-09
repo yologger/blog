@@ -2,6 +2,7 @@
 title: "Java 주석, javadoc"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Table of Contents

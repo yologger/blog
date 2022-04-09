@@ -2,7 +2,7 @@
 title: "Kotlin 타입 별칭(Type Alias)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # 타입 별칭

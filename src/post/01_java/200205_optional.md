@@ -2,7 +2,7 @@
 title: "[Java 8] Optional API"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

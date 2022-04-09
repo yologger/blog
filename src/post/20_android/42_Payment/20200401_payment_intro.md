@@ -3,7 +3,7 @@ title: "안드로이드 결제 구현"
 description: "안드로이드 결제 구현"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

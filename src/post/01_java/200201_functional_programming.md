@@ -2,7 +2,7 @@
 title: "[Java 8] 함수형 인터페이스"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

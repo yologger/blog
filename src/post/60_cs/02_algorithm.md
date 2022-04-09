@@ -2,6 +2,7 @@
 title: "알고리즘"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -2,6 +2,7 @@
 title: "객체 비교 - Comparable, Comparator"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Table of Contents

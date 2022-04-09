@@ -3,7 +3,7 @@ title: "코드에서 환경변수 분리하기 - properties"
 description: "코드에서 환경변수 분리하기 - properties"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

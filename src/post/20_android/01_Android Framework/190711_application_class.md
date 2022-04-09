@@ -3,7 +3,7 @@ title: "Application 클래스"
 description: "Application 클래스"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Application 클래스

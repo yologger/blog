@@ -3,7 +3,11 @@ title: "Gradle Plugin"
 lang: ko
 showOnSidebar: true
 collapsible: true
+sidebarDepth: 0
 ---
+
+# Table of Contents
+[[toc]]
 
 # Gradle Plugin
 `Gradle Plugin`은 유용한 Task들의 집합이다. Gradle Plugin을 추가하면 프로젝트를 더 다양한 방법으로 빌드할 수 있다. 간단한 Gradle 프로젝트를 만들면서 Gradle Plugin에 대해 알아보자. 

@@ -3,7 +3,7 @@ title: "Content Provider, Content Resolver"
 description: "Content Provider, Content Resolver"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -2,7 +2,7 @@
 title: "Kotlin 함수형 프로그래밍과 람다"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -2,6 +2,7 @@
 title: "리눅스 Redirection"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # 리다이렉션

@@ -2,6 +2,7 @@
 title: "File 클래스"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Table of Contents

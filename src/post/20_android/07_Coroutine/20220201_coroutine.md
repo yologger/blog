@@ -3,7 +3,7 @@ title: "안드로이드 Coroutine 사용법"
 description: "안드로이드 Coroutine 사용법"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

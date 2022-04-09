@@ -3,7 +3,7 @@ title: "코드에서 동적으로 View 추가하기"
 description: "코드에서 동적으로 View 추가하기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -3,7 +3,7 @@ title: "Layout Inspector - 실시간으로 UI 디버깅하기"
 description: "Google AdMob으로 앱에 광고 넣기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Layout Inspector

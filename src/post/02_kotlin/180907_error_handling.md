@@ -2,7 +2,7 @@
 title: "Kotlin 에러 처리"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table Of Contents

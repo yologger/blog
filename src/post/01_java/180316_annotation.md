@@ -2,7 +2,7 @@
 title: "Java 어노테이션(Annotation)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

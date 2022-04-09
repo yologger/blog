@@ -2,7 +2,7 @@
 title: "Java 제네릭(Generic)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

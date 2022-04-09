@@ -2,7 +2,7 @@
 title: "리눅스 배포판, 패키지 매니저"
 lang: ko
 showOnSidebar: true
-
+sidebarDepth: 0
 ---
 
 ## 리눅스 배포판

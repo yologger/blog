@@ -3,7 +3,7 @@ title: "레이아웃 재사용하기 - include, merge"
 description: "레이아웃 재사용하기 - include, merge"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

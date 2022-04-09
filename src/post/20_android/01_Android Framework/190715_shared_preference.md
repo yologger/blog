@@ -3,7 +3,7 @@ title: "Shared Preference"
 description: "Shared Preference"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 

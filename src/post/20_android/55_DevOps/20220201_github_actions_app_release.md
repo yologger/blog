@@ -3,6 +3,7 @@ title: "GitHub Actions로 안드로이드 앱 배포 자동화 하기"
 description: "GitHub Actions로 안드로이드 앱 배포 자동화 하기"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # GitHub Actions로 안드로이드 앱 배포 자동화 하기

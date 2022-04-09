@@ -3,7 +3,7 @@ title: "커스텀 폰트 적용하기"
 description: "커스텀 폰트 적용하기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 ## 폰트 다운로드

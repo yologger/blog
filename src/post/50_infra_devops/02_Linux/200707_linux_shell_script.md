@@ -2,6 +2,7 @@
 title: "리눅스 쉘 스크립트"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 ## 쉘 스크립트

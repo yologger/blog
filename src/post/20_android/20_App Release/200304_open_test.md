@@ -3,7 +3,7 @@ title: "구글 플레이스토어 공개테스트 출시"
 description: "구글 플레이스토어 공개테스트 출시"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

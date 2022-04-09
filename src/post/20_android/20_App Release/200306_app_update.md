@@ -3,7 +3,7 @@ title: "구글 플레이스토어 앱 업데이트"
 description: "구글 플레이스토어 앱 업데이트"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # 앱 업데이트

@@ -3,7 +3,7 @@ title: "안드로이드 다국어 지원"
 description: "안드로이드 다국어 지원"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # 다국어 지원

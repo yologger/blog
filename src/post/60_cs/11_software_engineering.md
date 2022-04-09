@@ -2,6 +2,7 @@
 title: "소프트웨어 공학"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Table of Contents
@@ -119,4 +120,3 @@ showOnSidebar: true
 - 그러나 작업중인 계층, 그리고 인접한 계층만 고려하여 개발하기 때문에 분업화 측면에 큰 장점이 있다.
 - 유지보수, 기능 추가가 쉬워진다.
 - 인접한 계층만 고려하면 되기 때문에 단위테스트가 쉬워지며, `Mockup` 라이브러리와 함께 사용하면 큰 시너지를 만들어낸따.
-

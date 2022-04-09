@@ -3,7 +3,7 @@ title: "Compile, Build 차이점"
 lang: ko
 showOnSidebar: true
 collapsible: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

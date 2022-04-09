@@ -3,7 +3,7 @@ title: "Reactive Programming"
 description: "Reactive Programming"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -3,7 +3,7 @@ title: "구글 지도(Google Maps)"
 description: "Google AdMob으로 앱에 광고 넣기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

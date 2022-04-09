@@ -2,7 +2,7 @@
 title: "Maven 기반의 Java Web Application 구성하기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Maven 기반의 Java Web Application 구성하기

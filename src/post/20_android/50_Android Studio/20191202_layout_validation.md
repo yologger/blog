@@ -3,7 +3,7 @@ title: "Layout Validation - 기기 크기에 따라 서로 다른 UI 화면 동�
 description: "Google AdMob으로 앱에 광고 넣기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Layout Validation

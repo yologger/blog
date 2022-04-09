@@ -2,6 +2,7 @@
 title: "Docker 설치 및 시작하기"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Docker 설치 및 시작하기

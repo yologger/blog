@@ -2,7 +2,7 @@
 title: "Kotlin 객체지향 프로그래밍"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

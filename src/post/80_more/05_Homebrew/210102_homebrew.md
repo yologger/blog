@@ -1,7 +1,7 @@
 ---
 title: "Homebrew 사용법 정리"
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

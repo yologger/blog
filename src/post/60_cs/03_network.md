@@ -2,6 +2,7 @@
 title: "네트워크"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 # Table of Contents

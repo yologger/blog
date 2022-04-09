@@ -3,7 +3,7 @@ title: "안드로이드 SDK"
 description: "안드로이드 SDK"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

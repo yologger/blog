@@ -3,7 +3,7 @@ title: "RelativeLayout"
 description: "RelativeLayout"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

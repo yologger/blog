@@ -3,7 +3,7 @@ title: "안드로이드 아키텍처 패턴"
 description: "안드로이드 아키텍처 패턴"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

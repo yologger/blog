@@ -3,7 +3,7 @@ title: "화면에 그림 그리기 - Canvas, Paint"
 description: "화면에 그림 그리기 - Canvas, Paint"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

@@ -3,7 +3,7 @@ title: "커스텀 위젯 만들기"
 description: "커스텀 위젯 만들기"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

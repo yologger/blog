@@ -1,7 +1,7 @@
 ---
 title: "Vuepress 마크다운 문법 정리"
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

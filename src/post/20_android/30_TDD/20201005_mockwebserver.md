@@ -3,7 +3,7 @@ title: "MockWebServer"
 description: "MockWebServer"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # MockWebServer로 Retrofit2 단위테스트 하기

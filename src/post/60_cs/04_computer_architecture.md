@@ -1,7 +1,8 @@
 ---
-title: "컴퓨터구조"
+title: "컴퓨터 구조"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 RAID

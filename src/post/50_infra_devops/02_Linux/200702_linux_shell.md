@@ -2,6 +2,7 @@
 title: "리눅스 쉘"
 lang: ko
 showOnSidebar: true
+sidebarDepth: 0
 ---
 
 

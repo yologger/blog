@@ -3,7 +3,7 @@ title: "레이아웃 인플레이트(Layout Inflate)"
 description: "레이아웃 인플레이트(Layout Inflate)"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

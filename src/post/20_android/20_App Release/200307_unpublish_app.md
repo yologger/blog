@@ -3,7 +3,7 @@ title: "구글 플레이스토어 앱 게시 취소"
 description: "구글 플레이스토어 앱 게시 취소"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents

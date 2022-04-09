@@ -3,7 +3,7 @@ title: "Broadcast Intent, Broadcast Receiver"
 description: "Implicit Intent, Intent Filter"
 lang: ko
 showOnSidebar: true
-sidebarDepth: 2
+sidebarDepth: 0
 ---
 
 # Table of Contents
