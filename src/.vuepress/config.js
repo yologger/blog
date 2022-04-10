@@ -4,6 +4,7 @@ const routes = [
   "20_android",
   "30_spring",
   "50_infra_devops",
+  "55_db",
   "60_cs",
   "80_more",
   "93_issue"
@@ -57,6 +58,7 @@ module.exports = {
       { text: "Spring", link: "/post/30_spring/" },
       { text: "Android", link: "/post/20_android/" },
       { text: "Infra/DevOps", link: "/post/50_infra_devops/" },
+      { text: "DB", link: "/post/55_db/" },
       { text: "CS", link: "/post/60_cs/" },
       { text: "More", link: "/post/80_more/" },
       {
