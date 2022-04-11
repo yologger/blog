@@ -1,5 +1,5 @@
 ---
-title: "리눅스의 파일 시스템과 디렉토리 구조"
+title: "리눅스의 파일 시스템, 디렉토리 구조"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
