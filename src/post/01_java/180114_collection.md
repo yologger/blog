@@ -179,6 +179,12 @@ List<Integer> list = new ArrayList<Integer>(Collections.nCopies(10, 1));
 System.out.println(list.toString());    // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
+### List.subList()
+``` java
+List<String> list = Arrays.asList("Paul", "John", "Smith", "Monica", "Chandler", "Ross");
+List<String> subList = list.subList(1, 4);      // [John, Smith, Monica]
+```
+
 ## Set
 자바 API에서 제공하는 `Set`의 정의는 다음과 같다.
 ``` java

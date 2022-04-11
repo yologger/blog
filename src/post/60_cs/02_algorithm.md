@@ -65,78 +65,8 @@ sidebarDepth: 0
 |$O(n^2)$|2차형|이중 for문, 삽입정렬, 버블정렬, 선택정렬|
 |$O(n^3)$|3차형|행렬 계산하기|
 |$O(2^n)$|지수형|하노이의 탑, 피보나치|
-|$O(n!)$|팩토리얼형||
+|$O(n!)$|팩토리얼형|순열|
     
-
-- $O(1)$
-
-상수 회 실행
-
-```java
-if (n>10) {
-		System.out.println(n);
-}
-```
-
-- $O(logn)$
-
-```java
-
-```
-
-- $O(n)$
-
-반복문 1번
-
-$f(n) = n = O(n)$
-
-```java
-for (int index=0; index<n; index++) {
-		System.out.println(n);
-}
-```
-
-반복문 1번
-
-$f(n) = 3n = O(n)$
-
-```java
-for (int i=0; i<3; i++) {
-		for (int j=0; j<n; j++) {
-				System.out.println(j);
-		}
-}
-```
-
-- $O(nlogn)$
-
-- $O(n^2)$
-
-```java
-for (int i=0; i<n; i++) {
-		for (int j=0; j<n; j++) {
-				System.out.println(j);
-		}
-}
-```
-
-- $O(n^3)$
-
-```java
-
-```
-
-- $O(2^n)$
-
-```java
-
-```
-
-- $O(n!)$
-
-```java
-
-```
 
 ## 정렬
 ### 버블 정렬
@@ -262,21 +192,23 @@ System.out.println(binarySearch.search(list, 20));
 ```
 
 
-
-
 ## 재귀(Recursion)
-자기 자신을 호출
+`재귀(Recursion)`는 자기 자신을 호출한다. 
 ``` java
 function(입력) {
-		if (입력 <= 일정값) {
-				return function(입력-1);
-		} else {
-				// 탈출 조건이 있어야 한다.
-				return 탈출을 위한 특정값;
-		}
+    if (입력 <= 일정값) {
+            return function(입력-1);
+    } else {
+            // 탈출 조건이 있어야 한다.
+            return 탈출을 위한 특정값;
+    }
 }
 ```
-Factorial
+재귀는 스택에 순차적으로 쌓인다.
+
+![](./02_algorithm/6.png)
+
+### Factorial 구하기
 ``` java
 public class Factorial {
     public Integer factorial(Integer n) {
@@ -296,20 +228,8 @@ System.out.println(factorial.factorial(2)); // 1*2
 System.out.println(factorial.factorial(3)); // 1*2*3
 System.out.println(factorial.factorial(4)); // 1*2*3*4
 ```
-재귀 함수는 스택에 순차적으로 싸인다.
-f(1)
 
-f(2)
-
-f(3)
-
-...
-
-f(n-1)
-
-f(n)
-
-배열의 합을 구하라
+### 배열의 합 구하기
 ``` java
 public int sum(ArrayList<Integer> dataList) {
     if (dataList.size() <= 0) {
@@ -322,21 +242,32 @@ public int sum(ArrayList<Integer> dataList) {
 sum(new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5)));
 ```
 
-- 정수 4를 1, 2, 3으로 나타낼 수 있는 조합은 다음과 같다.
-    - 1, 1, 1, 1
-    - 1, 1, 2
-    - 1, 2, 1
-    - 2, 1, 1
-    - 1, 3
-    - 3, 1
-    - 2, 2
+### 순열
+``` java
+public int permutation(n int) {
+    if (n==1) {
+        return 1;
+    } else {
+        return n * permutation(n-1);
+    }
+}
+```
+
+### 조합
+정수 4를 1, 2, 3으로 나타낼 수 있는 조합은 다음과 같다.
+- 1, 1, 1, 1
+- 1, 1, 2
+- 1, 2, 1
+- 2, 1, 1
+- 1, 3
+- 3, 1
+- 2, 2
     
-    이 때 $n$을 1, 2, 3의 조합으로 나타낼 수 있는 방법의 수를 구하시오.
-    
-    - n=1 일 때 1개
-    - n=2 일 때 2개
-    - n=3 일 때 4개
-    - n=4 일 때 7개
+이 때 $n$을 1, 2, 3의 조합으로 나타낼 수 있는 방법의 수를 구하시오.    
+- n=1 일 때 1개
+- n=2 일 때 2개
+- n=3 일 때 4개
+- n=4 일 때 7개
 
 ``` java
 public int solution(int n) {
@@ -351,21 +282,34 @@ public int solution(int n) {
 }
 ```
 
+### 피보나치
+``` java
+public int fibonacci(int n) {
+    if (n == 0) {
+        return 1;
+    } else if (n = 1) {
+        return 1;
+    } else {
+        return fibonacci(n-1) + fibonacci(n-2);
+    }
+}
+```
+
 
 ## 탐욕 알고리즘 (Greedy Algorithm)
 - 지금 이 순간에서의 최적의 답을 구하는 전략
-- 반드시 최적의 해는 아님
-- 동전 예제
-    - 10, 100, 500 **⇒** 710
-        - 500  1개
-        - 100 2개
-        - 10 1개
-        - 총 4개
-    - 10, 30, 40, 50 **⇒** 70
-        - 50 1개
-        - 10 2개
-        - 총 3개
-        - 최적의 답이 아니다. (30 1개, 40  1개, 총 2개)
+- 반드시 최적의 해는 아니다.
+
+### 최소 동전 문제
+- 10, 100, 500원을 사용해서 최소한의 동전으로 710원을 거슬러주는 방법은?
+- 큰 수부터 선택해보자.
+    - 500 1개 / 100 2개 / 10 1개
+    - 총 4개
+- 10원, 30원, 40원, 50원을 사용해서 최소한의 동전으로 70원을 거슬러주는 방법은?
+- 마찬가지로 큰 수부터 선택해보자.
+    - 50원 1개 / 10원 2개
+    - 총 3개
+    - 최적의 답이 아니다. (30원 1개 / 40원 1개, 총 2개)
 
 ```java
 public Integer coin(Integer price, ArrayList<Integer> coinList) {
@@ -392,301 +336,276 @@ ArrayList<Integer> list = new ArrayList<Integer>(Arrays.asList(500, 100, 50, 10)
 coin(710, list);
 ```
 
-- 물건을 조깰 수 있으면 부분 배낭 문제(Fractional Knapsack Problem)
-- 물건을 쪼갤 수 없으면 배낭 문제(Knapsack Problem)
+## 분할 정복 (Divide & Conquer)
+큰 문제를 부분 문제로 나누어 계산하는 전략
 
-- 부분 배낭 문제 (Fractional Knapsack Problem)
-    - 무게 제한이 k인 배낭
-    - 최대 가치를 가지도록 배낭을 채워보자
-    - 물건 i는 무게 w, 가치 v
-    - 무게는 적고, 가치가 높은 물건을 먼저 넣는다. (무게 당 가치)
+### 병합정렬        
+```java
+import java.util.ArrayList;
 
-![](./02_algorithm/5.png)
+public class MergeSort {
+    public ArrayList<Integer> sort(ArrayList<Integer> list) {
 
-``` java
-public void knapsack(Integer[][] items, double capacity) {
-
-    double totalValue = 0.0;
-    double fraction = 0.0;      // 해당 물건의 몇 퍼센트만 들어갔는가?
-
-    Arrays.sort(items, new Comparator<Integer[]>() {
-        @Override
-        public int compare(Integer[] item1, Integer[] item2) {
-            // 무게 당 가치 순으로 정렬
-            return (item2[1]/item2[0]) - (item1[1]/item1[0]);
+        if (list.size() <= 1) {
+            return list;
         }
-    });
 
-    for (int index=0; index<items.length; index++) {
-        if ((capacity - (double)items[index][0]) > 0) {
-            capacity = capacity - (double)items[index][0];
-            totalValue = totalValue + (double)items[index][1];
-            System.out.println("무게:" + items[index][0] + ", 가치:" + items[index][1]);
-        } else {
-            fraction = capacity / (double)items[index][0];
-            totalValue += (double) (double)items[index][1] * fraction;
-            System.out.println("무게:" + items[index][0] + ", 가치:" + items[index][1] + ", 비율:" + fraction);
-            break;
-        }
+        int mediumIndex = list.size()/2;
+
+        ArrayList<Integer> leftArray = new ArrayList<>(list.subList(0, mediumIndex));
+        ArrayList<Integer> rightArray = new ArrayList<>(list.subList(mediumIndex, list.size()));
+
+        ArrayList<Integer> sortedLeftArray = sort(leftArray);
+        ArrayList<Integer> sortedRightArray = sort(rightArray);
+
+        ArrayList<Integer> mergedArray = merge(sortedLeftArray, sortedRightArray);
+
+        return mergedArray;
     }
 
-    System.out.println("총 담을 수 있는 가치: " + totalValue);
+    public ArrayList<Integer> merge(ArrayList<Integer> leftArray, ArrayList<Integer> rightArray) {
+
+        int leftPointer = 0;
+        int rightPointer = 0;
+
+        ArrayList<Integer> mergedArray = new ArrayList<Integer>();
+
+        while (leftPointer < leftArray.size() && rightPointer < rightArray.size()) {
+            if (leftArray.get(leftPointer) < rightArray.get(rightPointer)) {
+                mergedArray.add(leftArray.get(leftPointer));
+                leftPointer += 1;
+            } else {
+                mergedArray.add(rightArray.get(rightPointer));
+                rightPointer += 1;
+            }
+        }
+
+        while (leftArray.size() > leftPointer) {
+            mergedArray.add(leftArray.get(leftPointer));
+            leftPointer+=1;
+        }
+
+        while (rightArray.size() > rightPointer) {
+            mergedArray.add(rightArray.get(rightPointer));
+            rightPointer+=1;
+        }
+
+        return mergedArray;
+    }
 }
 ```
-``` java
-// 물건
-Integer[][] items = {
-        {10, 10},
-        {15, 12},
-        {20, 10},
-        {25, 8},
-        {30, 5}
-};
 
-knapsack(items, 30.0);
+```java
+ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 2, 7, 1, 3));
 
-// 무게:10, 가치:10
-// 무게:15, 가치:12
-// 무게:20, 가치:10, 비율:0.25
-// 총 담을 수 있는 가치: 24.5
+MergeSort mergeSort = new MergeSort();
+
+System.out.println(mergeSort.sort(notSorted));
 ```
-
-
-## 분할 정복 (Divide & Conquer)
-- 큰 문제를 부분 문제로 나누어 계산하는 전략
-    - 병합정렬
         
-        ```java
-        import java.util.ArrayList;
-        
-        public class MergeSort {
-            public ArrayList<Integer> sort(ArrayList<Integer> list) {
-        
-                if (list.size() <= 1) {
-                    return list;
-                }
-        
-                int mediumIndex = list.size()/2;
-        
-                ArrayList<Integer> leftArray = new ArrayList<>(list.subList(0, mediumIndex));
-                ArrayList<Integer> rightArray = new ArrayList<>(list.subList(mediumIndex, list.size()));
-        
-                ArrayList<Integer> sortedLeftArray = sort(leftArray);
-                ArrayList<Integer> sortedRightArray = sort(rightArray);
-        
-                ArrayList<Integer> mergedArray = merge(sortedLeftArray, sortedRightArray);
-        
-                return mergedArray;
-            }
-        
-            public ArrayList<Integer> merge(ArrayList<Integer> leftArray, ArrayList<Integer> rightArray) {
-        
-                int leftPointer = 0;
-                int rightPointer = 0;
-        
-                ArrayList<Integer> mergedArray = new ArrayList<Integer>();
-        
-                while (leftPointer < leftArray.size() && rightPointer < rightArray.size()) {
-                    if (leftArray.get(leftPointer) < rightArray.get(rightPointer)) {
-                        mergedArray.add(leftArray.get(leftPointer));
-                        leftPointer += 1;
-                    } else {
-                        mergedArray.add(rightArray.get(rightPointer));
-                        rightPointer += 1;
-                    }
-                }
-        
-                while (leftArray.size() > leftPointer) {
-                    mergedArray.add(leftArray.get(leftPointer));
-                    leftPointer+=1;
-                }
-        
-                while (rightArray.size() > rightPointer) {
-                    mergedArray.add(rightArray.get(rightPointer));
-                    rightPointer+=1;
-                }
-        
-                return mergedArray;
-            }
-        }
-        ```
-        
-        ```java
-        ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 2, 7, 1, 3));
-        
-        MergeSort mergeSort = new MergeSort();
-        
-        System.out.println(mergeSort.sort(notSorted));
-        ```
-        
-        - 시간복잡도 $O(nlogn)$
-            - $logn$개로 분할, 각 단계에서 $n$번 비교
+- 퀵 정렬의 시간복잡도는 $O(nlogn)$
+- $logn$개로 분할, 각 단계에서 $n$번 비교
     
-    - 퀵 정렬 (Quick Sort)
-        - 맨 앞 pivot을 기준으로 작은 값은 앞에, 큰 값은 뒤에 배치한다.
-        
-        ```java
-        public class QuickSort {
-            public ArrayList<Integer> sort(ArrayList<Integer> list) {
-        
-                if (list.size() <= 1) {
-                    return list;
-                }
-        
-                Integer pivot = list.get(0);
-        
-                ArrayList<Integer> leftArray = new ArrayList<Integer>();
-                ArrayList<Integer> rightArray = new ArrayList<Integer>();
-        
-                for (int i=1; i<list.size(); i++) {
-                    if (list.get(i) < pivot) {
-                        leftArray.add(list.get(i));
-                    } else {
-                        rightArray.add(list.get(i));
-                    }
-                }
-        
-                ArrayList<Integer> mergedArray = new ArrayList<>();
-        
-                mergedArray.addAll(sort(leftArray));
-                mergedArray.add(pivot);
-                mergedArray.addAll(sort(rightArray));
-        
-                return mergedArray;
+### 퀵 정렬
+맨 앞 pivot을 기준으로 작은 값은 앞에, 큰 값은 뒤에 배치한다.        
+```java
+public class QuickSort {
+    public ArrayList<Integer> sort(ArrayList<Integer> list) {
+
+        if (list.size() <= 1) {
+            return list;
+        }
+
+        Integer pivot = list.get(0);
+
+        ArrayList<Integer> leftArray = new ArrayList<Integer>();
+        ArrayList<Integer> rightArray = new ArrayList<Integer>();
+
+        for (int i=1; i<list.size(); i++) {
+            if (list.get(i) < pivot) {
+                leftArray.add(list.get(i));
+            } else {
+                rightArray.add(list.get(i));
             }
         }
-        ```
-        
-        ```java
-        ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 2, 7, 1, 3));
-        
-        QuickSort quickSort = new QuickSort();
-        System.out.println(quickSort.sort(notSorted));
-        ```
-        
-        - 시간복잡도 $O(nlogn)$, 최악의 경우 $O(n^2)$
+
+        ArrayList<Integer> mergedArray = new ArrayList<>();
+
+        mergedArray.addAll(sort(leftArray));
+        mergedArray.add(pivot);
+        mergedArray.addAll(sort(rightArray));
+
+        return mergedArray;
+    }
+}
+```
+```java
+ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 2, 7, 1, 3));
+
+QuickSort quickSort = new QuickSort();
+System.out.println(quickSort.sort(notSorted));
+```
+시간복잡도는 $O(nlogn)$며, 최악의 경우 $O(n^2)$다.
 
 
 ## 동적 계획법(Dynamic Programming)
 - Divide & Conquer + Memorization(Reuse)
 - Memorization: 부분 문제의 결과값을 저장하여 재활용하는 전략
 
-- 피보나치 예제
-    1. Recursive
-        
-        ```sql
-        public int fibonacci(int n) {
-            if (n == 0) {
-                return 0;
-            } else if (n == 1) {
-                return 1;
-            } else {
-                return fibonacci(n-1) + fibonacci(n-2);
-            }
-        }
-        
-        fibonacci(1);   // 1
-        fibonacci(2);   // 1
-        fibonacci(3);   // 2
-        fibonacci(4);   // 3
-        fibonacci(5);   // 5
-        fibonacci(6);   // 8
-        ```
-        
-    2. DP
-        
-        ```sql
-        public int fibonacci(int n) {
-        
-            int[] cache = new int[n+1];
-            cache[0] = 0;   // 이미 계산된 작은 값을 다시 계산하지 않고 재사용
-            cache[1] = 1;   // 이미 계산된 작은 값을 다시 계산하지 않고 재사용
-        
-            for (int i=2; i<n+1; i++) {
-                cache[i] = cache[i-1] + cache[i-2];
-            }
-        
-            return cache[n];
-        }
-        
-        fibonacci(1);   // 1
-        fibonacci(2);   // 1
-        fibonacci(3);   // 2
-        fibonacci(4);   // 3
-        fibonacci(5);   // 5
-        fibonacci(6);   // 8
-        ```
+### 피보나치 
+#### 방법 1. Recursive
+``` java
+public int fibonacci(int n) {
+    if (n == 0) {
+        return 0;
+    } else if (n == 1) {
+        return 1;
+    } else {
+        return fibonacci(n-1) + fibonacci(n-2);
+    }
+}
 
+fibonacci(1);   // 1
+fibonacci(2);   // 1
+fibonacci(3);   // 2
+fibonacci(4);   // 3
+fibonacci(5);   // 5
+fibonacci(6);   // 8
+```
+        
+#### 방법 2. DP
+        
+``` java
+public int fibonacci(int n) {
 
+    int[] cache = new int[n+1];
+    cache[0] = 0;   // 이미 계산된 작은 값을 다시 계산하지 않고 재사용
+    cache[1] = 1;   // 이미 계산된 작은 값을 다시 계산하지 않고 재사용
+
+    for (int i=2; i<n+1; i++) {
+        cache[i] = cache[i-1] + cache[i-2];
+    }
+
+    return cache[n];
+}
+
+fibonacci(1);   // 1
+fibonacci(2);   // 1
+fibonacci(3);   // 2
+fibonacci(4);   // 3
+fibonacci(5);   // 5
+fibonacci(6);   // 8
+```
 
 ## 완전 탐색(Brute Force)
 - 무식하게 모든 경우의 수를 탐색하는 전략
 - 컴퓨터의 빠른 연산 속도를 이용
-- 비밀번호 4자리 찾기
-- N과 M 문제 (중복 허용)
-- N과 M 문제 (중복 미허용)
 
-## 백 트래킹(Backtracking)
-- Brute Force + 가지 치기
-- [N과 M 문제](https://www.acmicpc.net/problem/15649)
-- [부분수열의 합](https://www.acmicpc.net/problem/1182)
-- [로또](https://www.acmicpc.net/problem/6603)
-- N Queens 문제
-    - 첫번째 행의 첫번째 요소 선택검증 (Promising)
-    - 두번째 행의 세번째 요소 선택검증 (Promising)
-    - 세번째 행에는 가능한 요소 없다
-    - 따라서 네번째 행은 검사하지않고 가지치기 (Pruning)
-    - 두번째 행의 네번째 요소 선택
-    
-    - 상태 공간 트리 (State Space Tree)
-    
-    ![](./02_algorithm/3.png)
-    
-    - 코드
-        
-
-    ![](./02_algorithm/4.png)
-        
-```java
-public class NQueens {
-
-    public void dsf(Integer N, Integer currentRow, ArrayList<Integer> currentCandidates) {
-        // currentCandidate: 윗 행들에서 선택한 요소들
-        if (currentRow == N) {
-            System.out.println(currentCandidates);
+### 모의고사
+``` java
+import java.util.ArrayList;
+class Solution {
+    public int[] solution(int[] answer) {
+        int[] a = {1, 2, 3, 4, 5};
+        int[] b = {2, 1, 2, 3, 2, 4, 2, 5};
+        int[] c = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        int[] score = new int[3];
+        for(int i=0; i<answer.length; i++) {
+            if(answer[i] == a[i%a.length]) {score[0]++;}
+            if(answer[i] == b[i%b.length]) {score[1]++;}
+            if(answer[i] == c[i%c.length]) {score[2]++;}
         }
-
-        for (int index=0; index<N; index++) {
-            if (isAvailable(currentCandidates, index)) {
-                currentCandidates.add(index);
-                dsf(N, currentRow+1, currentCandidates);
-
-                // Pruning
-                currentCandidates.remove(currentCandidates.size() - 1);
-            }
-        }
-    }
-
-    // Promising
-    public boolean isAvailable(ArrayList<Integer> candidate, Integer currentColumn) {
-        Integer currentRow = candidate.size();
-        for (int index=0; index<currentRow; index++) {
-            if(
-                (candidate.get(index)== currentColumn)
-                ||
-                ((Math.abs(candidate.get(index) - currentColumn)) == (currentRow - index))
-            ) {
-                return false;
-            }
-        }
-        return true;
+        int maxScore = Math.max(score[0], Math.max(score[1], score[2]));
+        ArrayList<Integer> list = new ArrayList<>();
+        if(maxScore == score[0]) {list.add(1);}
+        if(maxScore == score[1]) {list.add(2);}
+        if(maxScore == score[2]) {list.add(3);}
+        return list.stream().mapToInt(i->i.intValue()).toArray();
     }
 }
 ```
 
-```java
-NQueens nQueens = new NQueens();
-nQueens.dsf(4, 0, new ArrayList<Integer>());
-// [1, 3, 0, 2]    1행은 1, 2행은 3, 3행은 0, 4행은 2
-// [2, 0, 3, 1]    1행은 2, 2행은 0, 3행은 3, 4행은 1
+## 백 트래킹(Backtracking)
+Brute Force + 가지 치기(Pruning)
+
+### 부분 수열의 합
+N개의 정수로 이루어진 수열이 있을 때, 크기가 양수인 부분수열 중에서 그 수열의 원소를 다 더한 값이 S가 되는 경우의 수를 구하는 프로그램을 작성하시오.
+``` java
+public class Main {
+    private static int N;
+    private static int S;
+    private static int count = 0;
+    private static int[] arr;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        N = scanner.nextInt();
+        S = scanner.nextInt();
+
+        scanner.nextLine();
+        String input = scanner.nextLine();
+
+        arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(input.split(" ")[i]);
+        }
+
+        for (int i = 0; i < N; i++) {
+            backtracking(arr[i], i);
+        }
+
+        System.out.println(count);
+    }
+
+    private static void backtracking(int total, int depth) {
+        if (depth == N - 1 && total == S) {
+            count++;
+        }
+
+        depth++;
+        if (depth < N) {
+            backtracking(total + arr[depth], depth);
+            backtracking(total, depth);
+        }
+    }
+}
+```
+`dfs` 탐색을 먼저 하되, 조건을 충족하지 않으면 이전 깊이로 돌아간다.
+
+
+### N과 M 문제
+자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오
+- 1부터 N까지의 자연수 중에서 중복 없이 M개를 고른 수열
+``` java
+boolean[] visit = new boolean[N];
+int[] arr = new int[M];
+ 
+public static void dfs(int N, int M, int depth) {
+ 
+	// 재귀 깊이가 M과 같아지면 탐색과정에서 담았던 배열을 출력
+	if (depth == M) {
+		for (int val : arr) {
+			System.out.print(val + " ");
+		}
+		System.out.println();
+		return;
+	}
+ 
+ 
+	for (int i = 0; i < N; i++) {
+ 
+		// 만약 해당 노드(값)을 방문하지 않았다면?
+		if (visit[i] == false) {
+			
+			visit[i] = true;		// 해당 노드를 방문상태로 변경
+			arr[depth] = i + 1;		// 해당 깊이를 index로 하여 i + 1 값 저장
+			dfs(N, M, depth + 1);	// 다음 자식 노드 방문을 위해 depth 1 증가시키면서 재귀호출
+            
+			// 자식노드 방문이 끝나고 돌아오면 방문노드를 방문하지 않은 상태로 변경
+			visit[i] = false;
+		}
+	}
+	return;
+}
 ```
