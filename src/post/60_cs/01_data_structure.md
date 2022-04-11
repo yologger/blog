@@ -777,56 +777,6 @@ System.out.println(graph);
 시작점으로부터 모든 정점을 한번씩 방문하는 방법을 `그래프 탐색`이라고 한다.
 - BFS
 - DFS
-
-#### BFS(너비 우선 탐색)
-        
-```java
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Stack;
-
-public ArrayList<String> bfs(HashMap<String, ArrayList<String>> graph, String start) {
-
-    // 2개의 Queue를 사용한다.
-    ArrayList<String> visited = new ArrayList<String>();
-    ArrayList<String> needVisit = new ArrayList<String>();
-
-    needVisit.add(start);
-
-    while(needVisit.size() > 0) {
-        String node = needVisit.remove(0);
-
-        // 방문을 안했다면
-        if (!visited.contains(node)) {
-            visited.add(node);
-            needVisit.addAll(graph.get(node));
-        }
-    }
-
-    return visited;
-}
-```        
-```java
-HashMap<String, ArrayList<String>> graph = new HashMap<String, ArrayList<String>>();
-
-graph.put("A", new ArrayList<String>(Arrays.asList("B", "C")));
-graph.put("B", new ArrayList<String>(Arrays.asList("A", "D")));
-graph.put("C", new ArrayList<String>(Arrays.asList("A", "G", "H", "I")));
-graph.put("D", new ArrayList<String>(Arrays.asList("B", "E", "F")));
-graph.put("E", new ArrayList<String>(Arrays.asList("D")));
-graph.put("F", new ArrayList<String>(Arrays.asList("D")));
-graph.put("G", new ArrayList<String>(Arrays.asList("C")));
-graph.put("H", new ArrayList<String>(Arrays.asList("C")));
-graph.put("I", new ArrayList<String>(Arrays.asList("C", "J")));
-graph.put("J", new ArrayList<String>(Arrays.asList("I")));
-
-System.out.println(graph);
-// {A=[B, C], B=[A, D], C=[A, G, H, I], D=[B, E, F], E=[D], F=[D], G=[C], H=[C], I=[C, J], J=[I]}
-
-System.out.println(bfs(graph, "A"));
-// [A, B, C, D, G, H, I, E, F, J]
-```
         
 #### DFS(깊이 우선 탐색)
         
@@ -880,6 +830,56 @@ System.out.println(graph);
 
 System.out.println(dfs(graph, "A"));
 // [A, C, I, J, H, G, B, D, F, E]
+```
+
+#### BFS(너비 우선 탐색)
+        
+```java
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Stack;
+
+public ArrayList<String> bfs(HashMap<String, ArrayList<String>> graph, String start) {
+
+    // 2개의 Queue를 사용한다.
+    ArrayList<String> visited = new ArrayList<String>();
+    ArrayList<String> needVisit = new ArrayList<String>();
+
+    needVisit.add(start);
+
+    while(needVisit.size() > 0) {
+        String node = needVisit.remove(0);
+
+        // 방문을 안했다면
+        if (!visited.contains(node)) {
+            visited.add(node);
+            needVisit.addAll(graph.get(node));
+        }
+    }
+
+    return visited;
+}
+```        
+```java
+HashMap<String, ArrayList<String>> graph = new HashMap<String, ArrayList<String>>();
+
+graph.put("A", new ArrayList<String>(Arrays.asList("B", "C")));
+graph.put("B", new ArrayList<String>(Arrays.asList("A", "D")));
+graph.put("C", new ArrayList<String>(Arrays.asList("A", "G", "H", "I")));
+graph.put("D", new ArrayList<String>(Arrays.asList("B", "E", "F")));
+graph.put("E", new ArrayList<String>(Arrays.asList("D")));
+graph.put("F", new ArrayList<String>(Arrays.asList("D")));
+graph.put("G", new ArrayList<String>(Arrays.asList("C")));
+graph.put("H", new ArrayList<String>(Arrays.asList("C")));
+graph.put("I", new ArrayList<String>(Arrays.asList("C", "J")));
+graph.put("J", new ArrayList<String>(Arrays.asList("I")));
+
+System.out.println(graph);
+// {A=[B, C], B=[A, D], C=[A, G, H, I], D=[B, E, F], E=[D], F=[D], G=[C], H=[C], I=[C, J], J=[I]}
+
+System.out.println(bfs(graph, "A"));
+// [A, B, C, D, G, H, I, E, F, J]
 ```
         
 ### 최단경로 알고리즘 (다익스트라)

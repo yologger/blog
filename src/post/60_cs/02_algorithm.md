@@ -336,6 +336,121 @@ ArrayList<Integer> list = new ArrayList<Integer>(Arrays.asList(500, 100, 50, 10)
 coin(710, list);
 ```
 
+
+
+## 완전 탐색(Brute Force)
+- 무식하게 모든 경우의 수를 탐색하는 전략
+- 컴퓨터의 빠른 연산 속도를 이용
+
+### 모의고사
+``` java
+import java.util.ArrayList;
+class Solution {
+    public int[] solution(int[] answer) {
+        int[] a = {1, 2, 3, 4, 5};
+        int[] b = {2, 1, 2, 3, 2, 4, 2, 5};
+        int[] c = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        int[] score = new int[3];
+        for(int i=0; i<answer.length; i++) {
+            if(answer[i] == a[i%a.length]) {score[0]++;}
+            if(answer[i] == b[i%b.length]) {score[1]++;}
+            if(answer[i] == c[i%c.length]) {score[2]++;}
+        }
+        int maxScore = Math.max(score[0], Math.max(score[1], score[2]));
+        ArrayList<Integer> list = new ArrayList<>();
+        if(maxScore == score[0]) {list.add(1);}
+        if(maxScore == score[1]) {list.add(2);}
+        if(maxScore == score[2]) {list.add(3);}
+        return list.stream().mapToInt(i->i.intValue()).toArray();
+    }
+}
+```
+
+## 백 트래킹(Backtracking)
+Brute Force + 가지 치기(Pruning)
+
+### 부분 수열의 합
+N개의 정수로 이루어진 수열이 있을 때, 크기가 양수인 부분수열 중에서 그 수열의 원소를 다 더한 값이 S가 되는 경우의 수를 구하는 프로그램을 작성하시오.
+``` java
+public class Main {
+    private static int N;
+    private static int S;
+    private static int count = 0;
+    private static int[] arr;
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        N = scanner.nextInt();
+        S = scanner.nextInt();
+
+        scanner.nextLine();
+        String input = scanner.nextLine();
+
+        arr = new int[N];
+        for (int i = 0; i < N; i++) {
+            arr[i] = Integer.parseInt(input.split(" ")[i]);
+        }
+
+        for (int i = 0; i < N; i++) {
+            backtracking(arr[i], i);
+        }
+
+        System.out.println(count);
+    }
+
+    private static void backtracking(int total, int depth) {
+        if (depth == N - 1 && total == S) {
+            count++;
+        }
+
+        depth++;
+        if (depth < N) {
+            backtracking(total + arr[depth], depth);
+            backtracking(total, depth);
+        }
+    }
+}
+```
+`dfs` 탐색을 먼저 하되, 조건을 충족하지 않으면 이전 깊이로 돌아간다.
+
+
+### N과 M 문제
+자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오
+- 1부터 N까지의 자연수 중에서 중복 없이 M개를 고른 수열
+``` java
+boolean[] visit = new boolean[N];
+int[] arr = new int[M];
+ 
+public static void dfs(int N, int M, int depth) {
+ 
+	// 재귀 깊이가 M과 같아지면 탐색과정에서 담았던 배열을 출력
+	if (depth == M) {
+		for (int val : arr) {
+			System.out.print(val + " ");
+		}
+		System.out.println();
+		return;
+	}
+ 
+ 
+	for (int i = 0; i < N; i++) {
+ 
+		// 만약 해당 노드(값)을 방문하지 않았다면?
+		if (visit[i] == false) {
+			
+			visit[i] = true;		// 해당 노드를 방문상태로 변경
+			arr[depth] = i + 1;		// 해당 깊이를 index로 하여 i + 1 값 저장
+			dfs(N, M, depth + 1);	// 다음 자식 노드 방문을 위해 depth 1 증가시키면서 재귀호출
+            
+			// 자식노드 방문이 끝나고 돌아오면 방문노드를 방문하지 않은 상태로 변경
+			visit[i] = false;
+		}
+	}
+	return;
+}
+```
+
 ## 분할 정복 (Divide & Conquer)
 큰 문제를 부분 문제로 나누어 계산하는 전략
 
@@ -495,117 +610,4 @@ fibonacci(3);   // 2
 fibonacci(4);   // 3
 fibonacci(5);   // 5
 fibonacci(6);   // 8
-```
-
-## 완전 탐색(Brute Force)
-- 무식하게 모든 경우의 수를 탐색하는 전략
-- 컴퓨터의 빠른 연산 속도를 이용
-
-### 모의고사
-``` java
-import java.util.ArrayList;
-class Solution {
-    public int[] solution(int[] answer) {
-        int[] a = {1, 2, 3, 4, 5};
-        int[] b = {2, 1, 2, 3, 2, 4, 2, 5};
-        int[] c = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
-        int[] score = new int[3];
-        for(int i=0; i<answer.length; i++) {
-            if(answer[i] == a[i%a.length]) {score[0]++;}
-            if(answer[i] == b[i%b.length]) {score[1]++;}
-            if(answer[i] == c[i%c.length]) {score[2]++;}
-        }
-        int maxScore = Math.max(score[0], Math.max(score[1], score[2]));
-        ArrayList<Integer> list = new ArrayList<>();
-        if(maxScore == score[0]) {list.add(1);}
-        if(maxScore == score[1]) {list.add(2);}
-        if(maxScore == score[2]) {list.add(3);}
-        return list.stream().mapToInt(i->i.intValue()).toArray();
-    }
-}
-```
-
-## 백 트래킹(Backtracking)
-Brute Force + 가지 치기(Pruning)
-
-### 부분 수열의 합
-N개의 정수로 이루어진 수열이 있을 때, 크기가 양수인 부분수열 중에서 그 수열의 원소를 다 더한 값이 S가 되는 경우의 수를 구하는 프로그램을 작성하시오.
-``` java
-public class Main {
-    private static int N;
-    private static int S;
-    private static int count = 0;
-    private static int[] arr;
-
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        N = scanner.nextInt();
-        S = scanner.nextInt();
-
-        scanner.nextLine();
-        String input = scanner.nextLine();
-
-        arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(input.split(" ")[i]);
-        }
-
-        for (int i = 0; i < N; i++) {
-            backtracking(arr[i], i);
-        }
-
-        System.out.println(count);
-    }
-
-    private static void backtracking(int total, int depth) {
-        if (depth == N - 1 && total == S) {
-            count++;
-        }
-
-        depth++;
-        if (depth < N) {
-            backtracking(total + arr[depth], depth);
-            backtracking(total, depth);
-        }
-    }
-}
-```
-`dfs` 탐색을 먼저 하되, 조건을 충족하지 않으면 이전 깊이로 돌아간다.
-
-
-### N과 M 문제
-자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오
-- 1부터 N까지의 자연수 중에서 중복 없이 M개를 고른 수열
-``` java
-boolean[] visit = new boolean[N];
-int[] arr = new int[M];
- 
-public static void dfs(int N, int M, int depth) {
- 
-	// 재귀 깊이가 M과 같아지면 탐색과정에서 담았던 배열을 출력
-	if (depth == M) {
-		for (int val : arr) {
-			System.out.print(val + " ");
-		}
-		System.out.println();
-		return;
-	}
- 
- 
-	for (int i = 0; i < N; i++) {
- 
-		// 만약 해당 노드(값)을 방문하지 않았다면?
-		if (visit[i] == false) {
-			
-			visit[i] = true;		// 해당 노드를 방문상태로 변경
-			arr[depth] = i + 1;		// 해당 깊이를 index로 하여 i + 1 값 저장
-			dfs(N, M, depth + 1);	// 다음 자식 노드 방문을 위해 depth 1 증가시키면서 재귀호출
-            
-			// 자식노드 방문이 끝나고 돌아오면 방문노드를 방문하지 않은 상태로 변경
-			visit[i] = false;
-		}
-	}
-	return;
-}
 ```
