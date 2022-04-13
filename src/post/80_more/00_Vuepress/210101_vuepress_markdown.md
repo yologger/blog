@@ -153,3 +153,15 @@ sidebarDepth: 1     // extracts the h2 headers (default)
 sidebarDepth: 2     // extracts both h2 and h3 headers
 ---
 ```
+
+## 테이블
+````
+|제목|내용|
+|------|---|
+|테스트1|테스트2|
+|테스트1|테스트2|
+````
+|제목|내용|
+|------|---|
+|테스트1|테스트2|
+|테스트1|테스트2|

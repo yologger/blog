@@ -5,7 +5,10 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
-# 명령어 종류
+# Table of Contents
+[[toc]]
+
+## 명령어 종류
 리눅스 명령어는 크게 네 종류로 구분된다. `type`명령어를 사용하면 명령어의 타입을 확인할 수 있다.
 
 ### 실행 파일
@@ -30,9 +33,9 @@ cd is a shell builtin
 ls is aliased to `ls --color=auto'
 ```
 
-# 명령어 정리
+## 명령어 정리
 
-## alias
+### alias
 `alias`명령어를 사용하면 우리만의 명령어를 만들 수 있다.
 
 우선 `type`명령어로 alias가 존재하는지 확인한다.
@@ -56,7 +59,7 @@ alias lsbin='cd /bin; ls;'
 # unalias lsbin
 ```
 
-## cal
+### cal
 달력과 현재 날짜를 표시한다.
 ```
 # cal
@@ -72,7 +75,7 @@ Su Mo Tu We Th Fr Sa
 30 31 
 ```
 
-## cp
+### cp
 파일이나 디렉토리를 복사할 때 사용한다.
 
 file1을 file2에 복사한다.
@@ -90,7 +93,7 @@ file을 directory에 복사한다.
 # cp dir1/* dir2
 ```
 
-## date
+### date
 현재 시간과 날짜를 표시한다.
 ```
 # date
@@ -99,7 +102,7 @@ file을 directory에 복사한다.
 Wed Jan  5 08:48:22 KST 2022
 ```
 
-## df
+### df
 현재 사용 중인 디스크 정보와 사용 가능한 디스크의 용량을 표시한다.
 ```
 # df
@@ -114,7 +117,7 @@ tmpfs            1016696       0   1016696   0% /proc/acpi
 tmpfs            1016696       0   1016696   0% /sys/firmware
 ```
 
-## diff
+### diff
 두 파일을 비교할 수 있다.
 ```
 $ cat text1
@@ -133,20 +136,20 @@ $ diff text1 text2
 ```
 
 
-## echo
+### echo
 텍스트를 화면에 출력한다.
 ```
 $ echo "Hello World"
 Hello World
 ```
 
-## file
+### file
 파일의 타입을 확인할 수 있다.
 ```
 $ file a.txt
 a.txt: ASCII text
 ```
-## find
+### find
 파일을 탐색할 수 있다. 보통 다음과 같은 형식으로 사용한다.
 ```
 $ find [경로] -name ["파일명"]
@@ -160,7 +163,7 @@ $ find . -name "*.txt"
 $ find ~ -name "*.txt"
 ```
 
-## free
+### free
 메모리 사용 현황을 확인할 수 있다.
 ```
 # free
@@ -172,39 +175,39 @@ Mem:       2033396    1369668     663728     331176      83108     926972
 Swap:      1048572      19064    1029508
 ```
 
-## head
+### head
 파일의 앞 부분을 출력한다.
 ``` bash
 // 앞의 다섯 줄을 출력한다.
 head -n 5 a.txt
 ```
 
-## help
+### help
 명령어의 도움말 기능이다. 설명 및 사용법을 확인할 수 있다.
 ```
 // help <command>
 # help cd
 ```
 
-## less
+### less
 텍스트 파일의 내용을 확인할 수 있다.
 ```
 $ less a.txt
 ```
 
-## mkdir
+### mkdir
 디렉토리를 생성할 수 있다.
 ```
 $ mkdir mydir
 ```
 
-## more
+### more
 파일 내용이 너무 길면 스크롤로 확인해야하는 불편함이 있다. `more`는 파일 내용을 한 페이지씩 보여준다.
 ```
 $ more long.txt
 ```
 
-## mv
+### mv
 파일 또는 디렉토리를 이동하거나 이름을 변경할 때 사용한다.
 
 파일 이름을 변경한다.
@@ -223,7 +226,7 @@ $ more long.txt
 # mv * /home/yologger/mydir 
 ```
 
-## ping
+### ping
 목적지로 패킷을 전송한다. 목적지와의 네트워크 연결을 확인하는데 사용할 수 있다. 
 ```
 $ ping www.google.com
@@ -234,7 +237,7 @@ PING www.google.com (142.250.196.132) 56(84) bytes of data.
 64 bytes from nrt12s36-in-f4.1e100.net (142.250.196.132): icmp_seq=4 ttl=37 time=33.2 ms
 ```
 
-## ps
+### ps
 프로세스 정보를 확인할 수 있다.
 ```
 $ ps
@@ -248,7 +251,7 @@ $ ps
 $ ps aux
 ```
 
-## tar
+### tar
 파일을 압축할 수 있다. `-cvf`옵션을 사용하면 된다.
 ```
 $ ls
@@ -263,7 +266,7 @@ $ text.tar     text1.txt     text2.txt
 $ tar -xvf text.tar
 ```
 
-## top
+### top
 프로세스 등 시스템 상태를 동적으로 확인할 수 있다.
 ```
 $ top
@@ -278,13 +281,13 @@ KiB Swap:  1048572 total,        0 used,  1048572 free.   589484 cached Mem
 ```
 [ps](#ps)가 명령어 실행 순간의 스냅샷을 보여준다면 `top`는 동적으로 시스템 활동을 보여준다.
 
-## rmdir
+### rmdir
 디렉토리를 삭제한다.
 ```
 $ rmdir mydir
 ```
 
-## tail
+### tail
 파일의 뒷 부분을 출력한다.
 ```
 // 파일의 뒷 부분 다섯 줄을 출력한다.
@@ -295,7 +298,7 @@ $ tail -n 5 a.txt
 $ tail -f /var/log/messages
 ```
 
-## which
+### which
 실행 파일의 설치 위치를 확인할 수 있다.
 ```
 # which pwd

@@ -5,7 +5,10 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
-# 리눅스의  파일 시스템과 디렉토리 구조
+# Table of Contents
+[[toc]]
+
+# 리눅스의 파일 시스템과 디렉토리 구조
 거의 대부분의 리눅스 배포판은 `리눅스 파일시스템 계층 표준`인 [Linux Filesystem Hierarchy Standard](https://ko.wikipedia.org/wiki/%ED%8C%8C%EC%9D%BC%EC%8B%9C%EC%8A%A4%ED%85%9C_%EA%B3%84%EC%B8%B5%EA%B5%AC%EC%A1%B0_%ED%91%9C%EC%A4%80)을 준수한다. 따라서 다음 디렉토리 구조를 가진다.
 
 ```

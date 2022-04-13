@@ -85,44 +85,9 @@ public class MemberEntity {
 }
 ```
 
-### 유니크 키 생성
-`@Table` 어노테이션의 `uniqueConstraints` 속성으로 유니크 키를 생성할 수 있다.
-``` java {4-7}
-@Entity
-@Table(
-    name = "member",
-    uniqueConstraints = {@UniqueConstraint(
-        name = "unq_email_name",
-        columnNames = {"email", "name"}
-    )}
-)
-public class MemberEntity {
-
-    @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
-    private String email;
-
-    @Column
-    private String name;
-
-    @Column
-    private String password;
-
-    // 생략 ...
-}
-```
-실행되는 DDL은 다음과 같다.
-``` sql
-ALTER TABLE member
-ADD CONSTRAINT unq_email_name UNIQUE (email, name);
-```
-
-## 기본키 매핑
-`@id`를 사용하면 기본키를 지정할 수 있다.
+## 기본키
+### 단일 기본키
+`@id`를 사용하면 단일 컬럼의 기본키를 지정할 수 있다.
 ``` java{5}
 @Entity
 @Table(name = "member")
@@ -151,6 +116,39 @@ public class MemberEntity {
 create table member (
     id bigint NOT NULL AUTO_INCREMENT PRIMARY KEY
 );
+```
+
+### 복합 기본키
+복합키를 생성하려면 먼저 `Serializable`인터페이스를 구현한 <b>`식별자 클래스`</b>를 정의해야한다. 식별자 클래스는 `equal()`과 `hashCode()` 메소드를 구현해야한다.
+``` java
+public class OrderId implements Serializable {
+
+    private Long memberId;
+    private Long productId;
+
+    @Override
+    public boolean equals(Object o) { ... }
+
+    @Override
+    public int hashCode() { ... }
+
+}
+```
+그리고 `@IdClass`어노테이션으로 식별자 클래스를 지정하면 된다.
+``` java {3}
+@Entity
+@Table(name = "order")
+@IdClass(OrderId.class)
+public class Order {
+
+    @Id
+    @Column(name = "member_id")
+    private Long memberId;
+
+    @Id
+    @Column(name = "product_id")
+    private Long productId;
+}
 ```
 
 ## @Column
@@ -356,4 +354,59 @@ public class MemberEntity {
 
     // 생략 ...
 }
+```
+
+## 유일키
+
+### 단일 유일키
+`@Column`의 `unique` 속성으로 단일 컬럼의 유일키를 생성할 수 있다.
+``` java{8}
+public class MemberEntity {
+
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
+    private String email;
+
+    // 중략..
+}
+```
+
+### 복합 유일키
+`@Table` 어노테이션의 `uniqueConstraints` 속성으로 복합 컬럼의 유일키를 생성할 수 있다.
+``` java {4-7}
+@Entity
+@Table(
+    name = "member",
+    uniqueConstraints = {@UniqueConstraint(
+        name = "unq_email_name",
+        columnNames = {"email", "name"}
+    )}
+)
+public class MemberEntity {
+
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String email;
+
+    @Column
+    private String name;
+
+    @Column
+    private String password;
+
+    // 생략 ...
+}
+```
+실행되는 DDL은 다음과 같다.
+``` sql
+ALTER TABLE member
+ADD CONSTRAINT unq_email_name UNIQUE (email, name);
 ```

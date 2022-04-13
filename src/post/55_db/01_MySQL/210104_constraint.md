@@ -134,6 +134,27 @@ ALTER TABLE member ADD CONSTRAINT CHECK(age > 0);
 ALTER TABLE member ADD CONSTRAINT chk_member_age CHECK(age > 0);
 ```
 
+## 복합키 
+`복합 기본키`
+``` sql{5}
+CREATE TABLE order (
+    member_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    ...
+    PRIMARY KEY(member_id, product_id)
+);
+```
+`복합 유일키`
+``` sql{6}
+CREATE TABLE order (
+    id biging NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    member_id bigint NOT NULL,
+    product_id bigint NOT NULL,
+    ...
+    UNIQUE KEY(member_id, product_id)
+);
+```
+
 ## 제약조건 삭제
 ``` sql
 ALTER TABLE 테이블명 DROP CONSTRAINT 제약조건명;

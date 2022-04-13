@@ -5,6 +5,9 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 리눅스 권한 관리
 리눅스 시스템에서 사용자는 <u>파일</u>과 <u>디렉토리</u>를 소유할 수 있다. `ls`명령어에 `-l`옵션을 추가하면 파일이나 디렉토리의 접근 권한을 확인할 수 있다.
 ```

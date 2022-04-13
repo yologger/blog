@@ -5,14 +5,13 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
-## 쉘 스크립트
-`쉘 스크립트(Shell Script)`는 명령어들이 나열된 파일이다.
 
-간단한 쉘 스크립트를 작성해보자.
+## 쉘 스크립트
+`쉘 스크립트(Shell Script)`는 명령어들이 나열된 파일이다. 간단한 쉘 스크립트를 작성해보자.
 ``` 
 $ vi a.sh
 ```
-``` sh a.sh
+``` 
 #!/bin/bash
 
 # This is comment.
@@ -45,7 +44,7 @@ echo "Good bye~"
 $ sh a.sh
 ```
 
-## if 문
+### if 문
 `if 문`은 다음과 같은 형태로 사용한다.
 ``` sh
 #!/bin/bash
@@ -59,7 +58,7 @@ else
 fi
 ```
 
-### 숫자 비교
+#### 숫자 비교
 숫자 비교 예제를 첨부한다.
 ``` sh number.sh
 #!/bin/bash
@@ -88,7 +87,7 @@ greater than 50
 |lt|less than|
 |le|less than & equal|
 
-### 문자열 비교
+#### 문자열 비교
 문자열은 쌍따옴표로 감싸줘야한다.
 ```
 name="Paul"
@@ -109,7 +108,7 @@ else
 fi
 ```
 
-### 파라미터
+#### 파라미터
 쉘 스크립트는 파라미터를 전달받을 수 있다. 쉘 스크립트 안에서는 `$1`, `$2`, ... `$n` 형태로 파라미터에 접근할 수 있다.
 
 예제를 첨부한다.
@@ -131,7 +130,7 @@ $ ./test.sh "Paul" "Paul"
 same.
 ```
 
-### continue, break
+#### continue, break
 `if 문`은 `continue`와 `break`와 함께 사용할 수도 있다. 보통 다음과 같은 형태로 사용한다.
 ``` sh
 if [조건]
@@ -141,7 +140,7 @@ else
 fi
 ```
 
-## for 문
+### for 문
 `for 문`은 다음과 같은 형태로 사용한다.
 ``` sh
 for "변수" IN "원소1" "원소2" .. "원소n"
@@ -167,7 +166,7 @@ Eric
 Finished.
 ```
 
-## while 문
+### while 문
 `while 문`은 다음과 같은 형태로 사용한다.
 ``` sh
 while [조건]
@@ -201,7 +200,7 @@ done
 END
 ```
 
-## case 문
+### case 문
 ``` sh
 #!/bin/sh
 
@@ -218,7 +217,7 @@ case ${num} in
 esac
 ```
 
-## 쉘 함수
+### 쉘 함수
 쉘 스크립트 안에는 함수를 정의할 수도 있다. 다음과 같은 형태로 정의한다.
 ``` sh
 function name(){

@@ -5,6 +5,9 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
+# Table of Contents
+[[toc]]
+
 # 리다이렉션
 `리다이렉션(Redirection)`을 사용하면 입출력을 재지정할 수 있다.
 

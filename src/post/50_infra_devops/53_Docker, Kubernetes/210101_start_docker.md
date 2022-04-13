@@ -284,7 +284,7 @@ RUN apt update
 # 패키지 매니저로 git 설치
 RUN apt install -y git
 ```
-이제 `docker build` 명령어로 이미지를 생성하자.
+이제 `docker build` 명령어로 이미지를 생성하자. 마지막 인자로 `Dockerfile`이 위치하는 현재 디렉토리 `.`를 전달한다.
 ``` shellsession{1}
 $ docker build -t my_ubuntu_image:0.1 .
 [+] Building 2.2s (8/8) FINISHED                                                                                              
@@ -325,3 +325,62 @@ $ docker attach my_ubuntu_container
 root@1143426a0e96:/# git --version
 git version 2.17.1
 ```
+### Dockerfile 명령어
+#### FROM
+- 베이스가 될 이미지. 
+- Dockerfile에 반드시 한번 이상 입력해야한다. 
+- 사용하려는 이미지가 없으면 자동으로 Pull한다.
+
+```
+FROM openjdk:8-jdk-alpine   // openjdk 8이 설치된 alpine linux 이미지
+```
+
+
+#### WORKDIR
+- `cd`명령어와 동일하다.
+- 디렉토리가 없으면 새로 생성한다.
+```
+WORKDIR /app
+```
+
+#### COPY
+- Dockerfile이 위치하는 디렉토리에서 이미지로 파일을 복사한다.
+``` 
+COPY app.jar app.jar
+COPY run.sh run.sh
+```
+
+#### ADD
+- Dockerfile이 위치하는 디렉토리의 파일을 이미지에 추가
+
+#### RUN
+- 컨테이너 내부에서 명령어를 실행한다.
+```
+RUN chmod 774 run.sh
+```
+
+#### ENV
+이미지에서 사용할 환경변수를 지정한다.
+```
+ENV PROFILE=local
+```
+
+#### ENTRYPOINT
+- 컨테이너가 실행될 때마다 실행할 명령어. 
+- Dockerfile에서 한번만 사용할 수 있다.
+```
+// ENTRYPOINT ["명령어", "인자1", "인자2", ...]
+ENTRYPOINT ["echo", "Launching App."]
+```
+```
+ENTRYPOINT ["./run.sh"]
+```
+
+#### EXPOSE
+- 이미지에서 노출할 포트 지정
+
+#### ARG
+- 빌드 시 환경변수를 선언
+
+
+

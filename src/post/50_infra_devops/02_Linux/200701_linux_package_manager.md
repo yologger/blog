@@ -5,10 +5,14 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 리눅스 배포판
 리눅스 배포판은 크게 두 가지 계열로 나뉜다.
 - `데비안(Debian)`: Debian, Ubuntu 등
 - `레드햇(Red Hat)`: Red Hat, CentOS, Fedora, Amazon Linux 등
+- 기타: Alpine Linux
 
 두 계열은 다양한 차이점이 있다. 그 중에서도 가장 중요한 부분 중 하나는 두 배포판이 다른 `패키지 매니저`를 사용한다는 것이다.
 
@@ -146,3 +150,7 @@ Description : The OpenJDK 8 development tools.
 ```
 # yum erase java-1.8.0-openjdk-devel.x86_64
 ```
+
+## Apline Linux
+- 리눅스 배포판 가운데 하나
+- 용량이 작고, 보안이 뛰어나며, 간단하기 때문에 `Docker 컨테이너`에 많이 사용된다.
