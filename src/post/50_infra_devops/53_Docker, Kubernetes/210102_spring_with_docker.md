@@ -79,7 +79,7 @@ $ docker images
 REPOSITORY                 TAG              IMAGE ID       CREATED              SIZE
 springboot-image           0.1              87a6c94ce7cc   About a minute ago   122MB
 ```
-도커 이미지로 컨테이너를 생성하고 실행한다.
+도커 이미지로 컨테이너를 생성하고 실행한다. 이 때 호스트의 포트로 접근 시 컨테이너 내부 스프링 부트로 포워딩되도록 포트를 바인딩해야한다.
 ``` shellsession
 $ docker run -d --name springboot-container -p 9999:5000 springboot-image:0.1
 ```

@@ -229,59 +229,6 @@ System.out.println(factorial.factorial(3)); // 1*2*3
 System.out.println(factorial.factorial(4)); // 1*2*3*4
 ```
 
-### 배열의 합 구하기
-``` java
-public int sum(ArrayList<Integer> dataList) {
-    if (dataList.size() <= 0) {
-        return 0;
-    }
-    return dataList.get(0) + sum(new ArrayList<Integer>(dataList.subList(1, dataList.size())));
-}
-```
-``` java
-sum(new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5)));
-```
-
-### 순열
-``` java
-public int permutation(n int) {
-    if (n==1) {
-        return 1;
-    } else {
-        return n * permutation(n-1);
-    }
-}
-```
-
-### 조합
-정수 4를 1, 2, 3으로 나타낼 수 있는 조합은 다음과 같다.
-- 1, 1, 1, 1
-- 1, 1, 2
-- 1, 2, 1
-- 2, 1, 1
-- 1, 3
-- 3, 1
-- 2, 2
-    
-이 때 $n$을 1, 2, 3의 조합으로 나타낼 수 있는 방법의 수를 구하시오.    
-- n=1 일 때 1개
-- n=2 일 때 2개
-- n=3 일 때 4개
-- n=4 일 때 7개
-
-``` java
-public int solution(int n) {
-    if (n==1) {
-        return 1;
-    } else if (n==2) {
-        return 2;
-    } else if (n==3) {
-        return 4;
-    } 
-    return solution(n-1) + solution(n-2) + solution(n-3);
-}
-```
-
 ### 피보나치
 ``` java
 public int fibonacci(int n) {
@@ -295,6 +242,16 @@ public int fibonacci(int n) {
 }
 ```
 
+### 배열의 합 구하기
+``` java
+public static int sum(ArrayList<Integer> dataList) {
+    if (dataList.size() == 0) {
+        return 0;
+    } else {
+        return dataList.get(0) + sum(new ArrayList<>(dataList.subList(1, dataList.size())));
+    }
+}
+```
 
 ## 탐욕 알고리즘 (Greedy Algorithm)
 - 지금 이 순간에서의 최적의 답을 구하는 전략
