@@ -33,6 +33,9 @@ cd is a shell builtin
 ls is aliased to `ls --color=auto'
 ```
 
+## 백그라운드 실행
+명령어 뒤에 `&`을 추가하면 프로세스가 백그라운드로 실행된다.
+
 ## 명령어 정리
 
 ### alias

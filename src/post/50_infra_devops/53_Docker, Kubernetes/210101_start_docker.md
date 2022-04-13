@@ -72,6 +72,7 @@ centos              7         eeb6ee3f44bd   3 months ago   204MB
 $ docker create -i -t --name my_centos centos:7
 ```
 자주 사용하는 옵션은 다음과 같다.
+- `--name`: 컨테이너 이름을 지정한다.
 - `-i -t`: `docker attach`명령어로 컨테이너 내부에 진입할 수 있다.
 - `-d`: 컨테이너를 백그라운드로 실행한다.
 
@@ -81,7 +82,7 @@ $ docker create -i -t --name my_centos centos:7
 $ docker start <container_name>
 docker start my_centos
 
-$ docker ps -a          
+$ docker ps -al          
 CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS         PORTS     NAMES
 b5df63051a50   centos:7   "/bin/bash"   28 seconds ago   Up 3 seconds             my_centos
 ```
@@ -346,7 +347,10 @@ WORKDIR /app
 #### COPY
 - Dockerfile이 위치하는 디렉토리에서 이미지로 파일을 복사한다.
 ``` 
+// Dockerfile이 위치하는 디렉토리의 app.jar를 컨테이너 내부에 app.jar 라는 이름으로 복사
 COPY app.jar app.jar
+
+// Dockerfile이 위치하는 디렉토리의 run.sh를 컨테이너 내부에 run.sh 라는 이름으로 복사
 COPY run.sh run.sh
 ```
 
@@ -359,11 +363,21 @@ COPY run.sh run.sh
 RUN chmod 774 run.sh
 ```
 
+#### ARG
+Dockerfile 내에서 빌드 시에 사용하는 변수
+
 #### ENV
-이미지에서 사용할 환경변수를 지정한다.
+이미지에서 런타임에 사용할 환경변수를 지정한다.
 ```
 ENV PROFILE=local
 ```
+도커 컨테이너 내부에서 환경변수를 설정하는 것과 동일하다.
+```
+$ PROFILE=local
+```
+
+#### ARG
+- 빌드 시 환경변수를 선언
 
 #### ENTRYPOINT
 - 컨테이너가 실행될 때마다 실행할 명령어. 
@@ -378,9 +392,6 @@ ENTRYPOINT ["./run.sh"]
 
 #### EXPOSE
 - 이미지에서 노출할 포트 지정
-
-#### ARG
-- 빌드 시 환경변수를 선언
 
 
 

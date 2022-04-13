@@ -93,8 +93,10 @@ sidebarDepth: 0
 - 네트워크 상에 지나다니느 패킷을 가로채서 내용을 확인하는 기술
 - SSL, HTTPS, VPN 등의 기술을 사용하여 패킷을 암호화한다.
 
+## SSL
+HTTPS, VPN 등에 사용된다.
 
-
+## SSO 
 ## VPN
 
 
