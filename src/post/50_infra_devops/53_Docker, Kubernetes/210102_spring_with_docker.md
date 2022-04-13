@@ -37,6 +37,12 @@ public class TestController {
 server.port = 5000
 ```
 
+이 스프링 부트 프로젝트를 도커 이미지화 시키는 방법에는 두 가지가 있다.
+- Dockerfile 사용하기
+- Gradle bootBuildImage 
+
+### Dokcerfile 사용하기
+
 첫 단계는 프로젝트를 빌드하여 `JAR` 파일을 생성하는 것이다.
 ```
 $ ./gradlew clean
@@ -133,8 +139,105 @@ $ docker rm springboot-container
 $ docker rmi springboot-image:0.1
 ```
 
-## Github Action로 Spring boot 도커 이미지를 Docker Hub에 배포하기
+### Gradle bootBuildImage 
+`스프링부트 2.3` 부터는 Gradle의 `bootBuildImage` 태스크로 쉽게 도커 이미지를 생성할 수 있다.
 
-https://emgc.tistory.com/151
+예제를 살펴보자. 스프링부트 프로젝트의 정보는 다음과 같다.
+``` groovy
+// settings.gradle
+rootProject.name = 'my_project'
+```
+``` groovy
+// build.gradle
+group = 'com.yologger'
+version = '0.0.1'
+// 중략 ...
+```
 
-## Github Actions -> AWS EKS
+이제 `bootBuildImage` 태스트를 실행한다.
+``` shellsession
+$ ./gradlew bootBuildImage
+```
+
+이미지가 생성된 것을 확인할 수 있다.
+``` shellsession
+$ docker images
+REPOSITORY                 TAG              IMAGE ID       CREATED        SIZE
+my_project                 0.0.1            69971d4876cc   42 years ago   225MB
+```
+
+컨테이너를 실행해보자
+``` shellsession
+$ docker run -d --name my_container -p 9999:8080 my_project:0.0.1
+```
+
+컨테이너가 시작된 것을 확인할 수 있다.
+``` shellsession
+$ docker ps -al
+CONTAINER ID   IMAGE              COMMAND              CREATED          STATUS          PORTS                    NAMES
+1e55d016e40d   my_project:0.0.1   "/cnb/process/web"   50 seconds ago   Up 49 seconds   0.0.0.0:9999->8080/tcp   my_container
+```
+
+`build.gradle`에서 `bootBuildImage`와 관련된 커스터마이징이 가능하다.
+``` groovy
+// build.gradle
+bootBuildImage {
+    // 이미지 이름 설정
+    imageName=my_project_image
+}
+```
+
+명령어로 속성을 전달할 수도 있다.
+``` shellsession
+$ ./gradlew bootBuildImage -imageName=my_project_image
+```
+
+## Github Actions로 Spring boot 도커 이미지를 Docker Hub에 배포하기
+`Dockerfile`은 다음과 같다.
+```
+FROM openjdk:8-jdk-alpine
+ARG JAR_FILE=build/libs/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-Dspring.profiles.active=prod",  "-jar","/app.jar"]
+```
+`Github Actions` 관련 코드는 다음과 같다.
+``` yaml
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Add properties file
+        run: echo '${{ secrets.APPLICATION_PROD_PROPERTIES }}' > ./src/main/resources/application-prod.properties
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
+
+      - name: Docker build
+        run:  |
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PASSWORD }}  
+          docker build -t springboot_image .
+          docker tag springboot_image yologger1013/springboot_image:${GITHUB_SHA::7} 
+          docker push yologger1013/springboot_image:${GITHUB_SHA::7}
+```
+`application.properties` 같은 설정파일을 Github의 Secret으로 암호화했어도 Docker Hub에 업로드된 이미지를 실행하여 확인할 수 있다. 따라서 Docker Hub의 `Private Respository` 또는 `Private Registry`를 사용하는 것을 권장한다.

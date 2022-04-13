@@ -11,6 +11,7 @@ sidebarDepth: 0
 ## 외부 파일에서 설정값 읽어오기
 `.properties` 파일을 사용하면 외부에서 설정값을 읽어올 수 있다.
 
+
 ### ConfigurableEnvironment, MutablePropertySources
 `admin.properties`파일을 `src/main/resources` 경로에 생성한다.
 ``` 

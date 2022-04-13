@@ -199,8 +199,17 @@ REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
 new_image           0.1     eeb6ee3f44bd   4 seconds ago   211MB
 ```
+## 도커 허브
+[도커 허브(Docker Hub)](https://hub.docker.com/)는 도커 이미지를 저장할 수 있는 원격 저장소다. 도커 허브는 크게 세 가지의 저장소를 제공한다.
+- `Public repository`: 공개 원격 저장소, 무료 플랜 시 무제한 사용 가능하다.
+- `Private repository`: 비공개 원격 저장소, 무료 플랜 시 1개를 무료로 사용할 수 있다.
+- `Private registry`: 개인 서버에 구축하는 저장소
 
-## 도커 허브로 이미지 배포하기
+저장소에 따라 가격 정책이 다르며, [이 곳](https://hub.docker.com/billing/plan/update)에서 확인할 수 있다.
+
+도커 허브의 대체제로는 `GitHub Registry`, `AWS ECR`가 있다.
+
+### 도커 허브로 이미지 배포하기
 `Docker Hub`의 `Repository`를 사용하면 도커 이미지를 배포할 수 있다. [이 곳](https://hub.docker.com/)에 접속하여 회원가입 후 `Repository > Create Repository`를 클릭한다. 그리고 `Repository` 이름을 입력하고 Repository를 생성한다. 
 
 ::: warning
@@ -248,7 +257,7 @@ f2fa9f4cf8fd: Mounted from library/ubuntu
 
 ![](./210101_start_docker/6.png)
 
-## 도커 허브에서 이미지 다운받기
+### 도커 허브에서 이미지 다운받기
 `docker push` 명령어로 도커 허브에서 이미지를 다운받을 수 있다.
 ``` shellsession
 $ docker pull yologger1013/test_image:0.1 
