@@ -299,29 +299,60 @@ coin(710, list);
 - 무식하게 모든 경우의 수를 탐색하는 전략
 - 컴퓨터의 빠른 연산 속도를 이용
 
-### 모의고사
+::: details 모의고사
+수포자는 수학을 포기한 사람의 준말입니다. 수포자 삼인방은 모의고사에 수학 문제를 전부 찍으려 합니다. 수포자는 1번 문제부터 마지막 문제까지 다음과 같이 찍습니다.
+
+- 1번 수포자가 찍는 방식: 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, ...
+- 2번 수포자가 찍는 방식: 2, 1, 2, 3, 2, 4, 2, 5, 2, 1, 2, 3, 2, 4, 2, 5, ...
+- 3번 수포자가 찍는 방식: 3, 3, 1, 1, 2, 2, 4, 4, 5, 5, 3, 3, 1, 1, 2, 2, 4, 4, 5, 5, ...
+
+1번 문제부터 마지막 문제까지의 정답이 순서대로 들은 배열 answers가 주어졌을 때, 가장 많은 문제를 맞힌 사람이 누구인지 배열에 담아 return 하도록 solution 함수를 작성해주세요.
 ``` java
-import java.util.ArrayList;
+import java.util.*;
+
 class Solution {
-    public int[] solution(int[] answer) {
-        int[] a = {1, 2, 3, 4, 5};
-        int[] b = {2, 1, 2, 3, 2, 4, 2, 5};
-        int[] c = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
-        int[] score = new int[3];
-        for(int i=0; i<answer.length; i++) {
-            if(answer[i] == a[i%a.length]) {score[0]++;}
-            if(answer[i] == b[i%b.length]) {score[1]++;}
-            if(answer[i] == c[i%c.length]) {score[2]++;}
+    public int[] solution(int[] answers) {
+        
+        int[] oneMarkings = {1, 2, 3, 4, 5};
+        int[] twoMarkings = {2, 1, 2, 3, 2, 4, 2, 5};
+        int[] threeMarkings = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        
+        int oneCount = 0;
+        int twoCount = 0;
+        int threeCount = 0;
+          
+        for (int i=0; i<answers.length; i++) {
+            if (answers[i] == oneMarkings[i%oneMarkings.length]) oneCount++;
+            if (answers[i] == twoMarkings[i%twoMarkings.length]) twoCount++;
+            if (answers[i] == threeMarkings[i%threeMarkings.length]) threeCount++;
         }
-        int maxScore = Math.max(score[0], Math.max(score[1], score[2]));
-        ArrayList<Integer> list = new ArrayList<>();
-        if(maxScore == score[0]) {list.add(1);}
-        if(maxScore == score[1]) {list.add(2);}
-        if(maxScore == score[2]) {list.add(3);}
-        return list.stream().mapToInt(i->i.intValue()).toArray();
+        
+        ArrayList<Integer> member = new ArrayList<Integer>();
+        
+        int max = Math.max(oneCount, Math.max(twoCount, threeCount));
+        
+        if (oneCount == max) {
+            member.add(1);
+        }
+        
+        if (twoCount == max) {
+            member.add(2);
+        }
+        
+        if (threeCount == max) {
+            member.add(3);
+        }
+        
+        int[] solution = new int[member.size()];
+        for (int i=0; i<member.size(); i++) {
+            solution[i] = member.get(i);
+        }
+        
+        return solution;
     }
 }
 ```
+:::
 
 ## 백 트래킹(Backtracking)
 Brute Force + 가지 치기(Pruning)

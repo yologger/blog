@@ -153,8 +153,21 @@ public class LinkedList<E> {
 
 보통 데이터를 순차적으로 추가, 삭제하는 경우 `ArrayList`가 더 빠르다. 반면 데이터를 중간에 추가, 삭제하는 경우 `LinkedList`가 더 빠르다. 따라서 상황에 따라 적절한 것을 선택하자.
 
+### Array로 List 초기화하기
+``` java
+List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+```
+
+### List를 특정 크기의 값으로 초기화하기
+`Collections`클래스의 `nCopies()`메소드를 사용하면 `List`를 특정 크기의 값으로 쉽게 초기화할 수 있다.
+``` java{1}
+List<Integer> list = new ArrayList<Integer>(Collections.nCopies(10, 1));
+
+System.out.println(list.toString());    // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+```
+
 ### List 깊은 복사
-`List`의 깊은 복사는 다음과 같이 할 수 있다.
+다음과 같이 `List`를 깊은 복사할 수 있다.
 ``` java{7}
 List<Integer> list = new ArrayList<Integer>();
 list.add(1);
@@ -171,15 +184,104 @@ System.out.println(list.hashCode());    // 30817
 System.out.println(copy.hashCode());    // 955331
 ```
 
-### List를 특정 크기의 값으로 초기화하기
-`Collections`클래스의 `nCopies()`메소드를 사용하면 `List`를 특정 크기의 값으로 쉽게 초기화할 수 있다.
-``` java{1}
-List<Integer> list = new ArrayList<Integer>(Collections.nCopies(10, 1));
-
-System.out.println(list.toString());    // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+### List 메소드 정리
+#### List.add()
+``` java
+List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+list.add(6);
+```
+``` java
+List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+list.add(0, 20);
 ```
 
-### List.subList()
+#### List.addAll()
+``` java
+List<Integer> list1 = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+List<Integer> list2 = new ArrayList(Arrays.asList(6, 7, 8, 9, 10));
+
+list1.addAll(list2);
+System.out.println(list1);  // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+```
+``` java
+List<Integer> list1 = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+List<Integer> list2 = new ArrayList(Arrays.asList(6, 7, 8, 9, 10));
+
+list1.addAll(0, list2);
+System.out.println(list1);  // [6, 7, 8, 9, 10, 1, 2, 3, 4, 5]
+```
+
+#### List.set()
+``` java
+List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+list.set(0, 10);
+
+System.out.println(list);   // [10, 2, 3, 4, 5]
+```
+
+#### List.get()
+``` java
+List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+
+System.out.println(list.get(0));    // 1
+```
+
+#### List.remove()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Kane"));
+list.remove(0);
+list.remove("Kane");
+System.out.println(list);    // [John, Smith]
+```
+
+#### List.indexOf()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
+
+System.out.println(list.indexOf("Paul"));       // 0
+```
+#### List.lastIndexOf()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
+
+System.out.println(list.lastIndexOf("Paul"));   // 3
+```
+
+#### List.size()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
+
+System.out.println(list.size());           // 4
+```
+
+#### List.forEach()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
+
+list.forEach((String item) -> {
+    // ...
+});
+```
+
+#### List.contains()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
+
+if (list.contains("Paul")) {
+    // ...
+}
+```
+
+#### List.isEmpty()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
+
+if (list.isEmpty()) {
+    // ...
+}
+```
+
+#### List.subList()
 ``` java
 List<String> list = Arrays.asList("Paul", "John", "Smith", "Monica", "Chandler", "Ross");
 List<String> subList = list.subList(1, 4);      // [John, Smith, Monica]
@@ -302,7 +404,6 @@ linkedHashSet.add(4);
 System.out.println(linkedHashSet.toString());   // [5, 3, 1, 2, 4]
 ```
 
-
 ### Set 깊은 복사
 `Set`의 깊은 복사는 다음과 같이 할 수 있다.
 ``` java
@@ -322,6 +423,57 @@ System.out.println(copy.toString());    // [1, 2, 3, 4]
 System.out.println(set.hashCode());     // 6
 System.out.println(copy.hashCode());    // 10
 ```
+
+### Set의 메소드
+#### Set.add()
+``` java
+Set<Integer> set = new HashSet<>();
+set.add(1);
+set.add(2);
+set.add(3);
+set.add(3);
+
+System.out.println(set);    // [1, 2, 3]
+```
+
+#### Set.remove()
+``` java
+set.remove(3);
+```
+
+#### Set.contains()
+``` java
+if (set.contains(3)) {
+    // ...
+}
+```
+
+#### Set.isEmpty()
+``` java
+if (set.isEmpty()) {
+    // ...
+}
+```
+
+#### Set.size()
+``` java
+if (set.size() > 10) {
+    // ...
+}
+```
+
+#### Set.forEach()
+``` java
+set.forEach((Integer element) -> {
+    // ...
+});
+```
+``` java
+for (Integer element: set) {
+    // ...
+}
+```
+
 
 ## Map
 `맵(Map)`은 `키(Key)`와 `값(Value)`으로 구성된 데이터 집합이다. 키를 통해 값을 저장하거나 읽어오거나 변경하거나 삭제할 수 있다. 자바 API에서 제공하는 Map의 정의는 다음과 같다.
@@ -470,6 +622,72 @@ System.out.println(copy.toString());    // {name=Paul, job=Programmer, nation=US
 
 System.out.println(map.hashCode());     // -1051088633
 System.out.println(copy.hashCode());    // 974907474
+```
+
+### Map 메소드 정리
+#### Map.put()
+``` java
+Map<Integer, String> players = new TreeMap<Integer, String>();
+
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+```
+
+#### Map.replace()
+``` java
+players.replace(7, "Mbappe");
+```
+
+#### Map.get()
+``` java
+Map<Integer, String> players = new TreeMap<Integer, String>();
+
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+String player1 = players.get(7);    // "Ronaldo"
+String player2 = players.get(8);    // null
+```
+
+#### Map.getOrDefault()
+``` java
+String player3 = players.getOrDefault(8, "Ramos");  // "Ramos"
+```
+
+#### Map.isEmpty()
+``` java
+if (players.isEmpty()) {
+    // ...
+}
+```
+
+#### Map.containsKey()
+``` java
+if (players.containsKey(7)) {
+    // ...
+}
+```
+
+#### Map.containsValue()
+``` java
+if (players.containsValue("Ronaldo")) {
+    // ...
+}
+```
+
+#### Map.keySet()
+``` java
+Map<Integer, String> players = new TreeMap<Integer, String>();
+
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+for (Integer key: players.keySet()) {
+    System.out.println(key);
+}
 ```
 
 ## Stack

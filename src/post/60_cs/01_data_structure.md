@@ -434,6 +434,145 @@ map.put(3, "Paul");
 map.get(2);
 ```
 
+### Hash Table 문제
+
+::: details 완주하지 못한 선수
+수많은 마라톤 선수들이 마라톤에 참여하였습니다. 단 한 명의 선수를 제외하고는 모든 선수가 마라톤을 완주하였습니다.
+
+마라톤에 참여한 선수들의 이름이 담긴 배열 participant와 완주한 선수들의 이름이 담긴 배열 completion이 주어질 때, 완주하지 못한 선수의 이름을 return 하도록 solution 함수를 작성해주세요.
+
+#### 제한사항
+- 마라톤 경기에 참여한 선수의 수는 1명 이상 100,000명 이하입니다.
+- completion의 길이는 participant의 길이보다 1 작습니다.
+- 참가자의 이름은 1개 이상 20개 이하의 알파벳 소문자로 이루어져 있습니다.
+- 참가자 중에는 동명이인이 있을 수 있습니다.
+``` java
+import java.util.*;
+
+class Solution {
+    public String solution(String[] participant, String[] completion) {
+        HashMap<String, Integer> hashMap = new HashMap();
+        for (String person: participant) {
+            hashMap.put(person, hashMap.getOrDefault(person, 0) + 1);
+        }
+        for (String person: completion) {
+            hashMap.put(person, hashMap.get(person) - 1);
+        }
+        
+        for (String key: hashMap.keySet()) {
+            if (hashMap.get(key) != 0) {
+                return key;
+            }
+        }
+        return "";
+    }
+}
+``` 
+``` java
+import java.util.*;
+
+class Solution {
+    public String solution(String[] participant, String[] completion) {
+        Arrays.sort(participant);
+        Arrays.sort(completion);
+        
+        for (int i=0; i<completion.length; i++) {
+            if (!completion[i].equals(participant[i])) {
+                return participant[i];
+            }
+        }
+        return participant[participant.length - 1];
+    }
+}
+```
+:::
+
+::: details 전화번호 목록
+전화번호부에 적힌 전화번호 중, 한 번호가 다른 번호의 접두어인 경우가 있는지 확인하려 합니다.
+전화번호가 다음과 같을 경우, 구조대 전화번호는 영석이의 전화번호의 접두사입니다.
+
+- 구조대 : 119
+- 박준영 : 97 674 223
+- 지영석 : 11 9552 4421
+
+전화번호부에 적힌 전화번호를 담은 배열 phone_book 이 solution 함수의 매개변수로 주어질 때, 어떤 번호가 다른 번호의 접두어인 경우가 있으면 false를 그렇지 않으면 true를 return 하도록 solution 함수를 작성해주세요.
+``` java
+import java.util.*;
+
+class Solution {
+    public boolean solution(String[] phoneBook) {
+        boolean answer = true;
+        
+        HashMap<String, Integer> map = new HashMap();
+        
+        for (int i=0; i<phoneBook.length; i++) {
+            map.put(phoneBook[i], i);
+        }
+        
+        for (int i=0; i<phoneBook.length; i++) {
+            for (int j=0; j<phoneBook[i].length(); j++) {
+                if (map.containsKey(phoneBook[i].substring(0, j))) {
+                    return false;   
+                }
+            }
+        }
+        
+        
+        return answer;
+    }
+}
+```
+:::
+
+::: details 위장
+스파이들은 매일 다른 옷을 조합하여 입어 자신을 위장합니다.
+
+예를 들어 스파이가 가진 옷이 아래와 같고 오늘 스파이가 동그란 안경, 긴 코트, 파란색 티셔츠를 입었다면 다음날은 청바지를 추가로 입거나 동그란 안경 대신 검정 선글라스를 착용하거나 해야 합니다.
+
+|종류|이름|
+|------|---|
+|얼굴|동그란 안경, 검정 선글라스|
+|상의|파란색 티셔츠|
+|하의|청바지|
+|겉옷|긴 코트|
+
+#### 제한사항
+
+- clothes의 각 행은 [의상의 이름, 의상의 종류]로 이루어져 있습니다.
+- 스파이가 가진 의상의 수는 1개 이상 30개 이하입니다.
+- 같은 이름을 가진 의상은 존재하지 않습니다.
+- clothes의 모든 원소는 문자열로 이루어져 있습니다.
+- 모든 문자열의 길이는 1 이상 20 이하인 자연수이고 알파벳 소문자 또는 '_' 로만 이루어져 있습니다.
+- 스파이는 하루에 최소 한 개의 의상은 입습니다.
+
+``` java
+import java.util.*;
+
+class Solution {
+    public int solution(String[][] clothes) {
+        int answer = 1;
+        
+        HashMap<String, Integer> map = new HashMap();
+        
+        for (int i=0; i<clothes.length; i++) {
+            if(!map.containsKey(clothes[i][1])) {
+                map.put(clothes[i][1], 1);
+            } else {
+                map.put(clothes[i][1], map.get(clothes[i][1])+1);
+            }
+                
+        }
+        
+        for(String key: map.keySet()) {
+            answer = answer * (map.get(key)+1);
+        }
+        
+        return answer-1;
+    }
+}
+```
+:::
+
 ## Tree
 ### Tree의 구성요소
 - Node
