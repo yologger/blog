@@ -121,7 +121,7 @@ CREATE TABLE post (
 - 대표적인 제품군에는 Oracle DB, MySQL, Maria DB가 있다.
 
 ### NoSQL
-- `Key-Value` 기반의 데이터베이스.
+- Not Only SQL
 - `RDBMS`에 비해 자유도가 높으며, 단순 검색에 최적화되어있다.
 - 대표적인 제품군에는 `Mongo DB`, `Redis` 등이 있다.
 

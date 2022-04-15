@@ -20,6 +20,10 @@ Java API는 같은 타입의 여러 데이터를 한꺼번에 효율적으로 �
 ## List
 배열은 생성할 때 크기가 결정된다. 따라서 배열이 생성되면 동적으로 데이터를 추가하거나 삭제할 수 없다. 데이터를 동적으로 추가, 삭제하려면 <b>`List`</b>를 사용해야한다.
 
+`List`의 특징은 다음과 같다.
+- 순서가 있다.
+- 중복을 허용한다.
+
 컬렉션 프레임워크가 제공하는 `List`의 정의는 다음과 같다.
 ``` java
 public interface List<E> extends Collection<E> {
@@ -288,6 +292,11 @@ List<String> subList = list.subList(1, 4);      // [John, Smith, Monica]
 ```
 
 ## Set
+`Set`은 다음과 같은 특징이 있는 자료구조다.
+
+- 순서가 없다.
+- 중복을 허용하지 않는다.
+
 자바 API에서 제공하는 `Set`의 정의는 다음과 같다.
 ``` java
 public interface Set<E> extends Collection<E> {
@@ -476,7 +485,13 @@ for (Integer element: set) {
 
 
 ## Map
-`맵(Map)`은 `키(Key)`와 `값(Value)`으로 구성된 데이터 집합이다. 키를 통해 값을 저장하거나 읽어오거나 변경하거나 삭제할 수 있다. 자바 API에서 제공하는 Map의 정의는 다음과 같다.
+`맵(Map)`은 `키(Key)`와 `값(Value)`으로 구성된 데이터 집합이다. 키를 통해 값을 저장하거나 읽어오거나 변경하거나 삭제할 수 있다. `Map`의 특징은 다음과 같다.
+
+- `키(Key)`에는 중복된 값이 입력될 수 없다.
+- `값(Value)`는 중복된 값이 입력될 수 있다.
+- 순서가 유지되지 않는다.
+
+ 자바 API에서 제공하는 Map의 정의는 다음과 같다.
 ``` java
 public interface Map<K, V> {
     int size();
