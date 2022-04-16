@@ -8,11 +8,9 @@ sidebarDepth: 0
 [[toc]]
 
 # Mongo DB
-기존의 테이블 기반 관계형 데이터베이스 구조가 아닌 Document 지향 데이터 모델을 사용하는 NoSQL 데이터베이스다.
+기존의 테이블 기반 관계형 데이터베이스 구조가 아닌 `Document` 기반의 데이터 모델을 사용하는 NoSQL 데이터베이스다.
 
 ![](./210102_start_mongo/1.jpeg)
-
-수평적 확장성
 
 ## Mongo DB 환경설정
 
