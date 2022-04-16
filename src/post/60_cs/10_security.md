@@ -80,7 +80,6 @@ sidebarDepth: 0
 - Distrubuted Denial of Service
 - DoS는 하나의 호스트가 하나의 타겟을 공격한다면 DDos는 여러 호스트가 하나의 타겟을 분산 공격하는 것
 
-
 ### 해결방법
 - 요청 수를 제한한다던지 특정 IP만 요청할 수 있도록 제한한다.
 - 라우터의 방화벽, AWS의 IAM, 토큰 또는 JSON 인증 방식, Kubernetes의 ingress 기능을 사용할 수 있다.
