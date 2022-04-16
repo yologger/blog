@@ -14,7 +14,7 @@ sidebarDepth: 0
 - 인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업한다.
     - 다른 서버의 메모리에 실시간으로 복사본 저장
     - 디스크에도 데이터를 저장
-- 세션 스토어, 데이터베이스 캐시, 메시지 브로커 등에 사용된다.
+- 세션 스토어, 데이터베이스 캐시, 메시지 브로커, 공유 저장소 등에 사용된다.
 
 
 ## Redis 설정
@@ -503,4 +503,122 @@ OK
 2) "paul@gmail.com"
 ```
 
+## Redis Multi Database
+`Redis`는 여러 데이터베이스를 가질 수 있으며 기본적으로 16개의 데이터베이스가 제공된다. 설정파일에서 개수를 변경할 수 있으며, Homebrew로 Redis를 설치한 경우 `/usr/local/etc/redis.conf`에 위치한다.
+
+``` {4}
+# Set the number of databases. The default database is DB 0, you can select
+# a different one on a per-connection basis using SELECT <dbid> where
+# dbid is a number between 0 and 'databases'-1
+databases 16
+```
+
+`redis-cli`로 Redis에 연결할 때 데이터베이스를 선택할 수 있다. 
+```shellsession
+$ redis-cli -n 3
+redis-cli[3] > 
+```
+옵션을 지정하지 않으면 0번 데이터베이스를 사용하게 된다.
+```shellsession
+$ redis-cli
+redis-cli > 
+```
+
+Redis에 이미 연결된 상태에서는 `SELECT` 명령어로 데이터베이스를 변경할 수 있다.
+``` shellsession
+redis-cli[3]> SELECT 5
+OK
+
+redis-cli[5]> 
+```
+
+`Medis 2`를 사용하는 경우 화면 하단에서 데이터베이스를 선택할 수 있다.
+
+![](./220410_start_redis/3.png)
+
+
+## Redis Namespace
+`Namespace`를 활용하면 데이터를 체계적으로 데이터베이스에 저장할 수 있다. 
+```
+> SET programmer:android:name "Paul"
+> SET programmer:spring:name "John"
+> SET designer:name "Monica"
+> SET marketer:name "Rachel"
+```
+```
+GET programmer:android:name
+GET programmer:spring:name
+GET designer:name
+GET marketer:name
+```
+위 예제에서는 Namespace로 `콜론(:)`을 사용했다. 하지만 스택 오버플로우를 검색해보니 `슬래시(/)`를 사용하기도 한다. 구분자의 제한이 없는 것 같다.
+
+### Namespace를 Redis 데이터베이스 설계에 활용하기
+`관계형 데이터베이스`와 `Redis`는 구조적으로 다르기 때문에 데이터베이스 설계방식도 다르다. 
+
+우선 관계형 데이터베이스를 살펴보자. 애플리케이션의 회원 정보를 담는 `member`테이블과 회원의 게시글 정보를 담는 `post`테이블이 있다. 
+회원은 여러 게시글을 가질 수 있으므로 `member` 테이블과 `post` 테이블은 `일대다(One to Many)`관계이며, 이를 다이어그램으로 표현하면 다음과 같다.
+
+![](./220410_start_redis/4.png)
+
+테이블을 생성하는 DDL은 다음과 같을 것이다.
+```
+CREATE TABLE member (
+    member_id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) 
+);
+```
+```
+CREATE TABLE post (
+    post_id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    member_id BIGINT,
+    title VARCHAR(255),
+    content TEXT,
+    FOREIGN KEY member_id REFERENCES member(member_id)
+);
+```
+
+반면 Redis는 테이블이라는 개념 자체가 없다. 또한 외래키라는 개념도 없으므로 테이블 간 연관관계를 표현할 수도 없다. 따라서 마치 리눅스의 디렉토리 구조처럼 `Namespace`를 활용하여 데이터를 저장해야한다.
+
+![](./220410_start_redis/5.png)
+
+```
+> HMSET post:1:1 title "programming" content "I love programming"
+> HMGET post:1:1 title content
+1) "programming"
+2) "I love programming"
+```
+
+## Redis Expire
+`Redis`는 저장한 데이터에 expire를 설정할 수 있다. `EXPIRE [KEY] [SECOND]` 명령어를 사용하면 된다.
+```
+// 데이터 저장
+> SET name "Paul"
+
+// 만료 시간 설정 
+> EXPIRE name 10
+```
+```
+// 10초가 지나기 전
+> GET name
+"Paul"
+
+// 10초가 지난 후
+> GET name
+(nil)
+```
+`TTL` 명령어로 남은 시간 또는 만료 후 지나간 시간을 조회할 수 있다.
+```
+> TTL name  
+5   // 만료되기 5초 전
+
+> TTL name
+-5  // 만료된 후 5초
+```
+`PERSIST` 명령어로 expire를 해제할 수 있다.
+```
+> PERSIST name
+```
+
 ## Redis Labs
+`Redis` 클라우드 서비스
