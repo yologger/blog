@@ -1,5 +1,5 @@
 ---
-title: "SpringBoot와 Docker를 함께 사용하기"
+title: "Docker와 SpringBoot를 함께 사용하기"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0

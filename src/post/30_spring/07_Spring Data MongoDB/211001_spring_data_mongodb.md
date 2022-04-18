@@ -169,11 +169,6 @@ public class MemberDocument {
 }
 ```
 
-`targetType`, `FieldType`
-
-### enum
-https://devs0n.tistory.com/47
-
 ### @CreatedDate, @LastModifiedDate
 `@CreatedDate`를 추가하면 도큐먼트가 생성된 날짜와 시간을 추가할 수 있다. `@LastModifiedDate`를 추가하면 마지막으로 도큐먼트가 변경된 날짜와 시간을 추가할 수 있다.
 
@@ -207,7 +202,12 @@ public class MemberDocument {
 }
 ```
 
+
+
 ### TTL
+
+### Index
+`@Indexed`
 
 ## 연관관계
 ### @ManyToOne
