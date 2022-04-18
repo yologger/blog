@@ -38,10 +38,31 @@ $ brew services stop mongodb-community@4.2
 ```
 
 ### Mongo DB 접속
+`mongo` 명령어로 Mongo DB에 접속할 수 있다.
 ``` shellsession
 $ mongo
 > 
 ```
+
+원격 접속도 가능하다.
+```
+// mongo [몽고서버_IP]
+$ mongo 192.168.0.1
+```
+
+원격 접속을 하면서 데이터베이스를 선택할 수도 있다.
+```
+// mongo [몽고서버 IP]/[데이터베이스 이름]
+$ mongo 192.168.0.1/my_db
+```
+
+몽고 서버에 인증을 설정했다면 아이디와 패스워드를 인자로 전달하여 접속할 수 있다.
+```
+// mongo -u [사용자 이름] -p [비밀번호] [몽고서버 IP]/[데이터베이스 이름]
+$ mongo -u user1 -p 1234 192.168.0.1/my_db
+```
+
+
 
 ## Compass
 `Compass`는 Mongo DB를 위한 GUI database clinet다. [이 곳](https://www.mongodb.com/try/download/compass)에서 다운받을 수 있다.
@@ -49,13 +70,17 @@ $ mongo
 ## Mongo DB 사용법
 
 ### 데이터베이스 목록 확인
-`show db`는 모든 데이터베이스를 출력한다.
+`show db`는 모든 데이터베이스를 출력한다. 
 ```
 > show dbs
 admin   0.000GB
 config  0.000GB
 local   0.000GB
 ```
+Mongo DB에 처음 접속하면 세 개의 데이터베이스가 자동으로 생성된다.
+- `admin`: 시스템 정보와 사용자 인증과 관련된 데이터를 저장한다.
+- `config`:  
+- `local`: 
 
 ### 현재 사용 중인 데이터베이스 출력
 `db`는 현재 사용 중인 데이터베이스를 출력한다.
@@ -371,6 +396,26 @@ Document를 유일하게 구분해주는 `_id` 필드에는 인덱스가 자동�
 `db.monsters.dropIndex(필드명);`으로 인덱스를 삭제할 수 있다.
 
 ## 정렬
+`sort()`를 사용하여 조회한 도큐먼트를 정렬할 수 있다.
+```
+> db.member.find().sort({ name: 1 })	// 오름차순 정렬
+```
+```
+> db.member.find().sort({ name: -1 })	// 내림차순 정렬
+```
+```
+> db.member.find().sort({ name: 1, nation: 1 })
+```
+
+## 페이징
+`limit(n)`은 조회할 도큐먼트 개수를 제한할 때 사용한다.
+```
+> db.member.find().limit(10)
+```
+`skip(n)`은 n개를 건너뛰고 그 다음부터 도큐먼트를 조회한다.
+```
+> db.member.find().skip(10)
+```
 
 ## 스키마 설계
 Mongo DB는 관계형 데이터베이스의 외래키 개념이 없다. 따라서 두 가지 방법으로 연관관계를 설정할 수 있다.
@@ -432,3 +477,187 @@ WriteResult({ "nInserted" : 1 })
 	"content" : "DevOps is useful."
 }
 ```
+
+## 사용자 관리
+Mongo DB에 처음 접속하면 인증이 비활성화 되어있기 때문에 누구나 인증없이 데이터베이스 접근할 수 있다. 심지어 원격 접속도 인증이 필요없다.
+``` shellsession
+$ mongo		// 인증 없이 접속
+>
+```
+따라서 관리자와 사용자 계정을 생성하고, 사용자에게 역할을 부여한 후, 인증을 거치도록 구성해야한다.
+
+### 사용자 조회
+`show users` 명령어를 사용하면 모든 사용자를 조회할 수 있다. Mongo DB에 처음 접속했다면 생성한 계정이 없기 때문에 아무 결과도 출력되지 않는다.
+```
+> show users 
+
+```
+
+`db.getUsers()`를 실행하면 현재 데이터베이스의 모든 사용자를 출력한다.
+```
+> db.getUsers()
+[ ]
+```
+
+### 사용자 생성
+`db.createUser()`로 사용자를 생성할 수 있다. 
+```
+> db.createUser({ 
+	user: "<name>", 
+	pwd: "<cleartext password>", 
+	roles: [ 
+		{ role: "<role>", db: "<database>" } | "<role>", 
+		... 
+	] 
+}
+```
+
+우선 모든 데이터베이스에 대해 모든 권한을 갖는 `root` 계정을 생성하자.
+```
+> use admin
+
+> db.createUser(
+  { 
+     user: "root", 
+     pwd: "root", 
+     roles: [ "root" ] 
+  }
+)
+```
+```
+> show users
+{
+	"_id" : "admin.root",
+	"userId" : UUID("999a9d45-85f3-4ad8-abe6-01b6184fa90a"),
+	"user" : "root",
+	"db" : "admin",
+	"roles" : [
+		{
+			"role" : "root",
+			"db" : "admin"
+		}
+	],
+	"mechanisms" : [
+		"SCRAM-SHA-1",
+		"SCRAM-SHA-256"
+	]
+}
+```
+
+일반 사용자 계정도 생성해보자.
+```
+> use my_db
+
+> db.createUser(
+  {
+    user: "user",
+    pwd: "user",
+    roles: [ { role: "readWrite", db: "my_db" } ]
+  }
+)
+```
+```
+> show users
+{
+	"_id" : "my_db.user",
+	"userId" : UUID("f4aab7bc-413b-4dd3-b1cf-08a65fbb428d"),
+	"user" : "user",
+	"db" : "my_db",
+	"roles" : [
+		{
+			"role" : "readWrite",
+			"db" : "my_db"
+		}
+	],
+	"mechanisms" : [
+		"SCRAM-SHA-1",
+		"SCRAM-SHA-256"
+	]
+}
+```
+
+
+### 인증 활성화
+Mongo DB는 기본적으로 인증없이 접근할 수 있다. 인증을 활성화하려면 설정 파일을 수정해야한다.
+```
+$ vim /usr/local/etc/mongod.conf
+```
+`mongod.conf`에 다음 코드를 추가한다.
+```
+security:
+  authorization: enabled
+```
+설정파일을 수정한 후 MongoDB를 재시작한다.
+```
+$ brew services restart mongodb-community@4.2
+```
+
+mongo -u "user" -p --authenticationDatabase "user"
+
+### 사용자 인증
+먼저 인증없이 Mongo DB에 접속해보자.
+``` shellsession
+$ mongo  
+MongoDB shell version v4.2.19
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("5cd65398-d599-465d-a384-2f9a51e002a3") }
+MongoDB server version: 4.2.1
+```
+
+Mongo DB와의 세션은 연결되었으나 인증은 진행되지 않았다. 따라서 데이터베이스나 테이블 조회도 불가능하다.
+```
+$ show databases;
+// 결과 없음
+```
+
+`db.auth()`를 사용하면 인증을 할 수 있다.
+```
+> db.auth("user", "user")
+1
+
+> show databases;
+my_db  0.000GB
+```
+
+다음과 같이 Mongo DB와의 세션을 연결할 때 사용자, 비밀번호 정보를 전달할 수도 있다.
+``` shellsession {1}
+$ mongo -u "user" -authenticationDatabase "my_db"
+MongoDB shell version v4.2.19
+Enter password: <user_password>
+connecting to: mongodb://127.0.0.1:27017/?authSource=my_db&compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("6cfc239f-8b86-48a2-89b6-8fe9dbb62353") }
+MongoDB server version: 4.2.19
+> show databases;
+my_db  0.000GB
+```
+
+루트 계정은 `db.auth()`로 접속할 수 없으며 위와 같은 방법으로 접속해야한다.
+``` shellsession{1}
+$ mongo -u "root"
+MongoDB shell version v4.2.19
+Enter password: <root_password>
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("47d48100-9172-4187-8d5b-6a7944a2e055") }
+MongoDB server version: 4.2.19
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+> show databases;
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+my_db   0.000GB
+mydb    0.000GB
+```
+
+### 사용자 삭제
+`db.dropUser()`는 특정 사용자를 삭제하며, `db.dropAllUsers()`로 모든 사용자를 삭제할 수 있다.
