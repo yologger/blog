@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 ## Kubernetes
-`Kubernetes`는 컨테이너 오케스트레이션 툴로 다음과 같은 기능을 제공한다.
+`Kubernetes`는 <u>컨테이너 오케스트레이션</u> 시스템으로 다음과 같은 기능을 제공한다.
 - `클러스터링`
     - 쿠버네티스는 여러 실제 서버를 논리적으로 하나의 서버로 클러스터링해준다.
     - 각 서버는 직접 구축한 온프레미스 서버일 수도 있고, AWS EC2처럼 클라우드 서버일 수도 있다.
@@ -30,7 +30,7 @@ sidebarDepth: 0
 
 ![](./220101_start_kubernetes/1.png)
 
-`마스터 노드(Master node)`는 클러스터와 워커 노드를 관리하며, `워커 노드(Worker node)`에는 컨테이너가 생성된다.
+`마스터 노드(Master node)`는 클러스터와 워커 노드를 관리하며, `워커 노드(Worker node)`에는 컨테이너가 생성된다. (마스터 노드에도 컨테이너가 생성될 수 있다.)
 
 ![](./220101_start_kubernetes/2.png)
 
@@ -52,15 +52,15 @@ sidebarDepth: 0
 `온프레미스`는 AWS 같은 클라우드 서비스를 이용하지 않고 자체적인 서버실을 구축하여 운영하는 방식을 말한다. 온프레미스 환경에서는 `kubeadm`, `kubelet`를 설치하여 쿠버네티스 클러스터를 구축할 수 있다.
 
 ### 운영 환경 - 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터 구성
-AWS EC2 처럼 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터를 구축할 수도 있다. `kubeadm`, `kubelet`를 설치하여 쿠버네티스 클러스트를 구축한다.
+AWS EC2와 같은 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터를 구축할 수도 있다. 보통 `kubeadm`, `kubelet`를 사용한다.
 
 ### 운영 환경 - 쿠버네티스 클러스터 관리 서비스
 온프레미스 환경이든 AWS EC2 클라우드 컴퓨팅 서비스를 사용하든 마스터 노드를 선택한 후 마스터 노드에서 클러스터 구성을 위한 복잡한 환경설정을 해야한다.
 
-`AWS EKS(Elastic Kubernetes Service)`, `GCP GKE(Google Kubernetes Service)` 같은 서비스는 마스터 노드 역할을 하는 클라우드 컴퓨팅 서비스를 제공한다. 이를 통해 좀 더 쉽게 쿠버네티스 클러스터를 구축할 수 있다.
+`AWS EKS(Elastic Kubernetes Service)`, `GCP GKE(Google Kubernetes Engine)` 같은 서비스는 마스터 노드 역할을 하는 클라우드 컴퓨팅 서비스를 제공한다. 이를 통해 좀 더 쉽게 쿠버네티스 클러스터를 구축할 수 있다.
 
 ## Mac OS에서 쿠버네티스 시작하기
-`Docker Desktop for Mac`에는 쿠버네티스가 내장되어있다. Docker Desktop을 실행하여 다음과 같은 순서로 쿠버네티스를 활성화하면 된다.
+`Docker Desktop for Mac`에는 쿠버네티스가 내장되어있다. `Docker Desktop for Mac`을 실행하여 다음과 같은 순서로 쿠버네티스를 활성화하면 된다.
 
 ![](./220101_start_kubernetes/3.png)
 
@@ -79,10 +79,8 @@ NAME             STATUS   ROLES                  AGE   VERSION
 docker-desktop   Ready    control-plane,master   66m   v1.22.4
 ```
 
-
-## kubectl 명령어
+## kubectl 명령어 정리
 `kubectl`은 쿠버네티스 클러스터를 제어하기위한 커맨드 라인 도구다. 보통 `kubectl`로 각 노드에 접속하여 노드들을 관리, 운영한다.
-
 
 ### 모든 노드 확인하기
 `kubectl get nodes`명령어로 클러스터에 포함된 노드들을 확인할 수 있다. 현재 하나의 노드를 확인할 수 있다.
@@ -91,4 +89,3 @@ $ kubectl get nodes
 NAME             STATUS   ROLES                  AGE   VERSION
 docker-desktop   Ready    control-plane,master   66m   v1.22.4
 ```
-
