@@ -61,7 +61,7 @@ spec:
 - `spec`: 오브젝트 생성을 위한 상세한 종료
 - `spec.containers`: 팟에 생성할 컨테이너들을 나열한다.
 
-### Pod 생성 및 실행
+### 팟 생성 및 실행
 `kubectl apply -f <YAML 파일>` 명령어로 클러스터에서 팟을 실행할 수 있다.
 ``` shellsession
 $ kubectl apply -f nginx-pod.yml
@@ -72,6 +72,33 @@ pod/nginx-pod created
 $ docker ps -al
 ONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS     NAMES
 fe068fdc944c   nginx     "/docker-entrypoint.…"   24 seconds ago   Up 24 seconds             k8s_nginx-container_nginx-pod_default_e1574fb9-c59e-4916-8bcc-188a5640f6cd_0
+```
+
+참고로 YAML 파일에 `---`를 명시하여 여러 오브젝트를 선언할 수 있다. 다음 예제는 두 개의 팟을 선언하고 있다.
+``` yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-1
+spec:
+  containers:  
+    - name: nginx-container
+      image: nginx:latest
+      ports:
+      - containerPort: 80
+        protocol: TCP
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-2
+spec:
+  containers:  
+    - name: nginx-container
+      image: nginx:latest
+      ports:
+      - containerPort: 80
+        protocol: TCP
 ```
 
 ### 오브젝트 목록 확인
@@ -91,7 +118,7 @@ nginx-pod   1/1     Running   0          70m   10.1.0.33   docker-desktop   <non
 ```
 
 ::: warning
-팟은 별도의 설정을 하지 않으면 쿠버네티스 클러스터 내부, 즉 <u>내부 노드</u>와 <u>내부 다른 팟</u>과만 통신할 수 있다. 외부에서의 통신을 허용하려면 뒤에서 살펴볼 `서비스(Service)`나 `인그레스(Ingress)`가 필요하다.
+팟은 별도의 설정을 하지 않으면 쿠버네티스 클러스터 내부, 즉 <u>내부 다른 팟</u>에서만 해당 팟과 통신할 수 있다. 외부에서 팟의 통신을 허용하려면 뒤에서 살펴볼 `서비스(Service)`나 `인그레스(Ingress)`가 필요하다.
 :::
 
 ### 오브젝트 상세정보 확인
@@ -337,7 +364,7 @@ nginx-deployment-664f4c64c-6wxxs   1/1     Running   0          32s
 nginx-deployment-664f4c64c-ksdt4   1/1     Running   0          23s
 nginx-deployment-664f4c64c-xz7vc   1/1     Running   0          25s
 ```
-이제 레플리카-셋을 확인해보자. 기존 레플리카셋과 새로운 레플리카셋이 존재한다.
+이제 레플리카 셋을 확인해보자. 기존 레플리카셋과 새로운 레플리카셋이 존재한다.
 ``` shellsession
 $ kubectl get replicaset
 NAME                          DESIRED   CURRENT   READY   AGE
@@ -378,7 +405,15 @@ nginx-deployment-796dd5cd88-tnh5j   1/1     Running   0          11s
 실제 운영 환경에서는 `컨테이너 외부 노출` 기능은 서비스 대신 `인그레스(Ingress)`를 사용하여 구축한다. 서비스는 주로 `로드 밸런싱`에 사용된다.
 
 ### 외부 노출
-기본적으로 쿠버네티스는 팟을 외부에 노출하지 않는다. 이 때문에 <u>쿠버네티스 클러스터 내부 노드</u> 또는 <u>내부 다른 팟</u>에서만 팟에 접근할 수 있다.
+::: warning
+기본적으로 쿠버네티스는 팟을 외부에 노출하지 않는다. 이 때문에 <u>쿠버네티스 클러스터 내부 다른 팟</u>에서만 해당 팟과 통신할 수 있다.
+:::
+::: warning
+팟을 <u>클러스터 구성하는 노드</u>로 노출하는지는 쿠버네티스의 네트워크 모델에 따라 다르다. 일반적으로 `Docker Desktop for Mac OS`, `Docker Desktop for Window`, `온프레미스 모델`에서는 클러스터를 구성하는 노드로 조차 포드를 노출하지 않는다. 반면 일부 퍼블릭 클라우드 쿠버네티스는 별다른 설정 없이도 클러스터를 구성하는 노드에게는 포드를 노출하기도 한다.
+:::
+
+### 팟 주소 고정
+쿠버네티스는 팟에 동적으로 IP를 할당한다.
 
 우선 아래 YAML 설정파일로 팟들을 생성해보자. 팟에는 `nginx-pod-label`이라는 라벨을 붙였다.
 ``` yml {9,10,15}
@@ -490,9 +525,299 @@ nginx-service-nodeport   NodePort    10.99.245.9   <none>        9999:31667/TCP 
 $ curl <클러스터의 공인IP>:31667
 ```
 
-## Namespace
+![](./220102_kubernetes_objects/4.png)
 
-## 
+## Namespace
+`네임스페이스(Namespace)`를 사용하면 클러스터에서 여러 오브젝트를 논리적으로 구분할 수 있다.
+
+### 네임스페이스 목록 확인
+`kubectl get namespaces` 명령어로 네임스페이스 목록을 확인할 수 있다.
+``` shellsession
+$ kubectl get namespaces 
+NAME              STATUS   AGE
+kube-public       Active   25h
+kube-system       Active   25h
+default           Active   25h
+```
+
+쿠버네티스는 기본적으로 3개의 네임스페이스를 제공한다. `kube-public`와 `kube-system`는 시스템에서 사용하는 네임스페이스다. `default`는 기본으로 생성되는 네임스페이스로, 오브젝트를 생성할 때 별도의 네임스페이스를 지정하지 않으면 이 네임스페이스에 오브젝트가 생성된다.
+
+### 네임스페이스 생성
+다음과 같이 `YAML 설정 파일`로 네임스페이스를 생성할 수 있다.
+``` yml
+# my-namespace.yml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-namespace
+```
+``` shellsession
+$ kubectl apply -f my_namespace.yml 
+```
+`kubectl create namespace <네임스페이스 이름>` 명령어로도 네임스페이스를 생성할 수 있다.
+``` shellsession
+$ kubectl create namespace your-namespace
+```
+2개의 네임스페이스가 생성된 것을 확인할 수 있다.
+``` shellsession {6-7}
+$ kubectl get namespace 
+NAME              STATUS   AGE
+default           Active   25h
+kube-public       Active   25h
+kube-system       Active   25h
+my-namespace      Active   3m35s
+your-namespace    Active   52s
+```
+
+### 네임스페이스에 오브젝트 생성하기
+YAML 설정파일에서 `metadata.namespace` 항목을 다음과 같이 설정하면 된다.
+``` yml {6}
+# nginx-pod.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  namespace: my-namespace
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      ports:
+      - containerPort: 80
+        protocol: TCP
+```
+
+### 특정 네임스페이스에 포함되는 오브젝트만 조회하기
+`--all-namespaces` 옵션으로 네임스페이스 정보도 함께 출력할 수 있다.
+``` shellsession
+$ kubectl get pods --all-namespaces
+NAMESPACE      NAME           READY   STATUS    RESTARTS         AGE
+my-namespace   nginx-pod      1/1     Running   0                5m27s
+...
+```
+`-n <네임스페이스 이름>` 옵션으로 특정 네임스페이스에 속하는 오브젝트만 조회할 수 있다.
+``` shellsession
+$ kubectl get pods -n my-namespace
+NAME        READY   STATUS    RESTARTS   AGE
+nginx-pod   1/1     Running   0          7m45s
+```
+
+### 네임스페이스 삭제
+`kubectl delete namespace <네임스페이스 이름>` 명령어로 네임스페이스를 삭제할 수 있다.
+``` shellsession
+$ kubectl create configmap my-configmap
+ --from-literal NAME=paul
+```
+
+## Configmap
+`컨피그맵(Configmap)`은 설정값을 저장할 수 있는 오브젝트다. 컨피그맵은 네임스페이스별로 존재한다.
+
+### 컨피그맵 생성
+`kubectl create configmap <이름> --from-literal <키=값>`으로 컨피그맵을 생성할 수 있다.
+``` shellsession
+$ kubectl create configmap my-configmap --from-literal DB_URL=localhost
+```
+
+YAML 설정파일을 사용할 수도 있다.
+``` yml
+# your-configmap.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: your-configmap
+data:
+  DB_URL: localhost
+  DB_USER: myuser
+  DB_PASSWORD: mypassword
+```
+
+``` shellsession
+$ kubectl apply -f your-configmap.yml
+```
+
+### 컨피그맵 확인
+`kubectl get configmap`명령어로 컨피그맵을 확인할 수 있다.
+``` shellsession
+$ kubectl get configmap
+NAME               DATA   AGE
+my-configmap       1      70s
+your-configmap     3      13s
+```
+
+`kubectl describe configmap <컨피그맵 이름>`으로 컨피그맵의 키-값을 확인할 수 있다.
+``` shellsession
+$ kubectl describe configmap your-configmap
+Name:         your-configmap
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+DB_PASSWORD:
+----
+mypassword
+DB_URL:
+----
+localhost
+DB_USER:
+----
+myuser
+
+BinaryData
+====
+
+Events:  <none>
+```
+
+### YAML 설정파일에서 컨피그맵 사용하기
+컨피그맵의 키-값은 컨테이너가 생성될 때 환경변수로 추가된다.
+
+이를 확인하기 위해 `nginx-pod.yml` 파일을 다음과 같이 수정하자.
+``` yml {9-11}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      envFrom:
+      - configMapRef:
+          name: your-configmap
+      ports:
+      - containerPort: 80
+        protocol: TCP
+```
+
+그 다음 컨테이너를 생성하자.
+``` shellsession
+$ kubectl apply -f nginx-pod.yml           
+pod/nginx-pod created
+```
+
+그리고 컨테이너 내부에 접속한다.
+``` shellsession
+$ kubectl exec -it nginx-pod -c nginx-container bash
+root@nginx-pod:/#
+```
+
+컨피그맵의 키-값이 컨테이너에 환경변수로 등록된 것을 확인할 수 있다.
+``` shellsession
+root@nginx-pod:/# echo $DB_PASSWORD
+mypassword
+
+root@nginx-pod:/# echo $DB_USER
+myuser
+
+root@nginx-pod:/# echo $DB_PASSWORD
+mypassword
+```
+
+
+### 컨피그맵 삭제
+`kubectl delete configmap <컨피그맵 이름>` 명령어로 컨피그맵을 삭제할 수 있다.
+``` shellsession
+$ kubectl delete configmap my-configmap
+```
+
+## Secret
+`시크릿(Secret)`은 컨피그맵과 매우 유사하지만 값을 암호화하여 저장한다.
+
+### 시크릿 생성
+`kubectl create secret generic <시크릿 이름> --from-literal <키=값>` 명령어로 시크릿을 생성한다.
+``` shellsession
+kubectl create secret generic my-secret --from-literal DB_PASSWORD=1234
+```
+
+시크릿은 YAML 파일로 생성할 수도 있다.
+``` yml
+# your-secret.yml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: your-secret
+stringData:
+  DB_URL: localhost
+  DB_USER: myuser
+  DB_PASSWORD: mypass
+```
+``` shellsession
+$ kubectl apply -f your-secret.yml
+```
+
+### 시크릿 확인
+`kubectl get secrets`명령어로 모든 시크릿을 확인할 수 있다.
+``` shellsession
+$ kubectl get secrets 
+NAME                  TYPE                                  DATA   AGE
+default-token-jsdgt   kubernetes.io/service-account-token   3      26h
+my-secret             Opaque                                1      10m
+your-secret           Opaque                                3      65s
+```
+`kubectl describe secret <시크릿 이름>` 명령어로 시크릿의 키-값을 확인해보자. 
+``` shellsession
+$ kubectl describe secret your-secret
+Name:         your-secret
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Type:  Opaque
+
+Data
+====
+DB_PASSWORD:  6 bytes
+DB_URL:       9 bytes
+DB_USER:      6 bytes
+```
+컨피그맵과 다르게 값을 직접 출력하지 않고 바이트 수만을 보여준다. `kubectl get secret <시크릿 이름> -o yaml` 명령어를 사용하면 저장된 값도 확인할 수 있다.
+``` shellsession {4-6}
+$ kubectl get secret your-secret -o yaml
+apiVersion: v1
+data:
+  DB_PASSWORD: bXlwYXNz
+  DB_URL: bG9jYWxob3N0
+  DB_USER: bXl1c2Vy
+kind: Secret
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{},"name":"your-secret","namespace":"default"},"stringData":{"DB_PASSWORD":"mypass","DB_URL":"localhost","DB_USER":"myuser"}}
+  creationTimestamp: "2022-04-19T11:20:43Z"
+  name: your-secret
+  namespace: default
+  resourceVersion: "54791"
+  uid: 069997e5-4ab2-4b7c-9a82-ecbb1abc5521
+type: Opaque
+```
+시크릿은 값을 base 64로 인코딩하여 저장한다. 따라서 값에 `bXlwYXNz`, `bG9jYWxob3N0` 같이 인코딩된 값이 저장된다.
+
+### YAML 설정파일에서 시크릿 사용하기
+시크릿의 키-값 또한 컨테이너가 생성될 때 환경변수로 추가된다.
+``` yml {9-11}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+spec:
+  containers:
+    - name: nginx-container
+      image: nginx:latest
+      envFrom:
+      - secretRef:
+          name: your-secret
+      ports:
+      - containerPort: 80
+        protocol: TCP
+```
+
+### 시크릿 삭제
+`ubectl delete secret <시크릿 이름>` 명령어로 시크릿을 삭제할 수 있다.
+``` shellsession
+$ kubectl delete secret my-secret
+```
 
 ## Ingress
 `인그레스(Ingress)`는 크게 세 가지 기능을 제공한다.
