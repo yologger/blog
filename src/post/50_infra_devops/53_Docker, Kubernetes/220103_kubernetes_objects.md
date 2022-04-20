@@ -39,7 +39,7 @@ ingresses                         ing          networking.k8s.io/v1             
 
 
 ## Pod
-- 컨테이너 애플리케이션의 기본 단위를 `팟(Pod)`이라고 한다.
+- 쿠버네티스에서는 컨테이너 애플리케이션의 기본 단위를 `팟(Pod)`이라고 한다.
 - 팟은 하나 이상의 도커 컨테이너로 구성된다.
 
 하나의 Nginx 컨테이너로 구성된 간단한 팟을 생성해보자. 먼저 `nginx-pod.yml`파일을 다음과 같이 작성한다.
@@ -102,24 +102,20 @@ spec:
 ```
 
 ### 오브젝트 목록 확인
-`kubectl get <오브젝트 이름>` 명령어로 오브젝트 목록을 확인할 수 있다.
+`kubectl get <오브젝트 이름>` 명령어로 오브젝트 목록을 확인할 수 있다. `READY`의 `1/1`은 한 개의 컨테이너 중 한 개의 컨테이너가 정상 실행 중이라는 의미다.
 ``` shellsession
 $ kubectl get pods
 NAME        READY   STATUS    RESTARTS   AGE
 nginx-pod   1/1     Running   0          3m
 ```
-`READY`의 `1/1`은 한 개의 컨테이너 중 한 개의 컨테이너가 정상 실행 중이라는 의미다.
 
-`-o wide` 옵션으로 팟에 할당된 IP도 확인할 수 있다.
-```
+
+`-o wide` 옵션으로 클러스터 내부에서 팟에 할당된 IP도 확인할 수 있다.
+``` shellsession
 $ kubectl get pods -o wide
 NAME        READY   STATUS    RESTARTS   AGE   IP          NODE             NOMINATED NODE   READINESS GATES
 nginx-pod   1/1     Running   0          70m   10.1.0.33   docker-desktop   <none>           <none>
 ```
-
-::: warning
-팟은 별도의 설정을 하지 않으면 쿠버네티스 클러스터 내부, 즉 <u>내부 다른 팟</u>에서만 해당 팟과 통신할 수 있다. 외부에서 팟의 통신을 허용하려면 뒤에서 살펴볼 `서비스(Service)`나 `인그레스(Ingress)`가 필요하다.
-:::
 
 ### 오브젝트 상세정보 확인
 `kubectl describe <오브젝트 종류> <오브젝트 이름>`으로 오브젝트의 상세한 정보를 확인할 수 있다.
@@ -192,6 +188,13 @@ $ kubectl logs nginx-pod
 $ kubectl delete -f nginx-pod.yml
 pod "nginx-pod" deleted
 ```
+
+### 모든 팟 삭제
+`kubectl delete pods --all` 명령어로 모든 팟을 삭제할 수 있다.
+``` shellsession
+$ kubectl delete pods --all 
+```
+
 
 ### Pod vs. Docker container
 팟은 여러 컨테이너를 포함할 수도 있다. `nginx-pod.yml` 파일을 다음과 같이 수정하자.
@@ -286,7 +289,7 @@ nginx-replicaset-xc5xt   1/1     Running             0          3m44s
 두 개의 팟이 추가적으로 생성되었다.
 
 ## Deployment
-`디플로이먼트(Deployment)`는 다음 기능을 제공하는 오브젝트다.
+`디플로이먼트(Deployment)`는 서비스와 매우 유사하다. 다만 다음 기능을 추가적으로 제공한다.
 
 - 애플리케이션의 배포와 롤링 업데이트를 지원한다.
 - 이전 배포 버전으로 쉽게 롤백할 수 있다.
@@ -387,43 +390,34 @@ nginx-deployment-796dd5cd88-tnh5j   1/1     Running   0          11s
 ## Service
 `서비스(Service)`는 크게 세 가지 역할을 하는 오브젝트다.
 
-- `팟 주소 고정`: 레플리카셋이나 디플로이먼트로 띄운 팟은 쿠버네티스 클러스터의 상황에 따라서 노드를 옮겨다니기도 하고 재시작되기도 한다. IP 주소가 변하기도 한다. 서비스의 `셀렉터(Selector)`, 팟의 `라벨(Label)`를 사용하면 팟이 어떤 노드에 있든 고정된 방법으로 접근할 수 있다.
-
 - `팟 외부 노출`: 컨테이너와 쿠버네티스 클러스터의 포트를 <u>바인딩</u>하고 컨테이너 포트를 외부로 노출하는 오브젝트다.  즉 서비스는 클러스터로 들어온 요청을 컨테이너로 <u>포워딩</u>해준다. 
 
-- `로드 밸런싱`: 요청을 여러 팟으로 분산하여 보낸다. 
+- `팟 주소 고정`: 레플리카셋이나 디플로이먼트로 띄운 팟은 쿠버네티스 클러스터의 상황에 따라서 노드를 옮겨다니기도 하고 재시작되기도 한다. IP 주소가 변하기도 한다. 서비스의 `셀렉터(Selector)`, 팟의 `라벨(Label)`를 사용하면 팟이 어떤 노드에 있든 고정된 방법으로 접근할 수 있다.
 
+- `로드 밸런싱`: 요청을 여러 팟으로 분산하여 보낸다. 
 
 서비스는 크게 세 가지 타입이 존재한다.
 |종류|설명|
 |---|---|
-|`ClusterIP`|쿠버네티스 내부의 포트를 외부로 노출하지 않는 서비스|
-|`NodePort`|쿠버네티스 내부의 포트를 쿠버네티스 클러스터의 포트와 바인딩해주는 서비스. 또한 요청을 팟들에 로드밸런싱 해준다. 주로 <u>온프레미스 환경</u>에서 사용한다.|
-|`LoadBalancer`|쿠버네티스 내부의 포트를 쿠버네티스 클러스터의 포트와 바인딩해주는 서비스. 또한 요청을 팟들에 로드밸런싱 해준다. AWS, GCP 등 <u>클라우드 서비스</u>에서 사용한다.|
+|`ClusterIP`|쿠버네티스 내부의 팟을 외부로 노출하지 않는 서비스|
+|`NodePort`|쿠버네티스 내부의 포트를 외부로 노출하는 서비스. 주로 <u>온프레미스 환경</u>에서 사용한다.|
+|`LoadBalancer`|AWS, GCP 등 <u>클라우드 서비스</u>에서 사용하는 서비스. 클라우드 서비스가 제공하는 로드밸런서 기능을 사용한다.|
 
 
-실제 운영 환경에서는 `컨테이너 외부 노출` 기능은 서비스 대신 `인그레스(Ingress)`를 사용하여 구축한다. 서비스는 주로 `로드 밸런싱`에 사용된다.
+실제 운영 환경에서는 `컨테이너 외부 노출` 기능은 서비스 대신 `인그레스(Ingress)`를 사용하여 구축한다. 서비스는 주로 `팟 주소 고정`와 `로드 밸런싱`에 사용된다.
 
-### 외부 노출
-::: warning
-기본적으로 쿠버네티스는 팟을 외부에 노출하지 않는다. 이 때문에 <u>쿠버네티스 클러스터 내부 다른 팟</u>에서만 해당 팟과 통신할 수 있다.
-:::
-::: warning
-팟을 <u>클러스터 구성하는 노드</u>로 노출하는지는 쿠버네티스의 네트워크 모델에 따라 다르다. 일반적으로 `Docker Desktop for Mac OS`, `Docker Desktop for Window`, `온프레미스 모델`에서는 클러스터를 구성하는 노드로 조차 포드를 노출하지 않는다. 반면 일부 퍼블릭 클라우드 쿠버네티스는 별다른 설정 없이도 클러스터를 구성하는 노드에게는 포드를 노출하기도 한다.
-:::
+### 팟의 외부 노출
+팟은 기본적으로 외부에 노출되지 않는다. 즉 쿠버네티스 클러스터 내부, 즉 <u>내부 다른 팟</u>에서만 해당 팟과 통신할 수 있다. 
 
-### 팟 주소 고정
-쿠버네티스는 팟에 동적으로 IP를 할당한다.
-
-우선 아래 YAML 설정파일로 팟들을 생성해보자. 팟에는 `nginx-pod-label`이라는 라벨을 붙였다.
-``` yml {9,10,15}
+이를 살펴보기 위해 두 개의 동일한 팟을 유지하는 디플로이먼트를 실행해보자.
+``` yml
 # nginx-deployment.yml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: nginx-pod-label
@@ -439,19 +433,70 @@ spec:
           ports:
           - containerPort: 80
 ```
-3개의 팟과 각각의 IP를 확인할 수 있다.
 ``` shellsession
-$ kubectl get pods -o wide       
-NAME                               READY   STATUS    RESTARTS   AGE   IP          NODE             
-nginx-deployment-664f4c64c-jsc5x   1/1     Running   0          45s   10.1.0.35   docker-desktop
-nginx-deployment-664f4c64c-s2tqf   1/1     Running   0          45s   10.1.0.36   docker-desktop
-nginx-deployment-664f4c64c-sl7dc   1/1     Running   0          45s   10.1.0.34   docker-desktop
+$ kubectl apply -f nginx-deployment.yml
+
+$ kubectl get pods -o wide
+NAME                               READY   STATUS    RESTARTS   AGE   IP         
+nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          6s    10.1.0.54   
+nginx-deployment-664f4c64c-5r55z   1/1     Running   0          6s    10.1.0.55   
 ```
 
-각 팟에 할당된 IP는 쿠버네티스의 상태에 따라 동적으로 변한다. 따라서 IP가 아닌 다른 고정된 주소로 팟에 접근할 수 있어야 한다.
+그 다음 `10.1.0.54` 팟에 접속하여 `10.1.0.55`과 통신할 수 있는지 확인해보자.
+``` shellsession
+$ kubectl exec -it nginx-deployment-664f4c64c-4sbfd bash
+```
+정상적으로 통신이 되는 것을 확인할 수 있다.
+```{1}
+root@nginx-deployment-664f4c64c-4sbfd:/# curl 10.1.0.55
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
 
-### ClusterIP
-서비스는 IP가 아닌 `셀렉터(Selector)`를 사용한다. 서비스는 마치 DNS 처럼 동작하며, IP 대신 팟을 구분하는 `라벨(Label)`을 사용한다.
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+이제 클러스터 외부에서 접근이 안되는지 확인해보자. 쿠버네티스에서는 클러스터를 구성하는 노드 또한 외부로 간주한다. 따라서 노드에서 다음같은 접속들은 모두 허용되지 않는다.
+``` 
+$ curl 10.1.0.54
+$ curl 10.1.0.55
+$ curl <NODE IP>
+```
+
+::: warning
+팟을 <u>클러스터 구성하는 노드</u>로 노출하는지는 쿠버네티스의 네트워크 모델에 따라 다르다. 일반적으로 `Docker Desktop for Mac OS`, `Docker Desktop for Window`, `온프레미스 모델`에서는 클러스터를 구성하는 노드로 조차 포드를 노출하지 않는다. 반면 일부 퍼블릭 클라우드 쿠버네티스는 별다른 설정 없이도 클러스터를 구성하는 노드에게는 포드를 노출하기도 한다. 따라서 기본적으로 <u><b>클러스터를 구성하는 노드에게 조차 팟을 노출하지 않는다</b></u>고 간주하는게 좋다.
+:::
+
+### 유동적인 팟의 IP
+쿠버네티스는 기본적으로 팟에 동적으로 IP를 할당한다. 
+``` shellsession
+$ kubectl get pods -o wide
+NAME                               READY   STATUS    RESTARTS   AGE   IP         
+nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          6s    10.1.0.54   
+nginx-deployment-664f4c64c-5r55z   1/1     Running   0          6s    10.1.0.55   
+```
+위 예제에서의 IP(`10.1.0.54`, `10.1.0.55`)는 쿠버네티스의 상태에 따라 동적으로 변할 수 있다. 따라서 IP가 아닌 다른 고정된 주소로 팟에 접근할 수 있어야 한다.
+
+### ClusterIP 서비스
+서비스는 IP가 아닌 `셀렉터(Selector)`를 사용하여 팟을 식별한다. 서비스는 마치 DNS 처럼 동작하며, IP 대신 팟을 구분하는 `라벨(Label)`을 사용한다.
 
 서비스 생성을 위한 설정파일은 다음과 같다.
 ``` yml {11,12,13}
@@ -469,27 +514,62 @@ spec:
     app: nginx-pod-label
   type: ClusterIP  
 ```
+서비스를 생성한다.
+``` shellsession
+$ kubectl apply -f nginx-service-clusterip.yml 
+service/nginx-service-clusterip created
+```
 생성된 서비스는 다음과 같다.
 ``` shellsession {4}
-kubectl get services
-NAME                      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-kubernetes                ClusterIP   10.96.0.1      <none>        443/TCP    22h
-nginx-service-clusterip   ClusterIP   10.100.74.98   <none>        9999/TCP   17s
+$ kubectl get services
+NAME                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+kubernetes                ClusterIP   10.96.0.1       <none>        443/TCP    9m47s
+nginx-service-clusterip   ClusterIP   10.110.234.94   <none>        9999/TCP   3m30s
 ```
-이제 다른 팟에서 서비스의 고정된 `CLUSTER-IP`와 `PORT`로 요청을 보내면 된다. 
+이제 다른 팟에서 서비스를 통해 팟들과 통신할 수 있다. 서비스의 `CLUSTER-IP`와 `PORT`를 사용하면 된다.
 ```
-$ curl 10.100.74.98:9999
+// 다른 팟 내부에 접속
+$ kubectl exec -it ubuntu-pod bash
+```
+```
+// 다른 팟에서 서비스로 요청
+root@ubuntu-pod:/# curl 10.110.234.94:9999
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
 ```
 
 서비스로 요청을 보내면 로드밸런싱도 수행된다.
 
-![](./220102_kubernetes_objects/2.png)
+![](./220103_kubernetes_objects/2.png)
 
 `ClusterIP` 타입의 서비스는 팟을 외부로 노출하지 않기 때문에 클러스터 외부 네트워크에서는 접근할 수 없다.
 
-![](./220102_kubernetes_objects/3.png)
+![](./220103_kubernetes_objects/3.png)
 
-### NodePort
+### NodePort 서비스
 `NodePort` 타입 서비스는 ClusterIP와 유사하다. 다만 외부 네트워크에서도 팟에 접근하도록 팟을 외부에 노출한다.
 ``` yml {13}
 # nginx-service-nodeport.yml
@@ -512,20 +592,90 @@ spec:
 $ kubectl apply -f nginx-service-nodeport.yml 
 ```
 
-생성된 팟은 다음과 같다.
-``` shellsession {3}
-$ kubectl get services                        
-NAME                     TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
-kubernetes               ClusterIP   10.96.0.1     <none>        443/TCP          22h
-nginx-service-nodeport   NodePort    10.99.245.9   <none>        9999:31667/TCP   4s
+생성된 서비스는 다음과 같다.
+``` shellsession {4}
+$ kubectl get services
+NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+kubernetes                ClusterIP   10.96.0.1        <none>        443/TCP          49s
+nginx-service-clusterip   NodePort    10.107.159.253   <none>        9999:30553/TCP   34s
 ```
 
-클러스터 내부에서 사용되는 `9999` 포트 외에도 `31667`라는 포트가 생성됐다. `31667` 포트는 외부 네트워크로 노출되는 포트이며, 외부 네트워크에서 팟에 접속할 수 있다.
-```
-$ curl <클러스터의 공인IP>:31667
+클러스터 내부에서 사용되는 `9999` 포트 외에도 `30553`라는 포트가 생성됐다. `30553` 포트는 외부 네트워크로 노출되는 포트이며, 외부 네트워크에서 팟과 통신할 수 있다.
+``` shellsession
+$ curl <클러스터의 외부IP>:30553
 ```
 
-![](./220102_kubernetes_objects/4.png)
+이제 클러스터의 노드에서도 팟과 통신할 수 있다.
+``` shellsession
+$ curl localhost:30553
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+![](./220103_kubernetes_objects/4.png)
+
+물론 클러스터 내부 팟에서도 여전히 통신할 수 있다.
+
+```
+// 다른 팟 내부에 접속
+$ kubectl exec -it ubuntu-pod bash
+```
+```
+// 다른 팟에서 서비스로 요청
+root@ubuntu-pod:/# curl 10.107.159.253:9999
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+![](./220103_kubernetes_objects/5.png)
+
+
 
 ## Namespace
 `네임스페이스(Namespace)`를 사용하면 클러스터에서 여러 오브젝트를 논리적으로 구분할 수 있다.
@@ -814,13 +964,243 @@ spec:
 ```
 
 ### 시크릿 삭제
-`ubectl delete secret <시크릿 이름>` 명령어로 시크릿을 삭제할 수 있다.
+`kubectl delete secret <시크릿 이름>` 명령어로 시크릿을 삭제할 수 있다.
 ``` shellsession
 $ kubectl delete secret my-secret
 ```
 
 ## Ingress
-`인그레스(Ingress)`는 크게 세 가지 기능을 제공한다.
-- 컨테이너 외부 노출
-- 포워딩
+`인그레스(Ingress)`는 크게 세 가지 기능을 제공하는 오브젝트다.
+- 팟 외부 노출
+- URL Path를 통한 포워딩
 - SSL/TLS
+
+### 세팅
+인그레스를 테스트하기 위해 다음과 같이 두 디플로이먼트를 먼저 생성한다.
+``` yml
+### deployment1.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pod1-label
+  template:
+    metadata:
+      name: pod1
+      labels: 
+        app: pod1-label
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+```
+``` yml
+### deployment2.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pod2-label
+  template:
+    metadata:
+      name: pod2
+      labels: 
+        app: pod2-label
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+```
+그리고 두 디플로이먼트에 대한 서비스를 생성한다.
+``` yml
+# service1.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: service1
+spec:
+  ports:
+    - name: service1-port
+      port: 11111
+      targetPort: 80
+  selector:
+    app: pod1-label
+  type: ClusterIP
+```
+``` yml
+# service2.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: service2
+spec:
+  ports:
+    - name: service2-port
+      port: 22222
+      targetPort: 80
+  selector:
+    app: pod2-label
+  type: ClusterIP
+```
+두 서비스의 타입은 `ClusterIP`이므로 팟들이 외부에 노출되지 않는다.
+
+![](./220103_kubernetes_objects/6.png)
+
+### 인그레스 오브젝트 생성하기
+인그레스 오브젝트는 YAML 설정파일에 다음과 같이 선언한다.
+``` yml
+# my-ingress.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / # 트래픽이 리다이렉트될 타겟 URI
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules: 
+  - http:
+      paths:
+      - path: /service1
+        pathType: Prefix
+        backend:
+          service:
+            name: service1
+            port:
+              number: 11111
+      - path: /service2
+        pathType: Prefix
+        backend:
+          service:
+            name: service2
+            port:
+              number: 22222
+```
+이제 설정파일로 인그레스 오브젝트를 생성한다.
+``` shellsession
+$ kubectl apply -f my-ingress.yml
+```
+
+![](./220103_kubernetes_objects/7.png)
+
+### 인그레스 컨트롤러 설치
+인그레스 오브젝트만 생성해서는 아무 일도 일어나지 않는다. 외부 요청을 실제로 처리하는 서버가 필요하며, 이 서버를 `인그레스 컨트롤러`라고 한다. 인그레스 컨트롤러는 많은 제품군이 있으며, 여기서는 쿠버네티스 환경에서 활발히 사용되고 있는 `Nginx 인그레스 컨트롤러`를 사용해보자. 
+
+우선 다음 명령어를 입력하여 `Nginx 인그레스 컨트롤러`를 설치한다.
+```shellsession{1}
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+namespace/ingress-nginx created
+serviceaccount/ingress-nginx created
+configmap/ingress-nginx-controller created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx created
+role.rbac.authorization.k8s.io/ingress-nginx created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx created
+service/ingress-nginx-controller-admission created
+service/ingress-nginx-controller created
+deployment.apps/ingress-nginx-controller created
+ingressclass.networking.k8s.io/nginx created
+validatingwebhookconfiguration.admissionregistration.k8s.io/ingress-nginx-admission created
+serviceaccount/ingress-nginx-admission created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+role.rbac.authorization.k8s.io/ingress-nginx-admission created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+job.batch/ingress-nginx-admission-create created
+job.batch/ingress-nginx-admission-patch created
+```
+
+`Nginx 인그레스 컨트롤러`를 설치하면 관련된 여러 오브젝트가 `ingress-nginx` 네임스페이스에 자동으로 생성된다. 우선 팟과 디플로이먼트를 확인해보자. Nginx 웹 서버가 팟으로 동작하는 것을 확인할 수 있다.
+``` shellsession{5}
+$ kubectl get pods -n ingress-nginx
+NAME                                       READY   STATUS      RESTARTS   AGE
+ingress-nginx-admission-create--1-x7fdd    0/1     Completed   0          4m42s
+ingress-nginx-admission-patch--1-ncz4v     0/1     Completed   1          4m42s
+ingress-nginx-controller-8cf5559f8-hvqkq   1/1     Running     0          4m42s
+```
+``` shellsession{3}
+$ kubectl get deployments -n ingress-nginx
+NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
+ingress-nginx-controller   1/1     1            1           5m
+```
+Nginx 웹 서버도 하나의 팟으로 동작하기 때문에 외부 노출을 위한 서비스가 필요하다. `Nginx 인그레스 컨트롤러`를 설치하면 필요한 서비스 또한 자동으로 생성된다.
+``` shellsession {3}
+$ kubectl get services -n ingress-nginx  
+NAME                                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller             NodePort    10.108.230.135   <none>        80:32508/TCP,443:32527/TCP   5m13s
+ingress-nginx-controller-admission   ClusterIP   10.96.200.134    <none>        443/TCP                      5m13s
+```
+결국 인그레스 컨트롤러는 크게 두 가지 요소로 구성된다는 것을 알 수 있다.
+- 웹 서버 컨테이너를 내장한 <u><b>팟</b></u>
+- 팟을 외부에 노출하고, 외부 요청을 내부로 포워딩해주는 <u><b>서비스</b></u>
+
+![](./220103_kubernetes_objects/8.png)
+
+이제 외부에서 인그레스 컨트롤러의 `service1` 서비스로 요청을 보내보자.
+``` shellsession {1}
+$ curl localhost:32508/service1
+curl: (6) Could not resolve host: curl
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+`service2`로의 요청도 처리되는 것을 확인할 수 있다.
+``` shellsession
+$ curl curl localhost:32508/service2
+curl: (6) Could not resolve host: curl
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```

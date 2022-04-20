@@ -79,13 +79,19 @@ NAME             STATUS   ROLES                  AGE   VERSION
 docker-desktop   Ready    control-plane,master   66m   v1.22.4
 ```
 
-## kubectl 명령어 정리
-`kubectl`은 쿠버네티스 클러스터를 제어하기위한 커맨드 라인 도구다. 보통 `kubectl`로 각 노드에 접속하여 노드들을 관리, 운영한다.
-
 ### 모든 노드 확인하기
 `kubectl get nodes`명령어로 클러스터에 포함된 노드들을 확인할 수 있다. 현재 하나의 노드를 확인할 수 있다.
 ``` shellsession
 $ kubectl get nodes
 NAME             STATUS   ROLES                  AGE   VERSION
 docker-desktop   Ready    control-plane,master   66m   v1.22.4
+```
+
+`--show-labels`을 추가하면 라벨까지 확인할 수 있다.
+``` shellsession
+$ kubectl get pods --show-labels
+NAME                               READY   STATUS    RESTARTS   AGE   LABELS
+nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          45m   app=nginx-pod-label,pod-template-hash=664f4c64c
+nginx-deployment-664f4c64c-5r55z   1/1     Running   0          45m   app=nginx-pod-label,pod-template-hash=664f4c64c
+nginx-pod                          1/1     Running   0          38m   <none>
 ```
