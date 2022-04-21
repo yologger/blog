@@ -66,7 +66,7 @@ module.exports = {
         items: [
           // { text: "여행", link: "/post/92_travel/" },
           // { text: "리뷰", link: "/post/92_review/" },
-          { text: "시사 이슈", link: "/post/93_issue/" },
+          // { text: "시사 이슈", link: "/post/93_issue/" },
           // { text: "생각정리", link: "/post/94_memory/" },
         ]
       },
