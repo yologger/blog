@@ -390,9 +390,9 @@ nginx-deployment-796dd5cd88-tnh5j   1/1     Running   0          11s
 ## Service
 `서비스(Service)`는 크게 세 가지 역할을 하는 오브젝트다.
 
-- `팟 외부 노출`: 컨테이너와 쿠버네티스 클러스터의 포트를 <u>바인딩</u>하고 컨테이너 포트를 외부로 노출하는 오브젝트다.  즉 서비스는 클러스터로 들어온 요청을 컨테이너로 <u>포워딩</u>해준다. 
-
 - `팟 주소 고정`: 레플리카셋이나 디플로이먼트로 띄운 팟은 쿠버네티스 클러스터의 상황에 따라서 노드를 옮겨다니기도 하고 재시작되기도 한다. IP 주소가 변하기도 한다. 서비스의 `셀렉터(Selector)`, 팟의 `라벨(Label)`를 사용하면 팟이 어떤 노드에 있든 고정된 방법으로 접근할 수 있다.
+
+- `팟 외부 노출`: 컨테이너와 쿠버네티스 클러스터의 포트를 <u>바인딩</u>하고 컨테이너 포트를 외부로 노출하는 오브젝트다.  즉 서비스는 클러스터로 들어온 요청을 컨테이너로 <u>포워딩</u>해준다. 
 
 - `로드 밸런싱`: 요청을 여러 팟으로 분산하여 보낸다. 
 
@@ -405,6 +405,17 @@ nginx-deployment-796dd5cd88-tnh5j   1/1     Running   0          11s
 
 
 실제 운영 환경에서는 `컨테이너 외부 노출` 기능은 서비스 대신 `인그레스(Ingress)`를 사용하여 구축한다. 서비스는 주로 `팟 주소 고정`와 `로드 밸런싱`에 사용된다.
+
+
+### 팟 주소 고정
+쿠버네티스는 기본적으로 팟에 유동적으로 IP를 할당한다. 
+``` shellsession
+$ kubectl get pods -o wide
+NAME                               READY   STATUS    RESTARTS   AGE   IP         
+nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          6s    10.1.0.54   
+nginx-deployment-664f4c64c-5r55z   1/1     Running   0          6s    10.1.0.55   
+```
+위 예제에서의 IP(`10.1.0.54`, `10.1.0.55`)는 쿠버네티스의 상태에 따라 동적으로 변할 수 있다. 따라서 IP가 아닌 다른 고정된 주소로 팟에 접근할 수 있어야 한다.
 
 ### 팟의 외부 노출
 팟은 기본적으로 외부에 노출되지 않는다. 즉 쿠버네티스 클러스터 내부, 즉 <u>내부 다른 팟</u>에서만 해당 팟과 통신할 수 있다. 
@@ -429,7 +440,7 @@ spec:
     spec:
       containers:
         - name: nginx-container
-          image: nginx:1.11
+          image: nginx:latest
           ports:
           - containerPort: 80
 ```
@@ -446,7 +457,7 @@ nginx-deployment-664f4c64c-5r55z   1/1     Running   0          6s    10.1.0.55
 ``` shellsession
 $ kubectl exec -it nginx-deployment-664f4c64c-4sbfd bash
 ```
-정상적으로 통신이 되는 것을 확인할 수 있다.
+팟 사이에 정상적으로 통신이 되는 것을 확인할 수 있다.
 ```{1}
 root@nginx-deployment-664f4c64c-4sbfd:/# curl 10.1.0.55
 <!DOCTYPE html>
@@ -478,22 +489,15 @@ Commercial support is available at
 ``` 
 $ curl 10.1.0.54
 $ curl 10.1.0.55
+```
+또한 외부 네트워크에서의 접속도 허용되지 않는다.
+```
 $ curl <NODE IP>
 ```
 
 ::: warning
 팟을 <u>클러스터 구성하는 노드</u>로 노출하는지는 쿠버네티스의 네트워크 모델에 따라 다르다. 일반적으로 `Docker Desktop for Mac OS`, `Docker Desktop for Window`, `온프레미스 모델`에서는 클러스터를 구성하는 노드로 조차 포드를 노출하지 않는다. 반면 일부 퍼블릭 클라우드 쿠버네티스는 별다른 설정 없이도 클러스터를 구성하는 노드에게는 포드를 노출하기도 한다. 따라서 기본적으로 <u><b>클러스터를 구성하는 노드에게 조차 팟을 노출하지 않는다</b></u>고 간주하는게 좋다.
 :::
-
-### 유동적인 팟의 IP
-쿠버네티스는 기본적으로 팟에 동적으로 IP를 할당한다. 
-``` shellsession
-$ kubectl get pods -o wide
-NAME                               READY   STATUS    RESTARTS   AGE   IP         
-nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          6s    10.1.0.54   
-nginx-deployment-664f4c64c-5r55z   1/1     Running   0          6s    10.1.0.55   
-```
-위 예제에서의 IP(`10.1.0.54`, `10.1.0.55`)는 쿠버네티스의 상태에 따라 동적으로 변할 수 있다. 따라서 IP가 아닌 다른 고정된 주소로 팟에 접근할 수 있어야 한다.
 
 ### ClusterIP 서비스
 서비스는 IP가 아닌 `셀렉터(Selector)`를 사용하여 팟을 식별한다. 서비스는 마치 DNS 처럼 동작하며, IP 대신 팟을 구분하는 `라벨(Label)`을 사용한다.
@@ -507,12 +511,12 @@ metadata:
   name: nginx-service-clusterip
 spec:
   ports:
-    - name: nginx-pods-port
+    - name: nginx-pods-clusterip-port
       port: 9999
       targetPort: 80
   selector:
-    app: nginx-pod-label
-  type: ClusterIP  
+    app: nginx-pod-label  ## 팟의 라벨
+  type: ClusterIP  ## 서비스 타입
 ```
 서비스를 생성한다.
 ``` shellsession
@@ -675,7 +679,27 @@ Commercial support is available at
 
 ![](./220103_kubernetes_objects/5.png)
 
+외부로 노출되는 포트는 기본적으로 30000~32768 포트 중 랜덤하게 선택되지만 원하면 다음과 같이 포트를 지정할 수 있다.
 
+``` yml {11}
+# nginx-service-nodeport.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-nodeport
+spec:
+  ports:
+    - name: nginx-pods-port
+      port: 9999
+      targetPort: 80
+      nodePort: 31000
+  selector:
+    app: nginx-pod-label
+  type: NodePort  
+```
+
+AWS EC2에서 쿠버네티스를 구축한 경우 보안 그룹에서 해당 포트를 개방해야한다.
+ 
 
 ## Namespace
 `네임스페이스(Namespace)`를 사용하면 클러스터에서 여러 오브젝트를 논리적으로 구분할 수 있다.
@@ -1178,7 +1202,7 @@ Commercial support is available at
 ```
 `service2`로의 요청도 처리되는 것을 확인할 수 있다.
 ``` shellsession
-$ curl curl localhost:32508/service2
+$ curl localhost:32508/service2
 curl: (6) Could not resolve host: curl
 <!DOCTYPE html>
 <html>

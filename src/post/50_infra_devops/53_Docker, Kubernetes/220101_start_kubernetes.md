@@ -49,10 +49,10 @@ sidebarDepth: 0
 개발 환경에서는 하나의 노드로 구성된 쿠버네티스를 구축할 수 있다. 리눅스 환경에서는 `Minikube`, Mac OS 환경에서는 `Docker Destkop for Mac`, Window 환경에서는 `Docker Desktop for Window`를 설치하면 된다.
 
 ### 운영 환경 - 온프레미스
-`온프레미스`는 AWS 같은 클라우드 서비스를 이용하지 않고 자체적인 서버실을 구축하여 운영하는 방식을 말한다. 온프레미스 환경에서는 `kubeadm`, `kubelet`를 설치하여 쿠버네티스 클러스터를 구축할 수 있다.
+`온프레미스`는 AWS 같은 클라우드 서비스를 이용하지 않고 자체적인 서버실을 구축하여 운영하는 방식을 말한다. 온프레미스 환경에서는 `kubeadm` 또는 `kops`를 사용하여 쿠버네티스 클러스터를 구축할 수 있다.
 
 ### 운영 환경 - 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터 구성
-AWS EC2와 같은 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터를 구축할 수도 있다. 보통 `kubeadm`, `kubelet`를 사용한다.
+AWS EC2와 같은 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터를 구축할 수도 있다. 보통 `kubeadm`, `kops`를 사용한다.
 
 ### 운영 환경 - 관리형 쿠버네티스
 온프레미스 환경이든 AWS EC2 클라우드 컴퓨팅 서비스를 사용하든 마스터 노드를 선택한 후 마스터 노드에서 클러스터 구성을 위한 복잡한 환경설정을 해야한다. `AWS EKS(Elastic Kubernetes Service)`, `GCP GKE(Google Kubernetes Engine)` 같은 서비스는 마스터 노드 역할을 하는 클라우드 컴퓨팅 서비스를 제공하며, 이를 `관리형 쿠버네티스(Managed Kubernetes)`라고 한다.
@@ -85,7 +85,7 @@ docker-desktop   Ready    control-plane,master   66m   v1.22.4
 - 모든 서버의 시간이 NTP를 통해 동기화되어야한다. 
 
 두 개의 AWS EC2 인스턴스로 쿠버네티스 클러스터를 구축해보자. AWS EC2 스펙은 다음과 같다.
-- Ubuntu Server 18.04 LTS (HVM), SSD Volume Type
+- Ubuntu Server 20.04 LTS (HVM), SSD Volume Type
 - t3a.small (2 CPU core, 2GB RAM)
 
 ### 보안 그룹 설정
@@ -104,13 +104,13 @@ docker-desktop   Ready    control-plane,master   66m   v1.22.4
 ### 호스트 이름 변경
 `Hostname`에는 영문 소문자(a-z), 숫자(0-9), 그리고 하이폰(-)만 사용해야 한다.
 우선 `sudo hostnamectl set-hostname <HOSTNAME>` 명령어로 호스트 이름을 변경한다.
-``` shellsession
-$ sudo hostnamectl set-hostname k8s-master
+```  
+$ sudo hostnamectl set-hostname cluster-master1
 ```
 `hostnamectl` 명령어로 반영되었는지 확인한다.
-``` shellsession
+```  
 $ hostnamectl
-   Static hostname: k8s-master
+   Static hostname: cluster-master1
          Icon name: computer-vm
            Chassis: vm
         Machine ID: ec ... 766e7
@@ -121,12 +121,12 @@ $ hostnamectl
       Architecture: x86-64
 ```
 `/etc/hosts` 파일을 열고 호스트 네임을 추가한다.
-``` shellsession
+```  
 $ sudo vim /etc/hosts
 ```
 ``` {2}
 127.0.0.1 localhost
-127.0.0.1 k8s-master
+127.0.0.1 cluster-master1
 ....
 ```
 
@@ -134,46 +134,40 @@ $ sudo vim /etc/hosts
 
 ### 패키지 업그레이드
 기본으로 설치된 패키지들을 최신으로 업데이트 한다.
-``` shellsession
+```
 $ sudo apt update
+
 $ sudo apt upgrade
 ```
 
 ### 메모리 스왑 비활성화
-``` shellsession
+```
 $ sudo swapoff -a
 ```
 
 ### NTP 설정 
 쿠버네티스 클러스터는 여러 서버로 구성된다. 따라서 모든 서버의 시간을 `NTP(Network Time Protocol)`로 동기화 해야한다. 다음 명령어를 순서대로 입력하자.
-```shellsession
+```
 $ sudo apt install ntp
-```
-```shellsession
+
 $ sudo service ntp restart
-```
-```shellsession
+
 $ sudo ntpq -p
 ```
 
 ### 도커 설치
 먼저 각 노드에 도커를 설치하기 위해 다음 명령어를 순서대로 입력한다.
-``` shellsession
+```
 $ sudo apt-get update && sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common gnupg2
-``` 
-``` shellsession
+
 $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -
-``` 
-``` shellsession
+
 $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-``` 
-``` shellsession
+
 $ sudo apt-get update && sudo apt-get install -y containerd.io=1.2.13-2 docker-ce=5:19.03.11~3-0~ubuntu-$(lsb_release -cs) docker-ce-cli=5:19.03.11~3-0~ubuntu-$(lsb_release -cs)
-``` 
-``` shellsession
+
 $ sudo mkdir /etc/docker
-``` 
-``` shellsession
+
 $ cat <<EOF | sudo tee /etc/docker/daemon.json
 {
   "exec-opts": ["native.cgroupdriver=systemd"],
@@ -184,26 +178,22 @@ $ cat <<EOF | sudo tee /etc/docker/daemon.json
   "storage-driver": "overlay2"
 }
 EOF
-``` 
-``` shellsession
+
 $ sudo mkdir -p /etc/systemd/system/docker.service.d
-``` 
-``` shellsession
+
 $ sudo systemctl daemon-reload
-``` 
-``` shellsession
+
 $ sudo systemctl restart docker
-``` 
-``` shellsession
+
 $ sudo systemctl enable docker
 ```
 도커가 설치되었는지 확인하자.
-```shellsession
+```
 $ docker --version
 Docker version 20.10.14, build a224086
 ```
 도커는 다음과 같이 시작, 상태 확인, 정지할 수 있다.
-``` shellsession
+```
 $ sudo systemctl start docker 
 
 $ sudo systemctl status docker 
@@ -213,7 +203,7 @@ $ sudo systemctl stop docker
 
 ### 쿠버네티스 설치
 먼저 쿠버네티스 저장소를 추가한다.
-``` shellsession
+```
 $ sudo apt-get update
 
 $ sudo apt-get install -y apt-transport-https ca-certificates curl
@@ -237,12 +227,11 @@ $ sudo apt-mark hold kubectl kubeadm kubelet
 
 ### 마스터 노드에서 클러스터 초기화하기
 마스터 노드로 사용할 호스트에서 다음 명령어로 클러스터를 초기화하고 마스터 노드를 생성한다.
-``` shellsession
+```
 $ sudo kubeadm init \
     --pod-network-cidr=192.168.0.0/16 \
     --control-plane-endpoint=<EC2 IP주소> \
-    --apiserver-cert-extra-sans=<EC2 IP주소>
-    ...
+    --apiserver-cert-extra-sans=<EC2 IP주소>    
 ```
 마스터 노드 생성에 성공하면 다음과 같은 결과물이 출력된다.
 ``` {5-7,20,24}
@@ -272,7 +261,7 @@ Then you can join any number of worker nodes by running the following on each as
   kubeadm join <마스터노드 EC2 IP>:<PORT> --token 생략 ...
 ```
 결과물에서 명령어 몇 가지를 확인할 수 있는데 먼저 첫 번째 명령어를 마스터 노드에서 실행한다.
-``` shellsession
+```
 $ sudo mkdir -p $HOME/.kube
 
 $ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -281,7 +270,7 @@ $ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 ```
 
 두 번째 명령어는 마스터 노드를 추가하고 싶을 때 마스터 노드에서 실행한다.
-``` shellsession{4}
+``` {4}
 You can now join any number of control-plane nodes by copying certificate authorities
 and service account keys on each node and then running the following as root:
 
@@ -289,7 +278,7 @@ and service account keys on each node and then running the following as root:
 ```
 
 세 번째 명령어는 워커 노드를 추가하고 싶을 때 워커 노드에서 실행한다.
-```shellsession {3}
+``` {3}
 Then you can join any number of worker nodes by running the following on each as root:
 
   kubeadm join <마스터노드 EC2 IP>:<PORT> --token 생략 ...
@@ -297,38 +286,111 @@ Then you can join any number of worker nodes by running the following on each as
 
 ### 워커 노드 추가하기
 워커 노드로 사용할 EC2 인스턴스에도 위와 동일한 방법으로 도커와 쿠버네티스를 설치한다. 그리고 마스터 노드를 생성할 때 출력된 세 번째 명령어를 워커 노드에서 실행한다.
-``` shellsession
+```
 $ sudo kubeadm join <마스터노드 EC2 IP>:<PORT> --token 생략 ...
 This node has joined the cluster
 ```
 
 ### 오버레이 네트워크 설치
-쿠버네티스는 팟 사이의 통신을 위해 오버레이 네트워크를 구성해야한다. `calico` 플러그인을 사용하면 오버레이 네트워크를 쉽게 설치할 수 있다. 마스터 노드에서 다음 명령어를 입력한다.
-``` shellsession
+우선 마스터 노드 다음 명령어를 입력한다.
+```{3,4}
+$ kubectl get pod --all-namespaces
+NAMESPACE     NAME                                      READY   STATUS              RESTARTS   AGE
+kube-system   coredns-64897985d-7cn8t                   0/1     Pending             0          10m
+kube-system   coredns-64897985d-fqxbs                   0/1     Pending             0          10m
+kube-system   etcd-cluster-master1                      1/1     Running             0          10m
+kube-system   kube-apiserver-cluster-master1            1/1     Running             0          10m
+kube-system   kube-controller-manager-cluster-master1   1/1     Running             0          10m
+kube-system   kube-proxy-8xft2                          1/1     Running             0          9m6s
+kube-system   kube-proxy-qkd54                          1/1     Running             0          10m
+kube-system   kube-scheduler-cluster-master1            1/1     Running             0          10m
+```
+`kube-system`에 `coredns`로 시작하는 오브젝트를 확인할 수 있다. 쿠버네티스는 싱글 노드 환경에서 기본적으로 `coredns`를 사용하여 오브젝트를 식별하며, `coredns`로 시작하는 오브젝트는 `coredns`와 관련된 오브젝트다.
+
+그러나 멀티 노드로 구성된 클러스터 환경에서 오브젝트 사이의 통신을 위해서는 오버레이 네트워크를 구성해야한다. `CNI(Contaier Network Interface)`는 컨테이너 간 네트워킹을 제어할 수 있는 플러그인 표준이며, 이 구현체에는 `Calico`, `Flannel` 등이 존재한다.
+
+`Calico`를 사용하여 오버레이 네트워크를 구성해보자. 다음 명령어를 입력하기만 하면 된다.
+```
 $ kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
 ```
-이제 쿠버네티스 클러스터가 구축되었다.
 
-### 모든 노드 확인하기
-`kubectl get nodes`명령어로 클러스터에 포함된 노드들을 확인할 수 있다.
-``` shellsession
-$ kubectl get nodes
-NAME          STATUS   ROLES                  AGE     VERSION
-k8s-master    Ready    control-plane,master   69m     v1.23.6
-k8s-worker1   Ready    <none>                 2m10s   v1.23.6
+정상적으로 설치가 완료되면 `Calico`와 관련된 오브젝트가 생성, 실행되는 것을 확인할 수 있다.
+```{3-7}
+$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY   STATUS    RESTARTS   AGE
+kube-system   calico-kube-controllers-7c845d499-x84g7   1/1     Running   0          11m
+kube-system   calico-node-shffx                         0/1     Running   0          11m
+kube-system   calico-node-tgw54                         0/1     Running   0          11m
+kube-system   coredns-64897985d-7cn8t                   1/1     Running   0          22m
+kube-system   coredns-64897985d-fqxbs                   1/1     Running   0          22m
+kube-system   etcd-cluster-master1                      1/1     Running   0          23m
+kube-system   kube-apiserver-cluster-master1            1/1     Running   0          23m
+kube-system   kube-controller-manager-cluster-master1   1/1     Running   0          23m
+kube-system   kube-proxy-8xft2                          1/1     Running   0          21m
+kube-system   kube-proxy-qkd54                          1/1     Running   0          22m
+kube-system   kube-scheduler-cluster-master1            1/1     Running   0          23m
 ```
+
+### 클러스터에 오브젝트 추가하기
+디플로이먼트, 서비스를 추가하여 클러스터가 잘 작동하는지 확인하자.
+
+우선 디플로이먼트를 생성한다.
+``` yml
+# nginx-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      name: nginx-pod
+      labels: 
+        app: nginx-pod-label
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.10
+          ports:
+          - containerPort: 80
+```
+```
+$ kubectl apply -f nginx-deployment.yml
+```
+```
+$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           33s
+```
+
+그리고 ClusterIP 타입의 서비스를 생성한다.
+``` yml
+# nginx-service-clusterip.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-clusterip
+spec:
+  ports:
+    - name: nginx-pods-port
+      port: 9999
+      targetPort: 80
+  selector:
+    app: nginx-pod-label
+  type: ClusterIP  
+```
+```
+$ kubectl get service
+NAME                      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+kubernetes                ClusterIP   10.96.0.1      <none>        443/TCP    75m
+nginx-service-clusterip   ClusterIP   10.98.169.84   <none>        9999/TCP   21s
+```
+
+그 다음 인그레스를 구성해준다.
 
 ### 노드 삭제하기
 삭제할 노드에서 `kubeadm reset` 명령어를 입력하면 쿠버네티스에서 노드가 삭제된다.
-
-
-## 쿠버네티스 명령어 정리
-
-`--show-labels`을 추가하면 라벨까지 확인할 수 있다.
-``` shellsession
-$ kubectl get pods --show-labels
-NAME                               READY   STATUS    RESTARTS   AGE   LABELS
-nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          45m   app=nginx-pod-label,pod-template-hash=664f4c64c
-nginx-deployment-664f4c64c-5r55z   1/1     Running   0          45m   app=nginx-pod-label,pod-template-hash=664f4c64c
-nginx-pod                          1/1     Running   0          38m   <none>
-```
