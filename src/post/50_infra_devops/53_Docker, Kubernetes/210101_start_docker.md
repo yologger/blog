@@ -199,6 +199,14 @@ REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
 new_image           0.1     eeb6ee3f44bd   4 seconds ago   211MB
 ```
+
+## Container Registry
+`컨테이너 레지스트리(Container Registery)`는 도커 이미지를 저장할 수 있는 저장소다. 저장소를 원격 서버에 구축할 수도 있고 온프레미스 서버에 구축할 수도 있다. 대표적인 컨테이너 레지스트리는 다음과 같다.
+- Docker Hub
+- AWS ECR (Elastic Container Registry)
+- GCR (Google Container Registry)
+- GitHub Container Registry
+
 ## 도커 허브
 [도커 허브(Docker Hub)](https://hub.docker.com/)는 도커 이미지를 저장할 수 있는 원격 저장소다. 도커 허브는 크게 세 가지의 저장소를 제공한다.
 - `Public repository`: 공개 원격 저장소, 무료 플랜 시 무제한 사용 가능하다.
