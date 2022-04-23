@@ -7,7 +7,6 @@ const routes = [
   "55_db",
   "60_cs",
   "80_more",
-  "93_issue"
 ];
 
 const createSidebar = () => {
@@ -61,15 +60,6 @@ module.exports = {
       { text: "DB", link: "/post/55_db/" },
       { text: "CS", link: "/post/60_cs/" },
       { text: "More", link: "/post/80_more/" },
-      {
-        text: "Life",
-        items: [
-          // { text: "여행", link: "/post/92_travel/" },
-          // { text: "리뷰", link: "/post/92_review/" },
-          // { text: "시사 이슈", link: "/post/93_issue/" },
-          // { text: "생각정리", link: "/post/94_memory/" },
-        ]
-      },
       { text: "Github", link: "https://github.com/yologger" },
     ],
     

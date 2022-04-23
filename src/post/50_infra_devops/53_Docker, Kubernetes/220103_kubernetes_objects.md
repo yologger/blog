@@ -606,12 +606,16 @@ nginx-service-clusterip   NodePort    10.107.159.253   <none>        9999:30553/
 
 클러스터 내부에서 사용되는 `9999` 포트 외에도 `30553`라는 포트가 생성됐다. `30553` 포트는 외부 네트워크로 노출되는 포트이며, 외부 네트워크에서 팟과 통신할 수 있다.
 ``` shellsession
-$ curl <클러스터의 외부IP>:30553
+$ curl <워커노드 PUBLIC IP>:30553
 ```
+
+::: danger
+AWS EC2에서 쿠버네티스를 구축한 경우 보안 그룹에서 해당 포트를 개방해야한다.
+:::
 
 이제 클러스터의 노드에서도 팟과 통신할 수 있다.
 ``` shellsession
-$ curl localhost:30553
+$ curl <워커노드 PUBLIC IP>:30553
 <!DOCTYPE html>
 <html>
 <head>
@@ -697,9 +701,6 @@ spec:
     app: nginx-pod-label
   type: NodePort  
 ```
-
-AWS EC2에서 쿠버네티스를 구축한 경우 보안 그룹에서 해당 포트를 개방해야한다.
- 
 
 ## Namespace
 `네임스페이스(Namespace)`를 사용하면 클러스터에서 여러 오브젝트를 논리적으로 구분할 수 있다.
@@ -1172,10 +1173,13 @@ ingress-nginx-controller-admission   ClusterIP   10.96.200.134    <none>        
 
 ![](./220103_kubernetes_objects/8.png)
 
+::: danger
+AWS EC2에서 쿠버네티스를 구축한 경우 보안 그룹에서 해당 포트를 개방해야한다.
+:::
+
 이제 외부에서 인그레스 컨트롤러의 `service1` 서비스로 요청을 보내보자.
 ``` shellsession {1}
-$ curl localhost:32508/service1
-curl: (6) Could not resolve host: curl
+$ curl <워커노드 PUBLIC IP>:32508/service1
 <!DOCTYPE html>
 <html>
 <head>
@@ -1202,8 +1206,7 @@ Commercial support is available at
 ```
 `service2`로의 요청도 처리되는 것을 확인할 수 있다.
 ``` shellsession
-$ curl localhost:32508/service2
-curl: (6) Could not resolve host: curl
+$ curl <워커노드 PUBLIC IP>/service2
 <!DOCTYPE html>
 <html>
 <head>

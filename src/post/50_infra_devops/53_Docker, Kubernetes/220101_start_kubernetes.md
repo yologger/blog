@@ -49,13 +49,13 @@ sidebarDepth: 0
 개발 환경에서는 하나의 노드로 구성된 쿠버네티스를 구축할 수 있다. 리눅스 환경에서는 `Minikube`, Mac OS 환경에서는 `Docker Destkop for Mac`, Window 환경에서는 `Docker Desktop for Window`를 설치하면 된다.
 
 ### 운영 환경 - 온프레미스
-`온프레미스`는 AWS 같은 클라우드 서비스를 이용하지 않고 자체적인 서버실을 구축하여 운영하는 방식을 말한다. 온프레미스 환경에서는 `kubeadm` 또는 `kops`를 사용하여 쿠버네티스 클러스터를 구축할 수 있다.
+`온프레미스`는 AWS 같은 클라우드 서비스를 이용하지 않고 자체적인 서버실을 구축하여 운영하는 방식을 말한다. 온프레미스 환경에서는 `kubeadm`, `kops`, `kubespray` 등을 사용하여 쿠버네티스 클러스터를 구축할 수 있다.
 
 ### 운영 환경 - 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터 구성
-AWS EC2와 같은 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터를 구축할 수도 있다. 보통 `kubeadm`, `kops`를 사용한다.
+AWS EC2와 같은 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터를 구축할 수도 있다. 보통 `kubeadm`, `kops`, `kubespray` 등을 사용하여 쿠버네티스 클러스터를 구축할 수 있다.
 
 ### 운영 환경 - 관리형 쿠버네티스
-온프레미스 환경이든 AWS EC2 클라우드 컴퓨팅 서비스를 사용하든 마스터 노드를 선택한 후 마스터 노드에서 클러스터 구성을 위한 복잡한 환경설정을 해야한다. `AWS EKS(Elastic Kubernetes Service)`, `GCP GKE(Google Kubernetes Engine)` 같은 서비스는 마스터 노드 역할을 하는 클라우드 컴퓨팅 서비스를 제공하며, 이를 `관리형 쿠버네티스(Managed Kubernetes)`라고 한다.
+온프레미스 환경이든 AWS EC2 클라우드 컴퓨팅 서비스를 사용하든 마스터 노드에서 클러스터 구성을 위한 복잡한 환경설정을 해야한다. `AWS EKS(Elastic Kubernetes Service)`, `GCP GKE(Google Kubernetes Engine)` 같은 서비스는 마스터 노드 역할을 하는 클라우드 컴퓨팅 서비스를 제공하며, 이를 `관리형 쿠버네티스(Managed Kubernetes)`라고 한다.
 
 ## Mac OS에서 쿠버네티스 시작하기
 `Docker Desktop for Mac`에는 쿠버네티스가 내장되어있다. `Docker Desktop for Mac`을 실행하여 다음과 같은 순서로 쿠버네티스를 활성화하면 된다.
@@ -289,7 +289,7 @@ Then you can join any number of worker nodes by running the following on each as
 ```
 $ sudo kubeadm join <마스터노드 EC2 IP>:<PORT> --token 생략 ...
 This node has joined the cluster
-```
+```  
 
 ### 오버레이 네트워크 설치
 우선 마스터 노드 다음 명령어를 입력한다.
@@ -305,17 +305,19 @@ kube-system   kube-proxy-8xft2                          1/1     Running         
 kube-system   kube-proxy-qkd54                          1/1     Running             0          10m
 kube-system   kube-scheduler-cluster-master1            1/1     Running             0          10m
 ```
-`kube-system`에 `coredns`로 시작하는 오브젝트를 확인할 수 있다. 쿠버네티스는 싱글 노드 환경에서 기본적으로 `coredns`를 사용하여 오브젝트를 식별하며, `coredns`로 시작하는 오브젝트는 `coredns`와 관련된 오브젝트다.
+`kube-system`에 `coredns`로 시작하는 오브젝트를 확인할 수 있다. 쿠버네티스는 싱글 노드 환경에서 기본적으로 `coredns`를 사용하여 오브젝트를 식별하며, `coredns-64897985d-7cn8t`, `coredns-64897985d-fqxbs`는 `coredns`와 관련된 오브젝트다.
 
 그러나 멀티 노드로 구성된 클러스터 환경에서 오브젝트 사이의 통신을 위해서는 오버레이 네트워크를 구성해야한다. `CNI(Contaier Network Interface)`는 컨테이너 간 네트워킹을 제어할 수 있는 플러그인 표준이며, 이 구현체에는 `Calico`, `Flannel` 등이 존재한다.
 
-`Calico`를 사용하여 오버레이 네트워크를 구성해보자. 다음 명령어를 입력하기만 하면 된다.
+아직 오버레이 네트워크가 구성되지 않았기 때문에 `coredns`와 관련된 오브젝트의 상태가 `Pending`이다.
+
+이제 `Calico`를 사용하여 오버레이 네트워크를 구성해보자. 다음 명령어를 입력하기만 하면 된다.
 ```
-$ kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+$ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 ```
 
 정상적으로 설치가 완료되면 `Calico`와 관련된 오브젝트가 생성, 실행되는 것을 확인할 수 있다.
-```{3-7}
+```{3-5}
 $ kubectl get pods --all-namespaces
 NAMESPACE     NAME                                      READY   STATUS    RESTARTS   AGE
 kube-system   calico-kube-controllers-7c845d499-x84g7   1/1     Running   0          11m
@@ -330,8 +332,12 @@ kube-system   kube-proxy-8xft2                          1/1     Running   0     
 kube-system   kube-proxy-qkd54                          1/1     Running   0          22m
 kube-system   kube-scheduler-cluster-master1            1/1     Running   0          23m
 ```
+또한 오버레이 네트워크가 구성됐기 때문에 `coredns`와 관련된 오브젝트의 상태도 `Running`으로 변경되었다.
 
-### 클러스터에 오브젝트 추가하기
+### 노드 삭제하기
+삭제할 노드에서 `kubeadm reset` 명령어를 입력하면 쿠버네티스에서 노드가 삭제된다.
+
+### 클러스터에 오브젝트 추가해보기
 디플로이먼트, 서비스를 추가하여 클러스터가 잘 작동하는지 확인하자.
 
 우선 디플로이먼트를 생성한다.
@@ -354,7 +360,7 @@ spec:
     spec:
       containers:
         - name: nginx-container
-          image: nginx:1.10
+          image: nginx:latest
           ports:
           - containerPort: 80
 ```
@@ -369,28 +375,74 @@ nginx-deployment   3/3     3            3           33s
 
 그리고 ClusterIP 타입의 서비스를 생성한다.
 ``` yml
-# nginx-service-clusterip.yml
+# nginx-service.yml
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx-service-clusterip
+  name: nginx-service
 spec:
   ports:
-    - name: nginx-pods-port
+    - name: nginx-service-port
       port: 9999
       targetPort: 80
   selector:
     app: nginx-pod-label
-  type: ClusterIP  
+  type: ClusterIP
 ```
 ```
-$ kubectl get service
-NAME                      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-kubernetes                ClusterIP   10.96.0.1      <none>        443/TCP    75m
-nginx-service-clusterip   ClusterIP   10.98.169.84   <none>        9999/TCP   21s
+$ kubectl apply -f nginx-service.yml
+```
+```
+$ kubectl get services
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+kubernetes      ClusterIP   10.96.0.1        <none>        443/TCP    14m
+nginx-service   ClusterIP   10.103.118.151   <none>        9999/TCP   6s
 ```
 
-그 다음 인그레스를 구성해준다.
+그 다음 인그레스 오브젝트를 생성한다.
+``` yml
+# nginx-ingress.yml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / 
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules: 
+  - http:
+      paths:
+      - path: /service
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
+            port:
+              number: 9999
+```
+```
+$ kubectl apply -f nginx-ingress.yml
+```
+```
+$ kubectl get ingress
+NAME            CLASS    HOSTS   ADDRESS   PORTS   AGE
+nginx-ingress   <none>   *                 80      2m32s
+```
+그리고 nginx 인그레스 컨트롤러를 설치한다.
+```
+$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+```
+마지막으로 nginx 인그레스 컨트롤러 서비스의 외부 포트를 EC2 보안 그룹에서 개방한다.
+``` {3}
+$ kubectl get services -n ingress-nginx 
+NAME                                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller             NodePort    10.102.204.237   <none>        80:30480/TCP,443:32300/TCP   10m
+ingress-nginx-controller-admission   ClusterIP   10.106.35.236    <none>        443/TCP                      10m
+```
 
-### 노드 삭제하기
-삭제할 노드에서 `kubeadm reset` 명령어를 입력하면 쿠버네티스에서 노드가 삭제된다.
+![](./220101_start_kubernetes/4.png)
+
+이제 워커노드로 요청을 보낼 수 있게 된다.
+
+![](./220101_start_kubernetes/5.png)
