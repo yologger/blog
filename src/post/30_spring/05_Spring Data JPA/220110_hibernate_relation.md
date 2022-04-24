@@ -606,8 +606,488 @@ memberProduct.setAmount(10);
 entityManager.persist(memberProduct);
 ```
 
+## Cascade
+특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만드는 것을 `영속성 전이`라고 한다. `Cascade`는 영속성 전이에 사용된다.
 
+### 사용법
+영속성 전이는 다음과 같이 `cascade` 속성과 `CascadeType` 열거형을 사용한다.
+``` java {14}
+// MemberEntity.java
+@Entity
+@Table(name= "member")
+public class MemberEntity {
 
-## 프록시
-## CASCADE (8장)
-## Fetch (8장) 
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String email;
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.ALL)
+    private List<PostEntity> posts = new ArrayList<PostEntity>();
+
+    public void addPost(PostEntity post) {
+        this.posts.add(post);
+    }
+
+    public MemberEntity() {
+    }
+
+    public MemberEntity(String email) {
+        this.email = email;
+    }
+
+    // 중략 ...
+}
+```
+``` java
+// PostEntity.java
+@Entity
+@Table(name = "post")
+public class PostEntity {
+
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "writer_id")
+    private MemberEntity writer;
+
+    public void setWriter(MemberEntity writer) {
+        this.writer = writer;
+    }
+
+    public PostEntity(String content) {
+        this.content = content;
+    }
+
+    public PostEntity() {
+    }
+
+    // 중략 ...
+}
+```
+
+`CasecadeType`으로 올 수 있는 값은 다음과 같다.
+
+|타입|설명|
+|------|---|
+|PERSIST|부모 엔티티를 영속화하면 자식 엔티티도 함께 영속화된다.|
+|REMOVE|부모 엔티티를 삭제하면 자식 엔티티도 같이 삭제한다.|
+|MERGE|병합|
+|REFRESH|Refresh|
+|DETACH|Detach|
+|ALL|모두 적용|
+
+자주 사용되는 `CascadeType`에 대해 알아보자.
+
+### CascadeType.PERSIST
+부모 엔티티를 영속화하면 자식 엔티티도 함께 영속화된다.
+``` java {8}
+// MemberEntity.java
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    // 중략 ...
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.PERSIST)
+    private List<PostEntity> posts = new ArrayList<PostEntity>();
+
+    // 중략 ...
+}
+```
+`CascaseType.PERSIST`를 적용하지 않으면, 부모 엔티티를 영속화한 후 자식 엔티티도 영속화 해야한다. 
+``` java
+MemberEntity member = new MemberEntity("Paul@gmail.com");
+entityManager.persist(member);  // 부모 엔티티 영속화
+
+PostEntity post1 = new PostEntity("content1");
+post1.setWriter(member);
+member.addPost(post1);
+entityManager.persist(post1);  // 자식 엔티티 영속화
+
+PostEntity post2 = new PostEntity("content2");
+post2.setWriter(member);
+member.addPost(post2);
+entityManager.persist(post2);   // 자식 엔티티 영속화
+```
+
+`CascaseType.PERSIST`를 적용하면 부모 엔티티만 영속화해도 자식 엔티티가 영속화된다.
+``` java
+MemberEntity member = new MemberEntity("Paul@gmail.com");
+
+PostEntity post1 = new PostEntity("content1");
+post1.setWriter(member);
+
+PostEntity post2 = new PostEntity("content2");
+post2.setWriter(member);
+
+member.addPost(post1);
+member.addPost(post2);
+
+entityManager.persist(member);  // 부모 엔티티만 영속화
+```
+
+데이터베이스에 실제로 반영되는 시점은 플러시가 호출될 때다.
+
+### CascadeType.REMOVE
+부모 엔티티를 삭제하기 전 데이터의 상태는 다음과 같다고 가정하자.
+```
+> SELECT * FROM member;
++----+----------------+
+| id | email          |
++----+----------------+
+|  1 | Paul@gmail.com |
++----+----------------+
+```
+```
+> SELECT * FROM post;
++----+----------+-----------+
+| id | content  | writer_id |
++----+----------+-----------+
+|  1 | content1 |         1 |
+|  2 | content2 |         1 |
++----+----------+-----------+
+```
+다음과 같이 `Cascade.REMOVE`로 설정했을 때
+``` java
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String email;
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE)
+    private List<PostEntity> posts = new ArrayList<PostEntity>();
+
+    // .. 
+}
+```
+`MemberEntity`를 삭제하면
+``` java
+MemberEntity member = entityManager.find(MemberEntity.class, 1L);
+entityManager.remove(member);
+```
+다음 쿼리가 실행되어 `PostEntity`도 삭제되며,
+```
+Hibernate: 
+    delete 
+    from
+        post 
+    where
+        id=?
+```
+데이터베이스 상태는 다음과 같아진다.
+```
+> SELECT * FROM member;
+Empty set (0.00 sec) 
+```
+```
+> SELECT * FROM post;
+Empty set (0.00 sec)
+```
+
+데이터베이스에 실제로 반영되는 시점은 플러시가 호출될 때다.
+
+만약 `Cascade.REMOVE` 옵션을 설정하지 않고 부모 엔티티를 삭제하면 자식 엔티티는 삭제되지 않는다. 하지만 자식 테이블에 걸려있는 외래 키 제약조건으로 인해 외래키 무결성 예외가 발생한다.
+
+### Cascade.All
+`Cascade.All`은 `PERSIST`, `REMOVE`, `MERGE`, `REFRESH`, `DETACH` 모두를 적용한 것과 동일하다.
+
+먼저 `Cascade.PERSIST` 예제와 같은 방법으로 데이터베이스에 데이터가 잘 저장되는지 확인하자.
+``` java
+MemberEntity member = new MemberEntity("Paul@gmail.com");
+
+PostEntity post1 = new PostEntity("content1");
+post1.setWriter(member);
+
+PostEntity post2 = new PostEntity("content2");
+post2.setWriter(member);
+
+member.addPost(post1);
+member.addPost(post2);
+
+entityManager.persist(member);  // 부모 엔티티만 영속화
+```
+데이터가 잘 저장된다.
+```
+> SELECT * FROM member;
++----+----------------+
+| id | email          |
++----+----------------+
+|  1 | Paul@gmail.com |
++----+----------------+
+```
+```
+> SELECT * FROM post;
++----+----------+-----------+
+| id | content  | writer_id |
++----+----------+-----------+
+|  1 | content1 |         1 |
+|  2 | content2 |         1 |
++----+----------+-----------+
+```
+이제 `Cascade.REMOVE` 예제처럼 부모 엔티티를 삭제했을 때 자식 엔티티도 잘 삭제되는지 확인해보자.
+``` java
+MemberEntity target = entityManager.find(MemberEntity.class, 1L);
+
+entityManager.remove(target);
+``` 
+의도한대로 데이터베이스에서 데이터가 삭제되었다.
+```
+> SELECT * FROM member;
+Empty set (0.00 sec)
+```
+```
+> SELECT * FROM post;
+Empty set (0.00 sec)
+```
+
+### 고아 객체
+부모 엔티티와 연관관계가 끊어진 자식 엔티티를 자동으로 삭제하는 기능을 `고아 객체 제거`라고 한다. 이 기능은 `orphanRemoval = true` 옵션으로 활성화한다. 
+``` java {13}
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String email;
+
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.All, orphanRemoval = true)
+    private List<PostEntity> posts = new ArrayList<PostEntity>();
+
+    // 생략 ...
+
+    public List<PostEntity> getPosts() {
+        return this.posts;
+    }
+
+    // 생략 ...
+}
+```
+이 기능을 활성화하면 부모 엔티티의 컬렉션에서 자식 엔티티의 참조만 제거하면 자식 엔티티가 자동으로 삭제된다. 
+
+예제를 살펴보자. 현재 데이터베이스 상태는 다음과 같다.
+```
+> SELECT * FROM member;
++----+----------------+
+| id | email          |
++----+----------------+
+|  1 | Paul@gmail.com |
++----+----------------+
+```
+```
+> SELECT * FROM member;
++----+----------------+
+| id | email          |
++----+----------------+
+|  1 | Paul@gmail.com |
++----+----------------+
+```
+이제 부모 엔티티의 컬렉션에서 자식 엔티티의 참조를 제거해보자.
+``` java
+MemberEntity member = entityManager.find(MemberEntity.class, 1L);
+
+// 컬렉션의 첫 번째 요소 제거
+member.getPosts().remove(0);
+```
+플러시 이후 데이터베이스를 조회하면 첫 번째 요소에 해당하는 행이 삭제된 것을 확인할 수 있다.
+```
+> SELECT * FROM post;
++----+----------+-----------+
+| id | content  | writer_id |
++----+----------+-----------+
+|  2 | content2 |         1 |
++----+----------+-----------+
+```
+
+## Proxy
+데이터베이스 상태가 다음과 같다고 가정하자.
+```
+> SELECT * FROM member;
++----+----------------+
+| id | email          |
++----+----------------+
+|  1 | Paul@gmail.com |
++----+----------------+
+```
+```
+> SELECT * FROM post;
++----+----------+-----------+
+| id | content  | writer_id |
++----+----------+-----------+
+|  1 | content1 |         1 |
+|  2 | content2 |         1 |
++----+----------+-----------+
+```
+
+`EntityManager.find()` 메소드를 사용하면 해당 메소드가 호출되는 시점에 데이터베이스를 조회한다.
+``` java
+MemberEntity member = entityManager.find(MemberEntity.class, 1L);  // 이 시점에 데이터베이스 조회
+String email = member.getEmail();
+```
+조회된 엔티티의 타입은 `MemberEntity`이며, 속성값들도 다 채워져있는 것을 확인할 수 있다.
+
+![](./220110_hibernate_relation/4.png)
+
+이제 `EntityManager.getReference()` 메소드로 조회해보자.
+``` java
+MemberEntity member = entityManager.getReference(MemberEntity.class, 1L);
+String email = member.getEmail();
+```
+조회된 엔티티의 타입은 `MemberEntity`를 상속하는 <b>`HibernateProxy`</b> 이며, 속성값들이 채워져있지 않은 것을 확인할 수 있다.
+
+![](./220110_hibernate_relation/5.png)
+
+이 프록시 객체는 `member.getEmail()` 처럼 속성값들에 실제로 접근할 때 데이터베이스를 조회한다.
+``` java
+MemberEntity member = entityManager.getReference(MemberEntity.class, 1L);
+String email = member.getEmail();  // 이 시점에 데이터베이스 조회
+```
+
+이처럼 프록시 객체를 사용하면 데이터베이스 조회를 속성값에 실제로 접근하는 시점으로 미룰 수 있다.
+
+## Lazy Fetch 
+엔티티를 조회할 때 연관된 모든 엔티티를 함께 조회하는 것을 `즉시 로딩(Eager fetch)`라고 한다. 즉시 로딩은 다음과 같이 설정한다. 
+
+``` java{7}
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    // 생략 ...
+
+    @OneToMany(mappedBy = "writer", fetch = FetchType.EAGER)
+    private List<PostEntity> posts = new ArrayList<PostEntity>();
+
+    // 생략 ...
+}
+```
+이제 다음 코드를 실행해보자.
+``` java
+MemberEntity member = entityManager.find(MemberEntity.class, 1L);  // 이 시점에 연관된 PostEntity도 모두 조회
+List<PostEntity> posts = member.getPosts();
+String content = posts.get(0).getContent();
+```
+실제 실행되는 데이터베이스 쿼리는 다음과 같다. 조인을 사용하여 `PostEntity`도 즉시 로딩하는 것을 확인할 수 있다. 
+``` {10-12}
+Hibernate: 
+    select
+        m1_0.id,
+        m1_0.email,
+        p1_0.writer_id,
+        p1_0.id,
+        p1_0.content 
+    from
+        member as m1_0 
+    left outer join
+        post as p1_0 
+            on p1_0.writer_id = m1_0.id 
+    where
+        m1_0.id = ?
+```
+
+엔티티를 조회할 때 연관된 엔티티들을 조회하지 않고, 연관된 엔티티에 실제로 접근할 때 조회하는 것을 `지연 로딩(Lazy fetch)`라고 한다. 지연 로딩을 활성화하려면 `fetch` 속성을 `FetchType.Lazy`로 설정하면 된다.
+``` java {7}
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    // 생략 ...
+
+    @OneToMany(mappedBy = "writer", fetch = FetchType.Lazy)
+    private List<PostEntity> posts = new ArrayList<PostEntity>();
+
+    // 생략 ...
+}
+```
+이제 다음 코드를 실행해보자.
+``` java
+MemberEntity member = entityManager.find(MemberEntity.class, 1L);
+List<PostEntity> posts = member.getPosts();
+String content = posts.get(0).getContent();
+```
+실행되는 쿼리는 다음과 같다.
+```
+Hibernate: 
+    select
+        m1_0.id,
+        m1_0.email 
+    from
+        member as m1_0 
+    where
+        m1_0.id = ?
+Hibernate: 
+    select
+        p1_0.writer_id,
+        p1_0.id,
+        p1_0.content 
+    from
+        post as p1_0 
+    where
+        p1_0.writer_id = ?
+```
+지연 로딩을 활성화하면 연관관계에 있는 엔티티는 프록시 객체로 조회된다. 따라서 다음 코드가 실행될 때
+``` java
+MemberEntity member = entityManager.find(MemberEntity.class, 1L);
+```
+다음 쿼리문이 실행되며,
+```
+Hibernate: 
+    select
+        m1_0.id,
+        m1_0.email 
+    from
+        member as m1_0 
+    where
+        m1_0.id = ?
+```
+연관관계에 있는 엔티티에 실제로 접근할 때
+``` java
+String content = posts.get(0).getContent();
+```
+연관관계에 있는 엔티티를 데이터베이스에서 조회한다.
+```
+Hibernate: 
+    select
+        p1_0.writer_id,
+        p1_0.id,
+        p1_0.content 
+    from
+        post as p1_0 
+    where
+        p1_0.writer_id = ?
+```
+Hibernate는 연관 관계에 있는 엔티티가 컬렉션이면 기본적으로 지연 로딩을 적용한다. 따라서 `FetchType.Lazy`을 지정하지 않아도 자동으로 지연 로딩이 적용된다.
+``` java {7}
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    // 생략 ...
+
+    @OneToMany(mappedBy = "writer")
+    private List<PostEntity> posts = new ArrayList<PostEntity>();  // 지연 로딩
+
+    // 생략 ...
+}
+```
