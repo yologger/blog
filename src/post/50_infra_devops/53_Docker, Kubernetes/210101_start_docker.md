@@ -275,6 +275,87 @@ REPOSITORY                TAG       IMAGE ID       CREATED          SIZE
 yologger1013/test_image   0.1       0903d3cdd37e   56 minutes ago   211MB
 ```
 
+## ECR
+`AWS ECR(Elastic Container Registry)`도 도커 이미지를 저장할 수 있는 원격 저장소다. 
+
+### ECR로 이미지 배포하기
+먼저 AWS ECR에서 프라이빗 리포지토리를 생성한다.
+
+![](./210101_start_docker/10.png)
+
+저장소 이름은 업로드할 이미지와 동일하도록 설정한다.
+
+![](./210101_start_docker/11.png)
+
+
+### IAM 사용자 생성하기
+`기존 정책 직접 연결`을 선택한 후 
+
+![](./210101_start_docker/12.png)
+
+`사용자 이름`을 입력하고 `프로그래밍 방식 액세스`를 선택한다.
+
+![](./210101_start_docker/13.png)
+
+`기존 정책 직접 연결`을 선택하고 `AmazonEC2ContainerRegistryFullAccess`를 선택한다.
+
+![](./210101_start_docker/14.png)
+
+`액세스 키`와 `비밀 키`를 기억해둔다.
+
+![](./210101_start_docker/15.png)
+
+
+### AWS CLI 설치
+먼저 Homebrew를 사용하여 `AWS CLI`를 설치한다.
+```
+$ brew install awscli
+
+$ aws --version
+aws-cli/2.5.8 Python/3.9.12 Darwin/21.4.0 source/x86_64 prompt/off
+```
+
+`aws configure` 명령어를 입력한 후 발급 받은 `액세스 키`와 `비밀 키`를 입력한다. 네 번째 항목은 입력하지 않아도 된다.
+
+```
+$ aws configure
+AWS Access Key ID [None]: <ACCESS_KEY>
+AWS Secret Access Key [None]: <SECRET_KEY>
+Default region name [None]: <REGION>
+Default output format [None]: 
+```
+
+이제 다음 명령어로 로그인한다. `Login Succeeded`가 출력되면 로그인에 성공한 것이다.
+
+```
+$ aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+Login Succeeded
+```
+
+`AWS_ACCOUNT_ID`는 IAM 콘솔에서 확인할 수 있다.
+
+![](./210101_start_docker/16.png)
+
+### 이미지 Push
+이제 이미지를 푸시해보자. 우선 이미지 이름을 다음 형식으로 변경해야한다. <u>이미지 이름과 저장소 이름이 동일해야한다.</u>
+```
+$ docker tag <IMAGE>:<TAG> <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
+```
+이제 `docker push` 명령어로 이미지를 푸시할 수 있다.
+```
+$ docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
+```
+
+저장소에 이미지가 푸시되었다.
+
+![](./210101_start_docker/19.png)
+
+### 이미지 Pull
+다음 명령어로 이미지를 풀 할 수 있다.
+```
+$ docker pull <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
+```
+
 ## Dockerfile
 지금까지 다음과 같은 순서로 `Docker image`를 생성했다.
 
