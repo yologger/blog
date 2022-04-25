@@ -1220,7 +1220,105 @@ public class App {
     }
 }
 ```
+
+### DFS, BFS 문제
+::: details 네트워크
+네트워크란 컴퓨터 상호 간에 정보를 교환할 수 있도록 연결된 형태를 의미합니다. 예를 들어, 컴퓨터 A와 컴퓨터 B가 직접적으로 연결되어있고, 컴퓨터 B와 컴퓨터 C가 직접적으로 연결되어 있을 때 컴퓨터 A와 컴퓨터 C도 간접적으로 연결되어 정보를 교환할 수 있습니다. 따라서 컴퓨터 A, B, C는 모두 같은 네트워크 상에 있다고 할 수 있습니다.
+
+컴퓨터의 개수 n, 연결에 대한 정보가 담긴 2차원 배열 computers가 매개변수로 주어질 때, 네트워크의 개수를 return 하도록 solution 함수를 작성하시오.
+
+- 입출력 예제
+|n|computers|return|
+|------|---|---|
+|3|[[1, 1, 0], [1, 1, 0], [0, 0, 1]]|2|
+|3|[[1, 1, 0], [1, 1, 1], [0, 1, 1]]|1|
+
+``` java
+class Solution {
+    public int solution(int n, int[][] computers) {
         
+        int networkCount = 0;
+        boolean[] isVisited = new boolean[n];
+        
+        for (int i=0; i<n; i ++) {
+            if (!isVisited[i]) {
+                networkCount ++;
+                dfs(n, computers, i, isVisited);
+            }
+        }
+        
+        return networkCount;
+    }
+    
+    public void dfs(int n, int[][] computers, int start, boolean[] isVisited) {
+        isVisited[start] = true;
+        for (int j=0; j<n; j++) {
+            if (computers[start][j] == 1 && !isVisited[j]) {
+                dfs(n, computers, j, isVisited);
+            }
+        }
+    }
+}
+```
+:::
+
+
+::: details 단어 변환
+두 개의 단어 begin, target과 단어의 집합 words가 있습니다. 아래와 같은 규칙을 이용하여 begin에서 target으로 변환하는 가장 짧은 변환 과정을 찾으려고 합니다.
+
+1. 한 번에 한 개의 알파벳만 바꿀 수 있습니다.
+2. words에 있는 단어로만 변환할 수 있습니다.
+
+예를 들어 begin이 "hit", target가 "cog", words가 ["hot","dot","dog","lot","log","cog"]라면 "hit" -> "hot" -> "dot" -> "dog" -> "cog"와 같이 4단계를 거쳐 변환할 수 있습니다.
+
+두 개의 단어 begin, target과 단어의 집합 words가 매개변수로 주어질 때, 최소 몇 단계의 과정을 거쳐 begin을 target으로 변환할 수 있는지 return 하도록 solution 함수를 작성해주세요.
+
+``` java
+import java.util.*;
+
+class Solution {
+    int answer = Integer.MAX_VALUE;
+    boolean[] isVisited;
+    
+    public int solution(String begin, String target, String[] words) {
+        isVisited = new boolean[words.length];    
+        dfs(begin, target, words, 0);  
+        if (answer == Integer.MAX_VALUE) return 0;
+        return answer;
+    }
+    
+    public void dfs(String begin, String target, String[] words, int depth) {
+        if (depth > words.length)
+            return;
+        
+        if (begin.equals(target)) {
+            answer = Math.min(answer, depth);
+            return;
+        }
+        
+        for (int i=0; i<words.length; i++) {
+            if (isChangeable(begin, words[i]) && !isVisited[i]) {
+                isVisited[i] = true;
+                dfs(words[i], target, words, depth+1);
+                isVisited[i] = false;
+            }
+        }
+    }
+    
+    
+    // 문자가 하나만 다른지 확인
+    public boolean isChangeable(String str1, String str2) {
+        int diffCount = 0;
+        for (int i=0; i<str1.length(); i++) {
+            if (str1.charAt(i) != str2.charAt(i)) diffCount ++;
+        }
+        
+        return diffCount == 1; 
+    }
+}
+```
+:::
+
 ### 최단경로 알고리즘 (다익스트라)
 #### 특징
 - 특정 노드에서 다른 모든 노드까지의 최단거리를 구한다.

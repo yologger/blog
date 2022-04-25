@@ -415,7 +415,7 @@ System.out.println(linkedHashSet.toString());   // [5, 3, 1, 2, 4]
 
 ### Set 깊은 복사
 `Set`의 깊은 복사는 다음과 같이 할 수 있다.
-``` java
+``` java {8}
 Set<Integer> set = new HashSet<>();
 set.add(1);
 set.add(2);
@@ -718,7 +718,7 @@ stack.push(3);
 ```
 `top`에 있는 요소는 `peek()`로 접근할 수 있다.
 ``` java
-stack.peak();
+stack.peek();
 ```
 `pop()`으로 가장 위의 요소를 제거하고 반환할 수 있다.
 ``` java
@@ -844,7 +844,7 @@ System.out.println(priorityQueue.toString());   // [4, 7, 5, 9]
 ```
 
 ### 내림차순 정렬
-높은 값에 높은 우선순위를 부여할 수도 있다. 객체를 생성할 때 `Collections.reverseOrder()`를 인자로 전달한다.
+높은 값에 높은 우선순위를 부여할 수도 있다. `PriorityQueue` 객체를 생성할 때 `Collections.reverseOrder()`를 인자로 전달한다.
 ``` java
 PriorityQueue<Integer> priorityQueue = new PriorityQueue<Integer>(Collections.reverseOrder());
 priorityQueue.add(3);
@@ -1038,7 +1038,7 @@ immutable.add(6);   // Error, UnsupportedOperationException
 
 ### copy()
 List를 복사한다. 목적지 List는 출발지 List보다 크거나 같아야한다. 그렇지 않으면 `IndexOutOfBoundsException`가 발생한다.
-``` java
+``` java {3}
 List src = new ArrayList(Arrays.asList(1, 1, 1));
 List dest = new ArrayList(Arrays.asList(2, 2, 2, 2, 2));
 Collections.copy(dest, src);    
@@ -1108,7 +1108,27 @@ List list = new ArrayList(Arrays.asList(3, 7, 1, 9));
 Collections.sort(list);
 System.out.println(list);   // [1, 3, 7, 9]
 ```
-요소가 객체인 경우, 요소가 `Comparable` 인터페이스를 구현하거나 `sort()`의 두 번째 인자로 `Comparator`를 전달하여 정렬 기준을 지정할 수 있다.
+요소가 객체인 경우 `sort()`의 두 번째 인자로 `Comparator`를 전달하여 정렬 기준을 지정할 수 있다.
+``` java
+PriorityQueue<Person> priorityQueue = new PriorityQueue<Person>(new Comparator<Person>() {
+    @Override
+    public int compare(Person p1, Person p2) {
+        return p1.getAge() - p2.getAge();
+    }
+});
+```
+또는 요소가 `Comparable` 인터페이스를 구현하고 `compareTo()` 메소드를 오버라이드하여 정렬 기준을 지정할 수 있다.
+``` java
+class Person implements Comparable<Person> {
+
+    // ...
+
+    @Override
+    public int compareTo(Person p) {
+        return this.getAge() - p.getAge();
+    }
+}
+```
 
 ### reverse()
 `List`의 순서를 뒤집는다.
