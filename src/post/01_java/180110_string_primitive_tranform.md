@@ -1,5 +1,5 @@
 ---
-title: "Java 문자열과 기본타입 사이의 변환"
+title: "Java 문자열과 원시타입 사이의 변환"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0

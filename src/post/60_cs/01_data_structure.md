@@ -935,31 +935,40 @@ class Solution {
 - 가중치 그래프
     
 ### 그래프의 구현
-`HashMap`과 `ArrayList`를 활용하여 그래프를 표현할 수 있다.
+그래프는 두 가지 방법으로 구현할 수 있다.
+- 인접 행렬
+- 인접 리스트
+
+### 인접 행렬
+그래프를 인접행렬로 표현하면 다음과 같다.
+
+![](./01_data_structure/2.png)
+
+``` java
+int[][] graph = {
+        {0, 1, 1, 0, 1, 0},
+        {1, 0, 0, 0, 0, 0},
+        {1, 0, 0, 0, 1, 1},
+        {0, 0, 0, 0, 1, 0},
+        {1, 0, 1, 1, 0, 0},
+        {0, 0, 1, 0, 0, 0}
+};
+```
+
+### 인접 리스트
+그래프를 인접 리스트로 구현하면 다음과 같다.
 
 ![](./01_data_structure/2.png)
         
 ```java
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Arrays;
+HashMap<Integer, ArrayList<Integer>> graph = new HashMap();
 
-HashMap<String, ArrayList<String>> graph = new HashMap<String, ArrayList<String>>();
-
-graph.put("A", new ArrayList<String>(Arrays.asList("B", "C")));
-graph.put("B", new ArrayList<String>(Arrays.asList("A", "D")));
-graph.put("C", new ArrayList<String>(Arrays.asList("A", "G", "H", "I")));
-graph.put("D", new ArrayList<String>(Arrays.asList("B", "E", "F")));
-graph.put("E", new ArrayList<String>(Arrays.asList("D")));
-graph.put("F", new ArrayList<String>(Arrays.asList("D")));
-graph.put("G", new ArrayList<String>(Arrays.asList("C")));
-graph.put("H", new ArrayList<String>(Arrays.asList("C")));
-graph.put("I", new ArrayList<String>(Arrays.asList("C", "J")));
-graph.put("J", new ArrayList<String>(Arrays.asList("I")));
-
-System.out.println(graph);  
-// {A=[B, C], B=[A, D], C=[A, G, H, I], D=[B, E, F], E=[D], F=[D], G=[C], H=[C], I=[C, J], J=[I]}
-
+graph.put(0, new ArrayList<Integer>(Arrays.asList(1, 2, 4)));
+graph.put(1, new ArrayList<Integer>(Arrays.asList(0)));
+graph.put(2, new ArrayList<Integer>(Arrays.asList(0, 4, 5)));
+graph.put(3, new ArrayList<Integer>(Arrays.asList(4)));
+graph.put(4, new ArrayList<Integer>(Arrays.asList(0, 2, 3)));
+graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
 ```
 
 ### 그래프 탐색
@@ -967,108 +976,249 @@ System.out.println(graph);
 - BFS
 - DFS
         
-#### DFS(깊이 우선 탐색)
-        
-```java
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Stack;
+### DFS(깊이 우선 탐색)
+`DFS`는 `Stack` 또는 `재귀(Recursion)`을 통해 구현할 수 있다.
 
-public ArrayList<String> dfs(HashMap<String, ArrayList<String>> graph, String start) {
+인접 행렬을 `재귀(Recursion)`로 풀면 다음과 같다.
+``` java
+public class App {
 
-    // 1개의 Queue, 1개의 Stack을 사용한다.
-    ArrayList<String> visited = new ArrayList<String>();
-    Stack<String> needVisit = new Stack<String>();
+    public static void main(String[] args) {
+        int[][] graph = {
+                {0, 1, 1, 0, 1, 0},
+                {1, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 0, 1, 0},
+                {1, 0, 1, 1, 0, 0},
+                {0, 0, 1, 0, 0, 0}
+        };
 
-    needVisit.push(start);
+        boolean[] isVisited = new boolean[graph.length];
 
-    while (needVisit.size() > 0) {
-        String node = needVisit.pop();
+        List<Integer> visitedList = new ArrayList<>();
 
-        // 방문을 안했다면
-        if (!visited.contains(node)) {
-            visited.add(node);
-            ArrayList<String> adjacent = graph.get(node);
-            for(int i=0; i<adjacent.size(); i++) {
-                needVisit.push(adjacent.get(i));
+        dfs(graph, 0, isVisited, visitedList);
+
+        System.out.println(visitedList);    // [0, 1, 2, 4, 3, 5]
+    }
+
+    public static void dfs(int[][] graph, int start, boolean[] isVisited, List<Integer> visitedList) {
+        isVisited[start] = true;
+        visitedList.add(start);
+        for (int i=0; i<graph[start].length; i++) {
+            if (graph[start][i] == 1 && isVisited[i] == false) {
+                dfs(graph, i, isVisited, visitedList);
             }
         }
     }
-
-    return visited;
 }
 ```
 
-```java
-HashMap<String, ArrayList<String>> graph = new HashMap<String, ArrayList<String>>();
+인접 행렬을 `Stack`으로 풀면 다음과 같다.
+``` java
+public class App {
 
-graph.put("A", new ArrayList<String>(Arrays.asList("B", "C")));
-graph.put("B", new ArrayList<String>(Arrays.asList("A", "D")));
-graph.put("C", new ArrayList<String>(Arrays.asList("A", "G", "H", "I")));
-graph.put("D", new ArrayList<String>(Arrays.asList("B", "E", "F")));
-graph.put("E", new ArrayList<String>(Arrays.asList("D")));
-graph.put("F", new ArrayList<String>(Arrays.asList("D")));
-graph.put("G", new ArrayList<String>(Arrays.asList("C")));
-graph.put("H", new ArrayList<String>(Arrays.asList("C")));
-graph.put("I", new ArrayList<String>(Arrays.asList("C", "J")));
-graph.put("J", new ArrayList<String>(Arrays.asList("I")));
-
-System.out.println(graph);
-// {A=[B, C], B=[A, D], C=[A, G, H, I], D=[B, E, F], E=[D], F=[D], G=[C], H=[C], I=[C, J], J=[I]}
-
-System.out.println(dfs(graph, "A"));
-// [A, C, I, J, H, G, B, D, F, E]
-```
-
-#### BFS(너비 우선 탐색)
+    public static void main(String[] args) {
+        int[][] graph = {
+                {0, 1, 1, 0, 1, 0},
+                {1, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 0, 1, 0},
+                {1, 0, 1, 1, 0, 0},
+                {0, 0, 1, 0, 0, 0}
+        };
         
-```java
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Stack;
-
-public ArrayList<String> bfs(HashMap<String, ArrayList<String>> graph, String start) {
-
-    // 2개의 Queue를 사용한다.
-    ArrayList<String> visited = new ArrayList<String>();
-    ArrayList<String> needVisit = new ArrayList<String>();
-
-    needVisit.add(start);
-
-    while(needVisit.size() > 0) {
-        String node = needVisit.remove(0);
-
-        // 방문을 안했다면
-        if (!visited.contains(node)) {
-            visited.add(node);
-            needVisit.addAll(graph.get(node));
-        }
+        System.out.println(dfs(graph, 0));  // [0, 4, 3, 2, 5, 1]
     }
 
-    return visited;
+    public static ArrayList<Integer> dfs(int[][] graph, int start) {
+        Stack<Integer> needVisit = new Stack<>();
+        ArrayList<Integer> visited = new ArrayList<>();
+
+        needVisit.push(start);
+
+        while(needVisit.size() > 0) {
+            int node = needVisit.pop();
+            if (!visited.contains(node)) {
+                visited.add(node);
+                for (int i=0; i<graph[node].length; i++) {
+                    if (graph[node][i] == 1)
+                        needVisit.push(i);
+                }
+            }
+        }
+
+        return visited;
+    }
 }
-```        
+```
+
+인접 리스트를 `재귀(Recursion)`으로 풀면 다음과 같다.
+``` java
+public class App {
+
+    public static void main(String[] args) {
+
+        HashMap<Integer, ArrayList<Integer>> graph = new HashMap();
+
+        graph.put(0, new ArrayList<Integer>(Arrays.asList(1, 2, 4)));
+        graph.put(1, new ArrayList<Integer>(Arrays.asList(0)));
+        graph.put(2, new ArrayList<Integer>(Arrays.asList(0, 4, 5)));
+        graph.put(3, new ArrayList<Integer>(Arrays.asList(4)));
+        graph.put(4, new ArrayList<Integer>(Arrays.asList(0, 2, 3)));
+        graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
+
+        boolean[] isVisited = new boolean[graph.size()];
+        ArrayList<Integer> visitedList = new ArrayList<>();
+
+        dfs(graph, 0, isVisited, visitedList);
+
+        System.out.println(visitedList);
+    }
+
+    public static void dfs(HashMap<Integer, ArrayList<Integer>> graph, int start, boolean[] isVisited, ArrayList<Integer> visitedList) {
+        isVisited[start] = true;
+        visitedList.add(start);
+        ArrayList<Integer> adjacent = graph.get(start);
+        for (int node: adjacent) {
+            if (isVisited[node] == false) {
+                dfs(graph, node, isVisited, visitedList);
+            }
+        }
+    }
+}
+```
+        
+인접 리스트를 `Stack`으로 풀어보자. 
 ```java
-HashMap<String, ArrayList<String>> graph = new HashMap<String, ArrayList<String>>();
+public class App {
 
-graph.put("A", new ArrayList<String>(Arrays.asList("B", "C")));
-graph.put("B", new ArrayList<String>(Arrays.asList("A", "D")));
-graph.put("C", new ArrayList<String>(Arrays.asList("A", "G", "H", "I")));
-graph.put("D", new ArrayList<String>(Arrays.asList("B", "E", "F")));
-graph.put("E", new ArrayList<String>(Arrays.asList("D")));
-graph.put("F", new ArrayList<String>(Arrays.asList("D")));
-graph.put("G", new ArrayList<String>(Arrays.asList("C")));
-graph.put("H", new ArrayList<String>(Arrays.asList("C")));
-graph.put("I", new ArrayList<String>(Arrays.asList("C", "J")));
-graph.put("J", new ArrayList<String>(Arrays.asList("I")));
+    public static void main(String[] args) {
 
-System.out.println(graph);
-// {A=[B, C], B=[A, D], C=[A, G, H, I], D=[B, E, F], E=[D], F=[D], G=[C], H=[C], I=[C, J], J=[I]}
+        HashMap<Integer, ArrayList<Integer>> graph = new HashMap();
 
-System.out.println(bfs(graph, "A"));
-// [A, B, C, D, G, H, I, E, F, J]
+        graph.put(0, new ArrayList<Integer>(Arrays.asList(1, 2, 4)));
+        graph.put(1, new ArrayList<Integer>(Arrays.asList(0)));
+        graph.put(2, new ArrayList<Integer>(Arrays.asList(0, 4, 5)));
+        graph.put(3, new ArrayList<Integer>(Arrays.asList(4)));
+        graph.put(4, new ArrayList<Integer>(Arrays.asList(0, 2, 3)));
+        graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
+
+        System.out.println(dfs(graph, 0));  // [0, 4, 3, 2, 5, 1]
+    }
+
+    public static ArrayList<Integer> dfs(HashMap<Integer, ArrayList<Integer>> graph, int start) {
+
+        // 1개의 Queue, 1개의 Stack을 사용한다.
+        ArrayList<Integer> visited = new ArrayList<Integer>();
+        Stack<Integer> needVisit = new Stack<Integer>();
+
+        needVisit.push(start);
+
+        while (needVisit.size() > 0) {
+            Integer node = needVisit.pop();
+
+            // 방문을 안했다면
+            if (!visited.contains(node)) {
+                visited.add(node);
+                ArrayList<Integer> adjacent = graph.get(node);
+                for(int i=0; i<adjacent.size(); i++) {
+                    needVisit.push(adjacent.get(i));
+                }
+            }
+        }
+
+        return visited;
+    }
+}
+```
+
+
+### BFS(너비 우선 탐색)
+BFS는 `Queue`를 사용하면 된다.
+
+인접 행렬을 `Queue`로 해결해보자.
+``` java
+public class App {
+
+    public static void main(String[] args) {
+
+        int[][] graph = {
+                {0, 1, 1, 0, 1, 0},
+                {1, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 0, 1, 0},
+                {1, 0, 1, 1, 0, 0},
+                {0, 0, 1, 0, 0, 0}
+        };
+
+        boolean[] isVisited = new boolean[graph.length];
+
+        System.out.println(dfs(graph, 0, isVisited));
+    }
+
+    public static ArrayList<Integer> dfs(int[][] graph, int start, boolean[] isVisited) {
+        ArrayList<Integer> needVisit = new ArrayList<>();
+        ArrayList<Integer> visitedList = new ArrayList<>();
+        isVisited[start] = true;
+        needVisit.add(start);
+        visitedList.add(start);
+
+        while(needVisit.size() > 0) {
+            int node = needVisit.remove(0);
+            for (int i=0; i<graph[node].length; i++) {
+                if (graph[node][i] == 1 && isVisited[i] == false) {
+                    needVisit.add(i);
+                    isVisited[i] = true;
+                    visitedList.add(i);
+                }
+            }
+        }
+
+        return visitedList;
+    }
+}
+```
+
+인접 리스트를 `Queue`로 해결해보자.
+```java
+public class App {
+
+    public static void main(String[] args) {
+
+        HashMap<Integer, ArrayList<Integer>> graph = new HashMap();
+
+        graph.put(0, new ArrayList<Integer>(Arrays.asList(1, 2, 4)));
+        graph.put(1, new ArrayList<Integer>(Arrays.asList(0)));
+        graph.put(2, new ArrayList<Integer>(Arrays.asList(0, 4, 5)));
+        graph.put(3, new ArrayList<Integer>(Arrays.asList(4)));
+        graph.put(4, new ArrayList<Integer>(Arrays.asList(0, 2, 3)));
+        graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
+
+        System.out.println(bfs(graph, 0));      // [0, 1, 2, 4, 5, 3]
+    }
+
+    public static ArrayList<Integer> bfs(HashMap<Integer, ArrayList<Integer>> graph, Integer start) {
+
+        // 2개의 Queue를 사용한다.
+        ArrayList<Integer> visited = new ArrayList<Integer>();
+        ArrayList<Integer> needVisit = new ArrayList<Integer>();
+
+        needVisit.add(start);
+
+        while(needVisit.size() > 0) {
+            Integer node = needVisit.remove(0);
+
+            // 방문을 안했다면
+            if (!visited.contains(node)) {
+                visited.add(node);
+                needVisit.addAll(graph.get(node));
+            }
+        }
+
+        return visited;
+    }
+}
 ```
         
 ### 최단경로 알고리즘 (다익스트라)
