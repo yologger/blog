@@ -205,7 +205,7 @@ new_image           0.1     eeb6ee3f44bd   4 seconds ago   211MB
 - Docker Hub
 - AWS ECR (Elastic Container Registry)
 - GCR (Google Container Registry)
-- GitHub Container Registry
+- GHCR (GitHub Container Registry)
 
 ## 도커 허브
 [도커 허브(Docker Hub)](https://hub.docker.com/)는 도커 이미지를 저장할 수 있는 원격 저장소다. 도커 허브는 크게 세 가지의 저장소를 제공한다.

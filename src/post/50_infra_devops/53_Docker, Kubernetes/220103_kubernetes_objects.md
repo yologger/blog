@@ -903,7 +903,7 @@ $ kubectl delete configmap my-configmap
 ### 시크릿 생성
 `kubectl create secret generic <시크릿 이름> --from-literal <키=값>` 명령어로 시크릿을 생성한다.
 ``` shellsession
-kubectl create secret generic my-secret --from-literal DB_PASSWORD=1234
+$ kubectl create secret generic my-secret --from-literal DB_PASSWORD=1234
 ```
 
 시크릿은 YAML 파일로 생성할 수도 있다.
