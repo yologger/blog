@@ -1,5 +1,5 @@
 ---
-title: "Docker와 SpringBoot를 함께 사용하기"
+title: "Dockerize Springboot & Deploy to Kubernetes"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -7,6 +7,9 @@ sidebarDepth: 0
 
 # Table of Contents
 [[toc]]
+
+# Dockerize Springboot & Deploy to Kubernetes
+스프링 프로젝트를 도커 이미지로 빌드하고, 쿠버네티스 클러스터에 배포하는 과정에 대해 정리한다.
 
 ## Spring Boot 프로젝트를 Docker 이미지로 만들기
 다음과 같은 간단한 Spring Boot 프로젝트가 있다.
@@ -51,7 +54,7 @@ $ ./gradlew build
 
 `build/libs`에서 `JAR`를 확인할 수 있다.
 
-![](./210102_spring_with_docker/1.png)
+![](./220105_spring_with_docker/1.png)
 
 이제 `Dockerfile`을 작성한다.
 ```
@@ -122,7 +125,7 @@ $ docker logs springboot-container
 ```
 웹 브라우저에서 접속도 해보자.
 
-![](./210102_spring_with_docker/2.png)
+![](./220105_spring_with_docker/2.png)
 
 컨테이너를 종료한다.
 ``` shellsession
@@ -240,4 +243,77 @@ jobs:
           docker tag springboot_image yologger1013/springboot_image:${GITHUB_SHA::7} 
           docker push yologger1013/springboot_image:${GITHUB_SHA::7}
 ```
-`application.properties` 같은 설정파일을 Github의 Secret으로 암호화했어도 Docker Hub에 업로드된 이미지를 실행하여 확인할 수 있다. 따라서 Docker Hub의 `Private Respository` 또는 `Private Registry`를 사용하는 것을 권장한다.
+
+이미지가 업로드된 것을 확인할 수 있다.
+
+![](./220105_spring_with_docker/3.png)
+
+`application.properties` 같은 설정파일을 Github의 Secret으로 암호화했어도 Docker Hub에 업로드된 이미지를 실행하여 확인할 수 있다. 따라서 `Container Registry 서비스`의 사설 저장소 사용을 권장한다.
+
+## 쿠버네티스에서 도커 이미지 Pull 하기
+쿠버네티스에서 도커 허브의 이미지를 Pull 해보자. 먼저 로그인을 한다.
+```
+$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: <YOUR_USERNAME>
+Password: <YOUR_PASSWORD>
+```
+이제 `docker pull` 명령어로 이미지를 Pull 한다.
+```
+$ docker pull yologger1013/springboot_image:843b71d
+```
+이미지가 다운된 것을 확인할 수 있다.
+```
+$ docker images
+REPOSITORY                      TAG       IMAGE ID      CREATED         SIZE
+yologger1013/springboot_image   843b71d   0d39900f7747  8 minutes ago   122MB
+...
+```
+
+## 쿠버네티스에서 이미지 실행하기
+다음과 같이 `springboot.yml`을 작성한다.
+``` yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springboot-app-label
+  template:
+    metadata:
+      name: 
+      labels: 
+        app: springboot-app-label
+    spec:
+      containers:
+        - name: springboot-app
+          image: yologger1013/springboot_image:843b71d
+          ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-service
+spec:
+  ports:
+    - name: springboot-service-port
+      port: 20000
+      targetPort: 8080
+  selector:
+    app: springboot-app-label
+  type: NodePort
+```
+외부로 노출되는 포트를 확인한다.
+```
+$ kubectl get services
+NAME                 TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)           AGE
+kubernetes           ClusterIP   10.96.0.1      <none>        443/TCP           3d1h
+springboot-service   NodePort    10.99.31.235   <none>        20000:30691/TCP   6m43s
+```
+이제 `<워커 노드 IP>:<포트>` 형태로 접근할 수 있다.
+
+![](./220105_spring_with_docker/3.png)

@@ -127,8 +127,60 @@ queue.remove();    // 1
 queue.remove();    // 2
 ```
 
+### Queue 문제
+::: details 기능 개발
+프로그래머스 팀에서는 기능 개선 작업을 수행 중입니다. 각 기능은 진도가 100%일 때 서비스에 반영할 수 있습니다.
+
+또, 각 기능의 개발속도는 모두 다르기 때문에 뒤에 있는 기능이 앞에 있는 기능보다 먼저 개발될 수 있고, 이때 뒤에 있는 기능은 앞에 있는 기능이 배포될 때 함께 배포됩니다.
+
+먼저 배포되어야 하는 순서대로 작업의 진도가 적힌 정수 배열 progresses와 각 작업의 개발 속도가 적힌 정수 배열 speeds가 주어질 때 각 배포마다 몇 개의 기능이 배포되는지를 return 하도록 solution 함수를 완성하세요.
+
+- 제한 사항
+    - 작업의 개수(progresses, speeds배열의 길이)는 100개 이하입니다.
+    - 작업 진도는 100 미만의 자연수입니다.
+    - 작업 속도는 100 이하의 자연수입니다.
+    - 배포는 하루에 한 번만 할 수 있으며, 하루의 끝에 이루어진다고 가정합니다. 예를 들어 진도율이 95%인 작업의 개발 속도가 하루에 4%라면 배포는 2일 뒤에 이루어집니다.
+
+``` java
+import java.util.*; 
+
+class Solution {
+    public int[] solution(int[] progresses, int[] speeds) {
+
+        // 남은 시간 계산
+        int[] remainTime = new int[progresses.length];
+        for (int i=0; i<progresses.length; i++) {
+            remainTime[i] = (int)Math.ceil((100-progresses[i])/(double)speeds[i]);
+        }
+        
+        ArrayList<Integer> completedCount = new ArrayList<Integer>();
+        
+        ArrayList<Integer> queue = new ArrayList<Integer>();
+        
+        for (int i=0; i<remainTime.length; i++) {
+            if (queue.size() > 0 && queue.get(0) < remainTime[i]) {
+                completedCount.add(queue.size());
+                queue.clear();
+            }
+            queue.add(remainTime[i]);
+        }
+        
+        completedCount.add(queue.size());
+        queue.clear();
+        
+        int[] arr = new int[completedCount.size()];
+        for (int i=0; i<completedCount.size(); i++) {
+            arr[i] = completedCount.get(i);
+        }
+        
+        return arr;
+    }
+}
+```
+:::
+
 ## Deque
-<b>`Deque`</b>는 `Stack`과 `Queue`를 합친 자료구조다. Java에서는 `Deque`인터페이스와 `ArrayDeque`클래스로 구현한다.
+`Deque`는 `Stack`과 `Queue`를 합친 자료구조다. Java에서는 `Deque`인터페이스와 <b>`ArrayDeque`</b>클래스로 구현한다.
 ``` java Deque
 import java.util.Deque;
 import java.util.ArrayDeque;
@@ -439,7 +491,7 @@ map.get(2);
 ::: details 완주하지 못한 선수
 수많은 마라톤 선수들이 마라톤에 참여하였습니다. 단 한 명의 선수를 제외하고는 모든 선수가 마라톤을 완주하였습니다.
 
-마라톤에 참여한 선수들의 이름이 담긴 배열 participant와 완주한 선수들의 이름이 담긴 배열 completion이 주어질 때, 완주하지 못한 선수의 이름을 return 하도록 solution 함수를 작성해주세요.
+마라톤에 참여한 선수들의 이름이 담긴 배열 participant와 완주한 선수들의 이름이 담긴 배열 completion이 주어질 때, <u>완주하지 못한 선수의 이름</u>을 return 하도록 solution 함수를 작성해주세요.
 
 - 제한사항
     - 마라톤 경기에 참여한 선수의 수는 1명 이상 100,000명 이하입니다.
@@ -836,7 +888,7 @@ public class BST {
     - 왼쪽 자식의 인덱스 번호 = 부모 노드의 인덱스 번호 * 2
     - 오른쪽 자식의 인덱스 번호 = (부모 노드의 인덱스 번호 * 2) + 1
 
-##### 최소힙
+#### 최소힙
 ``` java
 PriorityQueue<Integer> heap = new PriorityQueue<>();
 
@@ -853,7 +905,7 @@ System.out.println(heap.remove());    // 5
 System.out.println(heap.remove());    // 6
 ```
 
-##### 최대힙
+#### 최대힙
 ``` java
 PriorityQueue<Integer> heap = new PriorityQueue<>(Collections.reverseOrder());
 
@@ -868,6 +920,54 @@ heap.add(7);
 System.out.println(heap.poll());    // 20
 System.out.println(heap.poll());    // 16
 System.out.println(heap.poll());    // 9
+```
+
+#### Comparator
+``` java
+class Student {
+    String name;
+    int age;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+}
+```
+``` java
+PriorityQueue<Student> heap = new PriorityQueue(new Comparator() {
+    @Overide
+    public int compare(Student s1, Student s2) {
+        return s1.age - os.age;
+    }
+});
+head.add(new Student("Paul", 30));
+head.add(new Student("John", 10));
+head.add(new Student("Son", 20));
+```
+
+#### Comparable
+``` java
+class Student implements Comparable<Student> {
+    String name;
+    int age;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public int compareTo(Student target) {
+        return this.age - target.age;
+    }
+}
+```
+``` java
+PriorityQueue<Student> heap = new PriorityQueue();
+head.add(new Student("Paul", 30));
+head.add(new Student("John", 10));
+head.add(new Student("Son", 20));
 ```
 
 ### PriorityQueue 문제
@@ -1005,6 +1105,8 @@ public class App {
     public static void dfs(int[][] graph, int start, boolean[] isVisited, List<Integer> visitedList) {
         isVisited[start] = true;
         visitedList.add(start);
+
+        // 정점 i로의 경로가 존재하고, 정점 i를 방문하지 않았다면,
         for (int i=0; i<graph[start].length; i++) {
             if (graph[start][i] == 1 && isVisited[i] == false) {
                 dfs(graph, i, isVisited, visitedList);
@@ -1039,8 +1141,11 @@ public class App {
 
         while(needVisit.size() > 0) {
             int node = needVisit.pop();
+            // 방문하지 않았다면
             if (!visited.contains(node)) {
+                // 방문
                 visited.add(node);
+                // 인접한 노드들을 푸시
                 for (int i=0; i<graph[node].length; i++) {
                     if (graph[node][i] == 1)
                         needVisit.push(i);
@@ -1240,7 +1345,8 @@ class Solution {
         int networkCount = 0;
         boolean[] isVisited = new boolean[n];
         
-        for (int i=0; i<n; i ++) {
+        // 모든 노드에 대해서 DFS 수행
+        for (int i=0; i<n; i++) {
             if (!isVisited[i]) {
                 networkCount ++;
                 dfs(n, computers, i, isVisited);

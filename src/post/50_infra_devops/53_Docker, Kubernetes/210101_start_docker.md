@@ -266,7 +266,7 @@ f2fa9f4cf8fd: Mounted from library/ubuntu
 ![](./210101_start_docker/6.png)
 
 ### 도커 허브에서 이미지 다운받기
-`docker push` 명령어로 도커 허브에서 이미지를 다운받을 수 있다.
+`docker pull` 명령어로 도커 허브에서 이미지를 다운받을 수 있다.
 ``` shellsession
 $ docker pull yologger1013/test_image:0.1 
 

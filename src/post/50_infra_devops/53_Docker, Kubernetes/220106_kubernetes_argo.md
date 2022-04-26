@@ -165,7 +165,7 @@ argocd-server-metrics                     ClusterIP   10.110.209.117   <none>   
 
 Argo CD는 웹 브라우저에서 GUI 형태로 관련된 오브젝트를 관리할 수 있도록 `Argo CD API server`를 제공한다. 
 
-![](./220105_kubernetes_argo/1.png)
+![](./220106_kubernetes_argo/1.png)
 
 Argo CD가 설치되면 기본적으로 API server 접근하기 위한 서비스가 `Cluster IP`타입으로 설정된다. 클러스터 외부에서도 API server에 접근할 수 있도록 서비스 타입을 `NodePort`로 바꿔주자.
 
@@ -192,9 +192,12 @@ argocd-server-metrics                     ClusterIP   10.110.209.117   <none>   
 
 제대로 접근한 경우 다음과 같이 로그인 화면이 나온다.
 
-![](./220105_kubernetes_argo/2.png)
+![](./220106_kubernetes_argo/2.png)
 
 기본 계정은 `admin`이며, 비밀번호는 다음 명령어로 알아낼 수 있다.
 ```
 $ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
+https://medium.com/@jyson88/kustomize-%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8-%EA%B4%80%EB%A6%AC-db851244410f
+https://potato-yong.tistory.com/137
+https://catalog.us-east-1.prod.workshops.aws/workshops/9c0aa9ab-90a9-44a6-abe1-8dff360ae428/ko-KR/110-cicd/100-cicd
