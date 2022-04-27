@@ -1233,4 +1233,262 @@ Commercial support is available at
 ```
 
 ## Kustomize
-쿠버네티스는 여러 오브젝트를 `YAML 설정파일`에 선언한다. <b>`Kustomize`</b>은 이 설정 파일을 사용자가 원하는대로 재정의하도록 도와주는 도구다. 예를 들어 디플로이먼트 설정파일의 레플리카셋 수를 변경하거나, 모든 리소스에 네임스페이스를 추가하거나 등의 작업을 할 수 있다.
+ <b>`Kustomize`</b>을 사용하면 리소스 설정파일을 사용자가 원하는대로 커스터마이징할 수 있다. 예를 들어 기본이 되는 리소스 설정파일 템플릿을 만들고, 개발 환경과 운영 환경에 따라 다른 리소스 설정파일을 구성할 수 있다.
+
+### 예제 디렉토리 구성하기
+다음과 같은 구조로 디렉토리를 생성한다.
+```
+$ mkdir app
+$ cd
+```
+```
+$ tree .
+.
+├── base
+└── overlays
+    ├── dev
+    └── prod
+```
+`base`에는 템플릿으로 사용할 리소스 설정을 생성한다. `overlays`에서는 템플릿을 사용하여 리소스 설정을 커스터마이징한다.
+- `overlays/dev`: 개발 환경을 위한 리소스 설정이 위치하는 디렉토리
+- `overlays/prod`: 운영 환경을 위한 리소스 설정이 위치하는 디렉토리
+
+### 템플릿 생성하기
+`base` 디렉토리에 템플릿으로 사용할 리소스를 생성하자.
+
+``` {3,4,5,6}
+$ tree .
+.
+├── base
+│   ├── nginx-deployment.yml
+│   └── nginx-service.yml
+│   └── kustomization.yml
+└── overlays
+    ├── dev
+    └── prod
+```
+`base/nginx-deployment.yml`는 다음과 같다. 
+``` yml
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      name: nginx-pod
+      labels: 
+        app: nginx-pod-label
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+```
+`base/nginx-service.yml`는 다음과 같다. 
+``` yml
+# base/nginx-service.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-nodeport
+spec:
+  ports:
+    - name: nginx-pods-port
+      port: 9999
+      targetPort: 80
+  selector:
+    app: nginx-pod-label
+  type: NodePort 
+```
+<b>`kustomization.yml`</b>은 `kustomize`의 핵심이 되는 파일이다. 이 파일에는 사용할 자원과 커스터마이징 방법을 나열한다. 
+
+우선 템플릿에서 사용할 자원들을 `base/kustomization.yml`에 나열하자.
+``` yml{5,6}
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:  # 사용할 자원들을 나열한다.
+- nginx-deployment.yml
+- nginx-service.yml
+```
+이제 `kubectl kustomize <경로>` 명령어를 실행해보자.
+```
+$ kubectl kustomize .
+```
+`base/kustomization.yml`을 적용하여 새롭게 생성한 리소스 설정파일이 출력된다.
+``` yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-nodeport
+spec:
+  ports:
+  - name: nginx-pods-port
+    port: 9999
+    targetPort: 80
+  selector:
+    app: nginx-pod-label
+  type: NodePort
+---
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      labels:
+        app: nginx-pod-label
+      name: nginx-pod
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx-container
+        ports:
+        - containerPort: 80
+```
+
+### 개발 환경 커스터마이징
+이제 템플릿을 사용하여 리소스 설정을 커스터마이징해보자. `overlays/dev`에 `kustomization.yml` 파일을 생성한다.
+``` {9}
+$ tree .
+.
+├── base
+│   ├── kustomization.yml
+│   ├── nginx-deployment.yml
+│   └── nginx-service.yml
+└── overlays
+    ├── dev
+    │   └── kustomization.yml
+    └── prod
+```
+`dev/kustomization.yml`는 두 가지 역할을 하고 있다.
+- 네임스페이스를 `default`로 지정한다.
+- 오브젝트 이름에 접두어 `dev-`를 추가하고 있다.
+
+``` yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: default    # 네임스페이스 지정
+bases:
+- ../../base          # base 디렉토리 경로 지정
+namePrefix: dev-      # dev- 접두어 추가
+```
+이제 `kubectl kustomize <경로>` 명령어를 실행해보자.
+```
+$ kubectl kustomize .
+```
+접두어와 네임스페이스가 추가된 새로운 설정 파일이 출력된다.
+``` yml {4,5,17,18}
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-nginx-service-nodeport  # 접두어 dev 추가
+  namespace: default                # 네임스페이스 추가
+spec:
+  ports:
+  - name: nginx-pods-port
+    port: 9999
+    targetPort: 80
+  selector:
+    app: nginx-pod-label
+  type: NodePort
+---
+kind: Deployment
+metadata:
+  name: dev-nginx-deployment  # 접두어 dev- 추가
+  namespace: default          # 네임스페이스 추가
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      labels:
+        app: nginx-pod-label
+      name: nginx-pod
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx-container
+        ports:
+        - containerPort: 80
+```
+
+### 운영 환경 커스터마이징
+운영 환경을 위한 `kustomization.yml` 파일을 `overlays/prod`에 구성하자.
+``` {11}
+$ tree .
+.
+├── base
+│   ├── kustomization.yml
+│   ├── nginx-deployment.yml
+│   └── nginx-service.yml
+└── overlays
+    ├── dev
+    │   └── kustomization.yml
+    └── prod
+        └── kustomization.yml
+```
+`prod/kustomization.yml`는 두 가지 역할을 하고 있다.
+- 네임스페이스를 `default`로 지정한다.
+- 오브젝트 이름에 접두어 `prod-`를 추가하고 있다.
+
+``` yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: default    # 네임스페이스 지정
+bases:
+- ../../base          # base 디렉토리 경로 지정
+namePrefix: prod-     # prod- 접두어 추가
+```
+이제 `kubectl kustomize <경로>` 명령어를 실행해보자.
+```
+$ kubectl kustomize .
+```
+접두어와 네임스페이스가 추가된 새로운 설정 파일이 출력된다
+``` yml {4,5,17,18}
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-nginx-service-nodeport # 접두어 prod- 추가
+  namespace: default                # 네임스페이스 추가
+spec:
+  ports:
+  - name: nginx-pods-port
+    port: 9999
+    targetPort: 80
+  selector:
+    app: nginx-pod-label
+  type: NodePort
+---
+kind: Deployment
+metadata:
+  name: prod-nginx-deployment # 접두어 prod- 추가
+  namespace: default          # 네임스페이스 추가
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      labels:
+        app: nginx-pod-label
+      name: nginx-pod
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx-container
+        ports:
+        - containerPort: 80
+```
