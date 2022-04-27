@@ -135,3 +135,98 @@ root@nginx-pod:/#
 $ kubectl exec -it nginx-pod -c nginx-container bash
 root@nginx-pod:/# 
 ```
+
+
+## kubectl patch
+`kubectl patch` 명령어를 사용하면 실행 중인 리소스의 설정을 업데이트할 수 있다.
+
+다음과 같은 디플로이먼트 설정파일이 있다고 가정하자.
+``` yml
+# nginx-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      name: nginx-pod
+      labels: 
+        app: nginx-pod-label
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.10
+          ports:
+          - containerPort: 80
+```
+```
+$ kubectl apply -f nginx-deployment.yml 
+deployment.apps/nginx-deployment created
+```
+```
+$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           10s
+```
+```
+$ kubectl get pods
+NAME                               READY   STATUS    RESTARTS   AGE
+nginx-deployment-d5f8944b6-6q5b6   1/1     Running   0          5s
+nginx-deployment-d5f8944b6-847z4   1/1     Running   0          5s
+nginx-deployment-d5f8944b6-mprlm   1/1     Running   0          5s
+```
+`kubectl patch <오브젝트 타입> <오브젝트 이름> --patch` 명령어로 속성을 업데이트할 수 있다. 레플라카셋의 개수를 2개로 변경해보자.
+```
+$ kubectl patch deployment nginx-deployment --patch '{"spec": {"replicas": 2}}'
+deployment.apps/nginx-deployment patched
+```
+```
+$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2/2     2            2           46s
+```
+```
+$ kubectl get pods
+NAME                               READY   STATUS    RESTARTS   AGE
+nginx-deployment-d5f8944b6-6q5b6   1/1     Running   0          52s
+nginx-deployment-d5f8944b6-mprlm   1/1     Running   0          52s
+```
+
+패치 파일을 별도로 생성하여 적용할 수 있다. 패치 파일로 이미지 버전을 변경해보자.
+``` yml
+# nginx-deployment-patch.yml
+spec:
+  template:
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.11
+```
+`kubectl patch <오브젝트 타입> <오브젝트 이름> --patch-file <패치 파일>` 명령어로 패치 파일을 적용할 수 있다.
+```
+$ kubectl patch deployment nginx-deployment --patch-file nginx-deployment-patch.yml 
+deployment.apps/nginx-deployment patched
+```
+기존 팟은 삭제되고 패치파일을 적용한 새로운 팟이 생성되었다.
+```
+$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-74b7d88d8f-7zxm2   1/1     Running   0          10s
+nginx-deployment-74b7d88d8f-tllrr   1/1     Running   0          12s
+```
+새로운 버젼의 이미지가 적용된 것을 확인할 수 있다.
+``` {7}
+$ kubectl describe pod nginx-deployment-74b7d88d8f-7zxm2
+Name:         nginx-deployment-74b7d88d8f-7zxm2
+...
+Containers:
+  nginx-container:
+    Container ID:   docker://c51...73
+    Image:          nginx:1.11
+    ...
+```

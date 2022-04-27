@@ -195,7 +195,7 @@ bootBuildImage {
 $ ./gradlew bootBuildImage -imageName=my_project_image
 ```
 
-## Github Actions로 Spring boot 도커 이미지를 Docker Hub에 배포하기
+## Github Actions로 Docker Hub에 배포하기
 `Dockerfile`은 다음과 같다.
 ```
 FROM openjdk:8-jdk-alpine

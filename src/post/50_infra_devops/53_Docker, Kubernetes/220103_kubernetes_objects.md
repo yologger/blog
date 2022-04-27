@@ -1269,6 +1269,8 @@ $ tree .
 ```
 `base/nginx-deployment.yml`는 다음과 같다. 
 ``` yml
+# base/nginx-deployment.yml
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
@@ -1335,6 +1337,7 @@ spec:
     app: nginx-pod-label
   type: NodePort
 ---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment
@@ -1387,7 +1390,7 @@ namePrefix: dev-      # dev- 접두어 추가
 $ kubectl kustomize .
 ```
 접두어와 네임스페이스가 추가된 새로운 설정 파일이 출력된다.
-``` yml {4,5,17,18}
+``` yml {4,5,18,19}
 apiVersion: v1
 kind: Service
 metadata:
@@ -1402,6 +1405,7 @@ spec:
     app: nginx-pod-label
   type: NodePort
 ---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dev-nginx-deployment  # 접두어 dev- 추가
@@ -1456,7 +1460,7 @@ namePrefix: prod-     # prod- 접두어 추가
 $ kubectl kustomize .
 ```
 접두어와 네임스페이스가 추가된 새로운 설정 파일이 출력된다
-``` yml {4,5,17,18}
+``` yml {4,5,18,19}
 apiVersion: v1
 kind: Service
 metadata:
@@ -1471,6 +1475,7 @@ spec:
     app: nginx-pod-label
   type: NodePort
 ---
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: prod-nginx-deployment # 접두어 prod- 추가
@@ -1492,3 +1497,103 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+### 패치 파일 사용하기
+별도의 패치 파일을 사용할 수도 있다. 우선 `base/deployment.yml` 파일을 다음과 같이 수정한다.
+``` yml {6,18}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3 ## 3개의 레플리카 사용
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      name: nginx-pod
+      labels: 
+        app: nginx-pod-label
+    spec:
+      containers:
+        - name: nginx-container
+          ## image: nginx:latest <<<< 사용할 이미지를 주석 처리
+          ports:
+          - containerPort: 80
+```
+그리고 `overlays/prod` 디렉토리에 `patch.yml` 패치 파일을 생성한다. 이 파일은 두 가지 역할을 한다.
+- 레플리카셋을 4개로 변경한다.
+- 컨테이너 이미지를 지정한다.
+``` yml {7,12}
+# overlays/prod/patch.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 4
+  template:
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.0
+```
+이제 `overlays/prod/kustomization.yml`을 다음과 같이 수정한다.
+``` yml {8,9}
+# overlays/prod/kustomization.yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: default
+bases:
+- ../../base
+namePrefix: prod-
+patchesStrategicMerge:
+- patch.yml
+```
+`patchesStrategicMerge`에 사용할 패치 파일들을 나열한다. 이 속성은 다음과 같이 동작한다.
+- 패치파일에 선언된 속성이 템플릿 파일에 없으면 속성을 추가한다. 
+- 패치파일에 선언된 속성이 템플릿 파일에 있으면 덮어쓴다.
+
+이제 `kubectl kustomize .` 명령어로 결과물을 확인해보자.
+```
+$ kubectl kustomize .
+```
+``` yml {21,32,33}
+apiVersion: v1
+kind: Service
+metadata:
+  name: prod-nginx-service-nodeport
+  namespace: default
+spec:
+  ports:
+  - name: nginx-pods-port
+    port: 9999
+    targetPort: 80
+  selector:
+    app: nginx-pod-label
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prod-nginx-deployment
+  namespace: default
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      labels:
+        app: nginx-pod-label
+      name: nginx-pod
+    spec:
+      containers:
+      - image: nginx:1.0
+        name: nginx-container
+        ports:
+        - containerPort: 80
+```
+패치 파일이 적용되어 레플리카 개수가 4개로 변경되었다. 또한 컨테이너 이미지의 이름과 버전이 추가되었다.

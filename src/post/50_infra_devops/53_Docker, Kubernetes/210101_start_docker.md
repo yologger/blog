@@ -350,8 +350,49 @@ $ docker push <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
 
 ![](./210101_start_docker/19.png)
 
+
 ### 이미지 Pull
 다음 명령어로 이미지를 풀 할 수 있다.
+```
+$ docker pull <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
+```
+
+쿠버네티스 클러스터가 구축된 노드(Ubuntu Server 20.04 LTS)에서 도커 이미지를 Pull해보자.
+
+가장 먼저 `aws cli`를 설치한다.
+```
+$ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+$ sudo apt install unzip
+$ unzip awscliv2.zip
+$ sudo ./aws/install
+```
+`aws configure` 명령어로 `AmazonEC2ContainerRegistryFullAccess` 권한을 가진 사용자의 액세스 키, 비밀 키, 리전을 입력한다.
+```
+$ aws configure
+AWS Access Key ID [None]: <YOUR_ACCESS_ID>
+AWS Secret Access Key [None]: <YOUR_SECRET_ID>
+Default region name [None]: <YOUR_REGION>
+Default output format [None]: 
+```
+그 다음 명령어로 로그인한다.
+```
+$ aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+```
+로그인 과정에서 다음 에러가 발생할 수 있다.
+```
+Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+```
+`Docker`는 `/var/run/docker.sock`를 사용하여 ECR과 통신한다. 그런데 현재 리눅스 사용자가 이 파일이 접근할 권한이 없어 발생하는 문제다. 따라서 현재 사용자를 `docker` 그룹에 포함시켜준다.
+```
+$ sudo usermod -a -G docker $USER
+```
+세션을 다시 연결하고 로그인을 시도해보자. `Login Succeeded`가 출력되면 로그인에 성공한 것이다.
+```
+$ aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com
+Login Succeeded
+```
+
+이제 다음 명령어로 이미지를 다운받을 수 있다.
 ```
 $ docker pull <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
 ```
