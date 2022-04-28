@@ -374,6 +374,22 @@ AWS Secret Access Key [None]: <YOUR_SECRET_ID>
 Default region name [None]: <YOUR_REGION>
 Default output format [None]: 
 ```
+인증 정보를 확인해보자.
+```
+$ aws configure list
+      Name                    Value             Type    Location
+      ----                    -----             ----    --------
+   profile                <not set>             None    None
+access_key     ****************KS4Y shared-credentials-file    
+secret_key     ****************SNC4 shared-credentials-file    
+    region           ap-northeast-2      config-file    ~/.aws/config
+```
+다음 명령어로 키를 확인할 수도 있다.
+```
+$ aws configure get aws_access_key_id
+
+$ aws configure get aws_secret_access_key
+```
 그 다음 명령어로 로그인한다.
 ```
 $ aws ecr get-login-password --region <REGION> | docker login --username AWS --password-stdin <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com

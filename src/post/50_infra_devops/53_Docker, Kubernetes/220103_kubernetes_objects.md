@@ -967,7 +967,7 @@ metadata:
   uid: 069997e5-4ab2-4b7c-9a82-ecbb1abc5521
 type: Opaque
 ```
-시크릿은 값을 base 64로 인코딩하여 저장한다. 따라서 값에 `bXlwYXNz`, `bG9jYWxob3N0` 같이 인코딩된 값이 저장된다.
+시크릿은 값을 base 64로 인코딩하여 저장한다. `bXlwYXNz`, `bG9jYWxob3N0` 같이 인코딩된 값이 저장된다.
 
 ### YAML 설정파일에서 시크릿 사용하기
 시크릿의 키-값 또한 컨테이너가 생성될 때 환경변수로 추가된다.
@@ -1235,6 +1235,17 @@ Commercial support is available at
 ## Kustomize
  <b>`Kustomize`</b>을 사용하면 리소스 설정파일을 사용자가 원하는대로 커스터마이징할 수 있다. 예를 들어 기본이 되는 리소스 설정파일 템플릿을 만들고, 개발 환경과 운영 환경에 따라 다른 리소스 설정파일을 구성할 수 있다.
 
+### Kustomize 설치
+운영체제별로 `Kustomize` 설치 방법이 다르다. `Ubuntu` 환경에서는 다음과 같이 설치할 수 있다.
+```
+$ curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+
+$ sudo mv kustomize /usr/local/bin/
+
+$ kustomize version
+{Version:kustomize/v4.5.4 GitCommit:cf3a452ddd6f83945d39d582243b8592ec627ae3 BuildDate:2022-03-28T23:12:45Z GoOs:linux GoArch:amd64}
+```
+
 ### 예제 디렉토리 구성하기
 다음과 같은 구조로 디렉토리를 생성한다.
 ```
@@ -1318,9 +1329,9 @@ resources:  # 사용할 자원들을 나열한다.
 - nginx-deployment.yml
 - nginx-service.yml
 ```
-이제 `kubectl kustomize <경로>` 명령어를 실행해보자.
+이제 `kustomize build <경로>` 명령어를 실행해보자.
 ```
-$ kubectl kustomize .
+$ kustomize build .
 ```
 `base/kustomization.yml`을 적용하여 새롭게 생성한 리소스 설정파일이 출력된다.
 ``` yml
@@ -1359,6 +1370,11 @@ spec:
         - containerPort: 80
 ```
 
+다음 명령어를 사용하면 `kustomization.yml` 설정파일을 통해 리소스를 바로 생성할 수 있다.
+``` 
+$ kustomize build <경로> | kubectl apply -f -
+```
+
 ### 개발 환경 커스터마이징
 이제 템플릿을 사용하여 리소스 설정을 커스터마이징해보자. `overlays/dev`에 `kustomization.yml` 파일을 생성한다.
 ``` {9}
@@ -1385,9 +1401,9 @@ bases:
 - ../../base          # base 디렉토리 경로 지정
 namePrefix: dev-      # dev- 접두어 추가
 ```
-이제 `kubectl kustomize <경로>` 명령어를 실행해보자.
+이제 `kustomize build <경로>` 명령어를 실행해보자.
 ```
-$ kubectl kustomize .
+$ kustomize build .
 ```
 접두어와 네임스페이스가 추가된 새로운 설정 파일이 출력된다.
 ``` yml {4,5,18,19}
@@ -1455,9 +1471,9 @@ bases:
 - ../../base          # base 디렉토리 경로 지정
 namePrefix: prod-     # prod- 접두어 추가
 ```
-이제 `kubectl kustomize <경로>` 명령어를 실행해보자.
+이제 `kustomize build <경로>` 명령어를 실행해보자.
 ```
-$ kubectl kustomize .
+$ kustomize build .
 ```
 접두어와 네임스페이스가 추가된 새로운 설정 파일이 출력된다
 ``` yml {4,5,18,19}
@@ -1497,6 +1513,95 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+### 이미지 태그 변경하기
+`kustomize edit set image <이미지이름>:<태그이름>` 명령어를 사용하면 이미지의 태그를 쉽게 변경할 수 있다.
+
+우선 `base/deployment.yml` 파일을 살펴보자. `1.0` 버전의 nginx 이미지를 사용하고 있다.
+``` yml {18}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      name: nginx-pod
+      labels: 
+        app: nginx-pod-label
+    spec:
+      containers:
+        - name: nginx-container
+          image: nginx:1.0
+          ports:
+          - containerPort: 80
+```
+
+이제 `overlays/dev`에서 `kustomize edit set image <이미지이름>:<태그이름>` 명령어를 사용하며 `1.2` 버전으로 마이그레이션한다.
+```
+$ kustomize edit set image nginx:1.2
+```
+
+`overlays/dev/kustomization.yml`을 확인해본다. `1.2` 태그를 반영하도록 수정되어있다.
+``` yml {8-10}
+# overlays/dev/kustomization.yml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: default
+namePrefix: dev-
+resources:
+- ../../base
+images:
+- name: nginx
+  newTag: "1.2"
+```
+
+이제 `kustomize build .` 명령어를 실행해보자.
+```
+$ kustomize build .
+```
+``` yml {32}
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-nginx-service-nodeport
+  namespace: default
+spec:
+  ports:
+  - name: nginx-pods-port
+    port: 9999
+    targetPort: 80
+  selector:
+    app: nginx-pod-label
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-nginx-deployment
+  namespace: default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx-pod-label
+  template:
+    metadata:
+      labels:
+        app: nginx-pod-label
+      name: nginx-pod
+    spec:
+      containers:
+      - image: nginx:1.2
+        name: nginx-container
+        ports:
+        - containerPort: 80
+```
+
 
 ### 패치 파일 사용하기
 별도의 패치 파일을 사용할 수도 있다. 우선 `base/deployment.yml` 파일을 다음과 같이 수정한다.
@@ -1555,9 +1660,9 @@ patchesStrategicMerge:
 - 패치파일에 선언된 속성이 템플릿 파일에 없으면 속성을 추가한다. 
 - 패치파일에 선언된 속성이 템플릿 파일에 있으면 덮어쓴다.
 
-이제 `kubectl kustomize .` 명령어로 결과물을 확인해보자.
+이제 `kustomize build <경로>` 명령어로 결과물을 확인해보자.
 ```
-$ kubectl kustomize .
+$ kustomize build .
 ```
 ``` yml {21,32,33}
 apiVersion: v1
