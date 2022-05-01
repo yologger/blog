@@ -523,3 +523,64 @@ replicaset.apps/springboot-deployment-7f75b4d546   0         0         0       1
 ```
 
 마지막으로 소스코드를 수정하고 소스코드 리포지토리에 푸시하여 CI/CD 파이프라인이 잘 작동하는지 확인해보자.
+
+## Argo Rollout 적용하기
+기본적으로 디플로이먼트는 팟을 `롤링 업데이트(Rolling Update)` 방식으로 교체한다. <b>`Argo Rollout`</b>을 적용하면 `Blue/Green` 방식으로 무중단 배포할 수 있다. 
+
+우선 `Argo Rollout`을 설치한다.
+``` 
+$ kubectl create namespace argo-rollouts
+
+$ kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/latest/download/install.yaml
+```
+
+그 다음 `kubectl`에 `Argo Rollout` 플러그인을 설치한다.
+```
+$ curl -LO https://github.com/argoproj/argo-rollouts/releases/latest/download/kubectl-argo-rollouts-linux-amd64
+
+$ chmod +x ./kubectl-argo-rollouts-linux-amd64
+
+$ sudo mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+
+$ kubectl argo rollouts version
+kubectl-argo-rollouts: v1.2.0+08cf10e
+  BuildDate: 2022-03-22T00:25:11Z
+  GitCommit: 08cf10e554fe99c24c8a37ad07fadd9318e4c8a1
+  GitTreeState: clean
+  GoVersion: go1.17.6
+  Compiler: gc
+  Platform: linux/amd64
+```
+
+그리고 디플로이먼트 메니페스트를 다음과 같이 수정한다.
+``` yml {1-4,25-29}
+# apiVersion: apps/v1
+apiVersion: argoproj.io/v1alpha1
+# kind: Deployment
+kind: Rollout 
+metadata:
+  name: h2h-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springboot-app-label
+  template:
+    metadata:
+      name: 
+      labels: 
+        app: springboot-app-label
+    spec:
+      containers:
+        - name: springboot-app
+          image: <YOUR_AWS_IAM_USER_ID>.dkr.ecr.<YOUR_ECR_REGION>.amazonaws.com/<YOUR_ECR_REPOSITORY>:0.0
+          ports:
+          - containerPort: 8080
+      imagePullSecrets:
+      - name: regcred
+  strategy:
+    blueGreen: 
+      activeService: rollout-bluegreen-active
+      previewService: rollout-bluegreen-preview
+      autoPromotionEnabled: false      
+```

@@ -16,10 +16,11 @@ sidebarDepth: 0
 ## 스프링부트 프로젝트 빌드하기
 Gradle을 사용하는 경우 다음과 같은 방법으로 스프링부트 프로젝트를 빌드할 수 있다.
 ``` shellsession
-$ ./gradlew build
+$ ./gradlew clean build
 ```
 빌드 결과물은 `build/libs` 디렉토리 아래 생성된다.
 - `myproject-0.0.1.jar`
+- `myproject-0.0.1-plain.jar`
 
 ## Plain jar vs. Executable jar
 스프링 부트 2.5부터는 프로젝트를 빌드하면 두 개의 JAR 파일이 생성된다.
@@ -47,6 +48,24 @@ $ java -jar myproject-0.0.1.jar
 ``` shellsession
 $ java -jar myproject-0.0.1.jar --server.port=8080
 ```
+`-D` 파라미터는 반드시 `-jar`옵션과 `<YOUR_JAR>.jar`파일 사이에 와야한다.
+``` shellsession
+$ java -jar --Dserver.port=8080 myproject-0.0.1.jar
+```
+
+### Active Profile 파일 설정하기
+``` shellsession
+$ java -jar -Dspring.profiles.active=dev myproject-0.0.1.jar
+```
+``` shellsession
+$ java -jar myproject-0.0.1.jar --spring.profiles.active=dev
+```
+``` properties
+# application-dev.properties
+spring.config.activate.on-profile=dev
+
+# 생략..
+```
 
 ### properties 파일 추가하기
 `classpath`로 properties 파일의 경로를 지정할 수 있다.
@@ -60,17 +79,6 @@ $ java -jar myproject.jar --spring.config.location=classpath:/security.propertie
 절대경로를 사용할 수도 있다.
 ``` shellsession
 $ java -jar myproject.jar --spring.config.location=/home/ec2-user/app/myapp/network.properties
-```
-
-### Active Profile 파일 설정하기
-``` shellsession
-$ java  -jar myproject-0.0.1.jar -Dspring.profiles.active=dev 
-```
-``` properties
-# application-dev.properties
-spring.config.activate.on-profile=dev
-
-# 생략..
 ```
 
 ## nohup

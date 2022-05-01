@@ -162,3 +162,51 @@ long count = memberRepository.count();
 ``` java
 boolean isPresent = memberRepository.existsById(1);
 ```
+
+## InteliJ에서 JPA Entity ERD 확인하기
+`IntelliJ > File > Project Structure`를 클릭한다. 그리고 `Project Settings > Modules`에서 프로젝트의 `main`을 선택한 후 `+` 버튼을 클릭한다.
+
+![](./220401_spring_data_jpa/2.png)
+
+`JPA`를 추가한 후 `JPA Default Provider`를 `Hibernate`로 선택한다.
+
+![](./220401_spring_data_jpa/3.png)
+
+`View > Tools Windows > Persistence`를 클릭하면 IntellJ 왼쪽 하단에 `Persistence` 탭이 생성된다. 여기서 `entityManagerFactory`를 우클릭 한 후 `ER Diagram`을 클릭하면 엔티티 연관관계가 그려진 ER Diagram을 확인할 수 있다.
+
+![](./220401_spring_data_jpa/4.png)
+
+![](./220401_spring_data_jpa/5.png)
+
+## IntelliJ에서 Database Tool 사용하기
+
+`IntelliJ > Prefrences > Plugins`에서 `Database Tools and SQL` 플러그인을 설치한다.
+
+![](./220401_spring_data_jpa/6.png)
+
+`IntelliJ > View > Tool Windows`에서 `Database`를 클릭한다.
+
+![](./220401_spring_data_jpa/7.png)
+
+IntellJ 오른쪽에 `Database` 탭이 활성화된다.
+
+![](./220401_spring_data_jpa/8.png)
+
+`+` 버튼을 클릭한 후 `Data Source`에서 원하는 데이터베이스를 추가할 수 있다. 데이터베이스가 연결되면 테이블 등 다양한 스키마 정보를 확인할 수 있다.
+
+![](./220401_spring_data_jpa/9.png)
+
+`+` 버튼을 클릭한 후 `Query Console`을 클릭하면 쿼리를 작성할 수 있는 새로운 창이 열린다. 이 곳에서 다양한 쿼리를 실행해볼 수 있다.
+
+![](./220401_spring_data_jpa/10.png)
+
+`테이블 선택 후 우클릭 > SQL Scripts > SQL Generator`를 클릭하면 DDL을 추출할 수도 있다.
+
+![](./220401_spring_data_jpa/11.png)
+
+![](./220401_spring_data_jpa/12.png)
+
+`테이블 선택 후 우클릭 > Diagrams > Sho Visualization`을 클릭하면 ER Diagram도 확인할 수 있다.
+
+![](./220401_spring_data_jpa/13.png)
+

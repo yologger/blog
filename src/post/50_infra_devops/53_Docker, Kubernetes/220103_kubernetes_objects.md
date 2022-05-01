@@ -1092,7 +1092,6 @@ kind: Ingress
 metadata:
   name: my-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: / # 트래픽이 리다이렉트될 타겟 URI
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules: 

@@ -88,18 +88,18 @@ dependencies {
 - `hibernate.format_sql`: 출력되는 로그를 보기 좋게 포맷팅해준다.
 - `hibernate.hbm2ddl.auto`: 이 속성은 다음과 같은 값들을 가질 수 있다.
 
-|속성값|설명|
-|------|---|
-|`create`|무조건 테이블을 새로 생성한다.|
-|`create-drop`|기존 테이블이 존재하는 경우 `drop`을 먼저 수행한다.|
-|`update`|테이블이 없는 경우 테이블을 생성하고, 있는 경우 테이블 스키마를 변경한다.|
-|`validation`|테이블 스키마의 유효성을 확인하기만 한다.|
-|`none`|사용하지 않음|
+    |속성값|설명|
+    |------|---|
+    |`create`|무조건 테이블을 새로 생성한다.|
+    |`create-drop`|기존 테이블이 존재하는 경우 `drop`을 먼저 수행한다.|
+    |`update`|테이블이 없는 경우 테이블을 생성하고, 있는 경우 테이블 스키마를 변경한다.|
+    |`validation`|테이블 스키마의 유효성을 확인하기만 한다.|
+    |`none`|사용하지 않음|
 
-`hibernate.hbm2ddl.auto` 옵션은 매우 신중하게 설정해야한다. 특히 운영 환경에서는 `create`, `create-drop`, `update`를 절대 사용하면 안된다. 보통 속성값을 다음과 같이 설정한다.
-- 개발 초기 단계에는 `create` 또는 `update`를 사용한다.
-- 테스트 환경에서는 `create` 또는 `update`를 사용한다.
-- 운영 환경에서는 `validate` 또는 `none`을 사용한다.
+    `hibernate.hbm2ddl.auto` 옵션은 매우 신중하게 설정해야한다. 특히 운영 환경에서는 `create`, `create-drop`, `update`를 절대 사용하면 안된다. 보통 속성값을 다음과 같이 설정한다.
+    - 개발 초기 단계에는 `create` 또는 `update`를 사용한다.
+    - 테스트 환경에서는 `create` 또는 `update`를 사용한다.
+    - 운영 환경에서는 `validate` 또는 `none`을 사용한다.
 
 ## Entity 설계
 이제 관계형 데이터베이스의 테이블과 매핑할 엔티티를 작성하자.
