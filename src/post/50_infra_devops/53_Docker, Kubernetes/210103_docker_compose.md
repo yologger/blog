@@ -59,6 +59,11 @@ $ docker-compose up
 $ docker-compose up -d
 ```
 
+만약 파일 이름이 `docker-compose.yml`이 아니라면 `-f` 옵션으로 파일 이름을 지정할 수 있다.
+``` shellsession
+$ docker-compose -f my-docker-compose.yml up -d
+```
+
 ### Docker Compose 컨테이너들 확인하기
 `docker-compose ps` 명령어로 컨테이너들을 확인할 수 있다. 
 ``` shellsession
@@ -79,3 +84,9 @@ $ docker-compose restart
 ``` shellsession
 $ docker-compose down
 ```
+
+kafka-topics --bootstrap-server localhost:9092 --topic test-topic --partitions 1 --replication-factor 1 --create
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic test-topic
+
+kafka-console-producer --bootstrap-server localhost:9092 --topic test-topic
