@@ -87,14 +87,20 @@ CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS         PORTS   
 b5df63051a50   centos:7   "/bin/bash"   28 seconds ago   Up 3 seconds             my_centos
 ```
 
-## 도커 컨테이너 접속
+## 도커 컨테이너 접속, 빠져나오기
+도커 컨테이너에는 두 가지 명령어로 접속할 수 있다. 
+
+### docker attach
 `docker attach`명령어로 컨테이너 내부로 접속할 수 있다.
+```
+docker attach <컨테이너 이름>
+docker attach <컨테이너 ID>
+```
+`docker attach`명령어는 `root` 계정으로 컨테이너에 접속한다.
 ``` shellsession
 $ docker attach my_centos
 [root@a9adb823231 /]# 
 ```
-
-## 도커 컨테이너에서 나오기
 `exit`을 입력하여 컨테이너에서 빠져나올 수 있다.
 ``` shellsession
 [root@a9adb823231 /]# exit 
@@ -105,7 +111,22 @@ $ docker ps -a
 CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS                       PORTS     NAMES
 b5df63051a50   centos:7   "/bin/bash"   4 minutes ago   Exited (127) 4 seconds ago             my_centos
 ```
-컨테이너를 종료시키지 않고 빠져나오려면 `Ctrl + P, Q`를 입력한다.
+컨테이너를 종료시키지 않고 빠져나오려면 `Ctrl + P, Q`를 입력한다. 이를 `Detach`라고 한다.
+
+백그라운드로 실행되는 컨테이너에 `docker attach`로 접속하면 커맨드는 입력할 수 없고 출력되는 로그만 확인할 수 있다.
+
+### docker exec -it
+`docker exec -it` 명령어는 별도의 쉘 세션을 생성하여 컨테이너에 접속한다.
+```
+$ docker exec -it <CONTAINER NAME> <SHELL>
+$ docker exec -it <CONTAINER ID> <SHELL>
+```
+
+``` shellsession
+$ docker exec -it 75ef6d64fead /bin/bash 
+bash-5.1# ls
+```
+`docker exec it` 명령어로 컨테이너에 접속한 경우 `exit` 명령어로 빠져나와도 컨테이너가 종료되지 않는다. 따라서 데몬 컨테이너에 접근하는데 사용할 수 있다.
 
 ## 도커 이미지 다운, 컨테이너 생성, 시작, 접속 한번에 하기
 `docker run` 명령어를 사용하면 도커 이미지 다운, 도커 컨테이너 생성, 시작, 접속을 한 번에 할 수 있다.
@@ -198,6 +219,141 @@ $ docker images
 REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
 new_image           0.1     eeb6ee3f44bd   4 seconds ago   211MB
+```
+
+## Docker Volume
+도커 컨테이너는 내부 파일시스템에 데이터를 저장할 수 있다. 그러나 이 파일시스템은 컨테이너가 삭제되었을 때 함께 사라진다. `도커 볼륨(Docker Volume)`은 컨테이너에 종속되지 않는 저장소를 제공한다.
+
+도커 볼륨은 세 가지 종류가 있다.
+- 호스트 볼륨 공유
+- 컨테이너 볼륨 공유
+- 도커 볼륨
+
+### 호스트 볼륨 공유
+도커 컨테이너는 호스트의 볼륨을 공유할 수 있다. 도커 컨테이너를 생성할 때 `-v` 또는 `--volume` 옵션으로 호스트의 볼륨과 컨테이너의 볼륨을 바인딩할 수 있다.
+
+우선 호스트 OS에 `mydata` 디렉토리를 생성하자.
+``` shellsession
+$ mkdir mydata
+
+$ cd mydata
+
+$ pwd
+/Users/yologger/mydata
+``` 
+이제 호스트 OS의 디렉토리를 공유하는 Ubuntu 컨테이너를 생성해보자.
+``` shellsession
+$ docker create -i -t \
+--name my_container \
+-v /Users/yologger/mydata:/mydata \
+ubuntu:14.04
+```
+위 명령어는 호스트 파일시스템 `/Users/yologger/mydata`이 도커 컨테이너 파일시스템 `/mydata`과 바인딩된다. 도커 컨테이너에 `/mydata` 디렉토리가 없다면 자동으로 생성된다.
+
+이제 도커 컨테이너 내부에 접속하여 `/mydata` 디렉토리가 존재하는지 확인해보자.
+``` shellsession
+$ docker start my_container
+
+$ docker attach my_container
+
+root@308220530da1:/# ls
+mydata 
+...
+```
+도커 컨테이너에도 `mydata` 디렉토리가 생성된 것을 확인할 수 있다. 이제 이 디렉토리 안에 파일을 생성해본다.
+``` shellsession
+root@308220530da1:/# cd mydata
+
+root@308220530da1:/mydata# echo "Hello world" > hello.txt
+```
+도커 컨테이너에서 빠져나와 호스트 OS의 `/Users/yologger/mydata`를 확인해본다.
+``` shellsession
+$ ls
+hello.txt
+```
+
+### 컨테이너 볼륨 공유
+지금까지 `-v` 옵션으로 볼륨을 사용하는 컨테이너를 생성했다.
+``` shellsession
+$ docker create -i -t \
+--name my_container \
+-v /Users/yologger/mydata:/mydata \
+ubuntu:14.04
+```
+
+`--volumes-from` 옵션을 사용하면 이미 볼륨을 사용하는 다른 컨테이너의 볼륨을 공유할 수 있다.
+``` shellsession {3}
+$ docker create -i -t \
+--name your_container \
+--volumes-from my_container \
+ubuntu:14.04
+```
+이제 `my_container`와 `your_container`는 호스트의 `/Users/yologger/mydata:/mydata` 디렉토리를 공유하게 된다. `your_container`에서도 `/mydata` 디렉토리를 확인할 수 있다.
+``` shellsession
+$ docker start your_container
+
+$ docker attach your_container
+
+root@6c256b3cb679:/# ls
+mydata
+...
+
+root@6c256b3cb679:/# cat /mydata/hello.txt
+Hello World
+```
+
+### 도커 볼륨
+`도커 볼륨`은 도커가 직접 관리하는 볼륨이다. `docker volume` 명령어로 도커 볼륨을 관리할 수 있다.
+
+`docker volume create <볼륨 이름>` 명령어로 볼륨을 생성할 수 있다.
+``` shellsession
+$ docker volume create my_volume
+```
+
+`docker volume ls` 명령어로 볼륨 목록을 확인할 수 있다.
+``` shellsession
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     my_volume
+...
+```
+`docker inspect volume <볼륨 이름>` 명령어로 호스트 OS에서 볼륨이 실제로 저장되는 위치를 확인할 수 있다.
+``` shellsession {7}
+$ docker inspect --type volume my_volume
+[
+    {
+        "CreatedAt": "2022-05-05T04:08:30Z",
+        "Driver": "local",
+        "Labels": {},
+        "Mountpoint": "/var/lib/docker/volumes/my_volume/_data",
+        "Name": "my_volume",
+        "Options": {},
+        "Scope": "local"
+    }
+]
+```
+이제 볼륨을 사용하는 컨테이너를 생성해보자.
+``` {3}
+$ docker create -i -t \
+--name my_container \
+-v my_volume:/mydata \
+ubuntu:14.04
+```
+도커 볼륨과 바인딩 되었는지 확인해보자.
+``` shellsession {7}
+$ docker start my_container
+my_container
+
+$ docker attach my_container
+
+root@248ff308623a:/# ls 
+mydata
+...
+```
+
+`docker volume rm <볼륨 이름>` 명령어로 볼륨을 삭제할 수 있다.
+``` shellsession
+$ docker volume rm my_volume
 ```
 
 ## Container Registry

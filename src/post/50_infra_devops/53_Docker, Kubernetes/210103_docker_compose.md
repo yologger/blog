@@ -80,7 +80,12 @@ project_web_1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:80->80/tcp
 $ docker-compose restart
 ```
 
-### Docker Compose 내리기
+### Docker Compose 중지
+``` shellsession
+$ docker-compose stop
+```
+
+### Docker Compose 삭제
 ``` shellsession
 $ docker-compose down
 ```
