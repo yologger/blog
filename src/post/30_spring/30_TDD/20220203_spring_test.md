@@ -135,20 +135,71 @@ class TestControllerTest {
 ```
 
 ## @DataJpaTest
-`Spring Data JPA`를 사용한다면 `@DataJpaTest`를 사용할 수 있다.
+Spring Data JPA를 사용한다면 `@DataJpaTest`를 사용할 수 있다. 이 어노테이션은 Spring Data Jpa와 관련된 컴포넌트만 Spring IoC Container에 등록하기 때문에 `@SpringBootTest`보다 훨씬 빠르다.
+
+이 어노테이션은 `Spring Test`에 포함되어있다.
 ``` groovy
 dependencies {
     // Spring Data JPA
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+
+    // Spring Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 ```
-`@DataJpaTest`를 사용하면 단위 테스트 환경에서 인메모리 데이터베이스를 사용하여 빠르게 테스트할 수 있다. 보통 `h2`를 인메모리 데이터베이스로 사용하며, 다음과 같은 의존성을 추가해야한다.
+
+`@DataJpaTest`를 사용하면 단위테스트 환경에서 `h2`와 같은 인메모리 데이터베이스를 사용하여 빠르게 테스트할 수 있다. `h2`를 사용하려면 다음 의존성을 추가해야한다.
 ``` groovy
 dependencies {
     // H2
-    testImplementation 'com.h2database:h2'
+    runtimeOnly 'com.h2database:h2'
 }
 ```
+
+필자는 로컬 개발 환경에서는 `MySQL`, 단위 테스트 환경에서는 `h2`를 사용한다.
+``` groovy
+dependencies {
+    // MySQL Connector
+    runtimeOnly 'mysql:mysql-connector-java'
+    // H2
+    testRuntimeOnly 'com.h2database:h2'
+}
+```
+```yml
+# src/main/resources/application.yml
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+```
+```yml
+# src/test/resources/application.yml
+spring:
+  datasource:
+    url: jdbc:h2:~/test;
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+```
+
 이제 예제를 통해 테스트를 진행해보자.
 ``` java
 // UserEntity.java

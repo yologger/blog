@@ -24,8 +24,9 @@ dependencies {
 내부적으로 `Hibernate`를 포함하는 것을 확인할 수 있다.
 ![](./220401_spring_data_jpa/1.png)
 
-## JpaRepository 인터페이스
-`Spring Data JPA`의 `JpaRepository`인터페이스는 CRUD 작업을 위한 다양한 메소드를 자동으로 생성한다.
+## CrudRepository
+`Spring Data JPA`의 `CrudRepository` 인터페이스는 CRUD 작업을 위한 다양한 메소드를 자동으로 생성한다.
+ 
 ``` java
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -62,13 +63,17 @@ public class MemberEntity {
 }
 ```
 ``` java
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
+public interface MemberRepository extends CrudRepository<MemberEntity, Long> {
 }
 ```
 
-`JpaRepository`인터페이스를 상속하면 자동으로 생성되는 메소드 몇 가지는 다음과 같다.
+`CrudRepositry` 인터페이스 제공하는 메소드들은 다음과 같다.
+
+![](./220401_spring_data_jpa/2.png)
+
+자주 사용되는 메소드 몇 가지를 알아보자.
 
 ### save()
 새로운 엔티티를 저장한다. 이미 있는 엔티티는 수정한다.
@@ -133,24 +138,6 @@ memberRepository.deleteAll(members);
 memberRepository.deleteAllById(1);
 ```
 
-### getById()
-`id`로 엔티티 하나를 조회한다.
-``` java
-MemberEntity target = memberRepository.getById(1);
-```
-엔티티가 없으면 `EntityNotFoundException`를 발생시킨다.
-
-### findById()
-`id`로 엔티티 하나를 조회한다. `getById()`와 달리 `Optional`로 래핑한 객체가 반환된다.
-``` java
-Optional<MemberEntity> target = memberRepository.findById(1);
-if (target.isPresent()) {
-    MemberEntity member = target.get();
-} else {
-    // ..
-}
-```
-
 ### count()
 엔티티의 개수를 반환한다.
 ``` java
@@ -163,50 +150,34 @@ long count = memberRepository.count();
 boolean isPresent = memberRepository.existsById(1);
 ```
 
-## InteliJ에서 JPA Entity ERD 확인하기
-`IntelliJ > File > Project Structure`를 클릭한다. 그리고 `Project Settings > Modules`에서 프로젝트의 `main`을 선택한 후 `+` 버튼을 클릭한다.
+### findById()
+`id`로 엔티티 하나를 조회하며, `Optional`로 래핑한 객체가 반환된다.
+``` java
+Optional<MemberEntity> target = memberRepository.findById(1);
+if (target.isPresent()) {
+    MemberEntity member = target.get();
+} else {
+    // ..
+}
+```
 
-![](./220401_spring_data_jpa/2.png)
-
-`JPA`를 추가한 후 `JPA Default Provider`를 `Hibernate`로 선택한다.
-
-![](./220401_spring_data_jpa/3.png)
-
-`View > Tools Windows > Persistence`를 클릭하면 IntellJ 왼쪽 하단에 `Persistence` 탭이 생성된다. 여기서 `entityManagerFactory`를 우클릭 한 후 `ER Diagram`을 클릭하면 엔티티 연관관계가 그려진 ER Diagram을 확인할 수 있다.
-
-![](./220401_spring_data_jpa/4.png)
-
-![](./220401_spring_data_jpa/5.png)
-
-## IntelliJ에서 Database Tool 사용하기
-
-`IntelliJ > Prefrences > Plugins`에서 `Database Tools and SQL` 플러그인을 설치한다.
+## PagingAndSortingRepository
+`PagingAndSortingRepository`인터페이스는 `CrudRepository`를 상속하며 페이징 및 정렬과 관련된 메소드가 추가적으로 생성된다.
 
 ![](./220401_spring_data_jpa/6.png)
 
-`IntelliJ > View > Tool Windows`에서 `Database`를 클릭한다.
+![](./220401_spring_data_jpa/3.png)
+
+## JpaRepository
+`JpaRepository`인터페이스는 `PagingAndSortingRepository`를 상속하며 <u>영속성 컨텍스트</u>, <u>Flush</u>, <u>Batch Delete</u> 같이 JPA와 관련된 메소드를 추가적으로 제공한다.
 
 ![](./220401_spring_data_jpa/7.png)
 
-IntellJ 오른쪽에 `Database` 탭이 활성화된다.
+![](./220401_spring_data_jpa/4.png)
 
-![](./220401_spring_data_jpa/8.png)
-
-`+` 버튼을 클릭한 후 `Data Source`에서 원하는 데이터베이스를 추가할 수 있다. 데이터베이스가 연결되면 테이블 등 다양한 스키마 정보를 확인할 수 있다.
-
-![](./220401_spring_data_jpa/9.png)
-
-`+` 버튼을 클릭한 후 `Query Console`을 클릭하면 쿼리를 작성할 수 있는 새로운 창이 열린다. 이 곳에서 다양한 쿼리를 실행해볼 수 있다.
-
-![](./220401_spring_data_jpa/10.png)
-
-`테이블 선택 후 우클릭 > SQL Scripts > SQL Generator`를 클릭하면 DDL을 추출할 수도 있다.
-
-![](./220401_spring_data_jpa/11.png)
-
-![](./220401_spring_data_jpa/12.png)
-
-`테이블 선택 후 우클릭 > Diagrams > Sho Visualization`을 클릭하면 ER Diagram도 확인할 수 있다.
-
-![](./220401_spring_data_jpa/13.png)
-
+### getById()
+`id`로 엔티티 하나를 조회한다.
+``` java
+MemberEntity target = memberRepository.getById(1);
+```
+엔티티가 없으면 `EntityNotFoundException`를 발생시킨다.
