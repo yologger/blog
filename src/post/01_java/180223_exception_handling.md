@@ -73,3 +73,8 @@ try {
     customException.printStackTrace();
 }
 ```
+
+## Unchecked Exception vs. Checked Exception
+`RuntimeException`을 상속하는 클래스를 <b>`Unchecked Exception`</b>라고 한다. 이 예외는 코드에서의 예외처리를 강제하지 않는다. 대표적으로 `NullPointException`, `ClassCastException` 등이 있다.
+
+`RuntimeException`을 상속하지 않는 클래스를 <b>`Checked Exception`</b>라고 한다. 이 예외에서는 코드에서의 예외처리를 강제한다. 따라서 `try-catch` 문으로 감싸주거나 `throw` 구문으로 예외처리를 전가해야한다. 대표적으로 `IOException`, `ClassNotFoundException` 등이 있다.
