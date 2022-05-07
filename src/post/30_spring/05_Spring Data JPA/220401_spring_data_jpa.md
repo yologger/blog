@@ -233,3 +233,53 @@ Page<MemberEntity> page = memberRepository.findAll(pageable);
 MemberEntity target = memberRepository.getById(1);
 ```
 엔티티가 없으면 `EntityNotFoundException`를 발생시킨다.
+
+## JPA Auditing
+데이터베이스의 중요한 테이블은 새로운 행이 추가되거나, 행이 변경되거나, 삭제되면 이 기록을 별도의 컬럼에 기록해야한다. Spring Data JPA는 이러한 기능을 제공하며, 이를 `JPA Auditing` 이라고 한다.
+
+JPA Auditing 기능을 활성화하려면 스프링 설정 클래스에 `@EnableJpaAuditing` 어노테이션을 추가해야한다.
+``` java {5}
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+
+@Configuration
+@EnableJpaAuditing
+public class JpaConfiguration {
+}
+```
+그리고 다음과 같이 모든 엔티티 클래스의 베이스를 구현한다.
+``` java {1,2,6,10}
+@MappedSuperclass
+@EntityListeners(value = { AuditingEntityListener.class })
+@Getter
+public class BaseEntity {
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+}
+```
+그리고 베이스 엔티티를 상속하면 된다.
+``` java
+@Entity
+@Table(name= "member")
+@Getter
+@NoArgsConstructor
+public class MemberEntity extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String email;
+
+    // ...
+
+}    
+```
+이제 엔티티를 추가하면 `@CreatedDate` 어노테이션이 추가된 컬럼에 생성일자가 추가된다. 그리고 `@LastModifiedDate` 어노테이션이 추가된 컬럼에 마지막 변경일자가 추가된다.
