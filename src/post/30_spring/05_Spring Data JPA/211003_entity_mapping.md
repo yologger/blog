@@ -410,3 +410,65 @@ public class MemberEntity {
 ALTER TABLE member
 ADD CONSTRAINT unq_email_name UNIQUE (email, name);
 ```
+
+## Entity Lifecycle Method
+Hibernate는 엔티티가 영속, 준영속, 삭제될 때 특정 메소드가 콜백되도록 구현할 수 있다. 이를 `Entity Lifecycle Method`라고 하며, 7개의 어노테이션으로 정의할 수 있다.
+
+|어노테이션|설명|
+|------|---|
+|`@PrePersist`|엔티티가 영속화되기 전 호출된다. |
+|`@PostPersist`|엔티티가 영속화된 후 호출된다. |
+|`@PreUpdate`|엔티티가 변경되기 전 호출된다. |
+|`@PostUpdate`|엔티티가 변경된 후 호출된다. |
+|`@PreRemove`|엔티티가 삭제되기 전 호출된다. |
+|`@PostRemove`|엔티티가 삭제된 후 호출된다. |
+|`@PostLoad`|엔티티가 데이터베이스에서 영속성 컨텍스트로 로드될 때 호출된다.|
+
+``` java
+import javax.persistence.*;
+import java.util.*;
+
+@Entity
+@Table(name= "member")
+public class MemberEntity {
+
+    // ...
+
+    @PostLoad
+    public void onPostLoad() {
+
+    }
+    
+    @PrePersist
+    public void onPrePersist() {
+        
+    }
+    
+    @PostPersist
+    public void onPostPersist() {
+        
+    }
+    
+    @PreUpdate
+    public void onPreUpdate() {
+        
+    }
+    
+    @PostUpdate
+    public void onPostUpdate() {
+        
+    }
+    
+    @PreRemove
+    public void onPreRemove() {
+        
+    }
+    
+    @PostRemove
+    public void onPostRemove() {
+        
+    }
+
+    // ...
+}
+```
