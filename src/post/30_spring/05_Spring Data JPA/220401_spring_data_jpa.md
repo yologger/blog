@@ -168,6 +168,58 @@ if (target.isPresent()) {
 
 ![](./220401_spring_data_jpa/3.png)
 
+정렬은 `findAll(Sort sort)` 메소드와 `Sort` 클래스를 사용한다. 오름차순 정렬은 다음과 같다.
+``` java
+import org.springframework.data.domain.Sort;
+
+Sort sort = Sort.by("age").ascending();
+List<MemberEntity> members = memberRepository.findAll(sort);
+```
+내림차순 정렬은 다음과 같다.
+``` java
+import org.springframework.data.domain.Sort;
+
+Sort sort = Sort.by("age").descending();
+List<MemberEntity> members = memberRepository.findAll(sort);
+```
+`and()`메소드로 여러 개의 정렬 조건을 지정할 수 있다.
+``` java
+Sort sort1 = Sort.by("age").ascending();
+Sort sort2 = Sort.by("name").descending();
+Sort sortAll = sort1.and(sort2);
+List<MemberEntity> members = memberRepository.findAll(sortAll);
+```
+
+페이징은 `findAll(Pageable pageable)` 메소드를 사용한다. 이 메소드는 `Page` 객체를 반환한다.
+``` java
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+Pageable pageable = PageRequest.of(0, 10);
+Page<MemberEntity> page = memberRepository.findAll(pageable);
+```
+`Page` 객체에는 페이징 처리를 위한 다양한 메소드가 존재한다.
+``` java
+Pageable pageable = PageRequest.of(0, 10);
+Page<MemberEntity> page = memberRepository.findAll(pageable);
+
+List<MemberEntity> members = page.getContent();
+int totalPages = page.getTotalPages();
+long totalElements = page.getTotalElements();
+boolean isEmpty = page.isEmpty();
+boolean isFirst = page.isFirst();
+boolean isLast = page.isLast();
+```
+
+페이징과 정렬을 함께 사용할 수도 있다.
+``` java
+Sort sort = Sort.by("age").ascending();
+Pageable pageable = PageRequest.of(0, 10, sort);
+Page<MemberEntity> page = memberRepository.findAll(pageable);
+```
+
+
 ## JpaRepository
 `JpaRepository`인터페이스는 `PagingAndSortingRepository`를 상속하며 <u>영속성 컨텍스트</u>, <u>Flush</u>, <u>Batch Delete</u> 같이 JPA와 관련된 메소드를 추가적으로 제공한다.
 

@@ -167,7 +167,7 @@ public class MemberService {
 
 
 ## @Commit, @Rollback
-`@Commit`, `@Rollback`은 Spring Test 라이브러리에 포함된 어노테이션이다.
+`@Commit`, `@Rollback`은 Spring Test 라이브러리에 포함된 어노테이션으로 테스트 환경에서 사용한다.
 ``` groovy
 // build.gradle
 dependencies {
