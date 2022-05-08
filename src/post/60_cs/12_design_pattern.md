@@ -16,9 +16,9 @@ sidebarDepth: 0
 
 ## 생성 패턴
 객체를 생성할 때 사용하는 패턴
+
 ### 싱글톤(Singleton)
 - 클래스의 인스턴스가 오직 하나만 존재하도록 하는 패턴
-- 스프링 코어 같이 의존성 주입을 지원하는 프레임워크에서는 빈을 싱글톤으로 유지하는 기능을 제공한다.
 ``` java
 public class ThemeManager {
     // Instance
@@ -58,17 +58,17 @@ class Something {
             //Builder 초기화
         }
 
-        public Builder setNumber(int number) {
+        public Builder number(int number) {
             this.number = number;
             return this;
         }
 
-        public Builder setName(String name) {
+        public Builder name(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder setSize(double size) {
+        public Builder size(double size) {
             this.size = size;
             return this;
         }
@@ -81,16 +81,83 @@ class Something {
 ```
 ``` java
 Something something = new Something.Builder()
-.setNumber(number)
-.setName(name)
-.setSize(size)
-.build();
+    .number(number)
+    .name(name)
+    .size(size)
+    .build();
 ```
 
 ### 팩토리 메소드(Factory Method)
+- 생성자 대신 객체를 만드는 `메소드`를 제공하여 객체 생성 과정을 외부로부터 숨기는 패턴
+``` java
+public interface Notification {
+    void send();
+}
+```
+``` java
+public class SMSNotification implements Notification {
+ 
+    @Override
+    public void send() {
+        // TODO Auto-generated method stub
+        System.out.println("Sending an SMS notification");
+    }
+}
+```
+``` java
+public class EmailNotification implements Notification {
+ 
+    @Override
+    public void send() {
+        // TODO Auto-generated method stub
+        System.out.println("Sending an email notification");
+    }
+}
+```
+``` java
+public class KakaoNotification implements Notification {
+ 
+    @Override
+    public void send() {
+        // TODO Auto-generated method stub
+        System.out.println("Sending an Kakao notification");
+    }
+}
+```
+``` java
+public enum NotificationType {
+    Sms, Email, Kakao
+}
+```
+``` java
+public class NotificationFactory {
+    public Notification create(NotificationType type) {
+        switch (type) {
+        case Sms:
+            return new SMSNotification();
+        case Email:
+            return new EmailNotification();
+        case Kakao:
+            return new KakaoNotification();
+        default:
+            throw new IllegalArgumentException("Unknown Notification Type");
+        }
+    }
+}
+```
+``` java
+public class Main {
+    public static void main(String[] args) {
+        NotificationFactory factory = new NotificationFactory();
+        Notification notification = factory.create(NotificationType.SMS);
+    }
+}
+```
 
 
-### 추상팩토리(Abstract Factory)
+### 추상 팩토리(Abstract Factory)
+
+
 
 ### 프로토타입(Prototype)
 
@@ -144,13 +211,12 @@ Computer facade = new Computer()
 facade.startComputer();
 ```
 
-
-
 ### 프록시(Proxy)
 
 ### 컴포지트(Composite)
 
 ### 브릿지(Bridge)
+
 ### 데코레이터(Decorator)
 
 ### 플라이웨이트(Flyweight)
