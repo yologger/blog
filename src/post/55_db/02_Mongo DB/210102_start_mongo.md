@@ -70,23 +70,12 @@ $ mongo -u user1 -p 1234 192.168.0.1/my_db
 ## Mongo DB 사용법
 
 ### 데이터베이스 목록 확인
-`show db`는 모든 데이터베이스를 출력한다. 
+`show db`는 모든 데이터베이스를 출력한다. Mongo DB에 처음 접속하면 세 개의 데이터베이스가 자동으로 생성된다.
 ```
 > show dbs
 admin   0.000GB
 config  0.000GB
 local   0.000GB
-```
-Mongo DB에 처음 접속하면 세 개의 데이터베이스가 자동으로 생성된다.
-- `admin`: 시스템 정보와 사용자 인증과 관련된 데이터를 저장한다.
-- `config`:  
-- `local`: 
-
-### 현재 사용 중인 데이터베이스 출력
-`db`는 현재 사용 중인 데이터베이스를 출력한다.
-```
-> db
-test
 ```
 
 ### 데이터베이스 생성, 사용할 데이터베이스 선택
@@ -94,6 +83,13 @@ test
 ```
 > use my_db
 switched to db my_db
+```
+
+### 현재 사용 중인 데이터베이스 출력
+`db`는 현재 사용 중인 데이터베이스를 출력한다.
+```
+> db
+my_db
 ```
 
 ### 데이터베이스 삭제
@@ -104,7 +100,7 @@ switched to db my_db
 ```
 
 ## Collection
-`Collection`은 RDBMS의 Table에 대응된다. 
+<b>`Collection`</b>은 관계형 데이터베이스의 `Table`에 대응된다. 
 
 ### Collection 생성
 Collection은 다음과 같이 생성할 수 있다.
@@ -128,35 +124,28 @@ true
 ```
 
 ## Document, Field
-`Document`는 RDBMS의 Row에 해당하며, `Field`는 Column에 해당한다.
+<b>`Document`</b>는 RDBMS의 `Row`에 해당하며, <b>`Field`</b>는 `Column`에 해당한다.
 
 ### Document 저장
+`db.콜렉션이름.insert()` 메소드로 Document를 생성할 수 있다. Document는 자바스크립트의 객체 형태로 저장한다.
 ```
 > db.member.insert({ name: "paul" })
 
 > db.member.insert({ name: "john" })
 ```
-Mongo DB는 데이터 중복을 허용한다.
-```
-> db.member.insert({ name: "john" })
 
-> db.member.find()
-{ "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
-{ "_id" : ObjectId("625ad77b8d6dabdee5230bef"), "name" : "john" }
-{ "_id" : ObjectId("625adc3d8d6dabdee5230bf6"), "name" : "john" }
-```
-다음과 같이 여러 Document를 한꺼번에 저장할 수 있다.
+다음과 같이 여러 개의 Document를 한꺼번에 저장할 수 있다.
 ```
 > db.member.insert([{ name: "messi" }, { name: "ronaldo" }])
 ```
-Mongo DB는 스키마가 정해져있지 않아 저장되는 데이터 형태가 자유롭다.
+Mongo DB는 스키마가 정해져있지 않기 때문에 저장되는 데이터 형식이 자유롭다.
 ```
-> db.member.insert({ name: "monica", age: 35, isMarried: true, weight: 50.5 , createdAt: Date()})
+> db.member.insert({ name: "monica", height: 165.5 , createdAt: Date()})
 
 > db.member.insert({ name: "rachel", age: 25, isMarried: false, weight: 60.5 , job: "programmer"})
 ```
 
-Document는 다른 객체를 포함할 수도 있다.
+Document는 다른 객체를 포함할 수 있다.
 ```
 > db.member.insert({ name: "marry", phone: { name: "iPhone 10", manufacturer: "Apple" } })
 ```
@@ -168,6 +157,7 @@ Document는 배열을 포함할 수도 있다.
 
 
 ### Document 조회
+`db.콜렉션.find()` 메소드로 Document를 조회할 수 있다.
 ```
 > db.member.find()
 { "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
@@ -308,9 +298,9 @@ Document는 배열을 포함할 수도 있다.
 ### Field 데이터 타입
 Field에 저장할 수 있는 데이터 타입은 [이 곳](https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm)에서 확인할 수 있다.
 
-### Document 변경
-#### 특정 필드 수정학기
-```
+### Document 수정
+#### 특정 필드 수정
+``` {4}
 > db.member.find({name: "monica"})
 { "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : false, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
 
@@ -321,13 +311,13 @@ Field에 저장할 수 있는 데이터 타입은 [이 곳](https://www.tutorial
 { "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : true, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
 ```
 #### 다른 Document로 대체하기
-```
+``` {1}
 > db.member.update({ name: "paul"}, { name: "ping", age: 20})
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 
 #### 특정 Field 제거하기
-```
+``` {4}
 > db.member.find({name: "monica"})
 { "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : false, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
 
@@ -342,6 +332,10 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 > db.member.remove({ name: "monica" })
 WriteResult({ "nRemoved" : 1 })
+```
+모든 도큐먼트를 삭제할 수도 있다.
+```
+> db.member.remove({})
 ```
 
 ## _id 필드
@@ -359,7 +353,7 @@ WriteResult({ "nRemoved" : 1 })
 관계형 데이터베이스의 `인덱스(Index)`를 사용하면 데이터를 빠르게 탐색할 수 있다. Mongo DB도 인덱스를 제공한다.
 
 ### Index 조회
-`db.[테이블명].getIndexes()` 명령어로 인덱스를 확인할 수 있다.
+`db.<콜렉션 이름>.getIndexes()` 명령어로 인덱스를 확인할 수 있다.
 ```
 > db.member.getIndexes()
 [
@@ -373,7 +367,7 @@ WriteResult({ "nRemoved" : 1 })
 	}
 ]
 ```
-Document를 유일하게 구분해주는 `_id` 필드에는 인덱스가 자동으로 생성된다.
+`_id` 필드에는 인덱스가 자동으로 생성된다.
 
 ### 단일 필드 인덱스 생성
 `db.[테이블명].createIndex({ [필드명]: ±1 })`로 인덱스를 생성할 수 있다. `1`은 오름차순, `-1`은 내림차순으로 인덱스를 생성한다.
@@ -386,6 +380,7 @@ Document를 유일하게 구분해주는 `_id` 필드에는 인덱스가 자동�
 	"ok" : 1
 }
 ```
+중복된 데이터가 존재하는 필드에는 인덱스를 생성할 수 없다.
 
 ### 복합 필드 인덱스 생성
 ```
@@ -393,7 +388,7 @@ Document를 유일하게 구분해주는 `_id` 필드에는 인덱스가 자동�
 ```
 
 ### 인덱스 삭제
-`db.monsters.dropIndex(필드명);`으로 인덱스를 삭제할 수 있다.
+`db.monsters.dropIndex(필드명)`으로 인덱스를 삭제할 수 있다.
 
 ## 정렬
 `sort()`를 사용하여 조회한 도큐먼트를 정렬할 수 있다.
@@ -416,12 +411,17 @@ Document를 유일하게 구분해주는 `_id` 필드에는 인덱스가 자동�
 ```
 > db.member.find().skip(10)
 ```
+페이징은 `skip(n)`과 `limit(n)`  메소드를 조합하여 사용할 수 있다.
+```
+> db.member.find().skip(10).limit(10)
+```
 
-## 스키마 설계
-Mongo DB는 관계형 데이터베이스의 외래키 개념이 없다. 따라서 두 가지 방법으로 연관관계를 설정할 수 있다.
+## 관계 설정
+Mongo DB는 관계형 데이터베이스의 외래키 개념이 없다. 따라서 두 가지 방법으로 `관계(Relation)`를 설정할 수 있다.
 
 ### Embedding
-``` {4,5}
+`Embedding`은 도큐먼트에 다른 도큐먼트를 객체 형태로 가지고 있다.
+``` {3,4,5,6}
 > db.member.insert({ 
     name: "paul", 
     posts: [
@@ -431,7 +431,7 @@ Mongo DB는 관계형 데이터베이스의 외래키 개념이 없다. 따라�
 })
 WriteResult({ "nInserted" : 1 })
 ```
-``` {6,7}
+``` {5,6,7,8}
 > db.member.findOne({ name: "paul" })
 {
 	"_id" : ObjectId("625afb558d6dabdee5230bf7"),
@@ -444,6 +444,7 @@ WriteResult({ "nInserted" : 1 })
 ```
 
 ### Referencing
+`Referencing`은 다른 도큐먼트의 참조를 가지고 있다.
 ``` {14,15}
 > db.post.insert({
     title: "Swift",
@@ -454,17 +455,8 @@ WriteResult({ "nInserted" : 1 })
     title: "DevOps",
     content: "DevOps is useful."
 })
-
-> db.member.insert({
-    name: "drogba",
-    posts: [
-        ObjectId("625afcaf8d6dabdee5230bf9"),
-        ObjectId("625afcb48d6dabdee5230bfa")
-    ]
-})
-
 ```
-``` {3,8}
+```{3,8}
 > db.post.find().pretty()
 {
 	"_id" : ObjectId("625afcaf8d6dabdee5230bf9"),
@@ -476,6 +468,15 @@ WriteResult({ "nInserted" : 1 })
 	"title" : "DevOps",
 	"content" : "DevOps is useful."
 }
+```
+``` {4,5}
+> db.member.insert({
+    name: "James",
+    posts: [
+        ObjectId("625afcaf8d6dabdee5230bf9"),
+        ObjectId("625afcb48d6dabdee5230bfa")
+    ]
+})
 ```
 
 ## 사용자 관리
@@ -592,8 +593,6 @@ security:
 $ brew services restart mongodb-community@4.2
 ```
 
-mongo -u "user" -p --authenticationDatabase "user"
-
 ### 사용자 인증
 먼저 인증없이 Mongo DB에 접속해보자.
 ``` shellsession
@@ -606,7 +605,7 @@ MongoDB server version: 4.2.1
 
 Mongo DB와의 세션은 연결되었으나 인증은 진행되지 않았다. 따라서 데이터베이스나 테이블 조회도 불가능하다.
 ```
-$ show databases;
+> show databases;
 // 결과 없음
 ```
 
@@ -623,10 +622,11 @@ my_db  0.000GB
 ``` shellsession {1}
 $ mongo -u "user" -authenticationDatabase "my_db"
 MongoDB shell version v4.2.19
-Enter password: <user_password>
+Enter password: <USER_PASSWORD>
 connecting to: mongodb://127.0.0.1:27017/?authSource=my_db&compressors=disabled&gssapiServiceName=mongodb
 Implicit session: session { "id" : UUID("6cfc239f-8b86-48a2-89b6-8fe9dbb62353") }
 MongoDB server version: 4.2.19
+
 > show databases;
 my_db  0.000GB
 ```
@@ -635,7 +635,7 @@ my_db  0.000GB
 ``` shellsession{1}
 $ mongo -u "root"
 MongoDB shell version v4.2.19
-Enter password: <root_password>
+Enter password: <ROOT_PASSWORD>
 connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
 Implicit session: session { "id" : UUID("47d48100-9172-4187-8d5b-6a7944a2e055") }
 MongoDB server version: 4.2.19
@@ -661,3 +661,13 @@ mydb    0.000GB
 
 ### 사용자 삭제
 `db.dropUser()`는 특정 사용자를 삭제하며, `db.dropAllUsers()`로 모든 사용자를 삭제할 수 있다.
+
+## Replication
+::: warning Notification
+준비 중인 컨텐츠입니다.
+:::
+
+## Sharding
+::: warning Notification
+준비 중인 컨텐츠입니다.
+:::

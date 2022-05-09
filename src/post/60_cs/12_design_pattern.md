@@ -133,14 +133,14 @@ public enum NotificationType {
 public class NotificationFactory {
     public Notification create(NotificationType type) {
         switch (type) {
-        case Sms:
-            return new SMSNotification();
-        case Email:
-            return new EmailNotification();
-        case Kakao:
-            return new KakaoNotification();
-        default:
-            throw new IllegalArgumentException("Unknown Notification Type");
+            case Sms:
+                return new SMSNotification();
+            case Email:
+                return new EmailNotification();
+            case Kakao:
+                return new KakaoNotification();
+            default:
+                throw new IllegalArgumentException("Unknown Notification Type");
         }
     }
 }
