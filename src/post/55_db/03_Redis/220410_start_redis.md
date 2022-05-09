@@ -95,7 +95,7 @@ $ redis-cli
 Redis 사용법에 대해 정리한다.
 
 ### 데이터 저장
-`SET [KEY] [VALUE]`로 데이터를 저장한다.
+`SET <KEY> <VALUE>`로 데이터를 저장한다.
 ```
 > SET name "paul"
 OK
@@ -114,7 +114,7 @@ OK
 ```
 
 ### 데이터 조회
-`GET [KEY]`로 데이터를 조회한다.
+`GET <KEY>`로 데이터를 조회한다.
 ```
 > GET name
 "paul"
@@ -124,7 +124,7 @@ OK
 ```
 
 ### 키 이름 변경
-`RENAME [OLD_KEY] [NEY_KEY]`로 키 이름을 변경한다.
+`RENAME <OLD KEY> <NEY KEY>`로 키 이름을 변경한다.
 ```
 > RENAME name nickname
 OK
@@ -138,7 +138,7 @@ OK
 ```
 
 ### 키 조회
-`KEYS [PATTERN]` 형태로 키를 조회한다.
+`KEYS <PATTERN>` 형태로 키를 조회한다.
 ```
 > KEYS *
 1) "name"
@@ -154,11 +154,12 @@ OK
 ```
 
 ### 데이터 삭제
-`DEL [KEY]`로 데이터를 삭제한다.
+`DEL <KEY>`로 데이터를 삭제한다.
 ```
 > DEL name
 (integer) 1
 ```
+여러 데이터를 동시에 삭제할 수 있다.
 ```
 > DEL email password
 (integer) 2
@@ -185,14 +186,14 @@ OK
 
 
 ## Redis의 데이터 구조
-`Redis`는 관계형 데이터베이스가 아니며 관계형 데이터베이스의 일반적인 데이터 타입(INT, VARCHAR, DATETIME)을 지원하지 않는다. Redis가 지원하는 데이터 타입은 다음과 같다. 
+`Redis`는 관계형 데이터베이스가 아니기 때문에 관계형 데이터베이스의 일반적인 데이터 타입을 지원하지 않는다. Redis가 지원하는 데이터 타입은 다음과 같다. 
 - String
 - List
 - Set
 - Hash
 
 ## String
-Redis는 대부분의 데이터를 문자열로 표현한다. 숫자, 날짜, 시간 등도 문자열로 저장된다.
+Redis는 대부분의 데이터를 문자열로 표현한다. <u>숫자, 날짜, 시간 등도 <b>문자열</b>로 저장된다.</u>
 ```
 > set name "Paul"
 > set age 35
@@ -204,7 +205,7 @@ String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/comm
 하나의 키에 여러 값을 저장할 수 있다. List와 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/command/lists.php)에서 확인할 수 있다.
 
 ### RPUSH
-`RPUSH [key] [element] [element]..`형태로 리스트의 오른쪽에 요소를 추가한다.
+`RPUSH <key> <element element ..>`형태로 리스트의 오른쪽에 요소를 추가한다.
 ```
 > RPUSH score 1 2 3 4 5
 (integer) 5
@@ -242,7 +243,7 @@ String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/comm
 ```
 
 ### LRANGE
-`LRANGE [START] [STOP]`형태로 사용하며 범위에 해당하는 요소들을 조회한다.
+`LRANGE <START> <STOP>`형태로 사용하며 범위에 해당하는 요소들을 조회한다.
 ```
 > RPUSH score 1 2 3 4 5
 (integer) 5
@@ -264,7 +265,7 @@ String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/comm
 ```
 
 ### LPOP
-`LPOP [KEY] [COUNT]` 형태로 사용하며, 리스트의 첫 번째 요소를 제거한 후 반환한다.
+`LPOP <KEY> <COUNT>` 형태로 사용하며, 리스트의 첫 번째 요소를 제거한 후 반환한다.
 ```
 > LRANGE score 0 -1
 1) "1"
@@ -286,7 +287,7 @@ String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/comm
 ```
 
 ### RPOP
-`RPOP [KEY] [COUNT]` 형태로 사용하며, 리스트의 마지막 요소를 제거한 후 반환한다.
+`RPOP <KEY> <COUNT>` 형태로 사용하며, 리스트의 마지막 요소를 제거한 후 반환한다.
 ```
 > LRANGE score 0 -1
 1) "1"
@@ -321,7 +322,6 @@ String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/comm
 
 > LINDEX players 1
 "john"
-
 ```
 
 ## Set
@@ -432,28 +432,28 @@ String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/comm
 <b>`Hash`</b>는 하나의 `Key`에 여러 `Field:Value`를 저장할 수 있다.
 
 ### HSET
-`HSET [KEY] [FIELD VALUE]` 형태로 사용한다. 
+`HSET <KEY> <FIELD VALUE>` 형태로 사용한다. 
 ```
 > HSET paul email "paul@gmail.com"
 (integer) 1
 ```
 
 ### HGET
-`HGET [KEY] [FIELD]`형태로 사용한다.
+`HGET <KEY> <FIELD>`형태로 사용한다.
 ```
 HGET paul email
 "paul@gmail.com"
 ```
 
 ### HMSET
-`hmset [KEY] [FIELD VALUE] [FIELD VALUE] [FIELD VALUE] ...` 형태로 사용한다
+`hmset <KEY> <FIELD VALUE> <FIELD VALUE> <FIELD VALUE> ...` 형태로 사용한다
 ```
 > HMSET paul email "paul@gmail.com" nation "Korea" age 30
 OK
 ```
 
 ### HMGET
-`HMGET [KEY] [FILED] [FILED] ...` 형태로 사용한다.
+`HMGET <KEY> <FIELD> <FIELD> ...` 형태로 사용한다.
 ```
 > HMGET paul email nation age
 1) "paul@gmail.com"
