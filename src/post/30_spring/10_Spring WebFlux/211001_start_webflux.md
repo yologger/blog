@@ -8,6 +8,20 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
+# Spring WebFlux
+`Spring MVC`는 동기/블로킹, 멀티스레드 모델이다. 이 모델은 HTTP 요청이 올 때마다 스레드를 생성하여 전담하게 한다. 만약 입출력 등 오랜 시간이 걸리는 작업을 수행하면 스레드는 메모리 등 자원을 점유한 채 대기하게 된다. 또한 멀티 스레드 환경에서는 스레드가 많아질 수록 Context Switching으로 인한 비용이 커지게 된다.
+
+<b>`Spring WebFlux`</b>는 비동기/논블로킹, 적은 수의 스레드를 사용하는 모델이다. Spring WebFlux는 <u>이벤트 드리븐 모델</u>인 `Node.js`와 유사하지만, 싱글 스레드 기반은 아니다. 비동기/논블로킹 모델은 입출력 같이 오랜 시간이 걸리는 작업이 I/O Controller에 의해 처리될 때 이를 기다리지 않고 다른 작업을 수행한다. 다시 말해 CPU가 놀지 않게 하는 것이 핵심이다.
+
+비동기/논블로킹 모델에서는 다른작업이 종료되었을 때 이를 알려줄 수 있는 방법이 필요한데, 보통 다음과 같은 방법으로 구현한다.
+- Callback를 함께 전달하여 작업이 끝났을 때 호출되도록 한다.
+- 관찰, 구독 가능한 객체로 이벤트를 보내거나 상태 변화를 일으킨다.
+
+관찰, 구독 가능한 형태로 비동기/논블로킹 모델을 구현하는 경우, 서버가 데이터를 생성하는 속도가 클라이언트의 소비 속도보다 빠를 수 있다. 이를 적절하게 처리하기 위해 `Backpressure`가 필요하다. 
+
+비동기/논블로킹의 경우 데이터 소스도 논블로킹하게 처리해야한다. Spring WebFlux의 경우 `Spring Data R2DBC(Reactive Relation Database Connectivity)`를 사용하는 것 같은데 이후 포스트에서 정리하겠다.
+
+그럼 `Spring WebFlux`를 간단하게 사용해보자.
 
 ## 의존성 추가
 Spring MVC의 경우 Servlet 기반의 Tomcat을 사용한다.
@@ -24,7 +38,6 @@ dependencies {
 
 반면 Spring WebFlux는 Netty를 사용한다.
 ``` groovy 
-// build.gradle
 dependencies {
     // Spring Boot + Spring WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -36,10 +49,10 @@ dependencies {
 
 ## 사용법
 Spring WebFlux는 두 가지 방식으로 API Endpoint를 정의할 수 있다.
-- 기존 Spring MVC 어노테이션 방식
+- Spring MVC 어노테이션 방식
 - 함수형 모델
 
-## 기존 Spring MVC 어노테이션 방식
+### Spring MVC 어노테이션 방식
 Spring MVC는 Servlet Container가 제공하는 `HttpServletRequest`, `HttpServletResponse`로 요청과 응답을 처리한다.
 ``` java
 import javax.servlet.http.HttpServletRequest;
@@ -132,7 +145,7 @@ public class TestController {
 }
 ```
 
-## 함수형 모델
+### 함수형 모델
 함수형 모델은 두 가지의 함수형 인터페이스를 사용하여 구현한다.
 - `HandlerFunction`: 요청을 처리하고 응답을 반환한다.
 - `RouterFunction`: 요청을 라우팅해준다.
@@ -179,6 +192,178 @@ public class TestRouter {
         return RouterFunctions
             .route(RequestPredicates.GET("/test1"), handler::test1)
             .andRoute(RequestPredicates.GET("/test2"), handler::test2);
+    }
+}
+```
+
+## WebClient
+`WebClient`는 Spring 5부터 지원하며 싱글 스레드, 비동기/논블로킹 식으로 HTTP 요청을 보내는 HTTP Client다. 
+
+### 의존성 설정
+`WebClient`는 Spring WebFlux에 포함되어있다.
+``` groovy 
+dependencies {
+    // Spring Boot + Spring WebFlux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    testImplementation 'io.projectreactor:reactor-test'
+}
+```
+
+### 예제
+간단한 예제를 살펴보자. 두 개의 프로젝트가 필요하다.
+- `api`
+- `client`
+
+`api` 프로젝트에 다음 컨트롤러를 구현한 후 `9090` 포트로 실행한다.
+``` java
+@RestController
+@RequestMapping("/api")
+public class ApiController {
+
+    @GetMapping("/get")
+    public String get() {
+        return "get";
+    }
+}
+```
+
+`client`는 다음 컨트롤러를 구현한 후 `8080` 포트로 실행한다.
+``` java
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
+
+@RestController
+@RequestMapping("/client")
+public class ClientController {
+
+    @GetMapping
+    @RequestMapping("/get")
+    public Mono<String> get() {
+        WebClient webClient = WebClient.create();
+        return webClient.get()
+                .uri("http://localhost:9090/api/get")
+                .retrieve()
+                .bodyToMono(String.class);
+    }
+}
+```
+이제 웹 브라우저에서 `http://localhost:8080/client/get` 으로 접속하면 `WebClient`가 작동하는 것을 확인할 수 있다.
+
+### WebClient 생성
+`WebClient`는 두 가지 방법으로 생성할 수 있다. 우선 `WebClient.create()` 메소드를 사용할 수 있다.
+``` java
+WebClient webClient = WebClient
+    .create("http://localhost:9090");
+```
+`WebClient.build()` 메소드를 사용할 수도 있다.
+``` java
+WebClient webClient = WebClient.builder()
+    .baseUrl("http://localhost:9090")
+    .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+    .build();
+```
+
+보통 다음과 같이 컨테이너에 빈으로 등록하여 사용한다.
+``` java
+@Configuration
+public class WebClientConfig {
+
+    @Bean
+    public WebClient webClient() {
+        return WebClient webClient = WebClient.builder()
+            .baseUrl("http://localhost:9090")
+            .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .build();
+    }
+
+}
+```
+
+### GET 요청 보내기
+``` java
+Mono<Person> result = webClient.get()
+    .uri("/persons/1")
+    .accept(MediaType.APPLICATION_JSON)
+    .retrieve()
+    .bodyToMono(Person.class);
+```
+``` java
+Flux<Person> result = webClient.get()
+    .uri("/persons/1")
+    .accept(MediaType.APPLICATION_JSON)
+    .retrieve()
+    .bodyToFlux(Person.class);
+```
+``` java
+Mono<ResponseEntity<Person>> result = webClient.get()
+    .uri("/persons/1")
+    .accept(MediaType.APPLICATION_JSON)
+    .retrieve()
+    .toEntity(Person.class);
+```
+### POST 요청 보내기
+``` java
+Person person = Person.builder().build();
+
+Mono<Person> result = webClient.post()
+    .uri("/persons")
+    .body(Mono.just(person), Person.class)
+    .retrieve()
+    .bodyToMono(Person.class);
+```
+### PATCH 요청 보내기
+``` java
+Person person = Person.builder().build();
+
+Mono<Person> result = webClient.patch()
+    .uri("/persons/" + 1)
+    .body(Mono.just(person), Person.class)
+    .retrieve()
+    .bodyToMono(Person.class);
+```
+
+
+### DELETE 요청 보내기
+``` java
+Mono<Void> result = webClient.delete()
+    .uri("/persons/" +id)
+    .retrieve()
+    .bodyToMono(Void.class);
+```
+
+## @WebFluxTest, TestWebClient
+`@WebFluxTest`어노테이션, `TestWebClient`클래스를 사용하면 WebFlux 기반 API Endpoint를 테스트할 수 있다. 다음과 같은 컨트롤러가 있다고 하자.
+``` java
+@RestController
+@RequestMapping("/client")
+public class ClientController {
+
+    @GetMapping
+    @RequestMapping("/get")
+    public Mono<String> get() {
+        return Mono.just("get");
+    }
+}
+```
+`@WebFluxTest`어노테이션과 `TestWebClient`클래스는 다음과 같이 사용한다.
+``` java
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.test.web.reactive.server.WebTestClient;
+
+@WebFluxTest
+class ApplicationTests {
+
+    @Autowired
+    private WebTestClient webClient;
+
+    @Test
+    void test() {
+        webClient.get()
+                .uri("/client/get")
+                .exchange()
+                .expectStatus().isOk();
     }
 }
 ```
