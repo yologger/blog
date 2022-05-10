@@ -21,7 +21,7 @@ dependencies {
 ```
 
 ## @WebMvcTest
-`@WebMvcTest`는 `Spring MVC`와 관련된 컴포넌트를 테스트하는데 사용된다. 즉 `Controller Layer`와 관련된 컴포넌트만 컨테이너에 등록하기 때문에 속도가 빠르다. `@WebMvcTest`가 로드하는 컴포넌트는 다음과 같다.
+`@WebMvcTest`는 `Spring MVC`와 관련된 컴포넌트를 테스트하는데 사용된다. `Controller Layer`와 관련된 컴포넌트만 컨테이너에 등록하기 때문에 속도가 빠르다. `@WebMvcTest`가 로드하는 컴포넌트는 다음과 같다.
 - `@Controller`
 - `@ControllerAdvice`
 - `@JsonComponent`
@@ -35,41 +35,76 @@ dependencies {
 참고로 `@WebMvcTest`는 스프링 시큐리티와 관련된 설정도 로드한다.
 
 ### 사용법
-다음과 같은 Controller 클래스가 있다고 가정하자.
+두 개의 컨트롤러 클래스가 있다고 가정하자.
 ``` java
-// TestController.java
-
 @RestController
-@RequestMapping("/test")
-public class TestController {
+@RequestMapping("/post")
+public class PostController {
 
-    @GetMapping("/test1")
-    public String test1() {
-        return "test1";
+    @GetMapping("/test")
+    public String test() {
+        return "post";
+    }
+}
+```
+``` java
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+    @GetMapping("/test")
+    public String test() {
+        return "user";
     }
 }
 ```
 
-이 클래스는 다음과 같이 테스트할 수 있다.
+컨트롤러는 다음과 같이 테스트할 수 있다. `MockMvc`는 테스트를 위한 Spring MVC의 진입점이다. 쉽게 말해 가상의 테스트용 `Spring MVC 웹 서버`를 실행시키고 이 곳에 GET, POST 같은 HTTP Request를 보내는 것이다. 
 ``` java
-// TestControllerTest.java
-
-@WebMvcTest(TestController.class)
-class TestControllerTest {
+@WebMvcTest
+class Test {
 
     @Autowired
     MockMvc mvc;
 
     @Test
-    public void test1() throws Exception {
-        mvc.perform(get("/test/test1"))
-                .andExpect(content().string("test1"));
+    void test1() throws Exception {
+        mvc.perform(get("/post/test"))
+                .andExpect(content().string("post"));
     }
+
+    @Test
+    void test2() throws Exception {
+        mvc.perform(get("/user/test"))
+                .andExpect(content().string("user"));
+    }
+
 }
 ```
 
-### MockMvc
-`MockMvc`는 테스트를 위한 Spring MVC의 진입점이다. 쉽게 말해 가상의 테스트용 `Spring MVC 웹 서버`를 실행시키고 이 곳에 GET, POST 같은 HTTP Request를 보내는 것이다. 
+`@WebMvcTest`의 파라미터로 컨테이너에 빈으로 등록할 클래스를 지정할 수 있다. 이 경우 지정되지 않은 컨트롤러는 빈으로 등록되지 않는다.
+``` java
+@WebMvcTest(PostController.class)
+class Test {
+
+    @Autowired
+    MockMvc mvc;
+
+    @Test
+    void test1() throws Exception {
+        mvc.perform(get("/post/test"))
+                .andExpect(content().string("post"));
+    }
+
+    @Test
+    void test2() throws Exception {
+        // UserController는 빈에 등록되지 않았으므로 이 부분은 테스트에 실패한다.
+        mvc.perform(get("/user/test"))
+                .andExpect(content().string("user"));
+    }
+
+}
+```
 
 ### Mocking
 만약 다음과 같이 의존관계가 존재한다면 어떻게 할까?
@@ -103,7 +138,7 @@ public class TestService {
     }
 }
 ```
-`@WebMvcTest`는 Controller Layer의 컴포넌트만 로드하기 때문에 Service Layer는 직접 설정해야한다. 이때는 `org.springframework.boot:spring-boot-starter-test`에 내장된 `Mockito`를 사용하면 된다. 의존 관계에 있는 Layer를 Mocking하고 Stub를 구현해주면 된다.
+`@WebMvcTest`는 Controller Layer의 컴포넌트만 로드하기 때문에 Service Layer는 직접 설정해야한다. 이때는 `spring-boot-starter-test`라이브러리에 포함된 `Mockito`를 사용하면 된다. 의존 관계에 있는 Layer를 Mocking하고 Stub를 구현해주면 된다.
 ``` java{11,12,22}
 // TestControllerTest.java
 
@@ -280,24 +315,117 @@ class UserRepositoryTest {
 }
 ```
 
+`@DataJpaTest`는 테스트 후 데이터베이스를 롤백한다. 롤백을 하지 않으려면 `@Commit` 또는 `@Rollback(false)` 어노테이션을 붙이면 된다.
+``` java
+@DataJpaTest
+@Commit
+class UserRepositoryTest {
+    // ...
+```
+
 ## @SpringBootTest
-`@SpringBootTest`는 통합 테스트로 모든 컴포넌트를 컨테이너에 등록하기 때문에 속도가 느리다. 
+`@SpringBootTest`는 통합 테스트에 사용되는 어노테이션이다. 모든 컴포넌트를 컨테이너에 등록하기 때문에 속도가 느리지만 운영 환경과 가장 유사하게 테스트할 수 있다.
 
-`RestTemplate`
+``` java
+@SpringBootTest
+public class Test {
+    // ..
+}
+```
 
-`@Transctional` 어노테이션을 명시하면 테스트가 실행된 후 롤백 처리 된다.
+`@SpringBootTest`는 크게 두 가지 방법으로 사용할 수 있다.
 
-`@AutoConfigureMockMvc`
-`@AutoConfigureWebTestClient`
+### WebEnvironment.MOCK 
+`@SpringBootTest`의 `webEnviroment` 속성을 `SpringBootTest.WebEnvironment.MOCK`로 설정하면 실제 내장 톰캣을 구동하지 않고 Mocking Container를 사용한다.
+``` java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+public class Test {
+    // ...
+}
+```
+따라서 `@AutoConfigureMockMvc`를 추가하고 `MockMVC`를 사용하여 테스트를 진행한다.
+``` java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+public class Test {
+    
+    @Autowired
+    MockMvc mockMvc;
+    
+    @Test
+    void test() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/post/test"))
+                .andExpect(status().isOk());
+    }
+}
+```
 
-## @MockMvcTest
+### WebEnvironment.RANDOM_PORT
+`SpringBootTest.WebEnvironment.RANDOM_PORT`로 설정하면 랜덤한 포트를 사용하여 실제 톰캣을 구동시킨다. 이 경우 `TestRestTemplate`으로 테스트를 진행할 수 있다.
+``` java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class Test {
 
-## @RestClientTest
+    @Autowired
+    TestRestTemplate template;
 
-## @JsonTest
+    @LocalServerPort
+    private int port;   // 랜덤한 포트가 주입된다.
+
+    @Test
+    void test() {
+        String body = template.getForObject("/post/test", String.class);
+        assertThat(body).isEqualTo("post");
+    }
+}
+```
+
+### Mocking
+`@MockBean`을 사용하면 통합테스트 환경에서도 Mock 객체를 사용할 수 있다.
+``` java
+@SpringBootTest
+public class Test {
+
+    @Autowired
+    private postService PostService;
+
+    @MockBean
+    private PostRepository postRepository;
+
+    @Test
+    public void test() {
+        given(postRepository.findById(1))
+            .willReturn(new Post(1, "title 1", "content 1"));
+
+        Post post = postService.findById(1);
+        assertThat(post.getTitle()).isEqualTo("title 1");
+    }
+}
+```
+
+### 특정 클래스만 빈으로 등록하기
+`classes` 속성을 사용하면 특정 클래스만 빈으로 등록하여 사용할 수 있다.
+``` java
+@SpringBootTest(classes = {
+    PostService.class,
+    PostRepository.class
+})
+public class Test {
+
+    @Autowired
+    private postService PostService;
+
+    @Test
+    public void test() {
+        Post post = postService.findById(1);
+        assertThat(post.getTitle()).isEqualTo("title 1");
+    }
+}
+```
+
 
 ## 어떤 테스트를 사용해야할까?
-일반적으로 스프링 애플리케이션은 `Controller Layer`, `Service Layer`, `Data Layer`로 폴더나 모듈을 나눈다. 응집도(Cohension)을 높이고 결합도(Coupling)을 줄이기 위해서다. 
+일반적으로 스프링 애플리케이션은 응집도(Cohension)을 높이고 결합도(Coupling)을 낮추기 위해 `Controller Layer`, `Service Layer`, `Data Layer`로 폴더나 모듈을 나눈다. 
 
 계층을 분리하면 해당 계층만을 독립적으로 테스트할 수 있으며, 이를 `슬라이스 테스트(Slice Test)`라고 한다.
 - `@WebMvcTest`

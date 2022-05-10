@@ -117,5 +117,34 @@ String url = "http://server/user/1"
 restTemplate.delete(url);
 ```
 
-## WebClient
-`WebClient`는 Spring 5부터 지원하며 논블로킹, 리엑티브한 방식으로 HTTP 요청을 보낸다. 동기식, 비동기식 모두 사용 가능하다.
+## TestRestTemplate
+테스트 시 `RestTemplate` 대신 `TestRestTemplate`을 사용할 수 있다.
+``` java
+@RestController
+@RequestMapping("/person")
+public class PersonController {
+
+    @GetMapping("/get")
+    public ResponseEntity<Person> get(HttpServletRequest request, HttpServletResponse response) {
+        Person p = new Person("Paul", 35);
+        return ResponseEntity.ok().body(p);
+    }
+
+}
+```
+``` java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class Test {
+
+    @Autowired
+    TestRestTemplate restTemplate;
+
+    @Test
+    void test() {
+        ResponseEntity<Person> response = template.getForEntity("/person/get", Person.class);
+        assertThat(response.getStatusCodeValue()).isEqualTo(200);
+    }
+}
+```
+
+## AsyncRestTemplate
