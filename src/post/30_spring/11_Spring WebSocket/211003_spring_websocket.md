@@ -32,9 +32,9 @@ wss://172.30.20.40
 
 ![](./211003_spring_websocket/1.png)
 
-WebSocket 프로토콜은 데이터를 전송하기 전 연결을 먼저 수립한다. 이 과정을 `Websocket Handshake`라고 하며, HTTP 통신을 사용한다.
+WebSocket 프로토콜은 데이터를 전송하기 전 HTTP 프로토콜을 사용하여 연결을 먼저 수립한다. 이 과정을 `Websocket Handshake`라고 한다.
 
-클라이언트는 웹 소켓 연결을 수립하기 위해 HTTP로 요청을 보낸다. 이때 다음과  같이 헤더를 설정해야한다.
+클라이언트는 웹 소켓 연결을 수립하기 위해 HTTP 프로토콜로 요청을 보낸다. 이때 다음과 같이 헤더를 설정해야한다.
 - `Connection:Upgrade`와 `Upgrade:websocket` 헤더를 통해 웹소켓 요청임을 표시한다.
 - `Sec-WebSocket-Key` 헤더를 통해 핸드쉐이크 응답을 검증할 키 값을 함께 전송한다.
 - 그 외에도 WebSocket 연결 시 보조로 이용할 프로토콜 정보등의 추가적인 정보를 헤더에 담아 보낼 수 있다.
@@ -263,7 +263,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // Send Endpoint
         registry.setApplicationDestinationPrefixes("/publish");
 
-        // In-memory Message Broker
         // SimpleBroker는 Spring WebSocket 모듈에서 제공하는 인메모리 방식의 내장 Message Broker
         registry.enableSimpleBroker("/subscribe");
     }
@@ -287,7 +286,7 @@ public class MessageController {
     }
 }
 ```
-엔드포인트는 `@MessageMapping()`를 사용하여 지정한다. 클라이언트는 이 어노테이션을 붙인 경로와 설정 클래스의 `setApplicationDestinationPrefixes()`에서 지정한 경로와 STOMP 메시지를 전송한다.
+엔드포인트는 `@MessageMapping()`를 사용하여 지정한다. 클라이언트는 이 어노테이션으로 전달한 값과 설정 클래스의 `setApplicationDestinationPrefixes()`에서 지정한 값을 붙인 경로로 STOMP 메시지를 전송한다.
 ```
 /publish/message
 ```
@@ -360,7 +359,7 @@ dependencies {
 </html>
 ```
 `app.js`는 다음과 같다.
-``` javascript
+``` javascript{19-27,40}
 var stompClient = null;
 
 function setConnected(connected) {
@@ -377,11 +376,13 @@ function setConnected(connected) {
 
 function connect() {
     var socket = new WebSocket("ws://localhost:8080/websocket");
-
     stompClient = Stomp.over(socket);
+    
+    // 웹 소켓 연결
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
+        // 구독
         stompClient.subscribe('/subscribe/room', function (response) {
             showResponses(JSON.parse(response.body).message);
         });
@@ -397,6 +398,7 @@ function disconnect() {
 }
 
 function sendMessage() {
+    // 전송
     stompClient.send("/publish/message", {}, JSON.stringify({'message': $("#message").val()}));
 }
 
@@ -432,9 +434,9 @@ body {
 ```
 
 ## SocketJS
-일부 웹 브라우저는 `WebSocket`을 지원하지 않거나 제대로 동작하지 않는다. 이러한 경우 <b>`SocketJS`</b>는 WebSocket 대신 TCP Socket 같은 다른 방법을 사용하거나, 이전 상태로 되돌리는 Fallback 기능을 제공한다.
+일부 웹 브라우저는 `WebSocket`을 지원하지 않거나 제대로 동작하지 않는다. <b>`SocketJS`</b>는 브라우저에서 WebSocket이 동작하지 않을 때 TCP 소켓처럼 다른 방법을 사용하거나 이전 상태로 되돌리는 Fallback 기능을 제공한다.
 
-백엔드 부분에서는 `SocketJS`를 쉽게 활성화할 수 있다.
+백엔드 부분에서는 `SocketJS`를 쉽게 활성화할 수 있다. `withSocketJS()`를 호출하면 된다.
 ``` java
 @Configuration
 @EnableWebSocketMessageBroker
@@ -449,7 +451,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     // ...
 }
 ```
-클라이언트에서 `WebSocket 클라이언트` 대신 `SocketJS 클라이언트`를 사용한다. 이를 위해 다음 의존성을 추가하면 된다.
+클라이언트에서 `WebSocket 클라이언트` 라이브러리 대신 `SocketJS 클라이언트` 라이브러리를 사용한다. 이를 위해 다음 의존성을 추가하면 된다.
 ``` groovy
 // build.gradle
 dependencies {
@@ -462,8 +464,8 @@ dependencies {
 // ...
 
 function connect() {
-    // var socket = new SockJS('/websocket');
-    var socket = new WebSocket("ws://localhost:8080/websocket");
+    // var socket = new WebSocket("ws://localhost:8080/websocket");
+    var socket = new SockJS('/websocket');
 
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
