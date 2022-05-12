@@ -435,3 +435,78 @@ public class Test {
 - `@SpringBootTest`
 
 어플리케이션의 규모가 커질 수록 통합 테스트에 많은 시간이 소요된다. 따라서 계층을 적절히 분리하고 필요한 컴포넌트만 로드하는 `슬라이스 테스트`를 사용하는 것이 좋겠다.
+
+## @TestConfiguration, @Import
+`@TestConfiguration`를 사용하면 테스트 환경에서 특정 빈을 선택적으로 스프링 컨테이너에 등록할 수 있다.
+
+예제를 살펴보자. Query DSL을 사용하는 경우 `@SpringBootTest`로 통합 테스트를 하면 모든 빈이 등록되기 때문에 큰 문제가 없다. 그러나 `@DataJpaTest`를 사용하는 경우 Query DSL과 관련된 빈이 주입되지 않아 에러가 발생한다. 
+```
+Parameter 0 of constructor in com.yologger.repository.post.PostCustomRepositoryImpl required a bean of type 'com.querydsl.jpa.impl.JPAQueryFactory' that could not be found.
+```
+
+이제 테스트 환경에서 Query DSL과 관련된 빈을 등록해보자.
+``` java
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+@TestConfiguration
+public class TestConfig {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Bean
+    public JPAQueryFactory jpaQueryFactory() {
+        return new JPAQueryFactory(entityManager);
+    }
+}
+```
+
+그리고 `@Import`로 테스트 환경에서만 설정 클래스를 활성화할 수 있다.
+``` java {2}
+@DataJpaTest
+@Import(TestConfig.class)
+class MemberRepositoryTest {
+
+    @Autowired
+    private MemberRepository memberRepository;
+
+    @BeforeEach
+    void setUp() {
+    }
+
+    @AfterEach
+    public void tearDown() {
+        memberRepository.deleteAll();
+    }
+
+    @Test
+    public void test_queryMember() {
+
+        // Given
+        String dummyEmail = "CR7@gmail.com";
+        String dummyName = "Cristiano Ronaldo";
+        String dummyPassword = "12341234";
+        String dummyNickname = "CR7";
+
+        MemberEntity input = MemberEntity.builder()
+                .email(dummyEmail)
+                .name(dummyName)
+                .password(dummyPassword)
+                .nickname(dummyNickname)
+                .build();
+
+        memberRepository.save(input);
+
+        // When
+        List<MemberEntity> members = memberRepository.findAll();
+
+        // Then
+        assertThat(members.size()).isEqualTo(1);
+    }
+}
+```
