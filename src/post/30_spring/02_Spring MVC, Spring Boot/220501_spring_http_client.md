@@ -262,7 +262,6 @@ class TestControllerTest {
 }
 ```
 
-
 ## ResponseEntity
 `ResponseEntity`를 사용하면 HTTP Response를 좀 더 체계적으로 관리할 수 있다.
 ``` java
