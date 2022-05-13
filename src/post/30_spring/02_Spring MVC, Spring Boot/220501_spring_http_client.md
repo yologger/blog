@@ -1,5 +1,5 @@
 ---
-title: "스프링 프레임워크의 HTTP 통신"
+title: "스프링 HTTP Client"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -121,6 +121,52 @@ String url = "http://server/user/1"
 restTemplate.delete(url);
 ```
 
+### exchange()
+`exchange()`는 `RequestEntity`을 사용하여 HTTP 요청을 보내고 `ResponseEntity`를 통해 HTTP 응답을 받는다.
+``` java
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @PostMapping("/test")
+    public ResponseEntity<ResponseDTO> test(@RequestBody RequestDTO requestDTO) {
+        ResponseDTO response = new ResponseDTO(requestDTO.getName(), requestDTO.getAge());
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Content-type", "application/json");
+        return new ResponseEntity(response, headers, HttpStatus.ACCEPTED);
+    }
+}
+```
+``` java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class TestControllerTest {
+
+    @Autowired
+    TestRestTemplate template;
+
+    @LocalServerPort
+    private int port;
+
+    @Test
+    public void test() {
+        RequestDTO body = new RequestDTO("Paul", 35);
+
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        headers.add("Content-type", MediaType.APPLICATION_JSON_VALUE);
+
+        URI url = URI.create("http://localhost:" + port + "/test/test1");
+
+        RequestEntity<RequestDTO> request = new RequestEntity(body, headers, HttpMethod.POST, url);
+
+        ResponseEntity<ResponseDTO> response = template.exchange(request, ResponseDTO.class);
+
+        assertThat(response.getBody().getName()).isEqualTo("Paul");
+        assertThat(response.getBody().getAge()).isEqualTo(34);
+    }
+}
+```
+
 ### RestTemplateBuilder
 `RestTemplateBuilder`을 사용하면 빌더 패턴으로 RestTemplate을 생성할 수 있다. 보통 설정도 함께 적용하여 컨테이너에 빈으로 등록하여 사용한다.
 ``` java
@@ -167,5 +213,64 @@ public class Test {
         ResponseEntity<Person> response = template.getForEntity("/person/get", Person.class);
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
     }
+}
+```
+
+## RequestEntity
+`RestTemplate.exchange()`는 `RequestEntity`을 사용하여 HTTP 요청을 보내고 `ResponseEntity`를 통해 HTTP 응답을 받는다.
+``` java
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @PostMapping("/test")
+    public ResponseEntity<ResponseDTO> test(@RequestBody RequestDTO requestDTO) {
+        ResponseDTO response = new ResponseDTO(requestDTO.getName(), requestDTO.getAge());
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Content-type", "application/json");
+        return new ResponseEntity(response, headers, HttpStatus.ACCEPTED);
+    }
+}
+```
+``` java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class TestControllerTest {
+
+    @Autowired
+    TestRestTemplate template;
+
+    @LocalServerPort
+    private int port;
+
+    @Test
+    public void test() {
+        RequestDTO body = new RequestDTO("Paul", 35);
+
+        HttpHeaders headers= new HttpHeaders();
+        headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        headers.add("Content-type", MediaType.APPLICATION_JSON_VALUE);
+
+        URI url = URI.create("http://localhost:" + port + "/test/test1");
+
+        RequestEntity<RequestDTO> request = new RequestEntity(body, headers, HttpMethod.POST, url);
+
+        ResponseEntity<ResponseDTO> response = template.exchange(request, ResponseDTO.class);
+
+        assertThat(response.getBody().getName()).isEqualTo("Paul");
+        assertThat(response.getBody().getAge()).isEqualTo(34);
+    }
+}
+```
+
+
+## ResponseEntity
+`ResponseEntity`를 사용하면 HTTP Response를 좀 더 체계적으로 관리할 수 있다.
+``` java
+@PostMapping("/test")
+public ResponseEntity<ResponseDTO> test(@RequestBody RequestDTO requestDTO) {
+    ResponseDTO response = new ResponseDTO();
+    HttpHeaders headers= new HttpHeaders();
+    headers.add("Content-type", MediaType.APPLICATION_JSON_VALUE);
+    return new ResponseEntity(response, headers, HttpStatus.ACCEPTED);
 }
 ```
