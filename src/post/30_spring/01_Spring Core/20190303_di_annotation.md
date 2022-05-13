@@ -8,15 +8,16 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-# Annotation을 통한 빈 관리
+# Annotation을 통한 빈 등록
 `Spring IoC Container`에 객체를 등록하는 방법은 두 가지다.
 
-- XML 파일을 통한 객체 등록
-- Annotation을 통한 객체 등록
+- XML 파일을 통한 빈 등록
+- Annotation을 통한 빈 등록
 
-이번 포스트에서는 Annotation을 통한 객체 등록에 대해 알아보려고 한다.
+이번 포스트에서는 Annotation을 통한 객체 등록에 대해 정리한다.
 
-`XML 파일` 대신 `Annotation`을 사용하여 다음 `Person`클래스를 관리해보자.
+## @Configuration, @Bean
+다음 `Person`클래스를 어노테이션을 사용하여 빈으로 등록해보자. 
 ``` java Person.java
 class Person {
 
@@ -32,11 +33,9 @@ class Person {
 }
 ```
 
-## @Configuration, @Bean
-Java 파일을 생성하고 `@Configuration`을 붙여준다. 보통 이 어노테이션이 붙은 Java 파일을 구성파일이라고 한다.
-``` java {5}
+Java 파일을 생성하고 `@Configuration`을 붙여준다. 이 어노테이션이 붙은 파일을 설정파일이라고 한다.
+``` java {4}
 // ApplicationConfig.java
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -45,8 +44,8 @@ public class ApplicationConfig {
 }
 ```
 
-그리고 컨테이너에 등록할 객체를 반환하는 함수에 `@Bean`을 어노테이션을 추가하면 된다.
-``` java {8,14}
+그리고 컨테이너에 등록할 빈을 반환하는 함수를 정의하고, `@Bean`을 어노테이션을 추가하면 된다.
+``` java {8}
 // ApplicationConfig.java
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,19 +54,37 @@ import org.springframework.context.annotation.Configuration;
 public class ApplicationConfig {
 
 	@Bean
-	public Person doctor() {
+	public Person person() {
+		Person person = new Person("Paul");
+        return person;
+	}
+}
+```
+`@Bean`의 `name` 속성으로 빈 이름을 직접 지정할 수 있다. 별도의 지정이 없으면 메소드 이름과 동일한 이름의 빈이 생성된다.
+
+``` java {8,14}
+// ApplicationConfig.java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class ApplicationConfig {
+
+	@Bean   // 빈 이름은 doctor
+	public Person doctor() {    
 		Person person = new Person("Paul");
         return person;
 	}
 
-	@Bean(name="programmer")
+	@Bean(name="programmer")    // 빈 이름은 programmer
 	public Person person() {
 		Person person = new Person("Monica");
         return person;
 	}
 }
 ```
-이제 `IoC Container`를 인스턴스화하자. 어노테이션을 사용하는 경우 `AnnotationConfigApplicationContext` 클래스를 사용한다.
+
+이제 컨테이너를 인스턴스화하자. 어노테이션을 사용하는 경우 `AnnotationConfigApplicationContext` 클래스를 사용하면 된다.
 ``` java {5}
 public class Main {
 
@@ -84,10 +101,8 @@ public class Main {
 }
 ```
 
-## Component Scan
-`@Component`, `@Controller`, `@Service`, `@Repository` 등의 어노테이션을 사용하면 구성파일을 사용하지 않고도 `Spring IoC Container`에 객체를 등록할 수 있다. 이러한 객체를 `Spring Stereotype`이라고도 한다.
-
-`Component Scan`는 `@Component`, `@Controller`, `@Service`, `@Repository` 어노테이션이 붙은 클래스의 경로를 지정할 때 사용한다.
+## @ComponentScan
+`@Component`, `@Controller`, `@Service`, `@Repository` 등의 어노테이션을 사용하면 구성파일을 사용하지 않고도 컨테이너에 객체를 등록할 수 있다. 이 어노테이션들을 사용하려면 `@ComponentScan`어노테이션으로 객체의 경로를 컨테이너에게 알려줘야한다.
 
 예제를 살펴보자. `MailManager`를 빈으로 등록하려고 하기 위해 `@Component` 어노테이션을 추가했다.
 ``` java{1,5}
@@ -98,11 +113,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailManager {
     void sendEmail() {
-        System.out.println("sendEmail()");
+        // ...
     }
 }
 ```
-컨테이너가 이 컴포넌트를 탐지할 수 있도록 구성파일에 경로를 지정해주자.
+컨테이너가 이 컴포넌트를 탐지할 수 있도록 구성파일에서 경로를 지정해주자.
 ``` java{7}
 package com.yologger.app;
 
@@ -131,12 +146,26 @@ public class App {
 }
 ```
 
-## Scope
-Bean은 `Scope`를 가진다. 기본값은 `prototype`이며 빈을 주입할 때 마다 새로운 인스턴스가 생성된다.
+참고로 `@Component`의 `name` 속성으로 빈 이름을 직접 지정할 수 있다.
+``` java
+@Component(name = "myFileManager")
+public class FileManager {
+    // ...
+}
+```
+`name` 속성을 지정하지 않으면 클래스 이름의 앞 글자만 소문자인 값으로 빈 이름이 설정된다.
+``` java
+@Component
+public class FileManager {
+    // ...
+}
+```
 
+## @Scope
+빈은 `스코프(Scope)`를 가진다. 기본값은 `singleton`이며, 빈은 컨테이너 내에서 오직 한 개만 존재한다.
 ``` java {2}
 @Component
-@Scope("prototype")
+@Scope("singleton")
 public class MailManager {
     void sendEmail() {
         System.out.println("sendEmail()");
@@ -144,10 +173,11 @@ public class MailManager {
 }
 ```
 
-scope를 `singleton`로 설정하면 빈은 컨테이너 내에서 오직 한 개만 존재한다.
+스코프를 `prototype`으로 설정하면 빈을 주입할 때 마다 새로운 인스턴스가 생성된다.
+
 ``` java {2}
 @Component
-@Scope("singleton")
+@Scope("prototype")
 public class MailManager {
     void sendEmail() {
         System.out.println("sendEmail()");

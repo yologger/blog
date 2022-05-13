@@ -47,13 +47,15 @@ module.exports = {
     editLinkText: "",
     lastUpdated: false,
     nav: [ 
-      {
-        text: "Programming",
-        items: [
-          { text: "Java", link: "/post/01_java/" },
-          { text: "Kotlin", link: "/post/02_kotlin/" },
-        ]
-      },
+      // {
+      //   text: "Programming",
+      //   items: [
+      //     { text: "Java", link: "/post/01_java/" },
+      //     { text: "Kotlin", link: "/post/02_kotlin/" },
+      //   ]
+      // },
+      { text: "Java", link: "/post/01_java/" },
+      { text: "Kotlin", link: "/post/02_kotlin/" },
       { text: "Spring", link: "/post/30_spring/" },
       { text: "Android", link: "/post/20_android/" },
       { text: "Infra/DevOps", link: "/post/50_infra_devops/" },
