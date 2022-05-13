@@ -39,7 +39,7 @@ jar {
 ```
 
 ## 스프링부트 실행하기
-스프링부트는 JRE로 다음과 같이 실행할 수 있다.
+JAR 파일로 빌드된 스프링부트 프로젝트는 다음과 같이 실행할 수 있다.
 ``` shellsession
 $ java -jar myproject-0.0.1.jar
 ```
@@ -53,7 +53,19 @@ $ java -jar myproject-0.0.1.jar --server.port=8080
 $ java -jar --Dserver.port=8080 myproject-0.0.1.jar
 ```
 
-### Active Profile 파일 설정하기
+### properties 파일 추가하기
+`src/main/resources`에 위치하는 설정 파일(`*.properties`, `*.yml`)은 빌드할 때 JAR 파일 내부에 포함된다. 그러나 `spring.config.location` 옵션을 사용하면 스프링부트 어플리케이션을 실행할 때 JAR 파일 외부에 존재하는 설정 파일을 적용할 수 있다.
+
+``` shellsession
+$ java -jar myproject.jar --spring.config.location=/home/ec2-user/myapp/datasource.properties
+```
+`콤마(,)`로 여러 설정 파일을 적용할 수도 있다.
+``` shellsession
+$ java -jar myproject.jar --spring.config.location=/home/ec2-user/myapp/datasource.properties,/home/ec2-user/app/myapp/security.properties
+```
+
+### Active Profile 파일 지정하기
+`spring.profiles.active` 옵션으로 JAR 파일을 실행할 때 활성화할 프로파일을 지정할 수 있다.
 ``` shellsession
 $ java -jar -Dspring.profiles.active=dev myproject-0.0.1.jar
 ```
@@ -65,20 +77,6 @@ $ java -jar myproject-0.0.1.jar --spring.profiles.active=dev
 spring.config.activate.on-profile=dev
 
 # 생략..
-```
-
-### properties 파일 추가하기
-`classpath`로 properties 파일의 경로를 지정할 수 있다.
-``` shellsession
-$ java -jar myproject.jar --spring.config.location=classpath:/security.properties
-```
-여러 개의 properties 파일을 지정할 수도 있다. 파일은 `,`로 구분한다.
-``` shellsession
-$ java -jar myproject.jar --spring.config.location=classpath:/security.properties,classpath:/datasource.properties
-```
-절대경로를 사용할 수도 있다.
-``` shellsession
-$ java -jar myproject.jar --spring.config.location=/home/ec2-user/app/myapp/network.properties
 ```
 
 ## nohup
