@@ -5,33 +5,171 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
-## @GetMapping
+[[toc]]
+
+## @Controller
+`@Controller`는 사용자의 요청을 받고 뷰를 보여주는 스프링 컴포넌트다. 뷰를 보여주기 위해서는 템플릿 엔진 또는 뷰 리솔버를 설정해야한다.
+
+![](./210502_spring_mvc/1.png)
+
 ``` java
-@GetMapping(value = "/")
-public ResponseEntity<User> getInfo(
-    @RequestParam(value="name") String name, 
-    @RequestParam(value="age") int age
-) {
-    // ...
-}
-```
-``` java
-@GetMapping(value = "/post/{page}")
-public ResponseEntity<List<Post>> getPost(@PathVariable("page") int page) {
-    // ...
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class MainController {
+
+    @RequestMapping("/")
+    public String showLogin() {
+        return "main";      // main.mustache
+    }
 }
 ```
 
-## @PostMapping
 ``` java
-@PostMapping(value = "/member/join")
-public ResponseEntity<JoinResponse> join(@RequestBody JoinRequest request) {
-    // ..
+import org.springframework.stereotype.Controller;
+
+@Controller
+@RequestMapping("/auth")
+public class AuthController {
+
+    @RequestMapping("/login")
+    public String showLogin() {
+        return "auth/login";    // auth/login.mustache
+    }
+}
+```
+
+### Model
+`Model`을 사용하여 뷰에 데이터를 전달할 수도 있다.
+``` java
+import org.springframework.stereotype.Controller;
+
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @RequestMapping("/test")
+    public String test(Model model) {
+        model.addAttribute("name", "Paul");
+        model.addAttribute("age", 35);
+        return "test";      // test.mustache
+    }
+}
+```
+
+뷰에서는 다음과 같이 받을 수 있다.
+``` html
+<html>
+    <head>
+    </head>
+    <body>
+        {{name}}
+        {{age}}
+    </body>
+</html>
+```
+
+### ModelAndView
+`ModelAndView`를 사용하여 뷰에 데이터를 전달할 수도 있다.
+``` java
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @GetMapping("/test")
+    public ModelAndView test() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("main");
+        modelAndView.addObject("name", "John");
+        modelAndView.addObject("age", 35);
+        return modelAndView;
+    }
+}
+```
+
+### @ResponseBody
+`@Controller`는 반환되는 경로의 뷰를 보여준다.
+``` java
+import org.springframework.stereotype.Controller;
+
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @RequestMapping("/test")
+    public String test() {
+        return "test";      // test.mustache 뷰를 보여준다.
+    }
+}
+```
+
+`@ResponseBody`를 사용하면 뷰 대신 데이터를 반환한다.
+``` java
+import org.springframework.stereotype.Controller;
+
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public String test() {
+        return "test";      // test라는 문자열을 반환된다.
+    }
+}
+```
+
+객체의 경우 JSON 형태로 변환되어 반환된다.
+``` java
+import org.springframework.stereotype.Controller;
+
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public DataDTO test() {
+        DataDTO data = new DataDTO();
+        return data;      // DataDTO가 JSON으로 변환되어 반환된다.
+    }
+}
+```
+
+## @RestController
+`@RestController`는 REST API 엔드포인트 컨트롤러를 만들기 위한 어노테이션으로 `@Controller`와 `@ResponseBody` 합친 것과 동일하다. 아래 두 코드는 동일하다.
+
+``` java{1,6}
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @RequestMapping("/test")
+    @ResponseBody
+    public DataDTO test() {
+        DataDTO data = new DataDTO();
+        return data;
+    }
+}
+```
+
+
+``` java{1}
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @RequestMapping("/test")
+    // @ResponseBody
+    public DataDTO test() {
+        DataDTO data = new DataDTO();
+        return data;
+    }
 }
 ```
 
 ## @RequestMapping
-`method` 속성을 정의하지 않으면 모든 HTTP 요청을 수신할 수 있다.
+`@RequestMapping`는 엔드 포인트 경로를 지정하는데 사용한다. `method` 속성을 정의하지 않으면 모든 HTTP 요청을 수신할 수 있다.
 ``` java
 @RestController
 public class Controller {
@@ -69,6 +207,8 @@ test
 $ curl -X POST -G `http://localhost:8080/test`
 {"timestamp":"2022-05-09T13:40:02.292+00:00","status":405,"error":"Method Not Allowed","path":"/test"}
 ```
+
+### consumes
 `@RequestMapping`의 `consumes` 속성을 사용하면 클라이언트로 부터 수신하려는 데이터 포맷을 제한할 수 있다.
 ``` java {4}
 @RequestMapping(
@@ -110,6 +250,7 @@ public String test() {
 }
 ```
 
+### produces
 `@RequestMapping`의 `produces` 속성을 사용하면 서버가 응답하는 데이터의 타입을 지정할 수 있다.
 ``` java {4}
 @RequestMapping(
@@ -141,7 +282,7 @@ $ curl -X POST -G 'http://localhost:8080/test' -v \
 * Connection #0 to host localhost left intact
 ```
 
-## headers
+### headers
 사용자가 요청을 보낼 때 특정 헤더를 반드시 포함하도록 강제할 수 있다.
 ``` java{4}
 @RequestMapping(
@@ -165,3 +306,98 @@ $ curl -X POST -G 'http://localhost:8080/test' \
 test
 ```
 
+다음과 같이 여러 엔드 포인트 경로를 등록할 수 있다.
+``` java
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class AuthController {
+    // ...
+    @RequestMapping(value = {"member/remove", "member/delete"}), method = RequestMethod.DELETE)
+    public String delete() {
+
+    }
+}
+```
+
+## @GetMapping
+`RequestMapping(method = RequestMethod.GET)`은 다음과 같이 단축할 수 있다.
+``` java
+@GetMapping(value = "/")
+public String get() {
+    // ...
+}
+```
+### @RequestParam
+`Query Parameter`는 다음과 같이 바인딩할 수 있다.
+``` java
+@GetMapping(value = "/")
+public String getInfo(
+    @RequestParam(value="name") String name, 
+    @RequestParam(value="age") int age
+) {
+    // ...
+}
+```
+### @PathVariable
+`Path Varible`은 다음과 같이 바인딩할 수 있다.
+``` java
+@GetMapping(value = "/post/{page}")
+public ResponseEntity<List<Post>> getPost(@PathVariable("page") int page) {
+    // ...
+}
+```
+
+### @ModelAttribute
+쿼리 파라미터를 자바 객체로 매핑할 수도 있다.
+``` java
+public class ModelAttributeDTO {
+    private String name;
+    private String age;
+
+    public ModelAttributeDTO(String name, String age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAge() {
+        return age;
+    }
+}
+```
+``` java
+@Controller
+@RequestMapping("/test")
+public class TestController {
+
+    @GetMapping("/test")
+    public String test(@ModelAttribute ModelAttributeDTO modelAttribute, Model model) {
+        model.addAttribute("name", modelAttribute.getName());
+        model.addAttribute("age", modelAttribute.getAge());
+        return "main";
+    }
+}
+```
+
+
+## @PostMapping
+`RequestMapping(method = RequestMethod.POST)`은 다음과 같이 단축할 수 있다. 
+``` java
+@PostMapping("/member/join")
+public String join() {
+    // ...
+}
+```
+
+### @RequestBody
+`@RequestBody`어노테이션으로 HTTP POST 요청의 JSON 바디를 객체에 매핑할 수 있다.
+``` java
+@PostMapping(value = "/member/join")
+public ResponseEntity<JoinResponse> join(@RequestBody JoinRequest request) {
+    // ..
+}
+```

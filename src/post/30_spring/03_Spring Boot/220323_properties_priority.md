@@ -82,6 +82,17 @@ public class DatabaseConfig {
     }
 }
 ```
+
+### Profile과 함께 사용하기
+활성화된 Profile에 따라 다른 설정파일을 로드할 수도 있다.
+``` java
+@Configuration
+@PropertySource("classpath:database-${spring.profiles.active}.properties")
+public class Config {
+    // ...
+}
+```
+
 ### @TestPropertySource
 테스트 환경에서는 `@TestPropertySource`을 사용하여 외부 설정파일을 읽어올 수 있다. `src/test/resources`에 `test.properties` 파일을 생성한다.
 ``` properties

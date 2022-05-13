@@ -184,3 +184,27 @@ public class MailManager {
     }
 }
 ```
+
+## @Lazy
+기본적으로 스프링은 애플리케이션 구동과 동시에 모든 빈을 컨테이너에 등록하고 생성한다. `@Lazy` 어노테이션을 사용하면 빈이 실제로 참조될 때 생성한다. 
+``` java
+@Component
+@Lazy
+public class MailManager {
+    // ..
+}
+```
+
+## @DependsOn
+`@DependsOn`을 사용하면 다른 빈이 먼저 초기화되어야 해당 빈이 초기화되도록 강제할 수 있다.
+``` java
+@Configuration
+public class Config {
+
+    @Bean
+    @DependsOn("postService")
+    public PostRepository postRepository() {
+        // ...
+    }
+}
+```
