@@ -455,3 +455,23 @@ public class JoinRequest {
     // ...
 }
 ```
+
+### @RequestPart
+`@RequestPart`를 사용하면 `multipart/form-data` 타입의 요청을 바인딩할 수 있다.
+``` java
+@RequestMapping("/post")
+@RequiredArgsConstructor
+public class PostController {
+
+    @PostMapping("/write")
+    public ResponseEntity<WritePostResponseDTO> write(
+            @RequestPart(value = "files", required = false) MultipartFile[] files,
+            @RequestParam(value = "writer_id", required = true) Long writerId,
+            @RequestParam(value = "title", required = true) String title,
+            @RequestParam(value = "content", required = true) String content
+    ) {
+        // ...
+    }
+
+}
+```
