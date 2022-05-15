@@ -17,7 +17,7 @@ sidebarDepth: 0
 
 이제 스프링 프레임워크의 다양한 예외 처리 방법에 대해 정리해보자.
 
-## Controller Level Exception Handling
+## Controller-level Exception Handling
 `@Controller` 어노테이션이 붙은 컨트롤러에 Exception Handler를 정의할 수 있다. Exception Handler를 등록할 때는 `@ExceptionHandler` 어노테이션을 사용한다. 
 ``` java{16-19,21-24}
 @RestController
