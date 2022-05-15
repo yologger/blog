@@ -33,7 +33,7 @@ class Person {
 }
 ```
 
-Java 파일을 생성하고 `@Configuration`을 붙여준다. 이 어노테이션이 붙은 파일을 설정파일이라고 한다.
+Java 파일을 생성하고 `@Configuration`을 붙여준다. 이 어노테이션이 붙은 클래스를 보통 구성 클래스라고 한다.
 ``` java {4}
 // ApplicationConfig.java
 import org.springframework.context.annotation.Configuration;
@@ -102,7 +102,7 @@ public class Main {
 ```
 
 ## @ComponentScan
-`@Component`, `@Controller`, `@Service`, `@Repository` 등의 어노테이션을 사용하면 구성파일을 사용하지 않고도 컨테이너에 객체를 등록할 수 있다. 이 어노테이션들을 사용하려면 `@ComponentScan`어노테이션으로 객체의 경로를 컨테이너에게 알려줘야한다.
+`@Component`, `@Controller`, `@Service`, `@Repository` 등의 어노테이션을 사용하면 구성 클래스를 사용하지 않고도 컨테이너에 객체를 등록할 수 있다. 이 어노테이션들을 사용하려면 `@ComponentScan`어노테이션으로 객체의 경로를 컨테이너에게 알려줘야한다.
 
 예제를 살펴보자. `MailManager`를 빈으로 등록하려고 하기 위해 `@Component` 어노테이션을 추가했다.
 ``` java{1,5}
@@ -148,14 +148,14 @@ public class App {
 
 참고로 `@Component`의 `name` 속성으로 빈 이름을 직접 지정할 수 있다.
 ``` java
-@Component(name = "myFileManager")
+@Component(name = "myFileManager")   // myFileManager
 public class FileManager {
     // ...
 }
 ```
 `name` 속성을 지정하지 않으면 클래스 이름의 앞 글자만 소문자인 값으로 빈 이름이 설정된다.
 ``` java
-@Component
+@Component   // fileManager
 public class FileManager {
     // ...
 }

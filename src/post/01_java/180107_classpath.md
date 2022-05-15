@@ -5,10 +5,13 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
-# 클래스패스
+# Table of Contents 
+[[toc]]
+
+## 클래스패스
 `클래스패스(classpath)`는 클래스를 찾기 위한 경로다. 간단한 예제를 통해 클래스패스에 대해 알아보자. 
 
-## 예제 1
+### 예제 1
 첫 번째 예제의 프로젝트 구조는 다음과 같다.
 ```
 $ pwd 
@@ -60,7 +63,7 @@ $ java -classpath "./project" Main
 Hello World
 ```
 
-## 예제 2
+### 예제 2
 이제 `lib`폴더에 `Printer`클래스를 추가하고 `Main.java` 코드를 다음과 같이 수정해보자.
 ```
 // Printer
@@ -110,7 +113,7 @@ $ tree
 java -classpath .:./lib Main
 ```
 
-## 예제 3
+### 예제 3
 `jar`파일을 클래스패스에 추가하는 방법을 알아보자. 
 
 `lib` 폴더에 `jar` 파일을 추가한다.
@@ -140,3 +143,14 @@ $ javac -classpath "./lib/gson-2.8.0.jar" Main.java
 ```
 $ java -classpath ".:./lib/gson-2.8.0.jar" Main
 ```
+
+## Spring Boot와 클래스패스
+IntelliJ로 생성한 스프링 부트 프로젝트의 클래스 패스는 `IntelliJ > File > Project Structure`에서 확인할 수 있다.
+
+![](./180107_classpath/1.png)
+
+테스트 환경을 위한 클래스 패스는 다음과 같이 확인할 수 있다.
+
+![](./180107_classpath/2.png)
+
+

@@ -54,7 +54,7 @@ $ java -jar --Dserver.port=8080 myproject-0.0.1.jar
 ```
 
 ### properties 파일 추가하기
-`src/main/resources`에 위치하는 설정 파일(`*.properties`, `*.yml`)은 빌드할 때 JAR 파일 내부에 포함된다. 그러나 `spring.config.location` 옵션을 사용하면 스프링부트 어플리케이션을 실행할 때 JAR 파일 외부에 존재하는 설정 파일을 적용할 수 있다.
+`src/main/resources`에 위치하는 설정 파일(`*.properties`, `*.yml`)은 빌드할 때 JAR 파일 내부에 포함된다. 그러나 `spring.config.location` 옵션을 사용하면 JAR 파일 외부에 존재하는 설정 파일을 실행 시점에 포함시킬 수 있다.
 
 ``` shellsession
 $ java -jar myproject.jar --spring.config.location=/home/ec2-user/myapp/datasource.properties
@@ -67,7 +67,7 @@ $ java -jar myproject.jar --spring.config.location=/home/ec2-user/myapp/datasour
 ### Active Profile 파일 지정하기
 `spring.profiles.active` 옵션으로 JAR 파일을 실행할 때 활성화할 프로파일을 지정할 수 있다.
 ``` shellsession
-$ java -jar -Dspring.profiles.active=dev myproject-0.0.1.jar
+$ java -jar -Dspring.profiles.active=dev myprojexwct-0.0.1.jar
 ```
 ``` shellsession
 $ java -jar myproject-0.0.1.jar --spring.profiles.active=dev

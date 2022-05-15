@@ -7,6 +7,48 @@ sidebarDepth: 0
 
 [[toc]]
 
+## Spring MVC
+`Spring MVC`는 클라이언트의 요청을 받아 적절하게 처리한 후 응답하기 위한 스프링 프레임워크의 핵심 모듈이다. 
+
+## DispatcherSevlet
+`DispatcherSevlet`은 Spring MVC의 핵심 컴포넌트로 사용자의 요청을 받은 후 이를 처리할 수 있는 컨트롤러를 찾아 요청을 위임한다. 이렇게 전면에 사용자 요청 수신을 전담하는 컴포넌트를 배치하는 패턴을 `Front Controller` 패턴이라고 한다. 
+
+Spring MVC의 동작 원리를 그림으로 표현하면 다음과 같다.
+
+![](./210502_spring_mvc/0.png)
+
+1. `DispatcherSevlet`이 전면에 위치하여 모든 사용자의 요청을 수신한다.
+1. 등록된 URL 매핑을 확인하여 적절한 컨트롤러를 찾는다.
+1. 컨트롤러에 사용자 요청 처리를 위임한다.
+1. 컨트롤러는 사용자 요청 처리를 위해 적절한 비즈니스 로직을 수행한 후, 보여줄 뷰의 이름이나 데이터를 반환한다.
+1. `DispatcherServlet`은 `ViewResolver`를 통해 클라이언트에게 보여줄 뷰를 찾아 반환한다. `ViewResolver`는 뷰 이름을 바탕으로 클라이언트에게 보여줄 뷰를 찾아내는 역할을 한다.
+
+Spring Legacy 프로젝트에서는 JSP를 사용하기 위해 XML 파일에 다음과 같이 `ViewResolver`를 등록할 수 있다.
+``` xml {5-9}
+<!-- servlet-context.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc" ... >
+
+    <beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- ViewResolver - 아래 경로에서 적당한 view(jsp파일)을 찾아준다. -->
+        <beans:property name="prefix" value="/WEB-INF/views/" />
+        <beans:property name="suffix" value=".jsp" />
+    </beans:bean>
+
+</beans:beans>
+```
+
+Spring Boot에서 뷰 템플릿으로 mustache을 사용하는 경우 다음 의존성만 추가하면 자동으로 `ViewResolver`가 설정된다.
+``` groovy
+// build.gradle
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-mustache'
+}
+```
+
+참고로 Spring MVC는 Tomcat 같은 `Servlet Container` 위에서 동작하며 DipatcherServlet, ViewResolver, Controller 같은 스프링 MVC의 핵심 컴포넌트 또한 `Servlet`으로 동작한다.
+
+
 ## @Controller
 `@Controller`는 사용자의 요청을 받고 뷰를 보여주는 스프링 컴포넌트다. 뷰를 보여주기 위해서는 템플릿 엔진 또는 뷰 리솔버를 설정해야한다.
 
@@ -208,6 +250,21 @@ $ curl -X POST -G `http://localhost:8080/test`
 {"timestamp":"2022-05-09T13:40:02.292+00:00","status":405,"error":"Method Not Allowed","path":"/test"}
 ```
 
+
+다음과 같이 여러 엔드 포인트 경로를 등록할 수 있다.
+``` java
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class AuthController {
+    // ...
+    @RequestMapping(value = {"member/remove", "member/delete"}), method = RequestMethod.DELETE)
+    public String delete() {
+
+    }
+}
+```
+
 ### consumes
 `@RequestMapping`의 `consumes` 속성을 사용하면 클라이언트로 부터 수신하려는 데이터 포맷을 제한할 수 있다.
 ``` java {4}
@@ -222,6 +279,13 @@ public String test() {
 ```
 이 경우 클라이언트가 요청을 보낼 때 `Content-Type` 헤더를 설정해야한다.
 ``` shellsession
+$ curl -X POST -G 'http://localhost:8080/test' \
+-H 'Content-Type: application/json'
+
+test
+```
+이를 설정하지 않으면 `Unsupported Media Type` 에러가 발생한다.
+``` shellsession
 $ curl -X POST -G 'http://localhost:8080/test'
 
 {"timestamp":"2022-05-09T13:51:31.221+00:00","status":415,"error":"Unsupported Media Type","path":"/test"}
@@ -231,12 +295,6 @@ $ curl -X POST -G 'http://localhost:8080/test' \
 -H 'Content-Type: text/plain'
 
 {"timestamp":"2022-05-09T13:51:14.675+00:00","status":415,"error":"Unsupported Media Type","path":"/test"}    
-```
-``` shellsession
-$ curl -X POST -G 'http://localhost:8080/test' \
--H 'Content-Type: application/json'
-
-test
 ```
 배열 형태로 여러 타입을 받을 수도 있다.
 ``` java {4}
@@ -262,7 +320,15 @@ public String test() {
     return "test";
 }
 ```
-위와 같이 지정한 경우 클라이언트는 `Accept` 헤더를 설정해야한다.
+위와 같이 지정한 경우 서버는 응답 헤더의 `Content-type`을 다음과 같이 설정한다.
+``` java {2}
+HTTP/1.1 200 
+Content-Type: application/json
+Content-Length: 4
+Date: Mon, 09 May 2022 14:27:37 GMT
+```
+
+클라이언트는 `Accept` 헤더를 설정해야한다.
 ``` shellsession{2,8,12}
 $ curl -X POST -G 'http://localhost:8080/test' -v \
 -H 'Accept: application/json'
@@ -272,14 +338,7 @@ $ curl -X POST -G 'http://localhost:8080/test' -v \
 > Host: localhost:8080
 > User-Agent: curl/7.79.1
 > Accept: application/json
-> 
-* Mark bundle as not supporting multiuse
-< HTTP/1.1 200 
-< Content-Type: application/json
-< Content-Length: 4
-< Date: Mon, 09 May 2022 14:27:37 GMT
-< 
-* Connection #0 to host localhost left intact
+...
 ```
 
 ### headers
@@ -294,31 +353,13 @@ public String test() {
     return "test";
 }
 ```
-``` shellsession
-$ curl -X POST -G 'http://localhost:8080/test' 
-
-{"timestamp":"2022-05-09T14:31:40.101+00:00","status":404,"error":"Not Found","path":"/test"}
-```
-``` shellsession
+``` shellsession {2}
 $ curl -X POST -G 'http://localhost:8080/test' \
 -H 'From: yologger'
 
 test
 ```
 
-다음과 같이 여러 엔드 포인트 경로를 등록할 수 있다.
-``` java
-import org.springframework.stereotype.Controller;
-
-@Controller
-public class AuthController {
-    // ...
-    @RequestMapping(value = {"member/remove", "member/delete"}), method = RequestMethod.DELETE)
-    public String delete() {
-
-    }
-}
-```
 
 ## @GetMapping
 `RequestMapping(method = RequestMethod.GET)`은 다음과 같이 단축할 수 있다.

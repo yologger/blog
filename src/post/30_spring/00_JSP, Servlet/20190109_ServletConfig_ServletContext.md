@@ -100,7 +100,7 @@ public class Controller extends HttpServlet {
 ```
 
 ## ServletContext
-`ServletContext` WAS에서 실행 중인 Web Application 한 개에 대한 상태 정보를 의미한다. 모든 Servlet이 ServletContext에 접근할 수 있으며, Servlet 간의 데이터 공유에도 사용할 수 있다.
+대부분의 애플리케이션은 런타임에 시시각각 변하는 애플리케이션에 대한 종합적인 정보를 메모리에 유지하고 있다. 이를 보통 `컨텍스트(Context)`라고 한다. Java Web Application은 `ServletContext` 인터페이스로 컨텍스트에 접근할 수 있다. ServletContext는 모든 Servlet에서 접근할 수 있으며, Servlet 간의 데이터 공유에도 사용할 수 있다.
 
 `ServletContext`는 `web.xml`에 정의한다. ServletContext는 Servlet이 생성되기 전에 미리 구성되어야한다. 따라서 Servlet 매핑보다 위에 정의한다.
 ``` xml{7-16}

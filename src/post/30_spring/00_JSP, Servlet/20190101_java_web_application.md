@@ -10,11 +10,11 @@ sidebarDepth: 0
 
 # Java Web Application
 
-`Java Web Application`은 일반적인 `Java Application`과는 여러가지 차이점이 있다. Eclipse나 InteliJ 같은 IDE를 사용하면 Java Web Application 프로젝트를 쉽게 생성할 수 있다. 그러나 이번 포스트에서는 `Maven`으로 Java Web Application을 구성하면서 Java Application과의 차이점, 그리고 프로젝트의 구조에 대해 알아본다.
+`Java Web Application`은 일반적인 `Java Application`과는 여러가지 차이점이 있다. Eclipse나 InteliJ 같은 IDE를 사용하면 Java Web Application 프로젝트를 쉽게 생성할 수 있다. 이번 포스트에서는 `Maven`으로 Java Web Application을 구성하면서 Java Application과의 차이점, 그리고 프로젝트의 구조에 대해 알아본다.
 
 ## 프로젝트 구조
 
-[`maven`](/post/80_more/02_Maven/200102_maven_project.html)과 maven에서 제공하는 `maven-archtype-webapp` 탬플릿을 사용하면 Java Web Application 프로젝트를 쉽게 구성할 수 있다.
+[`maven`](/post/80_more/02_Maven/200102_maven_project.html)과 `maven-archtype-webapp` 탬플릿을 사용하면 Java Web Application 프로젝트를 쉽게 구성할 수 있다.
 ``` bash
 $ mvn archetype:generate -DarchetypeArtifactId=maven-archetype-webapp
 ```
@@ -52,7 +52,8 @@ $  tree
             └── index.jsp
 ```
 `webapp`디렉토리는 외부로 공개되며, 이 안에 있는 JSP 파일은 웹 브라우저에서 다음과 같이 접근할 수 있다.
-![](1.png)
+
+![](./20190101_java_web_application/1.png)
 
 `webapp/WEB-INF` 디렉토리에는 외부로 공개하지 않아야 하는 파일을 위치시킨다. 추가적으로 Java Web Application은 `webapp/WEB-INF` 디렉토리를 생성하고 `web.xml`파일을 배치해야한다. 
 
