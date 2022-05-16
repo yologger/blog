@@ -572,7 +572,7 @@ System.out.println(players.toString()); // {7=Ronaldo, 9=Benzema, 11=Bale}
 ```
 다음과 같이 데이터를 변경할 수 있다.
 ``` java
-players.set(7, "Son");
+players.replace(7, "Son");
 
 System.out.println(players.toString()); // {7=Son, 9=Benzema, 11=Bale}
 ```

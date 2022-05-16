@@ -8,13 +8,14 @@ sidebarDepth: 0
 [[toc]]
 
 # Redis 정리
-- `키(Key)-값(Value)` 구조의 NoSQL Database
+- `Key-Value` 구조의 NoSQL Database
 - 관계형 데이터베이스처럼 테이블을 설계하거나 외래키 설정이 불가능하다.
 - 디스크 기반이 아니라 인메모리 방식을 사용하기 때문에 입출력 연산이 적어 속도가 매우 빠르다.
 - 인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업한다.
     - 다른 서버의 메모리에 실시간으로 복사본 저장
     - 디스크에도 데이터를 저장
-- 세션 스토어, 데이터베이스 캐시, 메시지 브로커, 공유 저장소 등에 사용된다.
+- 세션 스토어, 데이터베이스 캐시, 공유 저장소 등에 사용된다.
+- Publish/Subscribe 모델을 지원하기 때문에 메시지 큐로도 사용할 수 있다.
 
 
 ## Redis 설정
@@ -25,10 +26,56 @@ sidebarDepth: 0
 ``` shellsession
 $ brew install redis
 ```
+설치 정보를 확인해보자.
+```
+$ brew info redis
+redis: stable 7.0.0 (bottled), HEAD
+Persistent key-value database, with built-in net interface
+https://redis.io/
+/usr/local/Cellar/redis/7.0.0 (14 files, 2.6MB) *
+  Poured from bottle on 2022-05-04 at 12:55:03
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/redis.rb
+License: BSD-3-Clause
+==> Dependencies
+Required: openssl@1.1 ✔
+==> Options
+--HEAD
+	Install HEAD version
+==> Caveats
+To restart redis after an upgrade:
+  brew services restart redis
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/redis/bin/redis-server /usr/local/etc/redis.conf
+==> Analytics
+install: 77,367 (30 days), 155,724 (90 days), 648,001 (365 days)
+install-on-request: 76,894 (30 days), 154,909 (90 days), 643,952 (365 days)
+build-error: 14 (30 days)
+```
 버전을 확인해보자.
 ``` shellsession
 $ redis-server --version
 Redis server v=6.2.6 sha=00000000:0 malloc=libc bits=64 build=c6f3693d1aced7d9
+```
+
+### Redis 설치 위치
+Homebrew로 Redis를 설치한 경우 `/usr/local/opt/redis` 경로에 Redis가 설치된다.
+```
+$ cd /usr/local/opt
+
+$ ls | grep redis
+redis
+redis@6.2
+redis@7.0
+```
+
+### Redis 서버 설정 파일
+Redis 서버는 `redis.confg`로 환경설정을 할 수 있다. Homebrew로 Redis를 설치한 경우 `/usr/local/etc`에 위치한다.
+```
+$ cd /usr/local/etc  
+
+$ ls | grep redis.conf
+redis.conf
+redis.conf.default
 ```
 
 ### Redis 시작
@@ -503,6 +550,35 @@ OK
 2) "paul@gmail.com"
 ```
 
+## TYPE
+`TYPE <KEY>` 명령어로 타입을 확인할 수 있다.
+```
+> TYPE person
+set
+
+> TYPE person:a4be06b1-b445-42fe-a70f-0fdee111cf55
+hash
+```
+
+## Redis Persistent
+인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업할 수 있다.
+
+### RDB
+현재 메모리 상태에 대한 스냅샷을 디스크에 저장한다.
+```
+# redis.conf
+dbfilename dump.rdb
+```
+
+### AOP
+`AOF(Append Only File)`은 추가, 수정, 삭제 명령이 실행될 때 마다 파일에 기록한다.
+```
+# redis.conf
+appendonly yes # default no
+appendfilename appendonly.aof # 파일이름 설정
+appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (always, everysec, no)
+```
+
 ## Redis Multi Database
 `Redis`는 여러 데이터베이스를 가질 수 있으며 기본적으로 16개의 데이터베이스가 제공된다. 설정파일에서 개수를 변경할 수 있으며, Homebrew로 Redis를 설치한 경우 `/usr/local/etc/redis.conf`에 위치한다.
 
@@ -620,5 +696,11 @@ CREATE TABLE post (
 > PERSIST name
 ```
 
+## HA와 Redis Replication
+`Redis Replication`을 사용하면 데이터를 이중화하여 `HA(High Availability, 고가용성)`을 확보할 수 있다. 쉽게 설명하면 다른 레디스 노드에 데이터를 복사하는 것이다.
+
+레디스는 Master/Slave 모델의 Replication을 제공한다. 여러 레디스 노드 중 하나를 Master로 선정하여 사용하고, 데이터를 다른 노드에 저장한다. Master 노드에 장애가 발생하면 다른 Slave 노드를 Master로 승격하며, 특정 Slave 노드를 Master 노드로 변경할 수도 있다.
+
+
 ## Redis Labs
-`Redis` 클라우드 서비스
+`Redis` 클라우드 서비스를 제공한다.

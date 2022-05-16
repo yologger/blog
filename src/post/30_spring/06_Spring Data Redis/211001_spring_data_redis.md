@@ -241,6 +241,33 @@ class Test {
 1) "name"
 ```
 
+보통 `Redis` 구성 클래스에서 다음과 같이 Serializer를 설정한다.
+``` java {19,20}
+@Configuration
+public class RedisConfig {
+
+    @Value("${spring.redis.host}")
+    private String host;
+
+    @Value("${spring.redis.port}")
+    private int port;
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        return new LettuceConnectionFactory(host, port);
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        return redisTemplate;
+    }
+}
+```
+
 ## RedisRepository
 `RedisRepository`를 사용하면 더욱 추상화된 방식으로 Redis에 접근할 수 있다. RedisRepository를 사용하려면 설정파일에 `@EnableRedisRepositories` 어노테이션을 추가해야한다.
 ``` java {2}
@@ -263,6 +290,8 @@ public class RedisConfig {
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 }
@@ -323,4 +352,56 @@ class Test {
         assertThat(personRepository.count()).isEqualTo(2);
     }
 }
+```
+
+레디스 서버에서 실제 저장된 데이터를 조회해보자. 
+```
+> KEYS *
+1) "person:a4be06b1-b445-42fe-a70f-0fdee111cf55"
+2) "person"
+3) "person:4c6d25c4-6d28-44e8-a0ac-434b2106ebd9"
+```
+데이터의 타입을 확인해보자.
+```
+> TYPE person
+set
+
+> TYPE person:a4be06b1-b445-42fe-a70f-0fdee111cf55
+hash
+
+> TYPE person:4c6d25c4-6d28-44e8-a0ac-434b2106ebd9
+hash
+```
+`@RedisHash("person")` 어노테이션을 붙인 데이터 클래스는 Redis의 Set 타입으로 저장된다.
+```
+> smembers person
+1) "a4be06b1-b445-42fe-a70f-0fdee111cf55"
+2) "4c6d25c4-6d28-44e8-a0ac-434b2106ebd9"
+```
+그리고 실제 객체들은 Redis의 Hash 타입으로 저장된다.
+```
+> hgetall person:a4be06b1-b445-42fe-a70f-0fdee111cf55
+ 1) "_class"
+ 2) "com.yologger.spring_redis.repository.Person"
+ 3) "email"
+ 4) "Smith@gmail.com"
+ 5) "id"
+ 6) "a4be06b1-b445-42fe-a70f-0fdee111cf55"
+ 7) "name"
+ 8) "Smith"
+ 9) "password"
+10) "1234"
+```
+```
+> hgetall person:4c6d25c4-6d28-44e8-a0ac-434b2106ebd9
+ 1) "_class"
+ 2) "com.yologger.spring_redis.repository.Person"
+ 3) "email"
+ 4) "Paul@gmail.com"
+ 5) "id"
+ 6) "4c6d25c4-6d28-44e8-a0ac-434b2106ebd9"
+ 7) "name"
+ 8) "Paul"
+ 9) "password"
+10) "1234"
 ```
