@@ -15,6 +15,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mustache'
 }
 ```
+이 의존성을 추가하면 머스터치를 위한 `ViewResolver`가 자동으로 활성화된다.
 
 ## 사용 방법
 `*.mustache`파일을 `src/main/resources/templates`에 생성한다.

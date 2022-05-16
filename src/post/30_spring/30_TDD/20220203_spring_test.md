@@ -59,7 +59,7 @@ public class UserController {
 }
 ```
 
-컨트롤러는 다음과 같이 테스트할 수 있다. `MockMvc`는 테스트를 위한 Spring MVC의 진입점이다. 쉽게 말해 가상의 테스트용 `Spring MVC 웹 서버`를 실행시키고 이 곳에 GET, POST 같은 HTTP Request를 보내는 것이다. 
+컨트롤러는 다음과 같이 테스트할 수 있다. `MockMvc`는 테스트를 위한 Spring MVC의 진입점이다. 쉽게 말해 가상의 테스트용 엔드 포인트를 제공하며, 이 곳에 HTTP 요청을 보내는 것이다. 
 ``` java
 @WebMvcTest
 class Test {
@@ -107,7 +107,7 @@ class Test {
 ```
 
 ### Mocking
-만약 다음과 같이 의존관계가 존재한다면 어떻게 할까?
+만약 컨트롤러에 다음과 같이 의존관계가 존재한다면 어떻게 할까?
 ``` java{7,16}
 // TestController.java
 @RestController
@@ -170,7 +170,7 @@ class TestControllerTest {
 ```
 
 ## @DataJpaTest
-Spring Data JPA를 사용한다면 `@DataJpaTest`를 사용할 수 있다. 이 어노테이션은 Spring Data Jpa와 관련된 컴포넌트만 Spring IoC Container에 등록하기 때문에 `@SpringBootTest`보다 훨씬 빠르다.
+Spring Data JPA를 사용한다면 `@DataJpaTest`를 사용할 수 있다. 이 어노테이션은 Spring Data JPA와 관련된 컴포넌트만 Spring IoC Container에 등록하기 때문에 `@SpringBootTest`보다 훨씬 빠르다.
 
 이 어노테이션은 `Spring Test`에 포함되어있다.
 ``` groovy
@@ -361,7 +361,7 @@ public class Test {
 ```
 
 ### WebEnvironment.RANDOM_PORT
-`SpringBootTest.WebEnvironment.RANDOM_PORT`로 설정하면 랜덤한 포트를 사용하여 실제 톰캣을 구동시킨다. 이 경우 `TestRestTemplate`으로 테스트를 진행할 수 있다.
+`SpringBootTest.WebEnvironment.RANDOM_PORT`로 설정하면 랜덤한 포트를 사용하여 실제 톰캣을 구동시킨 후 모든 컴포넌트를 컨테이너에 등록한다. 이 경우 `TestRestTemplate`으로 테스트를 진행할 수 있다.
 ``` java
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class Test {
@@ -380,10 +380,40 @@ public class Test {
 }
 ```
 
+### 특정 클래스만 빈으로 등록하기
+`classes` 속성을 사용하면 특정 클래스만 빈으로 등록하여 사용할 수 있다.
+``` java {3-6}
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = {
+        PostService.class,
+        PostRepository.class
+    }
+)
+public class Test {
+
+    @Autowired
+    private postService PostService;
+
+    @Test
+    public void test() {
+        Post post = postService.findById(1);
+        assertThat(post.getTitle()).isEqualTo("title 1");
+    }
+}
+```
+
+
 ### Mocking
 `@MockBean`을 사용하면 통합테스트 환경에서도 Mock 객체를 사용할 수 있다.
-``` java
-@SpringBootTest
+``` java {13,14}
+@SpringBootTest(
+    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    classes = {
+        PostService.class,
+        PostRepository.class
+    }
+)
 public class Test {
 
     @Autowired
@@ -402,27 +432,6 @@ public class Test {
     }
 }
 ```
-
-### 특정 클래스만 빈으로 등록하기
-`classes` 속성을 사용하면 특정 클래스만 빈으로 등록하여 사용할 수 있다.
-``` java
-@SpringBootTest(classes = {
-    PostService.class,
-    PostRepository.class
-})
-public class Test {
-
-    @Autowired
-    private postService PostService;
-
-    @Test
-    public void test() {
-        Post post = postService.findById(1);
-        assertThat(post.getTitle()).isEqualTo("title 1");
-    }
-}
-```
-
 
 ## 어떤 테스트를 사용해야할까?
 일반적으로 스프링 애플리케이션은 응집도(Cohension)을 높이고 결합도(Coupling)을 낮추기 위해 `Controller Layer`, `Service Layer`, `Data Layer`로 폴더나 모듈을 나눈다. 

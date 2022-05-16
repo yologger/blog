@@ -48,6 +48,28 @@ dependencies {
 
 참고로 Spring MVC는 Tomcat 같은 `Servlet Container` 위에서 동작하며 DipatcherServlet, ViewResolver, Controller 같은 스프링 MVC의 핵심 컴포넌트 또한 `Servlet`으로 동작한다.
 
+## ViewResolver
+`ViewResolver`는 컨트롤러에서 반환하는 뷰 이름을 바탕으로 실제 뷰를 탐색한다. `ViewResolver`는 스프링 컨텍스트 XML 파일에 다음과 같이 등록할 수 있다.
+``` xml {11-14}
+<!-- application-context.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+       	http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/view/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+</beans>
+```
+
+Spring 3.0 부터는 이 `ViewResolver`가 자동으로 등록되기 때문에 별도의 설정이 필요없다면 따로 선언할 필요가 없다.
 
 ## @Controller
 `@Controller`는 사용자의 요청을 받고 뷰를 보여주는 스프링 컴포넌트다. 뷰를 보여주기 위해서는 템플릿 엔진 또는 뷰 리솔버를 설정해야한다.

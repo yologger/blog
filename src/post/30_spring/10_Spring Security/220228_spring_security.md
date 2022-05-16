@@ -25,8 +25,8 @@ dependencies {
 }
 ```
 
-## 설정 파일 만들기
-의존성을 추가했다면 `Spring Security` 설정 파일을 만들어야한다. `WebSecurityConfigurerAdapter`를 상속하는 클래스를 정의한 후 `@EnableWebSecurity` 어노테이션을 추가한다.
+## 구성 클래스
+의존성을 추가했다면 `Spring Security` 설정 파일을 만들어야한다. `WebSecurityConfigurerAdapter`를 상속하는 구성 클래스를 정의한 후 `@EnableWebSecurity` 어노테이션을 추가한다.
 
 ``` java {5,6}
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

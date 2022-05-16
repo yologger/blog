@@ -9,13 +9,13 @@ sidebarDepth: 0
 [[toc]]
 
 ## Filter
-`Filter`를 사용하면 Client에서 온 요청을 Servlet에서 처리하기 전에 필터링할 수 있다. `Filter`는 다음과 같은 용도로 활용할 수 있다.
+`필터(Filter)`를 사용하면 클라이언트의 요청을 서블릿에서 처리하기 전에 필터링할 수 있다. 필터는 다음과 같은 용도로 활용할 수 있다.
 - 사용자 인증 필터
 - 로깅 또는 감시 필터
 - 이미지 변환 및 압축
 - 데이터 변화
 
-Filter는 `Filter`인터페이스를 구현하고 세 가지 메소드를 구현해야한다.
+필터는 `Filter`인터페이스를 구현하고 세 가지 메소드를 구현해야한다.
 ``` java MyFilter.java
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,7 +27,7 @@ public class MyFilter implements Filter {
         //..
     }
 
-    public void init(FilterConfig fConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) throws ServletException {
         //..
     }
 
@@ -52,7 +52,7 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
     // ...
 }
 ```
-이 함수의 세 번째로 `FilterChain` 객체가 전달된다. 여러 개의 필터가 설정된 경우 `FilterChain`클래스의 `doFilter()`를 호출해야 다음 필터로 넘어간다.
+이 함수의 세 번째 인자로 `FilterChain` 객체가 전달된다. 여러 개의 필터가 설정된 경우 `FilterChain`클래스의 `doFilter()`를 호출해야 다음 필터로 넘어간다.
 ``` java
 public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
     // (1) 전처리 코드
@@ -65,8 +65,8 @@ public void doFilter(ServletRequest request, ServletResponse response, FilterCha
 Filter는 두 가지 방법으로 등록할 수 있다.
 
 ### @WebFilter 어노테이션
-`@WebFilter`을 사용하면 된다. 이때 필터링할 경로를 함께 전달한다. 모든 경로에 대한 Request에 필터링을 하려면 `/*`을 전달하면 된다.
-``` java MyFilter.java
+`@WebFilter`을 사용하면 된다. 이때 필터링할 경로를 함께 전달한다. 모든 경로에 대한 요청을 필터링하려면 `/*`을 전달하면 된다.
+``` java MyFilter.java {3}
 package com.yologger.app;
 
 @WebFilter("/*")
@@ -97,25 +97,11 @@ package com.yologger.app;
 
 public class MyFilter implements Filter {
 
-    public MyFilter() {
-        //..
-    }
-
-    public void init(FilterConfig fConfig) throws ServletException {
-        //..
-    }
-
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        //..
-    }
-
-    public void destroy() {
-        //..
-    }
+    // ..
 
 }
 ```
-``` xml web.xml
+``` xml{4-11}
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
 

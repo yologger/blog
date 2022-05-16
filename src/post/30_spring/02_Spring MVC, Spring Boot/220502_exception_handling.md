@@ -1,5 +1,5 @@
 ---
-title: "Spring MVC - Exception Handling"
+title: "Exception Handling"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0

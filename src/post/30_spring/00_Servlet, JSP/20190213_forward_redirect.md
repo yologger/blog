@@ -13,7 +13,7 @@ sidebarDepth: 0
 
 ## Forward
 `Forward`는 다음과 같이 동작한다.
-![](./20190113_forward_redirect/1.png)
+![](./20190213_forward_redirect/1.png)
 아래 코드를 살펴보자.
 ``` xml {12}
 // a.jsp
@@ -47,7 +47,7 @@ sidebarDepth: 0
 </html>
 ```
 주목할 점은 웹 브라우저에는 최초의 호출한 URL인 `a.jsp`가 표시된다는 것이다. 그러나 화면에 실제 출력되는 페이지는 `b.jsp`다.
-![](./20190113_forward_redirect/2.png)
+![](./20190213_forward_redirect/2.png)
 Servlet에서도 `RequestDispatcher`클래스의 `forward()` 메소드로 포워딩할 수 있다.
 ``` java {8,9}
 // Controller.java
@@ -97,11 +97,11 @@ public class Controller extends HttpServlet {
 </body>
 </html>
 ```
-![](./20190113_forward_redirect/4.png)
+![](./20190213_forward_redirect/4.png)
 
 ## Redirect
 `Redirect`는 다음과 같이 동작한다.
-![](./20190113_forward_redirect/5.png)
+![](./20190213_forward_redirect/5.png)
 예제를 살펴보자.
 ``` java {10}
 // Controller.java
@@ -133,7 +133,7 @@ public class Controller extends HttpServlet {
 </html>
 ```
 이제 웹 브라우저에서 `localhost:8000/project/Controller`로 접속하면 `localhost:8000/project/b.jsp`로 리다이렉트 된다.
-![](./20190113_forward_redirect/6.png)
+![](./20190213_forward_redirect/6.png)
 
 `Forward`는 서버에서 전환되는 페이지로 이동하기 때문에 `HttpServletRequest`를 다시 생성하지 않고 그저 <u>전달</u>한다. 반면 `Redirect`는 클라이언트에게 특정 페이지로 재요청을 보내도록 한다. 따라서 `HttpServletRequest`가 다시 <u>생성</u>된다. 따라서 아래 예제의 `b.jsp`에서 `request.getAttribute("name")`, `request.getAttribute("nation")`값이 `null`이 된다.
 
@@ -169,4 +169,4 @@ public class Controller extends HttpServlet {
 </body>
 </html>
 ```
-![](./20190113_forward_redirect/7.png)
+![](./20190213_forward_redirect/7.png)

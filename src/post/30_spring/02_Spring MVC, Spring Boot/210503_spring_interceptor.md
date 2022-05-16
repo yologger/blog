@@ -64,6 +64,11 @@ public class CustomInterceptor implements HandlerInterceptor {
 ```
 
 ## Interceptor 등록하기
+인터셉터는 두 가지 방법으로 등록할 수 있다.
+- XML 파일에 선언하기
+- 어노테이셔 사용하기 
+
+### XML 파일에 선언하기
 스프링 컨텍스트를 정의하는 XML 파일에 다음과 같이 인터셉터를 등록할 수 있다. `<mvc:mapping>` 태그의  `path` 속성으로 인터셉트를 적용할 경로를 지정한다.
 ``` xml
 <!-- applicationContext.xml -->
@@ -74,6 +79,9 @@ public class CustomInterceptor implements HandlerInterceptor {
     </mvc:interceptor>
 </mvc:interceptors>
 ```
+
+### 어노테이션 사용하기
+
 인터셉터는 어노테이션을 통해 등록할 수도 있다. `@Configuration`과 `@Bean`을 사용하면 된다.
 ``` java
 @Configuration

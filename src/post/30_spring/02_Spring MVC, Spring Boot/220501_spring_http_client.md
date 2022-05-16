@@ -1,5 +1,5 @@
 ---
-title: "스프링 HTTP Client"
+title: "RestTemplate, RequestEntity, ResponseEntity"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
