@@ -328,12 +328,3 @@ IP 주소와 서브넷 주소를 AND 연산으로 합치면 다음과 같다.
 
 ## 포트
 한 호스트에서 어플리케이션을 구분하기 위한 포트번호
-
-
-## 
-Polling
-Long Polling
-Streaming
-Server Sent Events
-Socket
-WebSocket

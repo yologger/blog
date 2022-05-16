@@ -5,6 +5,9 @@ showOnSidebar: true
 sidebarDepth: 0
 ---
 
+# Table of Contents
+[[toc]]
+
 ## 문자 인코딩
 - 알파벳, 한글같은 문자나 특수문자를 컴퓨터가 인식할 수 있도록 변환하는 것
 

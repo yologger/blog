@@ -12,8 +12,8 @@ sidebarDepth: 0
 - 관계형 데이터베이스처럼 테이블을 설계하거나 외래키 설정이 불가능하다.
 - 디스크 기반이 아니라 인메모리 방식을 사용하기 때문에 입출력 연산이 적어 속도가 매우 빠르다.
 - 인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업한다.
-    - 다른 서버의 메모리에 실시간으로 복사본 저장
-    - 디스크에도 데이터를 저장
+    - 디스크에 데이터를 저장
+    - 다른 노드에 복사본 저장
 - 세션 스토어, 데이터베이스 캐시, 공유 저장소 등에 사용된다.
 - Publish/Subscribe 모델을 지원하기 때문에 메시지 큐로도 사용할 수 있다.
 
@@ -560,58 +560,36 @@ set
 hash
 ```
 
-## Redis Persistent
-인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업할 수 있다.
-
-### RDB
-현재 메모리 상태에 대한 스냅샷을 디스크에 저장한다.
+## Redis Expire
+`Redis`는 저장한 데이터에 expire를 설정할 수 있다. `EXPIRE [KEY] [SECOND]` 명령어를 사용하면 된다.
 ```
-# redis.conf
-dbfilename dump.rdb
+// 데이터 저장
+> SET name "Paul"
+
+// 만료 시간 설정 
+> EXPIRE name 10
 ```
-
-### AOF
-`AOF(Append Only File)`은 추가, 수정, 삭제 명령이 실행될 때 마다 파일에 기록한다.
 ```
-# redis.conf
-appendonly yes # default no
-appendfilename appendonly.aof # 파일이름 설정
-appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (always, everysec, no)
+// 10초가 지나기 전
+> GET name
+"Paul"
+
+// 10초가 지난 후
+> GET name
+(nil)
 ```
-
-## Redis Multi Database
-`Redis`는 여러 데이터베이스를 가질 수 있으며 기본적으로 16개의 데이터베이스가 제공된다. 설정파일에서 개수를 변경할 수 있으며, Homebrew로 Redis를 설치한 경우 `/usr/local/etc/redis.conf`에 위치한다.
-
-``` {4}
-# Set the number of databases. The default database is DB 0, you can select
-# a different one on a per-connection basis using SELECT <dbid> where
-# dbid is a number between 0 and 'databases'-1
-databases 16
+`TTL` 명령어로 남은 시간 또는 만료 후 지나간 시간을 조회할 수 있다.
 ```
+> TTL name  
+5   // 만료되기 5초 전
 
-`redis-cli`로 Redis에 연결할 때 데이터베이스를 선택할 수 있다. 
-```shellsession
-$ redis-cli -n 3
-redis-cli[3] > 
+> TTL name
+-5  // 만료된 후 5초
 ```
-옵션을 지정하지 않으면 0번 데이터베이스를 사용하게 된다.
-```shellsession
-$ redis-cli
-redis-cli > 
+`PERSIST` 명령어로 expire를 해제할 수 있다.
 ```
-
-Redis에 이미 연결된 상태에서는 `SELECT` 명령어로 데이터베이스를 변경할 수 있다.
-``` shellsession
-redis-cli[3]> SELECT 5
-OK
-
-redis-cli[5]> 
+> PERSIST name
 ```
-
-`Medis 2`를 사용하는 경우 화면 하단에서 데이터베이스를 선택할 수 있다.
-
-![](./220410_start_redis/3.png)
-
 
 ## Redis Namespace
 `Namespace`를 활용하면 데이터를 체계적으로 데이터베이스에 저장할 수 있다. 
@@ -665,35 +643,56 @@ CREATE TABLE post (
 2) "I love programming"
 ```
 
-## Redis Expire
-`Redis`는 저장한 데이터에 expire를 설정할 수 있다. `EXPIRE [KEY] [SECOND]` 명령어를 사용하면 된다.
-```
-// 데이터 저장
-> SET name "Paul"
+## Redis Multi Database
+`Redis`는 여러 데이터베이스를 가질 수 있으며 기본적으로 16개의 데이터베이스가 제공된다. 설정파일에서 개수를 변경할 수 있으며, Homebrew로 Redis를 설치한 경우 `/usr/local/etc/redis.conf`에 위치한다.
 
-// 만료 시간 설정 
-> EXPIRE name 10
+``` {4}
+# Set the number of databases. The default database is DB 0, you can select
+# a different one on a per-connection basis using SELECT <dbid> where
+# dbid is a number between 0 and 'databases'-1
+databases 16
 ```
-```
-// 10초가 지나기 전
-> GET name
-"Paul"
 
-// 10초가 지난 후
-> GET name
-(nil)
+`redis-cli`로 Redis에 연결할 때 데이터베이스를 선택할 수 있다. 
+```shellsession
+$ redis-cli -n 3
+redis-cli[3] > 
 ```
-`TTL` 명령어로 남은 시간 또는 만료 후 지나간 시간을 조회할 수 있다.
+옵션을 지정하지 않으면 0번 데이터베이스를 사용하게 된다.
+```shellsession
+$ redis-cli
+redis-cli > 
 ```
-> TTL name  
-5   // 만료되기 5초 전
 
-> TTL name
--5  // 만료된 후 5초
+Redis에 이미 연결된 상태에서는 `SELECT` 명령어로 데이터베이스를 변경할 수 있다.
+``` shellsession
+redis-cli[3]> SELECT 5
+OK
+
+redis-cli[5]> 
 ```
-`PERSIST` 명령어로 expire를 해제할 수 있다.
+
+`Medis 2`를 사용하는 경우 화면 하단에서 데이터베이스를 선택할 수 있다.
+
+![](./220410_start_redis/3.png)
+
+## Redis Persistent
+인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업할 수 있다.
+
+### RDB
+현재 메모리 상태에 대한 스냅샷을 디스크에 저장한다.
 ```
-> PERSIST name
+# redis.conf
+dbfilename dump.rdb
+```
+
+### AOF
+`AOF(Append Only File)`은 추가, 수정, 삭제 명령이 실행될 때 마다 파일에 기록한다.
+```
+# redis.conf
+appendonly yes # default no
+appendfilename appendonly.aof # 파일이름 설정
+appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (always, everysec, no)
 ```
 
 ## HA와 Redis Replication
@@ -701,6 +700,8 @@ CREATE TABLE post (
 
 레디스는 Master/Slave 모델의 Replication을 제공한다. 여러 레디스 노드 중 하나를 Master로 선정하여 사용하고, 데이터를 다른 노드에 저장한다. Master 노드에 장애가 발생하면 다른 Slave 노드를 Master로 승격하며, 특정 Slave 노드를 Master 노드로 변경할 수도 있다.
 
+## Publish/Subscribe 모델과 Message Queue
+레디스는 `Publish/Subscribe` 모델을 지원하기 때문에 `Message Queue`로도 활용할 수 있다.
 
 ## Redis Labs
 `Redis` 클라우드 서비스를 제공한다.
