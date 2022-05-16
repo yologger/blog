@@ -570,7 +570,7 @@ hash
 dbfilename dump.rdb
 ```
 
-### AOP
+### AOF
 `AOF(Append Only File)`은 추가, 수정, 삭제 명령이 실행될 때 마다 파일에 기록한다.
 ```
 # redis.conf
