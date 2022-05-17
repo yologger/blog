@@ -182,12 +182,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 ```
-
-`@DataJpaTest`를 사용하면 단위테스트 환경에서 `h2`와 같은 인메모리 데이터베이스를 사용하여 빠르게 테스트할 수 있다. `h2`를 사용하려면 다음 의존성을 추가해야한다.
+`@DataJpaTest`는 기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행한다. 인메모리 데이터베이스로 `h2`를 사용하려면 다음 의존성을 추가해야한다.
 ``` groovy
 dependencies {
     // H2
-    runtimeOnly 'com.h2database:h2'
+    testRuntimeOnly 'com.h2database:h2'
 }
 ```
 
@@ -322,6 +321,48 @@ class UserRepositoryTest {
 class UserRepositoryTest {
     // ...
 ```
+
+만약 테스트 환경에서 MySQL 같은 실제 데이터베이스를 사용하려면 추가적인 설정이 필요하다. 우선 `src/test/resources/application.yml`를 다음과 같이 수정한다.
+```yml
+# spring:
+#   datasource:
+#     url: jdbc:h2:~/test;
+#     username: sa
+#     password:
+#   jpa:
+#     database-platform: org.hibernate.dialect.H2Dialect
+#     hibernate:
+#       ddl-auto: update
+#     generate-ddl: true
+#     properties:
+#       hibernate:
+#         show_sql: true
+#         format_sql: true
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+```
+그리고 테스트 클래스에 `@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)` 어노테이션을 추가한다. 이 어노테이션은 인메모리 데이터베이스 대신 실제 데이터베이스를 사용하도록 한다.
+``` java
+// UserRepositoryTest.java
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class UserRepositoryTest {
+    // ..
+}
+```
+
 
 ## @SpringBootTest
 `@SpringBootTest`는 통합 테스트에 사용되는 어노테이션이다. 모든 컴포넌트를 컨테이너에 등록하기 때문에 속도가 느리지만 운영 환경과 가장 유사하게 테스트할 수 있다.
