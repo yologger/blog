@@ -57,8 +57,8 @@ $ kafka-topics \
 ## Producer
 Consumer 역할을 하는 `kafka-producer` 프로젝트는 HTTP 요청이 오면 Kafka 서버로 메시지를 전송한다. 이 프로젝트의 의존성은 다음과 같다.
 
-``` groovy
-// build.gradle
+``` groovy {4}
+// build.gradle 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.kafka:spring-kafka'
@@ -77,8 +77,8 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
 ```
 
-Kafka 서버로 메시지를 전송하는 서비스는 다음과 같다. Spring Kafka 의존성에서 제공하는 `KafkaTemplate` 클래스를 사용하면 된다.
-``` java
+Kafka 서버로 메시지를 전송하는 서비스는 다음과 같다. `Spring Kafka` 모듈에서 제공하는 <b>`KafkaTemplate`</b>클래스를 사용하면 된다.
+``` java {9,13}
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -132,7 +132,7 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 ```
-이제 Kafka 서버를 구독하고 있다가 메시지가 오면 화면에 출력하는 서비스를 구현한다. `@KafkaListener`어노테이션의 인자로 Topic과 Consumer group id를 전달한다.
+이제 Kafka 서버를 구독하고 있다가 메시지가 오면 화면에 출력하는 서비스를 구현한다. <b>`@KafkaListener`</b>어노테이션의 인자로 Topic과 Consumer group id를 전달한다.
 ``` java
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
