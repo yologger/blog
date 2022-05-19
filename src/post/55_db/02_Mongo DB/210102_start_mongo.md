@@ -8,9 +8,15 @@ sidebarDepth: 0
 [[toc]]
 
 # Mongo DB
-기존의 테이블 기반 관계형 데이터베이스 구조가 아닌 `Document` 기반의 데이터 모델을 사용하는 NoSQL 데이터베이스다.
+기존의 테이블 기반 관계형 데이터베이스 구조가 아닌 `JSON Document` 기반의 데이터 모델을 사용하는 NoSQL 데이터베이스다.
 
 ![](./210102_start_mongo/1.jpeg)
+
+`Mongo DB`는 다음과 같은 특징을 갖는다.
+- `JSON document` 기반의 NoSQL 데이터베이스
+- 스키마가 없어 저장되는 데이터의 구조가 자유롭다.
+- 외래키 개념이 없어 `Embedded`방식 또는 `Reference` 방식으로 관계를 표현한다.
+- 조인 개념이 없어 어플리케이션 레벨에서 처리해야한다.
 
 ## Mongo DB 환경설정
 
@@ -127,37 +133,39 @@ true
 <b>`Document`</b>는 RDBMS의 `Row`에 해당하며, <b>`Field`</b>는 `Column`에 해당한다.
 
 ### Document 저장
-`db.콜렉션이름.insert()` 메소드로 Document를 생성할 수 있다. Document는 자바스크립트의 객체 형태로 저장한다.
+`db.<콜렉션이름>.insertOne()` 메소드로 Document 한 개를 생성할 수 있다.
 ```
-> db.member.insert({ name: "paul" })
+> db.member.insertOne({ name: "Paul"})
 
-> db.member.insert({ name: "john" })
+> db.member.insertOne({ name: "John"})
 ```
 
-다음과 같이 여러 개의 Document를 한꺼번에 저장할 수 있다.
-```
-> db.member.insert([{ name: "messi" }, { name: "ronaldo" }])
-```
 Mongo DB는 스키마가 정해져있지 않기 때문에 저장되는 데이터 형식이 자유롭다.
 ```
-> db.member.insert({ name: "monica", height: 165.5 , createdAt: Date()})
+> db.member.insertOne({ name: "monica", height: 165.5 , createdAt: Date()})
 
-> db.member.insert({ name: "rachel", age: 25, isMarried: false, weight: 60.5 , job: "programmer"})
+> db.member.insertOne({ name: "rachel", age: 25, isMarried: false, weight: 60.5 , job: "programmer"})
 ```
 
 Document는 다른 객체를 포함할 수 있다.
 ```
-> db.member.insert({ name: "marry", phone: { name: "iPhone 10", manufacturer: "Apple" } })
+> db.member.insertOne({ name: "marry", phone: { name: "iPhone 10", manufacturer: "Apple" } })
 ```
 
 Document는 배열을 포함할 수도 있다.
 ```
-> db.member.insert({ name: "jordan", children: ["ramos", "benzema"] })
+> db.member.insertOne({ name: "jordan", children: ["ramos", "benzema"] })
+```
+
+`db.<콜렉션이름>.insertMany()` 메소드로 여러 Document를 한꺼번에 생성할 수 있다.
+
+```
+> db.member.insertMany([{ name: "messi" }, { name: "ronaldo" }])
 ```
 
 
 ### Document 조회
-`db.콜렉션.find()` 메소드로 Document를 조회할 수 있다.
+Mongo DB는 `JSON Document` 기반으로 데이터를 관리한다. `db.콜렉션.find()` 메소드로 모든 Document를 조회할 수 있다.
 ```
 > db.member.find()
 { "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
@@ -296,10 +304,11 @@ Document는 배열을 포함할 수도 있다.
 ```
 
 ### Field 데이터 타입
-Field에 저장할 수 있는 데이터 타입은 [이 곳](https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm)에서 확인할 수 있다.
+`Field`에는 자바스크립트의 데이터 타입을 저장할 수 있다. 자바스크립트 외에도 몇 개의 특수한 데이터타입을 저장할 수 있는데 그 중 하나가 각 Document를 구분하기 위한 `ObjectId`다. 모든 데이터 타입은 [이 곳](https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm)에서 확인할 수 있다.
 
 ### Document 수정
 #### 특정 필드 수정
+`db.<도큐먼트이름>.updateOne()`으로 도큐먼트의 특정 필드를 수정할 수 있다.
 ``` {4}
 > db.member.find({name: "monica"})
 { "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : false, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
@@ -310,6 +319,8 @@ Field에 저장할 수 있는 데이터 타입은 [이 곳](https://www.tutorial
 > db.member.find({name: "monica"})
 { "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : true, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
 ```
+
+
 #### 다른 Document로 대체하기
 ``` {1}
 > db.member.update({ name: "paul"}, { name: "ping", age: 20})
@@ -329,13 +340,17 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 
 ### Document 삭제
+`deleteOne()`으로 조건에 맞는 Document 하나를 삭제할 수 있다.
+``` 
+> db.member.deleteOne({name: "messi"});
 ```
-> db.member.remove({ name: "monica" })
-WriteResult({ "nRemoved" : 1 })
+`deleteMany()`로 조건에 맞는 Document 여러 개를 삭제할 수 있다.
+```
+> db.member.deleteMany({nation: "USA"});
 ```
 모든 도큐먼트를 삭제할 수도 있다.
 ```
-> db.member.remove({})
+> db.member.deleteMany({})
 ```
 
 ## _id 필드
@@ -419,8 +434,8 @@ WriteResult({ "nRemoved" : 1 })
 ## 관계 설정
 Mongo DB는 관계형 데이터베이스의 외래키 개념이 없다. 따라서 두 가지 방법으로 `관계(Relation)`를 설정할 수 있다.
 
-### Embedding
-`Embedding`은 도큐먼트에 다른 도큐먼트를 객체 형태로 가지고 있다.
+### 임베디드
+`임베디드(Embedded)`은 도큐먼트에 다른 도큐먼트를 객체 형태로 가지고 있다.
 ``` {3,4,5,6}
 > db.member.insert({ 
     name: "paul", 
@@ -443,8 +458,8 @@ WriteResult({ "nInserted" : 1 })
 }
 ```
 
-### Referencing
-`Referencing`은 다른 도큐먼트의 참조를 가지고 있다.
+### 참조(Reference)
+`참조(Reference)`은 다른 도큐먼트의 참조를 가지고 있다.
 ``` {14,15}
 > db.post.insert({
     title: "Swift",
@@ -661,6 +676,12 @@ mydb    0.000GB
 
 ### 사용자 삭제
 `db.dropUser()`는 특정 사용자를 삭제하며, `db.dropAllUsers()`로 모든 사용자를 삭제할 수 있다.
+
+
+## Mongo DB Cluster 구축
+::: warning Notification
+준비 중인 컨텐츠입니다.
+:::
 
 ## Replication
 ::: warning Notification

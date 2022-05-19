@@ -36,7 +36,7 @@ public class MemberDocument {
 }
 ```
 
-`@Document`의 `member` 속성으로 콜렉션 이름을 지정할 수 있다.
+`@Document`의 `collection` 속성으로 콜렉션 이름을 지정할 수 있다.
 
 ``` java
 @Document(collection = "member")
@@ -46,7 +46,7 @@ public class MemberDocument {
 ```
 
 ### @id
-`@id` 어노테이션으로 `id` 필드를 지정하지 않으면 CRUD 작업을 수행할 때 자동으로 `ObjectId`가 할당된다.
+`@id` 어노테이션으로 `_id` 필드를 지정하지 않으면 데이터를 삽입할 때 자동으로 `ObjectId`가 할당된다.
 
 ``` java {5,6}
 @Document(collection = "member")
@@ -87,7 +87,7 @@ public class MemberEntity {
 	"_class" : "com.yologger.spring_mongodb.data.MemberEntity"
 }
 ```
-물론 명시적으로 `id` 필드를 지정할 수 있다. 이 경우도 `_id` 필드에 `ObjectId` 타입의 데이터가 자동으로 생성된다.
+물론 명시적으로 `_id` 필드를 지정할 수 있다. 이 경우도 `_id` 필드에 `ObjectId` 타입의 데이터가 자동으로 생성된다.
 
 ``` java {5,6,7}
 @Document(collection = "member")
@@ -172,14 +172,14 @@ public class MemberDocument {
 ### @CreatedDate, @LastModifiedDate
 `@CreatedDate`를 추가하면 도큐먼트가 생성된 날짜와 시간을 추가할 수 있다. `@LastModifiedDate`를 추가하면 마지막으로 도큐먼트가 변경된 날짜와 시간을 추가할 수 있다.
 
-먼저 설정파일에 `@EnableMongoAuditing` 어노테이션을 추가한다.
+이를 위해 먼저 구성 클래스에 `@EnableMongoAuditing` 어노테이션을 추가해야한다.
 ``` java {2}
 @Configuration
 @EnableMongoAuditing
 public class MongoConfig {
 }
 ```
-이제 도큐먼트 클래스를 다음과 같이 정의하면 된다.
+그 다음 도큐먼트 클래스를 다음과 같이 정의하면 된다.
 ``` java {23-25,27-29}
 @Document(collection = "member")
 @Getter
@@ -246,13 +246,85 @@ public class MemberDocument extends BaseDocument {
 
 ## CRUD 작업 실행하기
 `Spring Data MongoDB`는 `MongoDB`에 접근하기 위한 두 가지 방법을 제공한다.
-- `MongoRepository`
 - `MongoTemplate`
+- `MongoRepository`
+
+
+### MongoTemplate
+`MongoTemplate`는 Mongo DB CRUD 작업을 위한 메소드를 제공하는 클래스다.
+``` java{7}
+import org.springframework.data.mongodb.core.MongoTemplate;
+
+@DataMongoTest
+class MemberRepositoryTest {
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Test
+    public void test() {
+
+        MemberDocument member1 = MemberDocument.builder()
+            .email("Son@gmai.com")
+            .name("Son")
+            .age(25)
+            .isMarried(true)
+            .weight(170.3)
+            .build();
+
+        MemberDocument member2 = MemberDocument.builder()
+            .email("Kane@gmai.com")
+            .name("Kane")
+            .age(33)
+            .isMarried(false)
+            .weight(150.8)
+            .build();
+
+        mongoTemplate.insert(member1, "member");
+        mongoTemplate.insert(member2, "member");
+
+        assertThat(mongoTemplate.findAll(MemberDocument.class, "member").size()).isEqualTo(2);
+    }
+}
+```
+
+데이터베이스에 저장된 Document는 다음과 같다.
+```
+> db.member.find().pretty()
+{
+	"_id" : ObjectId("62786ada2e2278137ac8b3bd"),
+	"email" : "Paul@gmai.com",
+	"name" : "Paul",
+	"is_married" : true,
+	"age" : 25,
+	"weight" : 170.3,
+	"createdAt" : ISODate("2022-05-09T01:14:02.368Z"),
+	"updatedAt" : ISODate("2022-05-09T01:14:02.368Z"),
+	"_class" : "com.yologger.spring_mongodb.data.MemberDocument"
+}
+{
+	"_id" : ObjectId("62786ada2e2278137ac8b3be"),
+	"email" : "Monica@gmai.com",
+	"name" : "Monica",
+	"is_married" : false,
+	"age" : 33,
+	"weight" : 150.8,
+	"createdAt" : ISODate("2022-05-09T01:14:02.487Z"),
+	"updatedAt" : ISODate("2022-05-09T01:14:02.487Z"),
+	"_class" : "com.yologger.spring_mongodb.data.MemberDocument"
+} 
+```
+
+
+`MongoTemplate`는 정말 많은 메소드를 제공한다. [공식 문서](https://docs.spring.io/spring-data/mongodb/docs/current/api/org/springframework/data/mongodb/core/MongoTemplate.html)에서 다양한 기능을 확인할 수 있다.
+
 
 ### MongoRepository
 
+`MongoRepository`은 더욱 추상화된 방법을 제공한다.
+
 ``` java
-public interface MemberRepository extends MongoRepository<MemberEntity, Long> {
+public interface MemberRepository extends MongoRepository<MemberDocument, ObjectId> {
 }
 ```
 `MongoRepository`는 다음과 같은 상속 관계를 갖는다.
@@ -294,49 +366,6 @@ class MemberRepositoryTest {
     }
 }
 ```
-
-### MongoTemplate
-`MongoTemplate`는 Mongo DB CRUD 작업을 위한 메소드를 제공하는 클래스다.
-``` java{7}
-import org.springframework.data.mongodb.core.MongoTemplate;
-
-@DataMongoTest
-class MemberRepositoryTest {
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
-
-    @Test
-    public void test() {
-
-        MemberDocument member1 = MemberDocument.builder()
-            .email("Son@gmai.com")
-            .name("Son")
-            .age(25)
-            .isMarried(true)
-            .weight(170.3)
-            .build();
-
-        MemberDocument member2 = MemberDocument.builder()
-            .email("Kane@gmai.com")
-            .name("Kane")
-            .age(33)
-            .isMarried(false)
-            .weight(150.8)
-            .build();
-
-        mongoTemplate.insert(member1, "member_document");
-        mongoTemplate.insert(member2, "member_document");
-
-        assertThat(mongoTemplate.findAll(MemberDocument.class, "member_document").size()).isEqualTo(2);
-    }
-}
-```
-
-`MongoTemplate`는 정말 많은 메소드를 제공한다. [공식 문서](https://docs.spring.io/spring-data/mongodb/docs/current/api/org/springframework/data/mongodb/core/MongoTemplate.html)에서 다양한 기능을 확인할 수 있다.
-
-`MongoRepository`는 사용하기 편리하고 `MongoTemplate`은 좀 더 세밀하게 제어할 수 있다.
-
 
 ## 단위 테스트
 Spring Data MongoDB는 `@DataMongoTest` 어노테이션을 제공한다. 이 어노테이션을 추가하면 Mongo DB와 관련된 컴포넌트만 Spring IoC Container에 등록한다. 
