@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 # Database
-`Databsae`개념에 대해 정리한다.
+`Database`개념에 대해 정리한다.
 
 ## DDL
 `DDL(Data Definition Lauguage)`의 약자로 데이터베이스의 구조(Schema)를 정의하는 기능
