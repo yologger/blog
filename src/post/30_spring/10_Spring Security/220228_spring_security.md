@@ -527,3 +527,253 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 `Cookie-Session 기반 인증`의 경우 `Role`과 `Authority`를 사용해야한다. 하지만 사용자 분류가 다양하지 않다면 둘 중 하나만 사용해도 무방하다.
 
 반면 `Token 기반 인증`의 경우 대부분 `JWT`를 사용하기 때문에 `Role`, `Authority`를 사용하지 않고도 회원 가입 기능을 구현할 수 있다. 하지만 `JWT`를 발행하고 검증하는 기능을 추가적으로 구현해야한다.
+
+## 어노테이션으로 접근 권한 제어하기
+지금까지는 스프링 시큐리티 구성 파일의 `configure(HttpSecurity http)`로 접근 제어를 설정했다.
+``` java
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.authorizeRequests()
+				.antMatchers("/join", "/login").permitAll();
+	}
+}
+```
+스프링 시큐리티는 클래스나 메소드에 어노테이션을 붙여 접근을 제어할 수도 있다.
+
+### @Secured
+`@Secured` 어노테이션으로 특정 역할을 가진 사용자만 접근할 수 있도록 제어할 수 있다.
+``` java{7}
+import org.springframework.security.access.annotation.Secured;
+
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @Secured({"ROLE_USER"})
+    @GetMapping("/test1")
+    public String test1() {
+        return "test1";
+    }
+}
+```
+`@Secured`를 활성화하려면 시큐리티 설정 클래스에 `@EnableGlobalMethodSecurity`을 붙인 후 `securedEnabled` 속성을 `true`로 설정해야한다.
+``` java {5}
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .anyRequest().authenticated().and()
+            .formLogin().and()
+            .httpBasic().and()
+            .logout();
+    }
+}
+```
+테스트 코드를 작성해보자. 
+``` java
+@WebMvcTest
+class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void test() throws Exception {
+        mvc.perform(get("/test/test1"))
+                .andExpect(content().string("test1"));
+
+    }
+}
+```
+
+### @PreAuthorize
+`@PreAuthorize`을 사용하면 `SPEL`이라는 표현식을 사용하여 더욱 정교하게 접근을 제어할 수 있다. `@PreAuthorize`는 어노테이션이 붙은 메소드를 실행하기 전에 인증을 진행한다.
+``` java
+import org.springframework.security.access.prepost.PreAuthorize;
+
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @GetMapping("/test1")
+    public String test1() {
+        return "test1";
+    }
+}
+```
+이 어노테이션을 활성화하려면 `@EnableGlobalMethodSecurity`의 `prePostEnabled`속성를 `true`로 설정해야한다.
+``` java {3}
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .anyRequest().authenticated().and()
+            .formLogin().and()
+            .httpBasic().and()
+            .logout();
+    }
+}
+```
+인증에 성공한 경우 다음과 같이 메소드의 파라미터로 인증 정보를 바인딩할 수 있다. 바인딩되는 데이터의 타입은 `UserDetails`인터페이스 또는 `User`구현체다.
+
+``` java
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @PreAuthorize("isAuthenticated() and hasRole('ROLE_USER')")
+    @GetMapping("/test1")
+    public String test1(@AuthenticationPrincipal User user) {
+        return "test1";
+    }
+}
+```
+
+SPEL 표현식과 관련된 자세한 내용은 [이 곳](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html#el-common-built-in)에서 확인할 수 있다.
+### @PostAuthorized
+`@PostAuthorized`는 이 어노테이션이 붙은 메소드가 실행된 후에 인증을 시도한다.
+
+## Spring Security 테스트
+스프링 시큐리티와 관련된 의존성은 다음과 같다.
+``` groovy
+// build.gradle
+dependencies {
+    testImplementation 'org.springframework.security:spring-security-test'
+}
+```
+
+### @WithMockUser
+`@WithMockUser`를 사용하면 인증된 가짜 사용자를 만들 수 있다. 별도의 설정이 없다면 username = "user", password = "password", role = "USER"로 설정된다.
+``` java
+import org.springframework.security.test.context.support.WithMockUser;
+
+@WebMvcTest
+class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    @WithMockUser(roles = "USER")
+    public void test() throws Exception {
+        mvc.perform(get("/test/test1"))
+                .andExpect(content().string("test1"));
+    }
+}
+```
+다음과 같이 username, password, role를 직접 설정할 수 있다.
+``` java {8}
+@WebMvcTest
+class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    @WithMockUser(username = "paul", password = "1234", roles = "USER")
+    public void test() throws Exception {
+        // ...
+    }
+}
+```
+다음과 같이 클래스 레벨에 추가할 수 있다.
+``` java {2}
+@WebMvcTest
+@WithMockUser(username = "paul", password = "1234", roles = "USER")
+class TestControllerTest {
+    // ...
+}
+```
+
+### @WithAnonymousUser
+`@WithAnonymousUser`를 사용하면 인증되지 않는 사용자를 테스트할 수 있다.
+``` java {2}
+@WebMvcTest
+@WithAnonymousUser
+class TestControllerTest {
+    // ...
+}
+```
+
+### @WithUserDetails
+대부분 `UserDetailsService`인터페이스의 `loadUserByUsername(String username)`를 구현하여 인증 정보를 가져온다.
+``` java
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+@Service
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private final UserRepositoryImpl userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Username Not Found."));
+
+        return UserInfo("paul@gmail.com", "Jason Paul", "USER");
+    }
+}
+```
+`@WithUserDetails`을 사용하면 테스트 환경에서 `UserDetailsService.loadUserByUsername(String username)`가 반환할 사용자 정보를 직접 설정할 수 있다.
+``` java
+import org.springframework.security.test.context.support.WithUserDetails;
+
+@WebMvcTest
+class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    @WithUserDetails("paul@gmail.com")
+    public void test() throws Exception {
+        mvc.perform(get("/test/test1"))
+                .andExpect(content().string("test1"));
+
+    }
+}
+```
+
+### SecurityContext에 직접 Authentication 주입하기
+`SecurityContext`에 직접 `Authentication`을 주입할 수 있다.
+``` java
+class Test {
+
+    @BeforeEach
+    void setUp() {
+        UserDetails user = ...
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities()));
+    }
+
+    @Test
+    void test() {
+        ...
+    }
+}
+```
