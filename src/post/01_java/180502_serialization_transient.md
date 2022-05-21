@@ -11,7 +11,7 @@ sidebarDepth: 0
 # 직렬화
 운영체제나 네트워크에는 Java의 객체의 개념이 없다. 그렇다면 어떻게 객체를 운영체제의 파일 시스템에 저장하거나 네트워크로 전송할 수 있을까?
 
-`직렬화(Serialization)`는 객체를 바이트로 변환하여 저장하는 기술을 의미한다. `역직렬화(Deserialization)`는 바이트를 다시 Java 객체로 변환하는 것이다.
+`직렬화(Serialization)`는 객체를 바이트 배열로 변환하여 저장하는 것을 의미한다. `역직렬화(Deserialization)`는 바이트 배열을 다시 객체로 변환하는 것이다.
 
 ## Serializable
 직렬화할 클래스는 `Serializable`를 구현해야한다.

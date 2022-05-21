@@ -12,21 +12,21 @@ sidebarDepth: 0
 Java 8에 도입된 `메소드 참조`, `생성자 참조`가 도입되었다.
 
 ## 메소드 참조
-`메소드 참조(Method Reference)`은 람다식이 단 하나의 메소드만을 호출하는 경우, 람다식에서 불필요한 매개변수를 줄여 사용할 수 있게 한다. 
+`메소드 참조(Method Reference)`은 람다식이 오직 하나의 메소드만을 호출하는 경우 람다식에서 불필요한 매개변수를 줄여 사용할 수 있게 한다. 
 
-예제를 살펴보자.
+예제를 살펴보자. 다음과 같은 함수형 인터페이스가 있다.
 ``` java
 @FunctionalInterface
 interface Lambda {
     void run(String something);
 }
 ```
+이제 함수형 인터페이스 타입의 변수에 람다식을 할당한다.
 ``` java
 Lambda lambda = (something) -> System.out.println(something);
 lambda.run("Hello World");
 ```
-위 예제는 람다식이 단 하나의 메소드 `System.out.println(something)`만을 호출하고 있다. 이 예제는
-메소드 참조를 사용하면 위 예제를 더욱 단축할 수 있다.
+위 코드는 람다식이 단 하나의 메소드 `System.out.println(something)`만을 호출하고 있다. 이처럼 람다식이 하나의 메소드만을 호출하는 경우 메소드 참조를 사용하여 다음과 같이 단축할 수 있다.
 ``` java
 Lambda lambda = System.out::println;
 lambda.run("Hello World");

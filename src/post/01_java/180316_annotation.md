@@ -245,8 +245,8 @@ public class CharlesProcessor extends AbstractProcessor {
 ## 내장 어노테이션
 Java API는 사전에 정의된 내장 어노테이션을 제공한다. 내장 어노테이션은 `java.lang` 또는 `java.annotation` 패키지에 포함된다. 자주 사용되는 내장 어노테이션은 다음과 같다.
 
-### @override
-`@override`는 부모 클래스의 메소드를 재정의했다는 것을 알려준다.
+### @Override
+`@Override`는 부모 클래스의 메소드를 재정의했다는 것을 알려준다.
 ``` java Person.java
 class Person {
     void work() {
@@ -256,7 +256,7 @@ class Person {
 ```
 ``` java Musician.java
 class Musician extends Person {
-    @override
+    @Override
     void work() {
         System.out.println("Sing");
     }

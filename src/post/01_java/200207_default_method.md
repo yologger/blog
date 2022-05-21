@@ -27,7 +27,7 @@ class Programmer implements Person {
 ```
 
 ## default 메소드
-키워드 `default`를 사용하면 인터페이스에서도 메소드 구현을 작성할 수 있다.
+키워드 `default`를 사용하면 인터페이스에서도 메소드를 구현할 수 있다.
 ``` java Person.java
 interface Person {
     void work();

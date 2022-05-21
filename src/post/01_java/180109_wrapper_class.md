@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 # Wrapper 클래스
-Java에서 개발을 하다보면 `원시 타입(Primitive Type)`을 객체로 취급해야하는 경우가 있다. 예를 들면 `Generic`을 사용할 때는 타입 파라미터로 참조 타입만을 전달할 수 있다.
+`Wrapper 클래스`를 사용하면 원시 타입을 객체로 취급할 수 있다. 예를 들면 제너릭을 사용할 때는 타입 파라미터로 참조 타입만 전달할 수 있는데 이 때 Wrapper 클래스를 사용할 수 있다. 
 ``` java
 class Person<T> {
     T data;
