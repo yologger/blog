@@ -1,5 +1,5 @@
 ---
-title: "Spring Data JPA - Query Method"
+title: "Spring Data JPA - Query Method, Sort, Pageable"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -11,8 +11,8 @@ sidebarDepth: 0
 # Query Method
 `Spring Data JPA`는 `쿼리 메소드(Query Method)`라는 기능을 제공한다. 
 
-## 메소드 이름으로 쿼리 생성하기
-`Query Method`를 사용하면 메소드 이름으로 쿼리를 생성할 수 있다. 다음과 같이 `MemberEntity`라는 엔티티 클래스가 있다고 가정하자.
+## 메소드 이름으로 JPQL 생성하기
+`Query Method`를 사용하면 <u>메소드 이름</u>으로 <u>JPQL 쿼리</u>를 생성할 수 있다. 다음과 같이 `MemberEntity`라는 엔티티 클래스가 있다고 가정하자.
 ``` java
 @Entity
 @Table(name= "member")
@@ -44,7 +44,7 @@ public class MemberEntity extends BaseEntity {
     // 생략 ...
 }
 ```
-`email`과 `name`으로 엔티티를 조회하려면 다음과 같이 메소드를 정의하면 된다.
+`email`과 `name`으로 엔티티를 조회하려면 <u>메소드 이름</u>을 다음과 같이 정의하면 된다. 이 메소드를 `쿼리 메소드(Query Method)`라고 한다.
 ``` java
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -52,13 +52,14 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     List<MemberEntity> findByEmailAndName(String email, String name);
 }
 ```
-메소드를 호출하면 다음과 같은 쿼리가 호출된다.
+Spring Data JPA는 이 쿼리 메소드를 JPQL 쿼리로 변환하여 실행한다.
 ```
 select m from Member m where m.email = ?1 and m.name = ?2
 ```
 
-물론 정해진 규칙에 따라서 메소드 이름을 지어야 한다.
-![](./220402_spring_data_jpa_query_method/1.png)
+물론 정해진 규칙에 따라서 쿼리 메소드의 이름을 작성해야한다.
+
+![](./220403_spring_data_jpa_query_method/1.png)
 
 메소드 이름에 정렬도 추가할 수 있다.
 
@@ -72,7 +73,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 ```
 
 ## @Query
-`Query Method`의 `@Query` 어노테이션을 사용하면 `JPQL` 문자열로 쿼리를 정의할 수 있다.
+`@Query` 어노테이션을 사용하면 `JPQL` 문자열로 쿼리를 정의할 수 있다.
 ``` java
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -81,6 +82,7 @@ import org.springframework.data.repository.query.Param;
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     @Query("select m from MemberEntity where m.email = :email and m.name = :name")
     List<MemberEntity> findByEmailAndName(@Param("email") String email, @Param("name") String name);
+}
 ```
 
 ## Sorting
@@ -164,4 +166,3 @@ public interface Page<T> extends Slice<T> {
     Sort getSort();                 // 정렬 정보
 }
 ```
-
