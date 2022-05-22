@@ -169,6 +169,95 @@ class TestControllerTest {
 }
 ```
 
+## H2 데이터베이스
+`H2`의 인메모리 데이터베이스를 사용하면 쉽게 데이터베이스를 테스트할 수 있다.
+
+### 환경설정
+다음 의존성을 추가한다.
+``` groovy
+// build.gradle
+dependencies {
+    // H2
+    implementation 'com.h2database:h2'
+}
+```
+그 다음 `application.properties`에 `H2` 관련 설정을 추가한다. `Spring Data JPA`와 관련된 설정은 생략한다.
+``` properties
+## H2 설정
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+
+## datasource 설정
+spring.datasource.url=jdbc:h2:~/test;
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+```
+
+### H2 Console
+`H2` 데이터베이스는 인메모리 데이터베이스를 위한 Web 기반 DB Client를 제공한다. 어플리케이션이 구동된 상태에서 `http://localhost:포트/h2-console`에 접속하면 다음과 같은 화면을 볼 수 있다.
+
+![](./20220203_spring_test/1.png)
+
+`Connect` 버튼을 누르면 `H2 Console`에 접속된다. 이 곳에서 스키마를 조작할 수 있고 SQL문을 직접 실행할 수 도 있다.
+
+![](./20220203_spring_test/2.png)
+
+### 테스트 환경에 H2 활용하기
+필자는 로컬 환경에서는 `MySQL`, 단위 테스트 환경에서는 `H2`를 사용한다. 이러한 환경은 다음과 같이 구성할 수 있다.
+``` groovy
+// build.gradle
+dependencies {
+    // implementation 'com.h2database:h2'
+    testImplementation 'com.h2database:h2'
+}
+```
+`src/main/resources`의 `application.properties`는 다음과 같이 구성하여 `MySQL`을 사용하도록 한다.
+``` properties
+## src/main/resources/application.properties
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=root
+```
+`src/test/resources`의 `application.properties`는 다음과 같이 구성하여 `H2`을 사용하도록 한다.
+``` properties
+## src/test/resources/application.properties
+spring.datasource.url=jdbc:h2:~/test;
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+```
+
+이제 `JUnit`을 사용하여 단위테스트를 진행할 수 있다.
+``` java
+@DataJpaTest
+class MemberRepositoryTest {
+
+    @Autowired
+    MemberRepository memberRepository;
+    
+    @AfterEach
+    void tearDown() {
+        memberRepository.deleteAll();
+    }
+
+    @Test
+    void test() {
+        MemberEntity memberEntity = MemberEntity.builder()
+                .email("paul@gmail.com")
+                .password("1234")
+                .build();
+
+        MemberEntity saved = memberRepository.save(memberEntity);
+
+        assertThat(saved.getEmail()).isEqualTo("paul@gmail.com");
+    }
+}
+```
+
 ## @DataJpaTest
 Spring Data JPA를 사용한다면 `@DataJpaTest`를 사용할 수 있다. 이 어노테이션은 Spring Data JPA와 관련된 컴포넌트만 Spring IoC Container에 등록하기 때문에 `@SpringBootTest`보다 훨씬 빠르다.
 
@@ -182,7 +271,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 ```
-`@DataJpaTest`는 기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행한다. 인메모리 데이터베이스로 `h2`를 사용하려면 다음 의존성을 추가해야한다.
+`@DataJpaTest`는 <u>기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행</u>한다. 인메모리 데이터베이스로 `h2`를 사용하려면 다음 의존성을 추가해야한다.
 ``` groovy
 dependencies {
     // H2
@@ -314,15 +403,9 @@ class UserRepositoryTest {
 }
 ```
 
-`@DataJpaTest`는 테스트 후 데이터베이스를 롤백한다. 롤백을 하지 않으려면 `@Commit` 또는 `@Rollback(false)` 어노테이션을 붙이면 된다.
-``` java
-@DataJpaTest
-@Commit
-class UserRepositoryTest {
-    // ...
-```
+### 테스트 환경에서 온디스크 데이터베이스 사용하기
+`@DataJpaTest`는 <u>기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행</u>한다. 온디스크 데이터베이스를 사용하려면 별도의 설정이 필요하다. `MySQL` DB를 사용하기 위해 `src/test/resources/application.yml`를 다음과 같이 수정한다.
 
-만약 테스트 환경에서 MySQL 같은 실제 데이터베이스를 사용하려면 추가적인 설정이 필요하다. 우선 `src/test/resources/application.yml`를 다음과 같이 수정한다.
 ```yml
 # spring:
 #   datasource:
@@ -353,7 +436,8 @@ spring:
         show_sql: true
         format_sql: true
 ```
-그리고 테스트 클래스에 `@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)` 어노테이션을 추가한다. 이 어노테이션은 인메모리 데이터베이스 대신 실제 데이터베이스를 사용하도록 한다.
+
+그리고 테스트 클래스에 `@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)` 어노테이션을 추가한다. 이 어노테이션은 인메모리 데이터베이스 온디스크 데이터베이스를 사용하도록 한다.
 ``` java
 // UserRepositoryTest.java
 @DataJpaTest
@@ -363,6 +447,15 @@ class UserRepositoryTest {
 }
 ```
 
+### @Commit, @Rollback
+`@DataJpaTest`는 기본적으로 테스트 종료 후 데이터베이스를 롤백한다. 롤백을 하지 않으려면 `@Commit` 또는 `@Rollback(false)` 어노테이션을 붙이면 된다.
+``` java
+@DataJpaTest
+@Commit
+class UserRepositoryTest {
+    // ...
+}
+```
 
 ## @SpringBootTest
 `@SpringBootTest`는 통합 테스트에 사용되는 어노테이션이다. 모든 컴포넌트를 컨테이너에 등록하기 때문에 속도가 느리지만 운영 환경과 가장 유사하게 테스트할 수 있다.

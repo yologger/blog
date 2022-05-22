@@ -50,6 +50,15 @@ Double height = new Double(165.3);
 int _age = age.intValue();
 double _height = height.doubleValue();
 ``` 
+다른 타입으로 형변환할 때도 `xxxValue()`메소드를 사용할 수 있다.
+``` java
+Double age = new Double(130.32);
+
+System.out.println(age.intValue());  // 130
+System.out.println(age.longValue());  // 130
+System.out.println(age.floatValue());  // 130.32
+System.out.println(age.doubleValue());  // 130.32
+```
 
 ## 오토 박싱과 오토 언박싱
 직접적으로 박싱/언박싱을 하지 않아도 자동으로 박싱/언박싱이 일어나기도 한다. `Wrapper 클래스`에 원시 타입의 데이터를 할당할 경우 오토 박싱이 된다.
