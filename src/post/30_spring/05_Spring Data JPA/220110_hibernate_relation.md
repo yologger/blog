@@ -606,11 +606,11 @@ memberProduct.setAmount(10);
 entityManager.persist(memberProduct);
 ```
 
-## Cascade
-특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만드는 것을 `영속성 전이`라고 한다. `Cascade`는 영속성 전이에 사용된다.
+## 영속성 전이, CascadeType
+특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만드는 것을 `영속성 전이`라고 한다.
 
 ### 사용법
-영속성 전이는 다음과 같이 `cascade` 속성과 `CascadeType` 열거형을 사용한다.
+영속성 전이는 `cascade` 속성과 `CascadeType` 열거형으로 설정할 수 있다.
 ``` java {14}
 // MemberEntity.java
 @Entity
@@ -920,7 +920,9 @@ member.getPosts().remove(0);
 +----+----------+-----------+
 ```
 
-## Proxy
+## 프록시(Proxy)
+실제 엔티티 객체 대신에 데이터베이스 조회를 지연할 수 있는 가짜 객체를 `프록시(Proxy)` 객체라고 한다. JPA는 프록시 객체를 사용하여 지연로딩 기능을 구현한다.
+
 데이터베이스 상태가 다음과 같다고 가정하자.
 ```
 > SELECT * FROM member;
@@ -966,7 +968,10 @@ String email = member.getEmail();  // 이 시점에 데이터베이스 조회
 
 이처럼 프록시 객체를 사용하면 데이터베이스 조회를 속성값에 실제로 접근하는 시점으로 미룰 수 있다.
 
-## Lazy Fetch 
+## 글로벌 페치 전략
+엔티티를 조회할 때 연관된 엔티티들을 어떻게 조회할 것인가를 결정하는 것을 `글로벌 패치 전략`이라고 한다. 글로벌 패치 전략은 크게 두 가지 방법이 있다.
+
+### Eager fetch
 엔티티를 조회할 때 연관된 모든 엔티티를 함께 조회하는 것을 `즉시 로딩(Eager fetch)`라고 한다. 즉시 로딩은 다음과 같이 설정한다. 
 
 ``` java{7}
@@ -1005,7 +1010,7 @@ Hibernate:
     where
         m1_0.id = ?
 ```
-
+### Lazy fetch 
 엔티티를 조회할 때 연관된 엔티티들을 조회하지 않고, 연관된 엔티티에 실제로 접근할 때 조회하는 것을 `지연 로딩(Lazy fetch)`라고 한다. 지연 로딩을 활성화하려면 `fetch` 속성을 `FetchType.Lazy`로 설정하면 된다.
 ``` java {7}
 @Entity
@@ -1077,7 +1082,7 @@ Hibernate:
     where
         p1_0.writer_id = ?
 ```
-Hibernate는 연관 관계에 있는 엔티티가 컬렉션이면 기본적으로 지연 로딩을 적용한다. 따라서 `FetchType.Lazy`을 지정하지 않아도 자동으로 지연 로딩이 적용된다.
+Hibernate는 <u><b>연관 관계에 있는 엔티티가 컬렉션이면 기본적으로 지연 로딩을 적용한다.</b></u> 따라서 `FetchType.Lazy`을 지정하지 않아도 자동으로 지연 로딩이 적용된다.
 ``` java {7}
 @Entity
 @Table(name= "member")
@@ -1091,3 +1096,8 @@ public class MemberEntity {
     // 생략 ...
 }
 ```
+
+### 기본값
+글로벌 페치 전략의 기본값은 다음과 같다.
+- `@OneToOne`, `@ManyToOne`: 즉시 로딩
+- `@OneToMany`, `@ManyToMany`: 지연 로딩
