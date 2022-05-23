@@ -1,5 +1,5 @@
 ---
-title: "Java 리플렉션(Reflection)"
+title: "Java 클래스 참조, Reflection"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -8,10 +8,7 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-# Reflection
-`리플렉션(Reflection)`은 <u>런타임에서 클래스의 구체적인 타입을 몰라도 그 클래스의 멤버변수, 메소드 등을 분석하고 접근할 수 있도록 하는 자바 API와 기법</u>이다. 리플렉션과 관련된 API는 `java.lang.reflect.*`패키지에 있다.
-
-## Class 클래스와 클래스 참조
+## 클래스 참조, Class 클래스
 Java의 모든 클래스와 인터페이스는 컴파일 후 `.class`파일로 변환된다. 이 파일에는 생성자, 멤버변수, 메서드 등 객체의 정보가 포함되어있는데 `Class`클래스를 사용하면 이 파일에서 가져온 객체의 정보를 담을 수 있다. 이를 `클래스 참조(Class Reference)`라고 한다.
 
 `Class`클래스에 정보를 담는 방법에는 세 가지가 있다. 
@@ -29,7 +26,9 @@ String string = new String();
 Class clazz = string.getClass();
 ```
 
-## 리플렉션
+## 리플렉션(Reflection)
+`리플렉션(Reflection)`은 <u>런타임에서 클래스의 구체적인 타입을 몰라도 그 클래스의 멤버변수, 메소드 등을 분석하고 접근할 수 있도록 하는 자바 API와 기법</u>이다. 리플렉션과 관련된 API는 `java.lang.reflect.*`패키지에 있다.
+
 코드를 작성하다보면 작성 시점에 데이터의 타입을 모를 수도 있다. 이때 `리플렉션(Reflection)`을 사용할 수 있다. 
 
 예제를 살펴보자. 다음과 같은 클래스가 있다.

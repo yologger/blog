@@ -8,12 +8,9 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-# Java 집합자료형
-Java의 `집합자료형(Collection)`에 대해 정리한다.
-
-## 컬렉션 프레임워크
+# 컬렉션 프레임워크
 Java API는 같은 타입의 여러 데이터를 한꺼번에 효율적으로 관리하기 위해 `컬렉션 프레임워크(Collection Framework)`를 지원한다. 
-![](./180114_collection/1.png)
+![](./180110_collection/1.png)
 
 컬렉션 프레임워크는 `java.util` 패키지에 포함되어있으며, 가장 중요한 요소는 `List`, `Set`, `Map`이다.
 
@@ -52,6 +49,14 @@ vector.add("Ross");
 
 System.out.println(vector.toString());   // [Joey, Chandler, Ross]
 ```
+요소 값에 접근할 수 있다.
+``` java
+System.out.println(vector.get(0));   // Joey
+```
+요소 값을 변경할 수 있다.
+``` java
+vector.set(0, "Rachel");
+```
 다음과 같이 요소를 삭제할 수 있다.
 ``` java
 // 인덱스로 삭제
@@ -59,14 +64,6 @@ vector.remove(0);
 
 // 요소로 삭제
 vector.remove("Ross");
-```
-요소 값을 변경할 수 있다.
-``` java
-vector.set(0, "Rachel");
-```
-요소 값에 접근할 수 있다.
-``` java
-System.out.println(vector.get(0));   // Joey
 ```
 
 ### ArrayList
@@ -82,11 +79,9 @@ list.add("Bale");
 
 System.out.println(list.toString());    // [Ronaldo, Benzema, Bale]
 ``` 
-다음과 같이 요소를 삭제할 수 있다.
+요소 값에 접근할 수 있다.
 ``` java
-list.remove(0);
-
-list.remove("Ronaldo");
+System.out.println(list.get(0));        // Son
 ```
 요소 값을 변경할 수 있다.
 ``` java
@@ -94,9 +89,11 @@ list.set(0, "Son");
 
 System.out.println(list.toString());    // [Son, Bale]
 ``` 
-요소 값에 접근할 수 있다.
+다음과 같이 요소를 삭제할 수 있다.
 ``` java
-System.out.println(list.get(0));        // Son
+list.remove(0);
+
+list.remove("Ronaldo");
 ```
 
 ### LinkedList
@@ -112,19 +109,19 @@ linkedList.add("Joey");
 
 System.out.println(linkedList.toString());  // [Chandler, Ross, Joey]
 ```
-요소를 삭제할 수 있다.
+요소 값에 접근할 수 있다.
 ``` java
-linkedList.remove("Ross");
-
-linkedList.remove(0);
+linkedList.get(1);
 ```
 요소를 변경할 수 있다.
 ``` java
 linkedList.set(0, "Monica");
 ```
-요소 값에 접근할 수 있다.
+요소를 삭제할 수 있다.
 ``` java
-linkedList.get(1);
+linkedList.remove("Ross");
+
+linkedList.remove(0);
 ```
 
 ### Vector vs. ArrayList
@@ -157,7 +154,7 @@ public class LinkedList<E> {
 
 보통 데이터를 순차적으로 추가, 삭제하는 경우 `ArrayList`가 더 빠르다. 반면 데이터를 중간에 추가, 삭제하는 경우 `LinkedList`가 더 빠르다. 따라서 상황에 따라 적절한 것을 선택하자.
 
-### Array로 List 초기화하기
+### List를 Array로 초기화하기
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 ```
@@ -189,6 +186,8 @@ System.out.println(copy.hashCode());    // 955331
 ```
 
 ### List 메소드 정리
+`List`인터페이스가 제공하는 메소드는 다음과 같다. 
+
 #### List.add()
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
@@ -215,19 +214,19 @@ list1.addAll(0, list2);
 System.out.println(list1);  // [6, 7, 8, 9, 10, 1, 2, 3, 4, 5]
 ```
 
+#### List.get()
+``` java
+List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
+
+System.out.println(list.get(0));    // 1
+```
+
 #### List.set()
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 list.set(0, 10);
 
 System.out.println(list);   // [10, 2, 3, 4, 5]
-```
-
-#### List.get()
-``` java
-List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
-
-System.out.println(list.get(0));    // 1
 ```
 
 #### List.remove()
@@ -289,6 +288,13 @@ if (list.isEmpty()) {
 ``` java
 List<String> list = Arrays.asList("Paul", "John", "Smith", "Monica", "Chandler", "Ross");
 List<String> subList = list.subList(1, 4);      // [John, Smith, Monica]
+```
+
+#### List.toArray()
+``` java
+List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
+String[] arr = list.toArray(new String[list.size()]);
+System.out.println(Arrays.toString(arr));   // [Paul, John, Smith, Paul]
 ```
 
 ## Set
@@ -483,6 +489,20 @@ for (Integer element: set) {
 }
 ```
 
+#### Set.clear();
+``` java
+Set<Integer> set = new HashSet<>();
+set.add(1);
+set.add(2);
+set.add(3);
+set.add(3);
+
+System.out.println(set);  // [1, 2, 3]
+
+set.clear();
+
+System.out.println(set);  // []
+```
 
 ## Map
 `맵(Map)`은 `키(Key)`와 `값(Value)`으로 구성된 데이터 집합이다. 키를 통해 값을 저장하거나 읽어오거나 변경하거나 삭제할 수 있다. `Map`의 특징은 다음과 같다.
@@ -519,9 +539,13 @@ players.put(11, "Bale");
 
 players.toString(); // {7=Ronaldo, 9=Benzema, 11=Bale}
 ```
+다음과 같이 데이터에 접근할 수 있다.
+``` java
+players.get(7); // Ronaldo
+```
 다음과 같이 데이터를 변경할 수 있다.
 ``` java
-players.set(7, "Son");
+players.replace(7, "Son");
 
 System.out.println(players.toString()); // {7=Son, 9=Benzema, 11=Bale}
 ```
@@ -544,9 +568,13 @@ players.put(11, "Bale");
 
 System.out.println(players.toString()); // {7=Ronaldo, 9=Benzema, 11=Bale}
 ```
+다음과 같이 데이터에 접근할 수 있다.
+``` java
+players.get(7); // Ronaldo
+```
 다음과 같이 데이터를 변경할 수 있다.
 ``` java
-players.set(7, "Son");
+players.replace(7, "Son");
 
 System.out.println(players.toString()); // {7=Son, 9=Benzema, 11=Bale}
 ```
@@ -569,6 +597,10 @@ players.put(9, "Benzema");
 players.put(11, "Bale");
 
 System.out.println(players.toString()); // {7=Ronaldo, 9=Benzema, 11=Bale}
+```
+다음과 같이 데이터에 접근할 수 있다.
+``` java
+players.get(7); // Ronaldo
 ```
 다음과 같이 데이터를 변경할 수 있다.
 ``` java
@@ -640,6 +672,8 @@ System.out.println(copy.hashCode());    // 974907474
 ```
 
 ### Map 메소드 정리
+`Map`인터페이스가 제공하는 메소드는 다음과 같다.
+
 #### Map.put()
 ``` java
 Map<Integer, String> players = new TreeMap<Integer, String>();
@@ -647,11 +681,6 @@ Map<Integer, String> players = new TreeMap<Integer, String>();
 players.put(7, "Ronaldo");
 players.put(9, "Benzema");
 players.put(11, "Bale");
-```
-
-#### Map.replace()
-``` java
-players.replace(7, "Mbappe");
 ```
 
 #### Map.get()
@@ -669,6 +698,16 @@ String player2 = players.get(8);    // null
 #### Map.getOrDefault()
 ``` java
 String player3 = players.getOrDefault(8, "Ramos");  // "Ramos"
+```
+
+#### Map.replace()
+``` java
+players.replace(7, "Mbappe");
+```
+
+#### Map.remove()
+``` java
+players.remove(7);
 ```
 
 #### Map.isEmpty()
@@ -730,9 +769,7 @@ Integer value = stack.pop();
 ``` java
 public interface Queue<E> extends Collection<E> {
     boolean add(E e);
-    boolean offer(E e);
     E remove();
-    E poll();
     E element();
     E peek();
 }
@@ -745,10 +782,11 @@ Queue<Integer> queue = new LinkedList<Integer>();
 ``` java
 Queue<Integer> queue = new LinkedList<Integer>();
 queue.add(1);
+queue.add(2);
 
 System.out.println(queue.toString());   // [1, 2]
 ```
-`peak()`을 사용하면 가장 처음 들어온 요소에 접근할 수 있다.
+`peek()`을 사용하면 가장 처음 들어온 요소에 접근할 수 있다.
 ``` java
 System.out.println(queue.toString());   // [1, 2, 3]
 
@@ -980,25 +1018,30 @@ System.out.println(priorityQueue.remove().toString());      // [name='Ross', age
 ## Collections 클래스
 <b>`Collections`</b>클래스는 `List`, `Set`, `Map`처럼 `Collection`인터페이스를 상속한 객체를 조작하기 위한 유용한 메소드들을 제공한다.
 
+### nCopies()
+첫 번째 인자로 전달된 크기의 List를 두 번째 인자로 전달된 객체로 초기화하여 반환한다.
+``` java {1}
+List list = Collections.nCopies(10, 1);
+System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+```
+주의할 점은 `Collections.nCopies()`를 불변 리스트를 반환하므로 변경할 수 없다. 가변 리스트는 다음과 같이 생성한다.
+``` java
+List list = new ArrayList(Collections.nCopies(10, 1));
+```
+
 ### fill()
 List의 모든 요소를 특정 값으로 대체한다.
-``` java
-List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
+``` java {4}
+List list = new ArrayList(Collections.nCopies(4, 1));
+System.out.println(list);   // [1, 1, 1, 1]
+
 Collections.fill(list, 5);
 System.out.println(list);   // [5, 5, 5, 5]
 ```
 
-### nCopies()
-첫 번째 인자로 전달된 크기의 List를 두 번째 인자로 전달된 객체로 초기화하여 반환한다.
-``` java
-List list = Collections.nCopies(10, 1);
-System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-```
-주의할 점은 `Collections.nCopies()`를 불변 리스트를 반환하므로 변경할 수 없다.
-
 ### swap()
 두 요소를 스왑한다.
-``` java
+``` java {5}
 List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
 
 System.out.println(list);   // [1, 2, 3, 4]
@@ -1011,30 +1054,55 @@ System.out.println(list);   // [4, 2, 3, 1]
 ### emptyList()
 빈 불변 List를 반환한다.
 ``` java
-List list = Collections.emptyList();    // UnsupportedOperationException
-list.add(1);
+List list = Collections.emptyList();    
+list.add(1);  // UnsupportedOperationException
+```
+
+### emptySet()
+빈 불변 Set을 반환한다.
+``` java
+Set set = Collections.emptySet();
+set.add(7);  // UnsupportedOperationException
 ```
 
 ### emptyMap()
 빈 불변 Map을 반환한다.
-
-### emptySet()
-빈 불변 Set을 반환한다.
+``` java
+Map map = Collections.emptyMap();
+map.put(7, "Ronaldo");  // UnsupportedOperationException
+```
 
 ### unmodifiableList()
 `List`를 불변 객체로 만들어 반환한다.
-``` java
+``` java {4}
 List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
 list.add(5);        // Success
+
 List immutable = Collections.unmodifiableList(list);
 immutable.add(6);   // Error, UnsupportedOperationException
 ```
 
-### unmodifiableMap()
-`Map`을 불변 객체로 만들어 반환한다.
-
 ### unmodifiableSet()
 `Set`을 불변 객체로 만들어 반환한다.
+``` java
+Set set = new HashSet();
+set.add(1);
+set.add(2);
+
+Set immutable = Collections.unmodifiableSet(set);
+immutable.add(3);   // UnsupportedOperationException
+```
+
+### unmodifiableMap()
+`Map`을 불변 객체로 만들어 반환한다.
+``` java
+Map map = new HashMap();
+map.put(7, "Ronaldo");
+map.put(11, "Bale");
+
+Map immutable = Collections.unmodifiableMap(map);
+immutable.put(9, "Benzema");  // UnsupportedOperationException
+```
 
 ### copy()
 List를 복사한다. 목적지 List는 출발지 List보다 크거나 같아야한다. 그렇지 않으면 `IndexOutOfBoundsException`가 발생한다.
@@ -1044,8 +1112,8 @@ List dest = new ArrayList(Arrays.asList(2, 2, 2, 2, 2));
 Collections.copy(dest, src);    
 System.out.println(dest);       // [1, 1, 1, 2, 2]
 ```
-`Collections.copy()` 대신 다음과 같은 방법으로 배열을 복사할 수도 있다.
-``` java
+`Collections.copy()` 대신 새로운 `ArrayList`를 생성을 하는 방식을 사용할 수도 있다.
+``` java {5}
 Integer[] arr = {1, 2, 3};
 List<Integer> list = new ArrayList<Integer>(Arrays.asList(arr));
 

@@ -98,7 +98,7 @@ Java에는 크게 두 종류의 자료형이 있다.
 - 참조 타입
 
 ::: tip
-[JVM의 메모리 구조](/post/10_java/180104_jvm_memory_structure.html)에 관한 포스트를 먼저 읽고 오길 권장한다.
+[JVM의 메모리 구조](/post/01_java/180104_jvm_memory_structure.html)에 관한 포스트를 먼저 읽고 오길 권장한다.
 :::
 
 

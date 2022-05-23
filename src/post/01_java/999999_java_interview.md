@@ -99,7 +99,9 @@ Class clazz = str.getClass()
 ### 메소드 참조
 Java 8부터 추가된 기능으로 람다식이 오직 하나의 메소드만을 호출하는 경우 `메소드 참조`를 사용하여 단축할 수 있다. 메소드 참조는 `콜론 두 개(::)`를 사용한다.
 ``` java
-Lambda lambda = (something) -> System.out.println(something);
+Lambda lambda = (something) -> {
+    System.out.println(something);
+}
 ```
 ``` java
 Lambda lambda = System.out::println;
@@ -108,7 +110,9 @@ Lambda lambda = System.out::println;
 ### 생성자 참조
 Java 8부터 추가된 기능으로 생성자 호출을 `생성자 참조`를 사용하여 단축할 수 있다.
 ``` java
-Lambda lambda = (str) ->  new Person(str);
+Lambda lambda = (str) -> {
+    return new Person(str);
+}
 ```
 ``` java
 Lambda lambda = Person::new;

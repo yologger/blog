@@ -1,5 +1,5 @@
 ---
-title: "[Java 8] 함수형 인터페이스"
+title: "[Java 8] 람다식, 함수형 인터페이스"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -63,9 +63,14 @@ fun printName(name: String) {
     println(name)
 }
 ```
-Kotlin은 함수를 `일급 객체`로 취급하므로 람다식를 변수에 할당할 수 있다.
+Kotlin은 함수를 `일급 객체`로 취급하므로 변수에 할당할 수 있다.
 ``` kotlin
-var printName: (name: String) -> Unit = { name: String ->
+var myMethod: (name: String) -> Unit = ::printName
+```
+
+Kotlin은 람다식도 변수에 할당할 수 있다.
+``` kotlin
+var myMethod: (name: String) -> Unit = { name: String ->
     println(name)
 }
 ``` 
@@ -80,10 +85,16 @@ run({ name: String ->
 ``` 
 
 ### Java에서의 람다식
-Java는 Kotlin, Swift 같은 언어에 비해 비교적 오래되었다. 또한 객체지향 프로그래밍을 패러다임으로 만들어졌기 때문에 언어 자체적으로 람다식와 함수형 프로그래밍을 지원하지 않는다. 그러나 Java 8부터 함수형 프로그래밍을 지원하기 위한 Java API가 추가되었다.
+Java는 Kotlin, Swift 같은 언어에 비해 비교적 오래되었다. 또한 객체지향 프로그래밍을 패러다임으로 만들어졌기 때문에 언어 자체적으로 람다식와 함수형 프로그래밍을 지원하지 않았다. 그러나 Java 8부터 람다식과 함수형 프로그래밍을 지원하기 위한 Java API가 추가되었다.
 
-## 함수형 인터페이스의 등장
-Java는 함수 타입이 없기 때문에 람다식을 변수에 저장하거나 매개변수로 전달할 수 없다. 이를 해결하기 위해 도입된 개념이 `함수형 인터페이스(Functional Interface)`다.
+## 람다식과 함수형 인터페이스의 등장
+Java 8부터는 `람다식`을 지원한다.
+``` java
+(String name) -> {
+    System.out.println(name);
+};
+```
+그러나 Java는 함수 타입이 없기 때문에 여전히 람다식을 변수에 저장하거나 매개변수로 전달할 수 없다. 이를 해결하기 위해 도입된 개념이 `함수형 인터페이스(Functional Interface)`다.
 
 함수형 인터페이스를 구현하기 위해서는 인터페이스를 정의한다. 그리고 내부에는 <u><b>단 한 개의 추상 메소드</b></u>를 선언한 후 `@FunctionalInterface` 어노테이션을 붙여주면 된다.
 ``` java
@@ -200,7 +211,7 @@ interface Lambda {
 다음과 같이 사용할 수 있다.
 ``` java
 Lambda lambda = (int a, int b) -> {
-    return a+b;
+    return a + b;
 };
 
 int result = lambda.run(3, 7);
