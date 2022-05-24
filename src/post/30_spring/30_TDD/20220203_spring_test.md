@@ -169,6 +169,62 @@ class TestControllerTest {
 }
 ```
 
+### 특정 컴포넌트 제외시키기
+`@WebMvcTest`는 컨트롤러 계층과 관련된 컴포넌트만 컨테이너에 등록하는 슬라이싱 테스트다. `@WebMvcTest`는 스프링 시큐리티와 관련된 설정도 로드하기 때문에 별도의 시큐리티 관련 구성 클래스를 정의했다면 그 내용이 적용된다.
+``` java {5-7}
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final MemberDetailsService memberDetailsService;
+    private final JwtUtil jwtUtil;
+    private final MemberRepository memberRepository;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .httpBasic().disable()
+                .csrf().disable()
+                .cors().disable()
+                .formLogin().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .addFilterBefore(validateAccessTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .authorizeRequests(authorize -> authorize
+                        .anyRequest().permitAll()
+                );
+    }
+    // ...
+}
+```
+문제는 위 코드와 같이 시큐리티 구성 클래스가 다른 빈에 의존할 때 발생한다. `@WebMvcTest` 테스트 코드를 실행하면 `MemberDetailsService`, `JwtUtil`, `MemberRepository` 빈이 없기 때문에 다음과 같은 에러가 발생한다.
+```
+Parameter 0 of constructor in SecurityConfig required a bean of type 'MemberDetailsService' that could not be found.
+```
+따라서 다음과 같이 시큐리티 구성 클래스를 빈 등록 대상에서 제외시켜야한다. 
+``` java {3-5,15}
+@WebMvcTest(
+    controllers = TestController.class,
+    excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+    }
+)
+@DisplayName("TestController 테스트")
+class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    @DisplayName("test1() 테스트")
+    @WithMockUser
+    public void test_test1() throws Exception {
+        mvc.perform(get("/test/test1"))
+                .andExpect(content().string("test1"));
+    }
+}
+```
+이렇게 하면 스프링 시큐리티의 기본값이 적용되기 때문에 `@WithMockUser`어노테이션을 붙여 인증된 목업 유저로 테스트를 진행할 수 있다.
+
 ## H2 데이터베이스
 `H2`의 인메모리 데이터베이스를 사용하면 쉽게 데이터베이스를 테스트할 수 있다.
 

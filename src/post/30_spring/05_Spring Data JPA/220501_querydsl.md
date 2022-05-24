@@ -283,6 +283,7 @@ public class QueryDslConfiguration {
 ```
 `@PersistenceContext` 어노테이션을 추가하면 `Hibernate`의 `EntityManager`가 주입된다. 이 `EntityManager`를 인자로 받는 `JPAQueryFactory`를 빈으로 등록한다.
 
+## Query DSL과 영속성 컨텍스트
 Query DSL은 내부적으로 JPA의 EntityManager를 사용한다. 따라서 Query DSL로 조회한 엔티티도 JPA의 영속성 컨텍스트에서 관리된다. 
 
 ## 데이터 조회

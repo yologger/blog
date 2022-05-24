@@ -88,7 +88,7 @@ Not allowed to create transaction on shared EntityManager - use Spring transacti
 EntityManagerFactory entityManagerFactory;
 ```
 
-## @Transaction
+## @Transactional
 스프링 프레임워크는 서블릿 컨테이너 위에서 동작한다. 사용자가 HTTP 요청을 보낼 때마다 서블릿에 하나의 스레드를 할당한다. 이 스레드는 각 요청을 처리하게 된다. 이 말은 스프링 프레임워크가 멀티 스레드로 동작하며, 각 스레드에서 EntityManager로 메모리에 위치한 영속성 컨텍스트에 동시에 접근할 수 있기 때문에 `Thread Safe`하지 않다는 것을 의미한다.
 
 따라서 `Shared EntityManager`를 사용할 때는 스레드를 동기화하고 `Thread Safe`를 보장하기 위해 반드시 <b>`@Transactional`</b> 어노테이션을 추가해야한다.
@@ -109,7 +109,15 @@ public class MemberService {
     }
 }
 ```
-`@Transaction`은 해당 어노테이션이 붙어있는 메소드에 트랜잭션을 적용해준다.     ㅌ따라서 메소드 전체가 성공해야 트랜잭션을 커밋하며, 메소드 실행 중 예외가 발생하면 트랜잭션을 롤백한다.
+`@Transactional`은 해당 어노테이션이 붙어있는 메소드에 트랜잭션을 적용해준다. 따라서 메소드 전체가 성공해야 트랜잭션을 커밋하며, 메소드 실행 중 예외가 발생하면 트랜잭션을 롤백한다.
+
+`@Transactional`어노테이션은 메소드 뿐만 아니라 클래스에도 붙일 수 있다. 이 경우 모든 메소드에 트랜잭션이 적용된다.
+``` java
+@Transactional
+public class MemberService {
+    // ...
+}
+```
 
 참고로 Spring Data JPA를 사용하지 않는 경우 일반적으로 `Dao`클래스를 직접 정의하고 내부적으로 EntityManager를 사용하여 Data Access Layer를 구현했다.
 ``` java
@@ -165,8 +173,34 @@ public class MemberService {
 
 `@Transactional` 어노테이션은 Unchecked Exception이 발생했을 때만 롤백한다. Checked Exception이 발생해도 롤백을 하고 싶으면 `@Transactional(rollbackFor = Exception.class)`로 지정해야한다.
 
+테스트 클래스나 테스트 메소드에서 `@Transactional` 어노테이션을 추가하면 테스트가 끝난 후 자동으로 롤백된다. 
+``` java
+public class Test {
+    @Transcational
+    public void test() {
+        // ...
+    }
+}
+```
+`@Transactional`을 사용하지 않는 경우 다음과 같이 테스트 종료 후 데이터를 삭제하는 코드를 추가한다.
+``` java
+public class Test {
 
+    @Autowired MemberRepository memberRepository;
+
+    @AfterEach
+    public void tearDown() {
+        memberRepository.deleteAll();
+    }
+
+    @Transcational
+    public void test() {
+        // ...
+    }
+}
+```
 ## @Commit, @Rollback
+
 `@Commit`, `@Rollback`은 Spring Test 라이브러리에 포함된 어노테이션으로 테스트 환경에서 사용한다.
 ``` groovy
 // build.gradle

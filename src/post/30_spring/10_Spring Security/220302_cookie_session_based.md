@@ -216,11 +216,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
         .csrf().disable();
-        .authorizeRequests()
+        .authorizeRequests(authorize -> authorize
             .antMatchers("/","/join","/login").permitAll()
             .antMatchers("/member/**").authenticated() // 일반사용자 접근 가능
             .antMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN") // 매니저, 관리자 접근 가능
             .antMatchers("/admin/**").hasRole("ADMIN").and()// 관리자만 접근 가능
+            .anyRequest().authenticated()
+        )
         .formLogin()
             .loginPage("/login.mustache")  // 로그인 페이지
             .loginProcessingUrl("/login")  // 인증을 요청할 URL, POST 메소드를 사용해야한다.
