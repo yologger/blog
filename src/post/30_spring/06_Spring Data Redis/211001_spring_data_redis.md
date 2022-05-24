@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 # Spring Data Redis
-`Spring Data Redis`는 스프링 어플리케이션에서 `Redis`로의 쉬운 접근과 환경설정을 제공한다.
+`Spring Data Redis`는 스프링 프레임워크에서 `redis`에 접근할 수 있도록 추상화된 방법을 제공하는 모듈이다.
 
 ## 의존성 추가
 `Spring Data Redis`를 사용하려면 다음 의존성을 추가해야한다.
