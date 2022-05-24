@@ -38,4 +38,4 @@ Class Loader가 로드한 자바 바이트코드는 `Runtime Data Area`에 배�
 C/C++ 같이 Java 외의 언어로 작성된 코드가 배치된다.
 
 ### PC Register
-Program Counter Register. 스레드 마다 존재한다. 현재 스레드에서 실행 중인 명령어의 주소를 저장한다.
+Program Counter Register. 멀티 스레드 환경에서 각 스레드가 실행할 명령어의 주소를 저장하는 영역. 스레드 마다 존재한다.

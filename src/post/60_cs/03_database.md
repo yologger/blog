@@ -120,7 +120,7 @@ CREATE TABLE post (
 - 관계가 있는 테이블들은 `Join`으로 조회할 수 있다.
 - 대표적인 제품군에는 Oracle DB, MySQL, Maria DB가 있다.
 
-### No SQL
+### NoSQL
 - Not Only SQL 
 - 관계형 데이터베이스는 정형화된 형태로 데이터를 저장하지만 No SQL은 상대적으로 비정형화된 형태로 데이터를 자유롭게 저장할 수 있다.
 - 은행의 계좌 시스템처럼 ACID(Atomic, Consistency, Integrity, Duarabity)를 반드시 보장해야하는 분야에는 RDBMS를 적용한다.
@@ -135,7 +135,16 @@ CREATE TABLE post (
 - RDBMS와 NoSQL은 대체 관계가 아니라 상호보완관계다. 필요한 시점과 상황에 따라 적절히 사용하는게 좋다.
 
 ## Redis
-- `Key-Value` 기반의 데이터베이스
+- `Key-Value` 기반의 NoSQL 데이터베이스
+- 디스크 기반이 아니라 인메모리 방식을 사용하기 때문에 입출력 연산이 적어 속도가 매우 빠르다.
+- 인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업한다. 
+    - `RDB`: 현재 메모리 상태에 대한 스냅샷을 디스크에 저장한다.
+    - `AOF(Append Only File)`: 추가, 수정, 삭제 명령이 실행될 때 마다 파일에 기록한다.
+    - `Replication`: 다른 레디스 노드에 데이터를 복사하여 저장한다. 여러 레디스 노드 중 하나를 Master로 선정하여 사용하고, 데이터를 다른 노드에 저장한다. Master 노드에 장애가 발생하면 다른 Slave 노드를 Master로 승격하며, 특정 Slave 노드를 Master 노드로 변경할 수도 있다.
+- 세션 스토어, 데이터베이스 캐시, 공유 저장소 등에 사용된다.
+- Publish/Subscribe 모델을 지원하기 때문에 메시지 큐로도 사용할 수 있다.
+- String, List, Set, Hash 자료형을 지원한다.
+- `Spring Data Redis`는 `RedisTemplate`과 더욱 추상화된 `RedisRepository`를 지원한다.
 
 ## Mongo DB
 - `Document` 기반의 데이터베이스
