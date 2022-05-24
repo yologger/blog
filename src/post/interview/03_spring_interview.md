@@ -13,24 +13,28 @@ sidebarDepth: 0
 
 
 ## Web Server vs. WAS
-`Web Server`는 파일 시스템에 저장된 정적 컨텐츠를 제공한다. 반면 `WAS`는 비즈니스 로직을 수행한 후 동적으로 컨텐츠를 생성하여 제공한다. `WAS`는 크게 세 개 - Web Server, Web Container, EJB Container로 이루어지는데, IBM Websphere처럼 세 요소를 모두 포함하는 제품도 있고 Tomcat처럼 Web Server, Web Container 만을 포함하는 제품도 있다.
+- `Web Server`는 파일 시스템에 저장된 정적 컨텐츠를 제공한다. 반면 `WAS`는 비즈니스 로직을 수행한 후 동적으로 컨텐츠를 생성하여 제공한다.
+- IBM WebSphere 같은 `WAS`는 Web Server, Web Container, EJB Container로 이루어진다.
+- Tomcat 같은 `Web container`는 Web Server, Web Container로 이루어진다. 
 
 ## Servlet
-`Servlet` 은 HTTP  요청을 받아 적절한 비즈니스 로직을 수행한 후 응답을 반환하거나 동적으로 웹 페이지를 생성하여 반환하는 Java Web Application의 컴포넌트다.
+`Servlet`은 HTTP 요청을 받아 적절한 비즈니스 로직을 수행한 후 응답을 반환하거나 동적으로 웹 페이지를 생성하여 반환하는 Java Web Application의 컴포넌트다.
 
 ## Servlet Container
 `Servlet Container` 는 Servlet의 생명 주기를 관리한다. 
 
 ## Servlet 동작 원리
-1. HTTP 요청이 들어오면 Servlet Container는 새로운 스레드를 만들어 Servlet의 콜백 메소드를 실행한다.
+1. HTTP 요청이 들어오면 Servlet Container는 Servlet에 새로운 스레드를 할당하여 콜백 메소드를 실행한다.
 2. Servlet Container는 HTTP 메소드에 따라 `get()` , `post()`, `service()` 를 호출하는데 이때 `HttpServletRequest` 와 `HttpServletResponse` 를 인자로 전달해준다.
 3. 콜백 메소드에서 적절한 비즈니스 로직을 수행한 후 웹 페이지나 데이터를 반환한다.
 
 ## ServletConfig vs. ServletContext
-`ServletConfig` 는 서블릿 하나에 대한 설정을 가지고 있는 런타임 컨텍스트다. `ServletContext` 는 서블릿 컨테이너에 대한 정보를 가지고 있는 런타임 싱글톤 컨텍스트다. 여러 서블릿이 이 객체를 통해 통신을 하거나 데이터 공유를 할 수 있다.
+- `ServletConfig` 는 서블릿 하나에 대한 설정을 가지고 있는 런타임 컨텍스트다. 
+- `ServletContext` 는 서블릿 컨테이너에 대한 정보를 가지고 있는 런타임 싱글톤 컨텍스트다. 여러 서블릿이 이 객체를 통해 통신을 하거나 데이터 공유를 할 수 있다.
 
 ## Servlet Filter
-`Servlet Filter` 를 사용하면 서블릿이 사용자의 요청을 처리하기 전 필터링하여 특정 작업을 수행할 수 있다. 필더는 Spring Interceptor와 함께 스프링 시큐리티에서 인증 여부 등을 확인하는데 사용할 수 있다.
+- `Servlet Filter` 를 사용하면 서블릿이 사용자의 요청을 처리하기 전 필터링하여 특정 작업을 수행할 수 있다. 
+- 필터는 Spring Interceptor와 함께 스프링 시큐리티에서 인증 여부, 접근 권한 등을 확인하는데 사용할 수 있다.
 
 ## web.xml
 톰캣은 Java Web Application을 구동할 때 `web.xml`을 참고하여 서블릿 컨테이너와 서블릿 컨텍스트를 구성한다. 이 파일에는 welcome file, url mapping, servlet listener, servlet filter 등을 선언한다.
@@ -42,7 +46,7 @@ HTML에 Java 코드를 삽입하여 동적으로 웹 페이지를 생성할 수 
 둘 다 페이지 전환과 관련이 있다. `Forward` 는 페이지 전환의 주체가 서버다. 클라이언트가 A 페이지를 요청하면 서버는 B 페이지를 응답해준다. 반면 `Redirect` 는 페이지 전환의 주체가 클라이언트다. 클라이언트가 A 페이지를 요청하면 서버는 B 페이지로 이동하라고 응답하고 클라이언트가 다시 B 페이지를 요청한다.
 
 ## EJB vs. POJO
-- `EJB(Enterprise JavaBeans)` 는 대규모 엔터프라이즈 시스템을 구축하기 위한 표준
+- `EJB(Enterprise JavaBeans)` 는 대규모 엔터프라이즈 시스템을 구축하기 위한 표준이다.
 - EJB 표준을 따르는 시스템에서 컴포넌트들은 `EJB Container` 에 의해 관리되기 위해 EJB의 특정 클래스를 상속, 구현하거나 어노테이션을 붙여야하며, 이로 인해 컴포넌트들이 무거워진다는 단점이 있다.
 - `POJO(Plain Old Java Object)` 는 말 그대로 시스템을 구성하는 컴포넌트들가 특정 클래스를 상속, 구현하거나 어노테이션을 붙일 필요없이 순수한 자바 객체로 정의할 수 있음을 의미하며, 스프링 프레임워크도 이 철학을 따르고 있다. 참고로 스프링 컨테이너에서 관리하는 POJO 객체는 `빈(Bean)` 이라고도 한다.
 
@@ -57,9 +61,9 @@ Spring IoC Container에 관리하는 빈을 코드에 주입하는 것
 - Lombok
 
 ## BeanFactory, ApplicationContext
-모든 애플리케이션은 런타임에 시시각각 변하는 애플리케이션에 대한 정보를 메모리에 유지하고 있으며, 보통 이 정보의 집합을 `Context` 라고 한다. 스프링 프레임워크의 경우 IoC Container에 이 정보들을 유지하고 있는데 `BeanFactory` 는 이 정보에 접근할 수 있는 인터페이스를 제공한다. 예를 들어 `BeanFactory` 의 `getBean()` 메소드로 컨테이너에서 관리하는 빈을 주입받을 수 있다.
+모든 애플리케이션은 런타임에 시시각각 변하는 애플리케이션에 대한 정보를 메모리에 유지하고 있으며, 보통 이 정보의 집합을 `Context` 라고 한다. 스프링 프레임워크의 경우 IoC Container에 이 정보들을 유지하고 있는데 <b>`BeanFactory`</b> 는 이 정보에 접근할 수 있는 인터페이스를 제공한다. 예를 들어 `BeanFactory` 의 `getBean()` 메소드로 컨테이너에서 관리하는 빈을 주입받을 수 있다.
 
-  `ApplicationContext` 는 BeanFactory를 상속하며 Profile, Property, Environment, 다국어 처리, 어플리케이션 생명주기 같은 추가적인 기능을 제공하는 인터페이스다.
+<b>`ApplicationContext`</b> 는 BeanFactory를 상속하며 Profile, Property, Environment, 다국어 처리, 어플리케이션 생명주기 같은 추가적인 기능을 제공하는 인터페이스다.
 
 ## @ComponentScan
 - 컨테이너에 빈을 등록하는 방법은 크게 두 가지, XML 파일을 이용하거나 어노테이션을 이용하는 것이다.
@@ -84,6 +88,7 @@ Spring MVC의 핵심 컴포넌트로 사용자의 요청을 받은 후 이를 �
 - `@PointCut` 어노테이션으로 공통기능을 적용할 타겟을 지정한다.
 - `@Before` , `@After` , `@Around` 등의 어노테이션을 붙인 어드바이스 메소드에 공통기능을 정의한다.
 - `@ControllerAdvice`, `@RestControllerAdvice` 어노테이션도 AOP를 활용한 Global Exception Handler다.
+- `AOP`는 Spring Interceptor와 Controller 사이에서 동작한다.
 
 ## ORM
 - Object-Relation Mapping
@@ -113,10 +118,24 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 ### 지연 로딩
 엔티티간 연관관계가 존재하는 경우, 처음부터 연관된 엔티티들을 모두 영속성 컨텍스트에 올려두는 것은 비효율적이다. `지연 로딩(Lazy Loading)`과 `Proxy 패턴`을 사용하면 연관된 엔티티들에 실제로 접근하는 시점에 SQL을 호출할 수 있다. 
 
-### Spring Data JPA
+## Spring Data JPA
 `Hibernate`보다 더 추상화된 방법으로 데이터베이스를 관리할 수 있다.
 
-### 영속성 전이, CascadeType
+## 엔티티의 생명주기
+- 영속성 컨텍스트에서 관리되는 엔티티는 생명주기를 갖는다.
+- 엔티티를 생성했으나 영속성 컨텍스트에서 관리되지 않는 상태를 `비영속`이라고 한다.
+- 엔티티가 영속성 컨텍스트에서 관리되는 상태를 `영속`이라고 한다.
+- 영속성 컨텍스트가 더 이상 엔티티를 관리하지 않는 상태를 `준영속`이라고 한다.
+- 엔티티가 영속성 컨텍스트와 데이터베이스에서 삭제된 상태를 `삭제`라고 한다.
+
+## Flush
+- 영속성 컨텍스트에서 관리되는 엔티티를 온디스크 데이터베이스에 반영하는 것을 `Flush`라고 한다.
+- 플러시는 세 가지 경우에 발생한다.
+  - EntityManager.flush() 호출
+  - EntityManager.commit() 호출
+  - JPQL 쿼리
+
+## 영속성 전이, CascadeType
 특정 엔티티를 영속 상태로 만들 때 연관된 엔티티도 함께 영속 상태로 만드는 것을 `영속성 전이`라고 한다. 영속성 전이는 `cascade` 속성과 `CascadeType` 열거형으로 설정할 수 있다.
 
 ## 프록시(Proxy)
@@ -135,23 +154,13 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 - JPA에서 일반적인 조인은 연관된 엔티티는 함께 조회하지 않는다. 대상 엔티티를 먼저 조회한 후 패치 전략에 따라 연관된 엔티티를 즉시 로딩 또는 지연로딩하기 때문이다. 반면 `JPQL`이나 `Query DSL`의 `페치 조인(Fetch Join)`을 사용하면 연관된 엔티티들도 하나의 쿼리로 한꺼번에 조인하여 가져온다.
 - 다만 페치 조인은 페이징 API를 사용할 수 없다는 단점이 있다.
 
-## 엔티티의 생명주기
-- 영속성 컨텍스트에서 관리되는 엔티티는 생명주기를 갖는다.
-- 엔티티를 생성했으나 영속성 컨텍스트에서 관리되지 않는 상태를 `비영속`이라고 한다.
-- 엔티티가 영속성 컨텍스트에서 관리되는 상태를 `영속`이라고 한다.
-- 영속성 컨텍스트가 더 이상 엔티티를 관리하지 않는 상태를 `준영속`이라고 한다.
-- 엔티티가 영속성 컨텍스트와 데이터베이스에서 삭제된 상태를 `삭제`라고 한다.
-
-## Flush
-- 영속성 컨텍스트에서 관리되는 엔티티를 온디스크 데이터베이스에 반영하는 것을 `Flush`라고 한다.
-- 플러시는 세 가지 경우에 발생한다.
-  - EntityManager.flush() 호출
-  - EntityManager.commit() 호출
-  - JPQL 쿼리
+## JPQL
+- `JPQL(Java Persistence Query Laungage)`를 사용하면 좀 더 복잡한 조회를 하거나 조인 작업을 수행할 수 있다. 
+- JPQL은 데이터베이스 SQL과 매우 유사한 문법을 가지고 있다. 차이점이 있다면 데이터베이스의 테이블이 아닌 객체, 즉 엔티티를 대상으로 쿼리를 수행한다는 것이다.
 
 ## Query DSL
 - `Query DSL`을 사용하면 복잡한 쿼리 또는 조인을 처리할 수 있다.
-- `JPQL`은 쿼리를 문자열로 작성하기 때문에 코드 작성 시점이나 컴파일 타임에 오류를 검출할 수 없다.
+- `JPQL`은 쿼리를 <u>문자열</u>로 작성하기 때문에 코드 작성 시점이나 컴파일 타임에 오류를 검출할 수 없다.
 - `Query DSL`을 사용하면 문자열이 아닌 코드로 쿼리를 작성하여 문법적 오류를 컴파일 단계에저 검출할 수 있다.
 - 또한 쿼리 결과를 엔티티가 아닌 사용자 정의 객체로 받을 수 있다.
 
@@ -161,29 +170,27 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 - Spring이 주로 XML 파일에 빈을 정의하는 반면 Spring Boot는 어노테이션을 기반으로 빈을 관리한다.
 
 ## Spring Security
-- 인증과 접근제어를 제공하는 스프링 모듈
+- 인증과 접근 제어를 제공하는 스프링 모듈
 - 스프링 시큐리티는 기본적으로 모든 요청에 대해 접근을 차단한다.
 - 스프링 구성파일의 `HttpSecurity`를 조작하여 접근을 제어할 수 있다.
-- 스프링 시큐리티는 `SpringContextHolder` 안 `SpringContext` 안 `Authentication`에 현재 스레드와 관련된 인증 정보를 유지하고 있다.
-
+- 스프링 시큐리티는 `SpringContext`의 `Authentication`에 현재 스레드와 관련된 인증 정보를 유지하고 있다.
 
 ## Spring TDD
+`통합테스트`는 프로젝트에서 사용하는 모든 컴포넌트를 컨테이너에 등록한다. 이 때문에 속도가 느리지만 운영 환경과 가장 유사하게 테스트할 수 있다.
 
-통합테스트는 프로젝트에서 사용하는 모든 컴포넌트를 컨테이너에 등록한다. 이 때문에 속도가 느리지만 운영 환경과 가장 유사하게 테스트할 수 있다.
-
-슬라이싱 테스트는 레이어드 아키텍처에서 특정 계층과 관련된 컴포넌트만 컨테이너에 등록하여 독립적으로 테스트하는 것으로 속도가 빠르다. 다만 다른 계층으로의 의존성이 있는 경우 Mockito 같은 목업 라이브러리로 모킹해야한다. 
+`슬라이싱 테스트`는 레이어드 아키텍처에서 특정 계층과 관련된 컴포넌트만 컨테이너에 등록하여 독립적으로 테스트하는 것으로 속도가 빠르다. 다만 다른 계층으로의 의존성이 있는 경우 Mockito 같은 목업 라이브러리로 모킹해야한다. 
 
 어플리케이션이 커질 수록 통합테스트는 속도가 느려진다. 따라서 레이어드 아키텍쳐나 클린 아키텍처를 도입하여 계층을 명확하게 분리하고 모듈 간 응집도는 높히고 결합도는 낮추는 것이 가장 중요하다. 이후 슬라이싱 테스트를 도입하는 것이 좋다고 생각해요.
 
 ## Spring WebFlux
-- `Spring WebFlux`는 적은 수의 스레드를 사용하는 비동기/논블로킹 모델입니다. 이를 통해 리액티브한 웹 프레임워크를 개발할 수 있다.
+- `Spring WebFlux`는 적은 수의 스레드를 사용하는 비동기/논블로킹 모델이다. 이를 통해 리액티브한 웹 프레임워크를 개발할 수 있다.
 - 이벤트 드리븐 모델인 `Node.js`와 유사하지만 싱글 스레드는 아닙니다.
 - 데이터 소스도 논블로킹하게 처리하려면 `R2DBC` 같은 모듈이 필요하다.
-- 내장 WAS로 톰캣이 아닌 Netty를 사용한다.
+- Tomcat이 아닌 `Netty`를 사용한다.
 - Reactive Stream API 명세의 구현체인 `Reactor`의 `Mono`, `Flux`를 사용한다
-- 물론 RxJava나 코틀린의 Coroutine을 사용할 수도 있다.
-- 요청 자체는 단순하지만 요청 수가 많은 모델에 적합하다.
-- `Server Sent Event` 구현에도 웹 플럭스를 활용할 수 있다.
+- 물론 RxJava나 Kotlin의 Coroutine을 사용할 수도 있다.
+- 요청 하나에 대한 비즈니스 로직은 단순하지만 요청 수가 많은 모델에 적합하다.
+- `Server Sent Event` 구현에도 WebFlux를 활용할 수 있다.
 
 ## gRPC
 - google Remote Procedure Call

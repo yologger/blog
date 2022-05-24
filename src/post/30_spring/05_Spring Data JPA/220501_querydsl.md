@@ -259,8 +259,8 @@ public class QPostEntity extends EntityPathBase<PostEntity> {
 
 개발 과정에서 `Q 클래스`가 필요하므로 위와 같은 방법으로 생성해준다. 다만 빌드 과정에 `Q 클래스` 생성 작업이 포함되기에 굳이 `git`에 포함시킬 필요는 없다.
 
-## Query DSL 구성파일 만들기
-`Query DSL`을 위한 구성파일을 다음과 같이 작성한다.
+## Query DSL 구성 클래스 작성
+`Query DSL`을 위한 구성 클래스를 다음과 같이 작성한다.
 ``` java
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
@@ -283,6 +283,7 @@ public class QueryDslConfiguration {
 ```
 `@PersistenceContext` 어노테이션을 추가하면 `Hibernate`의 `EntityManager`가 주입된다. 이 `EntityManager`를 인자로 받는 `JPAQueryFactory`를 빈으로 등록한다.
 
+Query DSL은 내부적으로 JPA의 EntityManager를 사용한다. 따라서 Query DSL로 조회한 엔티티도 JPA의 영속성 컨텍스트에서 관리된다. 
 
 ## 데이터 조회
 빈으로 등록한 `JpaQueryFactory` 객체로 복잡한 데이터 조회 및 조인 작업이 가능하다. 간단하게 `MemberEntity`의 모든 데이터를 조회해보자.

@@ -7,7 +7,7 @@ const routes = [
   "55_db",
   "60_cs",
   "80_more",
-  "99_interview"
+  "interview"
 ];
 
 const createSidebar = () => {
