@@ -6,4 +6,4 @@ showOnSidebar: true
 ---
 
 # Introduction
-`Computer Science`에 대해 공부하고 정리합니다.
+면접에 나올 만한 질문을 정리합니다.

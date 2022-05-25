@@ -194,38 +194,6 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 - 요청 하나에 대한 비즈니스 로직은 단순하지만 요청 수가 많은 모델에 적합하다.
 - `Server Sent Event` 구현에도 WebFlux를 활용할 수 있다.
 
-## gRPC
-- google Remote Procedure Call
-- 다른 서버의 메서드를 로컬 메서드처럼 호출하는 기술
-- `프로토콜 버퍼`를 사용하는 인터페이스 프로젝트를 생성하고, `.proto` 확장자로 인터페이스 코드를 작성한 후 JAR 파일로 빌드한다.
-- 이 결과물을 클라이언트 프로젝트와 서버 프로젝트에 임포트하여 사용할 수 있다.
-- REST API는 HTTP 1.1을 사용하고 메시지 포맷으로 JSON을 사용한다.
-- gRPC는 HTTP 2를 사용하고 메시지 포맷으로 프로토콜 버퍼를 사용한다.
-- gRPC는 REST API에 비해 형식이 더욱 엄격하여 불필요한 논쟁을 줄인다.
-- gRPC의 프로토콜 버퍼는 REST API의 JSON 직렬화보다 최대 8배 빼를 수 있다고 한다.
-
-
-## Reactive Programming
-리엑티브 프로그래밍은 크게 두 방식으로 구현한다.
-- `Event Driven Programming`: 이벤트를 발생하는 `Observable`한 대상, 이를 구독하는 `Subscriber`
-- 상태 기반 프로그래밍: 상태가 변하는 대상, 이 상태가 변할 때 구독하는 곳에서 이를 탐지한다.
-- `Publish/Subscribe` 모델이라고도 한다.
-- MSA에서는 `Kafka`, `Redis` 같은 메시지 큐를 구독하는 형태로 구현한다.
-- 안드로이드 모바일에서도 `RxJava`나 `LiveData` 등의 형태로 이미 Reactive Programming 패러다임을 적용하고 있다.
-  
-## MSA
-- 모노톨릭 아키텍처에 대응되는 개념으로 작은 단위로 축소한 모듈이 서로 상호작용하여 서비스를 제공하는 모델
-- 쿠버네티스 같이 오토 스케일링, 셀프 힐링, 트래픽 분배 등의 기능을 제공하는 오케스트레이션 도구가 필요하다.
-- 또한 여러 모듈이 서로 상호작용할 수 있는 채널인 메시지 큐도 필요하다.
-
-## Domain Driven Development
-- 도메인 주도 설계(Domain Driven Development)
-- 도메인, 현업의 비즈니스를 중심으로 하는 프로그래밍
-
-## Web Socket
-- 양방향 데이터 통신을 위한 프로토콜
-- TCP Socket이 OSI 4 Layer에서 동작하는 반면 WebSocket은 OSI 7 Layer의 `HTTP` 프로토콜 위에서 동작한다.
-- 먼저 HTTP 프로토콜로 Websocket Handshaking을 하여 연결을 수립하고, 그 다음은 Websocket 프로토콜로 양방향으로 통신한다.
 
 ## Spring Batch
 - `Spring Batch`을 사용하면 배치 작업을 쉽게 수행할 수 있다.

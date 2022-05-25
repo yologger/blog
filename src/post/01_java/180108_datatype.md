@@ -24,14 +24,14 @@ String name = "Paul";
 byte age = 24;      // 1 byte
 short age = 24;     // 2 byte
 int age = 24;       // 4 byte
-long age = 24;      // 16 byte
+long age = 24L;      // 16 byte
 ```
 
 ### 실수형 숫자
 `실수형 숫자`는 다음과 같이 사용한다.
 ``` java
-float weight = 78.9f;
-double height = 180.8;
+float weight = 78.9F;
+double height = 180.8D;
 ```
 
 ### 불리언
