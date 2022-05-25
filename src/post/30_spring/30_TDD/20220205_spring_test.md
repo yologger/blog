@@ -254,11 +254,11 @@ spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 ### H2 Console
 `H2` 데이터베이스는 인메모리 데이터베이스를 위한 Web 기반 DB Client를 제공한다. 어플리케이션이 구동된 상태에서 `http://localhost:포트/h2-console`에 접속하면 다음과 같은 화면을 볼 수 있다.
 
-![](./20220203_spring_test/1.png)
+![](./20220205_spring_test/1.png)
 
 `Connect` 버튼을 누르면 `H2 Console`에 접속된다. 이 곳에서 스키마를 조작할 수 있고 SQL문을 직접 실행할 수 도 있다.
 
-![](./20220203_spring_test/2.png)
+![](./20220205_spring_test/2.png)
 
 ### 테스트 환경에 H2 활용하기
 필자는 로컬 환경에서는 `MySQL`, 단위 테스트 환경에서는 `H2`를 사용한다. 이러한 환경은 다음과 같이 구성할 수 있다.
