@@ -147,10 +147,18 @@ CREATE TABLE post (
 - `Spring Data Redis`는 `RedisTemplate`과 더욱 추상화된 `RedisRepository`를 지원한다.
 
 ## Mongo DB
-- `Document` 기반의 데이터베이스
-
-## Elastic Search
-- 검색 엔진
+- `JSON Document` 기반의 NoSQL 데이터베이스
+- 스키마가 없어서 저장되는 데이터의 구조가 자유롭다.
+- 테이블은 `Collection`, 행은 `Document`, 열은 `Field`에 대응한다.
+- `Field`에는 자바스크립트의 데이터 타입을 저장할 수 있으며, 추가적으로 `Document`를 유일하게 구분하기 위해 `ObjectId` 타입과 `_id` 필드를 사용한다.
+- `_id`필드는 데이터를 삽입할 때 별도의 값을 제공하지 않으면 자동으로 생성된다.
+- 외래키 개념이 없어서 `Embedded` 또는 `Reference` 방식으로 관계를 표현한다.
+- 조인 개념이 없어서 어플리케이션 레벨에서 처리해야한다.
+- 스키마가 자주 바뀌는 환경에서 `Mongo DB`를 사용하면 적합하다.
+- Mongo DB는 비교적 쉽게 클러스터를 구축할 수 있고 샤딩, 레플리케이션을 적용하여 고가용성을 확보할 수 있다.
 
 ## Sharding
 `샤딩(Sharding)`은 여러 데이터베이스 인스턴스에 데이터를 분산 저장하는 기술이다. 이를 통해 트래픽을 분산할 수 있다. 또한 레플리케이션을 통해 백업 및 복구가 가능해진다. 그 외에도 여러 데이터베이스 인스턴스에 라우팅을 제공하기 위해 라우팅 서버가 필요하다.
+
+## Elastic Search
+- 검색 엔진

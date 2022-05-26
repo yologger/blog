@@ -156,7 +156,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 `STOMP(Simple Text Oriented Messaging Protocol)`는 WebSocket 위에서 동작하며, 크게 두 가지 기능을 제공하는 서브 프로토콜이다. 
 
 ### 1:N 통신
-`WebSocket`은 클라이언트와 서버 간 1:1 양방향 통신을 지원한다. `STOMP`는 <u>메시지 브로커</u>와 <u>Publish/Subscribe 모델</u>을 통해 1:N 양방향 통신을 지원한다. 이를 통해 같은 채팅방의 모든 사용자에게 메시지를 보내는 기능을 구현할 수 있다.
+`WebSocket`은 클라이언트와 서버 간 1:1 양방향 통신을 지원한다. `STOMP`는 <u>메시지 브로커</u>와 <u>Publish/Subscribe 모델</u>을 통해 1:N 양방향 통신, `브로드캐스팅`을 지원한다. 이를 통해 같은 채팅방의 모든 사용자에게 메시지를 보내는 기능을 구현할 수 있다.
 
 ### 커스텀 메세지 프로토콜
 `WebSocket` 프로토콜은 문자열 또는 바이너리 타입의 메시지만을 지원한다. 이 때문에 웹 소켓 핸들러를 정의할 때도 `TextWebsocketHandler` 또는 `BinaryWebSocketHandler`를 사용했다. 
@@ -479,3 +479,8 @@ function connect() {
 
 // ...
 ```
+
+## 참고 - socket.io
+웹소켓 서버는 `node.js`로도 구현이 가능하다. 특히 자바스크립트 진영에는 웹소켓 서버 위에서 동작하는 `socket.io` 자바스크립트 라이브러리를 사용하여 웹소켓 서버를 쉽게 구현할 수 있다. `socket.io` 역시 Java 진영의 `STOMP`처럼 브로드캐스팅 기능을 지원하며 사용하기가 상당이 쉽다. 
+
+또한 클라이언트 쪽에도 `socket.io`을 위한 클라이언트 라이브러리가 잘 활성화되어있기 때문에 클라이언트 개발자는 `socket.io`를 선호한다고 들었다. 웹 환경에서는 `socket.io-client`, 안드로이드 앱에서는 `socket.io-client-java`, iOS 앱에서는 `socket.io-client-swift` 라이브러리를 사용하면 된다.

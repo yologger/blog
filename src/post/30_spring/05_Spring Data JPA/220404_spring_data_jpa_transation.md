@@ -175,6 +175,7 @@ public class MemberService {
 
 테스트 클래스나 테스트 메소드에서 `@Transactional` 어노테이션을 추가하면 테스트가 끝난 후 자동으로 롤백된다. 
 ``` java
+@SpringBootTest
 public class Test {
     @Transcational
     public void test() {
@@ -182,7 +183,8 @@ public class Test {
     }
 }
 ```
-`@Transactional`을 사용하지 않는 경우 다음과 같이 테스트 종료 후 데이터를 삭제하는 코드를 추가한다.
+
+`@Transactional`을 사용하지 않는 경우도 다음과 같이 테스트 종료 후 데이터를 삭제하는 코드를 추가한다.
 ``` java
 public class Test {
 
@@ -199,6 +201,39 @@ public class Test {
     }
 }
 ```
+`@SpringBootTest`의 `webEnvironment`속성을 `SpringBootTest.WebEnvironment.RANDOM_PORT`로 설정하면 `@Transactional` 어노테이션을 붙여도 롤백되지 않는다. 따라서 다음과 같이 롤백 코드를 직접 추가해야한다.
+``` java {27}
+@SpringBootTest(
+     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
+)
+class AuthControllerTest {
+
+    @Autowired
+    TestRestTemplate template;
+
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Nested
+    @DisplayName("회원가입 테스트")
+    class Join {
+
+        @Test
+        @DisplayName("회원가입 성공 테스트")
+        void join() {
+            JoinRequestDto request = JoinRequestDto.builder()
+                    .email("Smith@gmail.com")
+                    .name("Smith")
+                    .nickname("Smith")
+                    .password("4321Qwer32!!")
+                    .build();
+            ResponseEntity<JoinResponseDto> response = template.postForEntity("/auth/join", request, JoinResponseDto.class);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+            memberRepository.deleteById(response.getBody().getMemberId());
+        }
+    }
+```
+
 ## @Commit, @Rollback
 
 `@Commit`, `@Rollback`은 Spring Test 라이브러리에 포함된 어노테이션으로 테스트 환경에서 사용한다.

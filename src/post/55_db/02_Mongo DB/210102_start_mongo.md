@@ -85,7 +85,7 @@ local   0.000GB
 ```
 
 ### 데이터베이스 생성, 사용할 데이터베이스 선택
-`use [데이터베이스 이름]` 명령어로 사용할 데이터베이스를 선택할 수 있다. 데이터베이스가 없으면 새로 생성한다.
+`use [데이터베이스 이름]` 명령어로 사용할 데이터베이스를 선택할 수 있다. 데이터베이스가 없으면 자동으로 생성한다.
 ```
 > use my_db
 switched to db my_db
@@ -109,9 +109,8 @@ my_db
 <b>`Collection`</b>은 관계형 데이터베이스의 `Table`에 대응된다. 
 
 ### Collection 생성
-Collection은 다음과 같이 생성할 수 있다.
+`db.createCollection("컬렉션 명")`명령어로 컬렉션을 생성할 수 있다.
 ``` 
-// db.createCollection("컬렉션 명");
 > db.createCollection("member");
 ```
 
@@ -676,7 +675,6 @@ mydb    0.000GB
 
 ### 사용자 삭제
 `db.dropUser()`는 특정 사용자를 삭제하며, `db.dropAllUsers()`로 모든 사용자를 삭제할 수 있다.
-
 
 ## Mongo DB Cluster 구축
 ::: warning Notification
