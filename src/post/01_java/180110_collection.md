@@ -654,11 +654,48 @@ System.out.println(players.toString()); // {9=Benzema, 11=Bale}
 ```
 
 ### TreeMap vs. HashMap
-`HashMap`은 내부적으로 Hash Table을 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 데이터가 <u>임의의 순서로 배치된다.</u>
+`TreeMap`은 내부적으로 `Binary Search Tree`를 통해 구현되어있다. 
+``` java
+public class TreeMap<K,V> {
 
-반면 `TreeMap`은 내부적으로 Binary Search Tree를 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 Binary Search Tree를 사용하기 때문에 <u>데이터가 정렬된다.</u> 
+    static final class Entry<K,V> implements Map.Entry<K,V> {
+        K key;
+        V value;
+        Entry<K,V> left;
+        Entry<K,V> right;
+        Entry<K,V> parent;
+        // ...
+    }
 
-데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashMap`을 사용한다. 반면 정렬이 필요하면 `TreeMap`을 사용한다.
+    private transient Entry<K,V> root;
+
+    // ..
+}
+```
+
+따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 `Binary Search Tree`를 사용하기 때문에 <u>데이터가 정렬된다.</u> 
+
+반면 `HashMap`은 내부적으로 `Hash Table`을 통해 구현되어있다. 또한 충돌 해결 알고리즘으로 `Chaining(LinkedList)`를 사용한다.
+``` java
+public class HashMap<K,V> {
+
+    Node(int hash, K key, V value, Node<K,V> next) {
+        this.hash = hash;
+        this.key = key;
+        this.value = value;
+        this.next = next;
+    }
+
+    transient Node<K,V>[] table;
+
+    // ...
+}
+```
+`HashMap`은 데이터를 삽입할 때 `hashcode()`값을 해시 테이블의 인덱스 주소값으로 사용한다. 또한 충돌을 판별할 때 `equal()`을 사용한다. 따라서 충돌을 줄이고 성능을 향상시키려면 객체의 `hashcode()`와 `equal()`메소드를 잘 정의하는 것이 중요하다.
+
+`HashMap`은 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 데이터가 <u>임의의 순서로 배치된다.</u> 
+
+요약하자면 데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashMap`을 사용한다. 반면 정렬이 필요하면 `TreeMap`을 사용한다.
 
 ### HashMap vs. LinkedHashMap
 `HashMap`은 <u>데이터 삽입 순서</u>를 보장하지 않는다.

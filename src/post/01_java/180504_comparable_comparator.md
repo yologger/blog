@@ -1,5 +1,5 @@
 ---
-title: "객체 비교 - Comparable, Comparator"
+title: "객체 비교, Comparable, Comparator"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -11,8 +11,8 @@ sidebarDepth: 0
 # 객체 비교하기
 Java 에서는 데이터가 원시타입이냐 참조타입이냐에 따라 비교하는 방식이 다르다.
 
-## Primitive Type 비교하기
-Java에서 Primitive Type를 비교할 때는 `==`을 사용한다.
+## 원시 타입 비교하기
+Java에서 원시 타입을 비교할 때는 `==`을 사용한다.
 ``` java
 int a = 10;
 int b = 10;
@@ -22,8 +22,8 @@ System.out.println(a == b);     // true
 System.out.println(a == c);     // false
 ```
 
-## Reference Type 비교하기
-Reference Type을 비교할 때 `==`를 사용하면 <u>객체의 주소값</u>을 비교한다.
+## 참조 타입 비교하기
+참조 타입을 비교할 때 `==`를 사용하면 <u>객체의 주소값</u>을 비교한다.
 ``` java
 Person p1 = new Person("Paul");
 Person p2 = p1;
@@ -32,7 +32,7 @@ Person p3 = new Person("Paul");
 System.out.println(p1 == p2);   // true
 System.out.println(p1 == p3);   // false
 ```
-객체가 아닌 값을 비교할 때는 [`Object`](/ko/2018/03/03/04_java/180303_object_class/)클래스의 `equals()`메소드를 사용한다. 
+객체가 아닌 값을 비교할 때는 `Object`클래스의 `equals()`메소드를 사용한다. 
 ``` java
 Person p1 = new Person("Paul");
 Person p2 = new Person("Monica");
@@ -43,7 +43,7 @@ System.out.println(p1.equals(p2));  // false
 System.out.println(p1.equals(p3));  // true
 System.out.println(p1.equals(p4));  // true
 ```
-다만 객체에서 `equals()`를 직접 오버라이드 해야한다. 
+다만 클래스에서 `equals()`를 직접 오버라이드 해야한다. 
 ```java Person.java
 public class Person {
 

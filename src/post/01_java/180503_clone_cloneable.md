@@ -1,5 +1,5 @@
 ---
-title: "얕은 복사와 깊은 복사 - clone(), Cloneable 인터페이스"
+title: "얕은 복사와 깊은 복사, Cloneable, clone()"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
