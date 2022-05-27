@@ -21,18 +21,21 @@ dependencies {
 ```
 
 ## @WebMvcTest
-`@WebMvcTest`는 `Spring MVC`와 관련된 컴포넌트를 테스트하는데 사용된다. `Controller Layer`와 관련된 컴포넌트만 컨테이너에 등록하기 때문에 속도가 빠르다. `@WebMvcTest`가 로드하는 컴포넌트는 다음과 같다.
+<b>`@WebMvcTest`</b>는 `Spring MVC`와 관련된 컴포넌트를 테스트하는데 사용된다. 컨트롤러 계층과 관련된 컴포넌트만 컨테이너에 등록하기 때문에 속도가 빠르다. `@WebMvcTest`가 로드하는 컴포넌트는 다음과 같다.
 - `@Controller`
 - `@ControllerAdvice`
 - `@JsonComponent`
-- `@WebMvcConfigurer`
+- `Filter`
+- `Converter`, `GenericConverter`
+- `WebMvcConfigurer`
+- `HandlerMethodArgumentResolver` 
 
-다음과 같은 컴포넌트는 컨테이너에 등록되지 않는다.
+반면 다음과 같은 컴포넌트는 컨테이너에 등록되지 않는다.
 - `@Component`
 - `@Service`
 - `@Repository`
+- `@Configuration`이 붙은 구성 클래스의 `@Bean`
 
-참고로 `@WebMvcTest`는 스프링 시큐리티와 관련된 설정도 로드한다.
 
 ### 사용법
 두 개의 컨트롤러 클래스가 있다고 가정하자.
@@ -59,7 +62,7 @@ public class UserController {
 }
 ```
 
-컨트롤러는 다음과 같이 테스트할 수 있다. `MockMvc`는 테스트를 위한 Spring MVC의 진입점이다. 쉽게 말해 가상의 테스트용 엔드 포인트를 제공하며, 이 곳에 HTTP 요청을 보내는 것이다. 
+`MockMvc`는 테스트를 위한 `Spring MVC`의 진입점이다. 쉽게 말해 가상의 테스트용 엔드 포인트를 제공하며, 이 곳으로 HTTP 요청을 보내고 결과값을 테스트한다.
 ``` java
 @WebMvcTest
 class Test {
@@ -81,8 +84,39 @@ class Test {
 
 }
 ```
+HTTP POST는 다음과 같이 테스트할 수 있다.
+``` java
+@WebMvcTest
+class Test {
 
-`@WebMvcTest`의 파라미터로 컨테이너에 빈으로 등록할 클래스를 지정할 수 있다. 이 경우 지정되지 않은 컨트롤러는 빈으로 등록되지 않는다.
+    @Autowired
+    MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    void test3() throws Exception {
+        Map<String, String> body = new HashMap<>();
+        body.put("email", "Smith@gmail.com");
+        body.put("name", "Smith");
+        body.put("nickname", "Smith");
+        body.put("password", "4321Qwer32!!");
+
+        String mockAccessToken = "123Aqweaq3qw12dsx4jk2";
+
+        mvc.perform(post("/auth/join")
+            .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAccessToken)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(body)
+        ))
+        .andExpect(status().isOk())
+        .andDo(print());
+    }
+}
+```
+
+`@WebMvcTest`의 파라미터로 컨테이너에 빈으로 등록할 클래스를 지정할 수 있다. 이 경우 지정되지 않은 `Spring MVC`의 컴포넌트는 빈으로 등록되지 않는다.
 ``` java
 @WebMvcTest(PostController.class)
 class Test {
@@ -138,7 +172,7 @@ public class TestService {
     }
 }
 ```
-`@WebMvcTest`는 컨트롤러 계층의 컴포넌트만 로드하기 때문에 서비스 계층은 직접 설정해야한다. 이때는 `spring-boot-starter-test`라이브러리에 포함된 `Mockito`를 사용하여 모킹하면 된다.
+`@WebMvcTest`는 컨트롤러 계층의 컴포넌트만 로드하기 때문에 의존관계에 있는 컴포넌트는 직접 설정해야한다. 이때는 `spring-boot-starter-test`라이브러리에 포함된 `Mockito`를 사용하여 모킹하면 된다.
 ``` java{10,11,21}
 // TestControllerTest.java
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -169,7 +203,7 @@ class TestControllerTest {
 ```
 
 ### 특정 컴포넌트 제외시키기
-`@WebMvcTest`는 컨트롤러 계층과 관련된 컴포넌트만 컨테이너에 등록하는 슬라이싱 테스트다. `@WebMvcTest`는 스프링 시큐리티와 관련된 설정도 로드하기 때문에 별도의 시큐리티 관련 구성 클래스를 정의했다면 그 내용이 적용된다.
+`@WebMvcTest`는 컨트롤러 계층과 관련된 컴포넌트만 컨테이너에 등록하는 슬라이싱 테스트다. `@WebMvcTest`는 스프링 시큐리티와 관련된 설정도 로드하기 때문에 커스텀 스프링 시큐리티 구성 클래스를 정의했다면 그 내용이 적용된다.
 ``` java {5-7}
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -210,6 +244,20 @@ Parameter 0 of constructor in SecurityConfig required a bean of type 'MemberDeta
 @DisplayName("TestController 테스트")
 class TestControllerTest {
 
+    // ...
+}
+```
+이렇게 되면 기본 스프링 시큐리티 설정이 적용된다. 따라서 `@WithMockUser`어노테이션을 붙여 인증된 사용자로 엔드포인트에 접근할 수 있다.
+``` java {15}
+@WebMvcTest(
+    controllers = TestController.class,
+    excludeFilters = {
+        @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = SecurityConfig.class)
+    }
+)
+@DisplayName("TestController 테스트")
+class TestControllerTest {
+
     @Autowired
     private MockMvc mvc;
 
@@ -222,7 +270,6 @@ class TestControllerTest {
     }
 }
 ```
-이렇게 하면 스프링 시큐리티의 기본 설정값이 적용되기 때문에 `@WithMockUser`어노테이션을 붙여 인증된 목업 유저로 테스트를 진행할 수 있다.
 
 ## H2 데이터베이스
 `H2`의 인메모리 데이터베이스를 사용하면 쉽게 데이터베이스를 테스트할 수 있다.
@@ -233,15 +280,11 @@ class TestControllerTest {
 // build.gradle
 dependencies {
     // H2
-    implementation 'com.h2database:h2'
+    compileOnly 'com.h2database:h2'
 }
 ```
 그 다음 `application.properties`에 `H2` 관련 설정을 추가한다. `Spring Data JPA`와 관련된 설정은 생략한다.
 ``` properties
-## H2 설정
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-
 ## datasource 설정
 spring.datasource.url=jdbc:h2:~/test;
 spring.datasource.driverClassName=org.h2.Driver
@@ -251,7 +294,14 @@ spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 ```
 
 ### H2 Console
-`H2` 데이터베이스는 인메모리 데이터베이스를 위한 웹 기반 데이터베이스 클라이언트를 제공한다. 어플리케이션이 구동된 상태에서 `http://localhost:포트/h2-console`에 접속하면 다음과 같은 화면을 볼 수 있다.
+`H2` 데이터베이스는 인메모리 데이터베이스를 위한 웹 기반 데이터베이스 클라이언트를 제공한다. `H2 Console`을 사용하려면 `application.properties`파일에 다음 설정을 추가해야한다.
+``` properties
+## H2 설정
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+```
+
+어플리케이션이 구동된 상태에서 `http://localhost:포트/h2-console`에 접속하면 다음과 같은 화면을 볼 수 있다.
 
 ![](./20220205_spring_test/1.png)
 
@@ -259,13 +309,17 @@ spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 
 ![](./20220205_spring_test/2.png)
 
-### 테스트 환경에 H2 활용하기
-필자는 로컬 환경에서는 `MySQL`, 단위 테스트 환경에서는 `H2`를 사용한다. 이러한 환경은 다음과 같이 구성할 수 있다.
+`H2`는 인메모리 데이터베이스이기 때문에 어플리케이션이 실행된 상태에서만 `H2 Console`을 사용할 수 있다.
+
+### 테스트 환경에만 H2 활용하기
+로컬 환경에서는 `MySQL`, 단위 테스트 환경에서는 `H2`를 사용할 수 있다. 우선 의존성 설정을 다음과 같이 수정한다.
 ``` groovy
 // build.gradle
 dependencies {
-    // implementation 'com.h2database:h2'
-    testImplementation 'com.h2database:h2'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    // compileOnly 'com.h2database:h2'
+    testCompileOnly 'com.h2database:h2'
 }
 ```
 `src/main/resources`의 `application.properties`는 다음과 같이 구성하여 `MySQL`을 사용하도록 한다.
@@ -286,9 +340,9 @@ spring.datasource.password=
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 ```
 
-이제 `JUnit`을 사용하여 단위테스트를 진행할 수 있다.
+이제 테스트 환경에서는 `H2`를 사용하게 된다.
 ``` java
-@DataJpaTest
+@SpringBootTest
 class MemberRepositoryTest {
 
     @Autowired
@@ -316,7 +370,7 @@ class MemberRepositoryTest {
 ## @DataJpaTest
 `@DataJpaTest`를 사용하면 영속성 계층을 테스트할 수 있다. 이 어노테이션은 `Spring Data JPA`와 관련된 컴포넌트만 스프링 컨테이너에 등록하기 때문에 `@SpringBootTest`보다 훨씬 빠르다.
 
-이 어노테이션은 `Spring Boot Test`모듈에 포함되어있다.
+이 어노테이션도 `Spring Boot Test`모듈에 포함되어있다.
 ``` groovy
 dependencies {
     // Spring Data JPA
@@ -326,59 +380,16 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 ```
-`@DataJpaTest`는 <u>기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행</u>한다. 인메모리 데이터베이스로 `h2`를 사용하려면 다음 의존성을 추가해야한다.
+`@DataJpaTest`는 <u>기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행</u>한다. 따라서 인메모리 데이터베이스 의존성을 추가해야하며, 인메모리 데이터베이스로는 주로 `h2`가 사용된다.
 ``` groovy
 dependencies {
     // H2
     testRuntimeOnly 'com.h2database:h2'
 }
 ```
+`application.properties` 또는 `application.yml`에 `H2`와 관련된 별도의 설정을 하지 않으면 자동으로 기본 설정이 적용된다. 
 
-필자는 로컬 개발 환경에서는 `MySQL`, 단위 테스트 환경에서는 `h2`를 사용한다.
-``` groovy
-dependencies {
-    // MySQL Connector
-    runtimeOnly 'mysql:mysql-connector-java'
-    // H2
-    testRuntimeOnly 'com.h2database:h2'
-}
-```
-```yml
-# src/main/resources/application.yml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/test_db
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-```
-```yml
-# src/test/resources/application.yml
-spring:
-  datasource:
-    url: jdbc:h2:~/test;
-    username: sa
-    password:
-  jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-```
-
-이제 예제를 통해 테스트를 진행해보자.
+이제 예제를 통해 테스트를 진행해보자. 영속성 계층 클래스는 다음과 같다.
 ``` java
 // UserEntity.java
 @Entity
@@ -413,7 +424,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 }
 ```
 
-`@DataJpaTest`는 다음과 같이 사용한다.
+`@DataJpaTest`는 다음과 같이 사용할 수 있다.
 ``` java
 // UserRepositoryTest.java
 @DataJpaTest
@@ -458,24 +469,29 @@ class UserRepositoryTest {
 }
 ```
 
-### `@DataJpaTest`에서 온디스크 데이터베이스 사용하기
-`@DataJpaTest`는 <u>기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행</u>한다. 온디스크 데이터베이스를 사용하려면 별도의 설정이 필요하다. `MySQL`을 사용하기 위해 `src/test/resources/application.yml`를 다음과 같이 수정한다.
+### @DataJpaTest에서 온디스크 데이터베이스 사용하기
+`@DataJpaTest`는 <u>기본적으로 인메모리 데이터베이스를 사용하여 테스트를 진행</u>한다. 온디스크 데이터베이스를 사용하려면 `@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)` 어노테이션을 테스트 클래스에 추가하면된다.
+``` java{3}
+// UserRepositoryTest.java
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+class UserRepositoryTest {
+    // ..
+}
+```
+물론 온디스크 데이터베이스를 사용하는 경우 이에 대한 설정이 되어있어야 한다.
+``` groovy {6-7}
+// build.gradle
+dependencies {
+    // H2
+    testRuntimeOnly 'com.h2database:h2'
 
-```yml
-# spring:
-#   datasource:
-#     url: jdbc:h2:~/test;
-#     username: sa
-#     password:
-#   jpa:
-#     database-platform: org.hibernate.dialect.H2Dialect
-#     hibernate:
-#       ddl-auto: update
-#     generate-ddl: true
-#     properties:
-#       hibernate:
-#         show_sql: true
-#         format_sql: true
+    // MySQL Connector
+    runtimeOnly 'mysql:mysql-connector-java'
+}
+```
+``` properties
+# src/main/resources/application.properties
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/test_db
@@ -492,20 +508,11 @@ spring:
         format_sql: true
 ```
 
-그리고 테스트 클래스에 `@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)` 어노테이션을 추가한다. 이 어노테이션은 인메모리 데이터베이스 대신 온디스크 데이터베이스를 사용하도록 한다.
+### @Commit, @Rollback
+`@DataJpaTest`는 온디스크 데이터베이스를 사용하는 경우 기본적으로 테스트 종료 후 데이터베이스를 롤백한다. 롤백을 하지 않으려면 `@Commit` 또는 `@Rollback(false)` 어노테이션을 붙이면 된다.
 ``` java
-// UserRepositoryTest.java
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class UserRepositoryTest {
-    // ..
-}
-```
-
-### @Commit, @Rollback
-`@DataJpaTest`는 기본적으로 테스트 종료 후 데이터베이스를 롤백한다. 롤백을 하지 않으려면 `@Commit` 또는 `@Rollback(false)` 어노테이션을 붙이면 된다.
-``` java
-@DataJpaTest
 @Commit
 class UserRepositoryTest {
     // ...
@@ -517,43 +524,296 @@ class UserRepositoryTest {
 
 ``` java
 @SpringBootTest
-public class Test {
+class MemberController {
+    // ..
+}
+```
+`classes` 속성을 사용하면 특정 클래스만 빈으로 등록하여 사용할 수 있다.
+``` java {2-5}
+@SpringBootTest(
+    classes = {
+        MemberController.class,
+        MemberService.class
+    }
+)
+class MemberController {
+
     // ..
 }
 ```
 
-`@SpringBootTest`는 크게 두 가지 방법으로 사용할 수 있다.
-
-### WebEnvironment.MOCK 
-`@SpringBootTest`의 `webEnviroment` 속성을 `SpringBootTest.WebEnvironment.MOCK`로 설정하면 실제 내장 톰캣을 구동하지 않고 Mock 컨테이너를 사용한다.
-``` java{1}
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-public class Test {
-    // ...
+### @SpringBootTest와 서비스 계층 테스트
+`@SpringBootTest`는 서비츠 계층 테스트에 사용할 수 있다. 우선 간단한 예제를 살펴보자. 
+``` properties
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/test_db
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+```
+``` java
+public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 }
 ```
-따라서 `@AutoConfigureMockMvc`를 추가하고 `MockMvc`로 테스트를 진행한다.
-``` java {2,5-6}
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@AutoConfigureMockMvc
-public class Test {
-    
+``` java
+@Service
+@RequiredArgsConstructor
+public class MemberService {
+    private final MemberRepository memberRepository;
+
+    @Transactional
+    public ResponseEntity<Long> join(JoinRequest request) {
+        MemberEntity member = MemberEntity.builder()
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .build();
+
+        MemberEntity saved = memberRepository.save(member);
+        return new ResponseEntity(saved.getId(), HttpStatus.CREATED);
+    }
+}
+```
+테스트 코드는 다음과 같이 작성하면 된다.
+``` java
+@SpringBootTest
+class MemberServiceTest {
+
     @Autowired
-    MockMvc mockMvc;
-    
+    private MemberService memberService;
+
     @Test
-    void test() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/test/test"))
-                .andExpect(status().isOk());
+    public void test() {
+        JoinRequest request = JoinRequest.builder()
+                .email("paul@gmail.com")
+                .password("1234")
+                .build();
+        ResponseEntity<Long> response = memberService.join(request);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isNotZero();
+    }
+}
+```
+위 코드를 실행하면 테스트용 데이터가 데이터베이스에 추가된다. `@Transactional` 어노테이션을 테스트 메소드에 추가하면 테스트 성공 후 자동으로 롤백을 한다.
+``` java {8}
+@SpringBootTest
+class MemberServiceTest {
+
+    @Autowired
+    private MemberService memberService;
+
+    @Test
+    @Transactional
+    public void test() {
+        JoinRequest request = JoinRequest.builder()
+                .email("paul@gmail.com")
+                .password("1234")
+                .build();
+        ResponseEntity<Long> response = memberService.join(request);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        assertThat(response.getBody()).isNotZero();
+    }
+}
+```
+`@Transactional`은 클래스 레벨에도 붙일 수 있다. 이 경우 테스트 클래스의 모든 메소드에 적용된다.
+``` java {2}
+@SpringBootTest
+@Transactional
+class MemberServiceTest {
+    // ..
+}
+```
+
+### @SpringBootTest와 컨트롤러 계층 테스트
+`@SpringBootTest`어노테이션은 컨트롤러 계층을 테스트하는데 사용할 수 있다. `@SpringBootTest`를 사용하여 다음 컨트롤러를 테스트해보자.
+``` java
+@RestController
+@RequestMapping("/member")
+@RequiredArgsConstructor
+public class MemberController {
+
+    private final MemberService memberService;
+
+    @PostMapping("/join")
+    public ResponseEntity<Long> join(@RequestBody JoinRequest request) {
+        return memberService.join(request);
     }
 }
 ```
 
-### WebEnvironment.RANDOM_PORT
-`SpringBootTest.WebEnvironment.RANDOM_PORT`로 설정하면 랜덤한 포트를 사용하여 실제 톰캣을 구동시킨 후 모든 컴포넌트를 컨테이너에 등록한다. 이 경우 `TestRestTemplate`으로 테스트를 진행할 수 있다.
+#### WebEnvironment.MOCK (기본값)
+`@SpringBootTest`의 `webEnviroment` 속성을 `SpringBootTest.WebEnvironment.MOCK`로 설정하면 실제 내장 톰캣을 구동하지 않고 <u>MOCK 컨테이너를 사용</u>하며, 이 곳에 빈이 등록된다.
+``` java{1}
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+public class MemberControllerTest {
+    // ...
+}
+```
+`SpringBootTest.WebEnvironment.MOCK`을 사용하는 경우 테스트 클래스에 `@AutoConfigureMockMvc`를 추가하고 `MockMvc`를 주입받아 컨트롤러를 테스트할 수 있다.
+``` java {2,5-6}
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+class MemberControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    void test() throws Exception {
+
+        Map<String, String> body = new HashMap<>();
+        body.put("email", "smith@gmail.com");
+        body.put("password", "1234");
+
+        mvc.perform(post("/member/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isCreated())
+                .andDo(print());
+    }
+}
+```
+위 코드는 테스트 데이터를 데이터베이스에 커밋한다. 테스트 후 롤백을 하려면 `@Transactional` 어노테이션을 추가하면 된다.
+``` java {8}
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+class MemberControllerTest {
+
+    // ...
+
+    @Test
+    @Transactional    
+    void test() throws Exception {
+        // ..
+    }
+}
+```
+특정 컴포넌트를 다음과 같이 Mocking 할 수도 있다. `MemberRepository`를 Mocking 해보자.
+``` java {8-9,22}
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+class MemberControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @MockBean
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    @Transactional
+    void test() throws Exception {
+        MemberEntity dummyResult = MemberEntity.builder()
+                .email("smith@gmail.com")
+                .password("1234")
+                .build();
+
+        when(memberRepository.save(any())).thenReturn(dummyResult);
+
+        Map<String, String> body = new HashMap<>();
+        body.put("email", "smith@gmail.com");
+        body.put("password", "1234");
+
+        mvc.perform(post("/member/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isCreated())
+                .andDo(print());
+    }
+}
+```
+이번에는 `MemberService`를 Mocking 해보자.
+``` java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+class MemberControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @MockBean
+    private MemberService memberService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    @Transactional
+    void test() throws Exception {
+
+        ResponseEntity<Long> dummyResponse = new ResponseEntity(1L, HttpStatus.CREATED);
+
+        when(memberService.join(any())).thenReturn(dummyResponse);
+
+        Map<String, String> body = new HashMap<>();
+        body.put("email", "smith@gmail.com");
+        body.put("password", "1234");
+
+        mvc.perform(post("/member/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isCreated())
+                .andDo(print());
+    }
+}
+```
+위 예제처럼 컨트롤러와 바로 인접한 `MemberService`를 Mocking 하는 경우 `@SpringBootTest` 대신에 슬라이싱 테스트인 `@WebMvcTest`를 사용하는 것이 더 빠르다.
+``` java
+@WebMvcTest
+@AutoConfigureMockMvc
+class MemberControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @MockBean
+    private MemberService memberService;
+
+    @MockBean
+    private MemberRepository memberRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    void test() throws Exception {
+
+        ResponseEntity<Long> dummyResponse = new ResponseEntity(1L, HttpStatus.CREATED);
+
+        when(memberService.join(any())).thenReturn(dummyResponse);
+
+        Map<String, String> body = new HashMap<>();
+        body.put("email", "smith@gmail.com");
+        body.put("password", "1234");
+
+        mvc.perform(post("/member/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(body)))
+                .andExpect(status().isCreated())
+                .andDo(print());
+    }
+}
+```
+
+#### WebEnvironment.RANDOM_PORT
+`SpringBootTest.WebEnvironment.RANDOM_PORT`로 설정하면 <u>랜덤한 포트를 사용하여 실제 톰캣을 구동</u>시킨 후 모든 컴포넌트를 컨테이너에 등록한다. 이 경우 `TestRestTemplate`으로 컨트롤러를 테스트할 수 있다.
 ``` java {1}
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class Test {
+class MemberControllerTest {
 
     @Autowired
     TestRestTemplate template;
@@ -563,8 +823,14 @@ public class Test {
 
     @Test
     void test() {
-        String body = template.getForObject("/test/test", String.class);
-        assertThat(body).isEqualTo("post");
+        JoinRequest request = JoinRequest.builder()
+                .email("ronaldo@gmail.com")
+                .password("1234")
+                .build();
+
+        ResponseEntity<Long> response = template.postForEntity("/member/join", request, Long.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 }
 ```
@@ -589,26 +855,14 @@ public class TestControllerTest {
 }
 ```
 
-### 특정 클래스만 빈으로 등록하기
-`classes` 속성을 사용하면 특정 클래스만 빈으로 등록하여 사용할 수 있다.
-``` java {3-6}
-@SpringBootTest(
-    webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-    classes = {
-        TestController.class,
-        TestService.class
-    }
-)
-public class Test {
-
-    // ..
-}
-```
+`WebEnvironment.RANDOM_PORT`으로 설정할 경우 실제 톰캣을 사용하기 때문에 `@Transactional` 어노테이션을 추가해도 롤백이 되지 않는다. 따라서 다음 방법들을 사용한다.
+- 테스트 코드에 데이터를 롤백하는 코드를 직접 추가한다.
+- `H2` 인메모리 데이터베이스를 사용한다.
 
 ## 어떤 테스트를 사용해야할까?
 일반적으로 스프링 애플리케이션은 응집도을 높이고 결합도을 낮추기 위해 `Controller Layer`, `Service Layer`, `Data Layer`로 폴더나 모듈을 나눈다. 
 
-계층을 분리하면 해당 계층만을 독립적으로 테스트할 수 있으며, 이를 `슬라이스 테스트(Slice Test)`라고 한다.
+계층을 분리하면 해당 계층만을 독립적으로 테스트할 수 있으며, 이를 `슬라이스 테스트(Slice Test)`라고 한다. 스프링 프레임워크가 제공하는 슬라이스 테스트는 [이 곳](https://docs.spring.io/spring-boot/docs/current/reference/html/test-auto-configuration.html#appendix.test-auto-configuration)에서 확인할 수 있다.
 - `@WebMvcTest`
 - `@DataJpaTest`
 
