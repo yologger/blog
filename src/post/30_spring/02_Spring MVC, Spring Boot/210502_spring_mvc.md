@@ -467,8 +467,8 @@ public ResponseEntity<JoinResponse> join(@RequestBody JoinRequest request) {
 `@RequestBody`을 사용하는 데이터 클래스는 JSON 값을 역직렬화한 후 리플렉션을 통해 멤버변수 값을 설정한다. 따라서 기본 생성자가 반드시 정의되어야한다.
 ``` java {5-7}
 public class JoinRequest {
-    private String email;
-    private String password; 
+    @JsonProperty("email") private String email;
+    @JsonProperty("password") private String password; 
 
     public JoinRequest() {
 

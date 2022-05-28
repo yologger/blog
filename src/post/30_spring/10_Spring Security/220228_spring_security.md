@@ -654,3 +654,21 @@ public class TestController {
 SPEL 표현식과 관련된 자세한 내용은 [이 곳](https://docs.spring.io/spring-security/reference/servlet/authorization/expression-based.html#el-common-built-in)에서 확인할 수 있다.
 ### @PostAuthorized
 `@PostAuthorized`는 이 어노테이션이 붙은 메소드가 실행된 후에 인증을 시도한다.
+
+## @AuthenticationPrincipal
+인증된 사용자에 대한 정보는 `@AuthenticationPrincipal` 어노테이션과 `User` 객체로 바인딩할 수 있다.
+``` java
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @GetMapping("/test1")
+    public String test1(@AuthenticationPrincipal User user) {
+        return "test1";
+    }
+}
+```
