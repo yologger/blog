@@ -283,14 +283,37 @@ dependencies {
     compileOnly 'com.h2database:h2'
 }
 ```
-그 다음 `application.properties`에 `H2` 관련 설정을 추가한다. `Spring Data JPA`와 관련된 설정은 생략한다.
-``` properties
-## datasource 설정
-spring.datasource.url=jdbc:h2:~/test;
+그 다음 `application.properties`에 `H2` 관련 설정을 추가한다. 
+``` properties {1-5}
+# Datasource 설정
+spring.datasource.url=jdbc:h2:mem:testdb
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# Jpa 설정
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.generate-ddl=true
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
+```
+``` yml {3-8}
+spring:
+  # Datasource 설정
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  # JPA 설정    
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    generate-ddl: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true        
 ```
 
 ### H2 Console
@@ -324,20 +347,32 @@ dependencies {
 ```
 `src/main/resources`의 `application.properties`는 다음과 같이 구성하여 `MySQL`을 사용하도록 한다.
 ``` properties
-## src/main/resources/application.properties
+# src/main/resources/application.properties
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.datasource.url=jdbc:mysql://localhost:3306/mydb
 spring.datasource.username=root
 spring.datasource.password=root
+
+# Jpa 설정
+spring.jpa.hibernate.ddl-auto=none
+## spring.jpa.hibernate.ddl-auto=update
+spring.jpa.generate-ddl=true
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
 ```
 `src/test/resources`의 `application.properties`는 다음과 같이 구성하여 `H2`을 사용하도록 한다.
 ``` properties
 ## src/test/resources/application.properties
-spring.datasource.url=jdbc:h2:~/test;
+spring.datasource.url=jdbc:h2:mem:testdb
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
 spring.datasource.password=
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+
+# Jpa 설정
+spring.jpa.hibernate.ddl-auto=create-drop
+spring.jpa.generate-ddl=true
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
 ```
 
 이제 테스트 환경에서는 `H2`를 사용하게 된다.
@@ -492,20 +527,17 @@ dependencies {
 ```
 ``` properties
 # src/main/resources/application.properties
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/test_db
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=root
+
+# Jpa 설정
+spring.jpa.hibernate.ddl-auto=none
+## spring.jpa.hibernate.ddl-auto=update
+spring.jpa.generate-ddl=true
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
 ```
 
 ### @Commit, @Rollback
@@ -567,27 +599,26 @@ class MemberController {
 ```
 
 ### @SpringBootTest와 서비스 계층 테스트
-`@SpringBootTest`는 서비츠 계층 테스트에 사용할 수 있다. 우선 간단한 예제를 살펴보자. 
+`@SpringBootTest`는 서비츠 계층 테스트에 사용할 수 있다. 우선 간단한 예제를 살펴보자. 데이터소스는 `MySQL`을 사용한다.
 ``` properties
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/test_db
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  jpa:
-    hibernate:
-      ddl-auto: update
-    generate-ddl: true
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
+# Datasource 설정
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/test_db
+spring.datasource.username=root
+spring.datasource.password=root
+
+# Jpa 설정
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.generate-ddl=true
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
 ```
+영속성 계층은 다음과 같다.
 ``` java
 public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 }
 ```
+서비스 계층은 다음과 같다.
 ``` java
 @Service
 @RequiredArgsConstructor
@@ -626,7 +657,7 @@ class MemberServiceTest {
     }
 }
 ```
-위 코드를 실행하면 테스트용 데이터가 데이터베이스에 추가된다. `@Transactional` 어노테이션을 테스트 메소드에 추가하면 테스트 성공 후 자동으로 롤백을 한다.
+위 코드를 실행하면 테스트용 데이터가 데이터베이스에 추가된다. `@Transactional` 어노테이션을 테스트 메소드에 추가하면 테스트 성공 후 자동으로 롤백할 수 있다.
 ``` java {8}
 @SpringBootTest
 class MemberServiceTest {

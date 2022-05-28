@@ -16,7 +16,11 @@ sidebarDepth: 0
 - `application.properties` 또는 `application.yml` 파일
 
 ### @PropertySource, @PropertySources
-`@PropertySource`를 사용하여 외부 설정파일에 정의된 `Key-Value` 값을 프로퍼티로 읽어올 수 있다.
+`@PropertySource`를 사용하면 `.properties`확장자의 외부 설정파일에 정의된 `Key-Value` 값을 프로퍼티로 읽어올 수 있다. 
+
+::: warning
+기본적으로 `.properties` 확장자만 읽을 수 있으며, `.yml`확장자를 사용하려면 별도의 설정이 필요하다.
+:::
 
 예제를 살펴보자. `src/main/resources`에 `database.properties` 파일을 다음과 같이 정의하자.
 ``` properties
@@ -398,9 +402,9 @@ $ java -Dspring.profiles.active=prod -jar [app_name].jar
 
 IntelliJ에서는 어플리케이션의 `Edit Configurations`로 이동한 후 `spring.config.activate.on-profile`에다가 활성화시킬 프로파일을 지정하면 된다. 
 
-![](./220323_properties_priority/1.png)
+![](./220323_external_configuration/1.png)
 
-![](./220323_properties_priority/2.png)
+![](./220323_external_configuration/2.png)
 
 이제 활성화된 프로파일에 따라 다른 설정값을 사용하는 다양한 방법에 대해 알아보자.
 

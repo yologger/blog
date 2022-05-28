@@ -284,9 +284,11 @@ public class MemberEntity extends BaseEntity {
 ```
 이제 엔티티를 추가하면 `@CreatedDate` 어노테이션이 추가된 컬럼에 생성일자가 추가된다. 그리고 `@LastModifiedDate` 어노테이션이 추가된 컬럼에 마지막 변경일자가 추가된다.
 
+## 데이터베이스 초기화 스크립트
+스프링부트 애플리케이션이 시작될 때 데이터베이스 초기화 스크립트를 실행할 수 있다.
 
-## 스프링부트 앱 구동 시 DML 실행하기 - data.sql
-스프링부트 앱을 구동할 때 특정 DML을 실행시킬 수 있다. `src/main/resources`경로 아래에 `data.sql`을 정의하면 된다.
+### data.sql
+스프링부트 앱을 구동할 때 DML을 실행시킬 수 있다. `src/main/resources`경로 아래에 `data.sql`을 정의하면 된다.
 ``` sql
 -- data.sql
 INSERT INTO member(email, password) VALUES('paul@gmail.com', '1234'), ('smith@gmail.com', '1234'), ('monica@gmail.com', '1234');
@@ -304,8 +306,8 @@ spring:
 - `embedded(default)`: H2를 사용할 때만 SQL 스크립트가 실행된다.
 - `always`: 항상 SQL 스크립트가 실행된다.
 
-## 스프링부트 앱 구동 시 DDL 실행하기 - schema.sql
-스프링부트 앱을 구동할 때 특정 DDL을 실행시킬 수 있다. `src/main/resources`경로 아래에 `schema.sql`을 정의하면 된다.
+### schema.sql
+스프링부트 앱을 구동할 때 DDL을 실행시킬 수 있다. `src/main/resources`경로 아래에 `schema.sql`을 정의하면 된다.
 ``` sql
 -- schema.sql
 CREATE TABLE country (
