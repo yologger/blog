@@ -30,8 +30,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 
 이러한 문제를 해결하기 위해 <b>`Query DSL(Domain Specific Language)`</b>가 등장했다. <b>`Query DSL`</b>은 다음과 같은 장점이 있다.
 - 문자열이 아닌 코드로 작성한다.
-- 문법적 오류를 컴파일 단계에서 탐지할 수 있다.
-- 동적 쿼리
+- 문법적 오류를 컴파일 단계에서 탐지할 수 있으므로 `타입 안정성`이 있다.
 - 쿼리 결과를 엔티티가 아닌 사용자 정의 객체로 받을 수 있다.
 
 이제 `Query DSL`에 대해 알아보자.

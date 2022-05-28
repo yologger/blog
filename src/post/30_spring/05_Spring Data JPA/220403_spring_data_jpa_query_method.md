@@ -52,7 +52,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     List<MemberEntity> findByEmailAndName(String email, String name);
 }
 ```
-Spring Data JPA는 이 쿼리 메소드를 JPQL 쿼리로 변환하여 실행한다.
+쿼리 메소드는 내부적으로 `JPQL` 쿼리로 변환된 후 실행된다.
 ```
 select m from Member m where m.email = ?1 and m.name = ?2
 ```

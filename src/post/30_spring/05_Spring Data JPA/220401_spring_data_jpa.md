@@ -283,3 +283,55 @@ public class MemberEntity extends BaseEntity {
 }    
 ```
 이제 엔티티를 추가하면 `@CreatedDate` 어노테이션이 추가된 컬럼에 생성일자가 추가된다. 그리고 `@LastModifiedDate` 어노테이션이 추가된 컬럼에 마지막 변경일자가 추가된다.
+
+
+## 스프링부트 앱 구동 시 DML 실행하기 - data.sql
+스프링부트 앱을 구동할 때 특정 DML을 실행시킬 수 있다. `src/main/resources`경로 아래에 `data.sql`을 정의하면 된다.
+``` sql
+-- data.sql
+INSERT INTO member(email, password) VALUES('paul@gmail.com', '1234'), ('smith@gmail.com', '1234'), ('monica@gmail.com', '1234');
+```
+그리고 `spring.sql.init.mode`을 다음과 같이 설정한다.
+``` yml
+# application.yml
+spring:
+  sql:
+    init:
+      mode: always
+```
+가능한 설정값은 다음과 같다.
+- `none`: SQL 스크립트를 실행하지 않는다.
+- `embedded(default)`: H2를 사용할 때만 SQL 스크립트가 실행된다.
+- `always`: 항상 SQL 스크립트가 실행된다.
+
+## 스프링부트 앱 구동 시 DDL 실행하기 - schema.sql
+스프링부트 앱을 구동할 때 특정 DDL을 실행시킬 수 있다. `src/main/resources`경로 아래에 `schema.sql`을 정의하면 된다.
+``` sql
+-- schema.sql
+CREATE TABLE country (
+     id   INTEGER      NOT NULL AUTO_INCREMENT,
+     name VARCHAR(128) NOT NULL,
+     PRIMARY KEY (id)
+);
+```
+그리고 `spring.sql.init.mode`와 `spring.sql.init.schema-locations`를 다음과 같이 설정한다.
+``` yml
+# application.yml
+spring:
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+```
+충돌을 피하기 위해 JPA가 스키마를 자동으로 생성하는 기능을 반드시 비활성화한다.
+``` yml {3-5}
+# application.yml
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+```

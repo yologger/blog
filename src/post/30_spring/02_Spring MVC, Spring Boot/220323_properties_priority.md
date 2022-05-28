@@ -15,7 +15,7 @@ sidebarDepth: 0
 - `@PropertySource`
 - `application.properties` 또는 `application.yml` 파일
 
-### @PropertySource
+### @PropertySource, @PropertySources
 `@PropertySource`를 사용하여 외부 설정파일에 정의된 `Key-Value` 값을 프로퍼티로 읽어올 수 있다.
 
 예제를 살펴보자. `src/main/resources`에 `database.properties` 파일을 다음과 같이 정의하자.
@@ -80,7 +80,34 @@ public class DatabaseConfig {
 }
 ```
 
-### @TestPropertySource
+`@PropertySources`을 사용하면 여러 외부 설정파일을 읽어올 수 있다.
+``` properties
+# a.properties
+a.key1=aValue1
+```
+``` properties
+# b.properties
+b.key1=bValue1
+```
+``` java
+@PropertySources({
+    @PropertySource("classpath:a.properties"),
+    @PropertySource("classpath:b.properties")
+})
+public class TestConfig {
+    
+    @Value("${a.key1}")
+    private String aKey1;
+
+    @Value("${b.key1}")
+    private String bKey1;
+
+    // ..
+}
+```
+
+
+### @TestPropertySource, @TestPropertySources
 테스트 환경에서는 `@TestPropertySource`을 사용하여 외부 설정파일을 읽어올 수 있다. `src/test/resources`에 `test.properties` 파일을 생성한다.
 ``` properties
 test.key1=value1
@@ -124,6 +151,35 @@ public class TestControllerTest {
     public void test() throws Exception {
         assertThat(personName).isEqualTo("paul");
         assertThat(personNation).isEqualTo("usa");
+    }
+}
+```
+`@TestPropertySources`로 여러 프로퍼티 파일을 적용할 수도 있다.
+``` properties
+# a.properties
+a.key1=aValue1
+```
+``` properties
+# b.properties
+b.key1=bValue1
+```
+``` java
+@SpringBootTest
+@TestPropertySources({
+        @TestPropertySource("classpath:a.properties"),
+        @TestPropertySource("classpath:b.properties")
+})
+class ApplicationTests {
+    @Value("${a.key1}")
+    String aKey1;
+
+    @Value("${b.key1}")
+    String bKey1;
+
+    @Test
+    void test() {
+        assertThat(aKey1).isEqualTo("aValue1");
+        assertThat(bKey1).isEqualTo("bValue1");
     }
 }
 ```

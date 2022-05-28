@@ -518,6 +518,30 @@ class UserRepositoryTest {
     // ...
 }
 ```
+### @SQL
+`@SQL`을 사용하면 테스트를 실행하기 전 특정 쿼리를 수행할 수 있다. 보통 테스트 전에 미리 더미 데이터를 삽입하거나 스키마를 생성하는데 사용된다.
+
+우선 `src/test/resources/data` 경로에 `dummy.sql` 파일을 다음과 같이 생성하자.
+``` sql
+-- dummy.sql
+INSERT INTO member(email, password) VALUES('paul@gmail.com', '1234'), ('smith@gmail.com', '1234'), ('monica@gmail.com', '1234');
+```
+그리고 다음과 같이 테스트를 진행하기 전 쿼리를 실행시킬 수 있다.
+``` java {4}
+import org.springframework.test.context.jdbc.Sql;
+
+@DataJpaTest
+@Sql(scripts = {"classpath:data/dummy.sql"})
+class MemberRepositoryTest {
+    @Autowired MemberRepository memberRepository;
+
+    @Test
+    public void test() {
+        List<MemberEntity> members = memberRepository.findAll();
+        assertThat(members.size()).isEqualTo(3);
+    }
+}
+```
 
 ## @SpringBootTest
 `@SpringBootTest`는 통합 테스트에 사용되는 어노테이션이다. 모든 컴포넌트를 컨테이너에 등록하기 때문에 속도가 느리지만 운영 환경과 가장 유사하게 테스트할 수 있다.

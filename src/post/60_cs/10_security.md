@@ -190,11 +190,11 @@ sidebarDepth: 0
 
 ## JWT
 - Json Web Token
-- 인증에 필요한 정보를 암호화시킨 토큰
+- JSON 객체를 사용해서 토큰 자체에 정보를 저장하고 있는 토큰
 - 사용자 정보로 생성한 토큰이 올바른지 검증할 수 있고, 만료시간도 설정할 수 있다.
 - 토큰 기반 인증 방식에 활용된다.
 
-## SQL Injection
+## SQL Injection 
 - 로그인 폼 같은 입력 위젯에 DELETE, DROP, UPDATE 같은 SQL을 삽입하여 서버에 전송하는 것
 - 1차적으로 Spring Validation으로 입력값을 검증하고,
 - 2차적으로 Native SQL 대신 Spring Data JPA나 Query DSL을 사용한다.
