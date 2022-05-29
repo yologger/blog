@@ -86,7 +86,7 @@ public class MemberEntity {
 ```
 
 ## 기본키
-### 단일 기본키
+### 단일 기본키와 @id
 `@id`를 사용하면 단일 컬럼의 기본키를 지정할 수 있다.
 ``` java{5}
 @Entity

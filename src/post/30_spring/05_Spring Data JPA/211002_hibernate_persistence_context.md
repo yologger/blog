@@ -8,31 +8,28 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-## EntityManager
-`엔티티 매니저(Entity Manager)`는 엔티티를 저장, 수정, 삭제, 조회하는 역할을 담당한다. 엔티티 매니저는 `엔티티 매니저 팩토리(Entity Manager Factory)`를 통해 생성할 수 있다.
-``` java
-// EntityMangerFactory 생성
-EntityManagerFactory entityManagerfactory = Persistence.createEntityManagerFactory("test_persistence");
-
-// EntityManager 생성
-EntityManager entityManager = entityManagerfactory.createEntityManager();
-```
-
-## Persistence Context
-`영속성 컨텍스트(Persistence Context)`는 엔티티를 저장하는 메모리 상의 공간이다. 엔티티 매니저로 엔티티를 저장하거나 조회하면 영속성 컨텍스트에 엔티티가 저장되고 관리된다.
-
-영속성 컨텍스트는 엔티티를 식별자 값으로 구분하므로 반드시 엔티티에 식별자 값이 있어야한다.
+## 영속성 컨텍스트
+<b>`영속성 컨텍스트(Persistence Context)`</b>는 엔티티가 저장되고 관리되는 메모리 상의 공간이다. 영속성 컨텍스트는 엔티티를 식별자 값으로 구분하므로 반드시 엔티티에 식별자 값이 있어야한다.
 ``` java {5}
 @Entity
 @Table(name= "member")
 public class MemberEntity {
 
     @Id
-    @Column
     private Long id;
 
     // 중략...
 }
+```
+
+## EntityManager
+<b>`엔티티 매니저(Entity Manager)`</b>를 통해 영속성 컨텍스트에 엔티티를 저장, 수정, 삭제, 조회할 수 있다. 엔티티 매니저는 `엔티티 매니저 팩토리(Entity Manager Factory)`를 통해 생성할 수 있다.
+``` java
+// EntityMangerFactory 생성
+EntityManagerFactory entityManagerfactory = Persistence.createEntityManagerFactory("test_persistence");
+
+// EntityManager 생성
+EntityManager entityManager = entityManagerfactory.createEntityManager();
 ```
 
 ## 엔티티의 생명주기
@@ -52,8 +49,7 @@ member.setPassword("1234");
 ```
 
 ### 영속
-엔티티가 영속성 컨텍스트에서 관리되고 있는 상태다.
-
+엔티티가 영속성 컨텍스트에서 관리되고 있는 상태다. 다음 예제는 `EntityManager.persist()`메소드로 엔티티를 영속화하고 있다.
 ``` java
 MemberEntity member = new MemberEntity();
 member.setEmail("paul@gmail.com");
@@ -83,7 +79,7 @@ List<MemberEntity> members = entityManager.createQuery(jpql, MemberEntity.class)
 - `EntityManager.close()`
 
 #### EntityManager.detach()
-`EntityManager.detach()`를 호출하면 1차 캐시, SQL 저장소를 포함하여 해당 엔티티를 관리하기 위한 모든 정보가 제거된다.
+`EntityManager.detach()`를 호출하면 1차 캐시, SQL 저장소를 포함하여 해당 엔티티를 관리하기 위한 모든 정보가 영속성 컨텍스트에서 제거된다.
 ``` java{9,10}
 MemberEntity member = new MemberEntity();
 member.setEmail("paul@gmail.com");
@@ -97,20 +93,7 @@ entityManager.persist(member);
 entityManager.detach(member);
 ```
 
-#### EntityManager.clear()
-`EntityManager.clear()`는 영속성 엔티티를 초기화하고 관리 중인 모든 엔티티를 준영속 상태로 만든다.
-``` java
-entityManager.clear();
-```
-
-#### EntityManager.close()
-`EntityManager.close()`는 영속성 컨텍스트를 종료하면서 관리 중인 모든 엔티티를 준영속 상태로 만든다.
-``` java
-entityManager.close()
-```
-
-#### EntityManager.merge()
-준영속 상태의 엔티티를 영속 상태로 변경할 때는 `EntityManager.merge()`를 사용한다.
+참고로 준영속 상태의 엔티티를 영속 상태로 변경할 때는 `EntityManager.merge()`를 사용한다.
 ``` java
 // 준영속화
 entityManager.detach(member);
@@ -121,6 +104,17 @@ entityManager.detach(member);
 entityManager.merge(member);
 ```
 
+#### EntityManager.clear()
+`EntityManager.clear()`를 호출하면 영속성 컨텍스트에서 관리되는 모든 엔티티를 준영속 상태로 만들고 영속성 컨텍스트를 클리어한다.
+``` java
+entityManager.clear();
+```
+
+#### EntityManager.close()
+`EntityManager.close()`는  영속성 컨텍스트에서 관리되는 모든 엔티티를 준영속 상태로 만들고 영속성 컨텍스트를 종료한다.
+``` java
+entityManager.close()
+```
 
 ### 삭제
 엔티티가 영속성 컨텍스트와 데이터베이스에서 삭제된 상태다.
@@ -136,19 +130,20 @@ entityManager.remove(member);
 
 ### flush()
 `EntityManager.flush()`를 호출하면 영속성 컨텍스트를 강제로 플러시한다.
-``` java {4}
+``` java {6}
+transaction.begin();
+
 entityManager.persist(memberA);
 entityManager.persist(memberB);
 
 entityManager.flush();
 
-entityManager.persist(memberC);
-entityManager.persist(memberD);
+// ...
 ```
 
 ### Commit
 트랜잭션을 커밋할 때 플러시가 자동으로 호출된다.
-``` java {6}
+``` java {11}
 transaction.begin();
 
 entityManager.persist(memberA);
@@ -177,7 +172,7 @@ List<MemberEntity> members = entityManager.createQuery(jpql, MemberEntity.class)
 
 transaction.commit();
 ```
-`(1)`시점에 `memberA`와 `memberB`는 영속성 컨텍스트에는 저장되어있으나 데이터베이스에는 반영되지 않아있다. 이 상태에서 데이터베이스에서 `memberA`와 `memberB`를 조회하면 결과가 조회되지 않는다. 이러한 문제를 해결하기 위해 `JPQL`을 실행할 때 자동으로 플러시를 수행한다.
+`(1)`시점은 `memberA`와 `memberB`는 영속성 컨텍스트에서 저장되어있으나 데이터베이스에는 반영되지 않는 상태다. 이 상태에서 영속성 컨텍스트가 아닌 데이터베이스에서 `memberA`와 `memberB`를 조회하면 결과가 조회되지 않는다. 이러한 문제를 해결하기 위해 `JPQL`을 실행할 때 자동으로 플러시된다.
 
 
 
@@ -190,7 +185,7 @@ transaction.commit();
 - `지연 로딩`
 
 ### 1차 캐시
-영속성 컨텍스트는 내부에 `1차 캐시`를 가지고 있다. `1차 캐시`는 메모리 영역에 존재하기 때문에 온디스크에 존재하는 데이터베이스에서 엔티티를 조회하는 것보다 훨씬 빠르다.
+영속성 컨텍스트는 내부에 <b>`1차 캐시`</b>를 가지고 있다. `1차 캐시`는 메모리 영역에 존재하기 때문에 온디스크에 존재하는 데이터베이스에서 엔티티를 조회하는 것보다 훨씬 빠르다.
 
 ### 쓰기 지연
 다음과 같이 여러번 엔티티를 저장한다고 가정하자.
@@ -203,7 +198,7 @@ entityManager.persist(memberC);
 
 transaction.commit();
 ```
-엔티티 매니저는 커밋하기 전까지 데이터베이스에 엔티티를 저장하지 않고 `쿼리 저장소`라는 공간에 `INSERT SQL 쿼리`을 모아둔다. 그리고 커밋을 하는 시점에 모아둔 쿼리를 한꺼번에 데이터베이스에 보내는데 이를 `쓰기 지연`이라고 한다. 이를 통해 성능을 최적화할 수 있다.
+엔티티 매니저는 커밋하기 전까지 데이터베이스에 엔티티를 저장하지 않고 `쿼리 저장소`라는 공간에 `INSERT SQL 쿼리`을 모아둔다. 그리고 커밋을 하는 시점에 모아둔 쿼리를 한꺼번에 데이터베이스에 보내는데 이를 <b>`쓰기 지연`</b>이라고 한다. 이를 통해 성능을 최적화할 수 있다.
 
 ### 변경 감지
 `Hibernate`에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없다. 대신 엔티티를 조회해서 데이터를 변경하면 변경 기능이 동작하여 데이터베이스에 자동으로 반영된다.
@@ -223,12 +218,12 @@ member.setName("john")
 
 transaction.commit();
 ```
-트랜잭션을 커밋하면 엔티티의 변경사항을 데이터베이스에 자동으로 반영하는데 이를 `변경 감지(Dirty Checking)`이라고 한다. 
+트랜잭션을 커밋하면 엔티티의 변경사항을 데이터베이스에 자동으로 반영하는데 이를 <b>`변경 감지(Dirty Checking)`</b>이라고 한다. 
 
 변경 역시 `쿼리 저장소`라는 공간에 `Update SQL 쿼리`를 모아두었다가 커밋하는 시점에 한꺼번에 반영한다. 이를 통해 성능을 최적화할 수 있다.
 
 ### 지연 로딩
-엔티티간 연관관계가 존재하는 경우, 처음부터 연관된 엔티티들을 모두 영속성 컨텍스트에 올려두는 것은 비효율적이다. `지연 로딩(Lazy Loading)`을 사용하면 연관된 엔티티들에 실제로 접근하는 시점에 SQL을 호출할 수 있다.
+엔티티간 연관관계가 존재하는 경우, 처음부터 연관된 엔티티들을 모두 영속성 컨텍스트에 올려두는 것은 비효율적이다. <b>`지연 로딩(Lazy Loading)`</b>을 사용하면 연관된 엔티티들에 실제로 접근하는 시점에 SQL을 호출할 수 있다.
 ``` java
 public class MemberEntity extends BaseEntity {
 
