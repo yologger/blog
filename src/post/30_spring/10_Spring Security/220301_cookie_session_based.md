@@ -22,7 +22,7 @@ dependencies {
 ```
 
 ## 스프링 시큐리티 기본 설정
-프로젝트에 의존성을 추가하면 스프링 시큐리티는 <u>기본적으로 모든 엔드포인트에 대한 HTTP 요청을 차단한다.</u>
+프로젝트에 의존성을 추가하면 스프링 시큐리티는 기본적으로 <u>쿠키-세션 기반</u>으로 동작하며 <u>모든 엔드포인트에 대한 HTTP 요청을 차단</u>한다.
 
 예제를 살펴보자. 다음과 같은 컨트롤러가 있다. 이 컨트롤러는 `home.mustache` 뷰를 보여준다.
 ``` java
@@ -49,7 +49,7 @@ public class MainController {
 </body>
 </html>
 ```
-이제 웹 브라우저에서 `http://localhost:8080`로 접근해보자. `home.mustache`를 보여주지 않고 `http://localhost:8080/login`로 리다이렉트되는 것을 확인할 수 있다. 스프링 시큐리티가 모든 엔드포인트에 대해 인증되지 않은 접근을 차단하기 때문이다. 스프링 시큐리티의 기본 설정값은 다음과 같이 로그인 페이지를 자동으로 제공한다.
+이제 웹 브라우저에서 `http://localhost:8080`로 접근해보자. `home.mustache`를 보여주지 않고 `http://localhost:8080/login`로 리다이렉트된다. 스프링 시큐리티가 모든 엔드포인트에 대해서 인증되지 않은 접근을 차단하기 때문이다. 스프링 시큐리티의 기본 설정은 다음과 같이 로그인 페이지를 자동으로 제공한다.
 
 ![](./220301_cookie_session_based/1.png)
 
@@ -65,10 +65,28 @@ public class MainController {
 
 ![](./220301_cookie_session_based/4.png)
 
-기본 설정값은 로그아웃을 위한 페이지도 제공한다. `http://localhost:8080/logout`으로 접근하면 된다.
+스프링 시큐리티는 인증 정보를 `SecurityContext`에서 관리한다. 이 객체는 서블릿의 `HttpSession` 안에 저장된다.
+
+![](./220301_cookie_session_based/6.png)
+
+참고로 세션 정보는 컨트롤러에서 다음과 같이 바인딩할 수 있다.
+
+``` java
+import javax.servlet.http.HttpSession;
+
+@RestController
+public class MainController {
+
+    @GetMapping
+    public String home(HttpSession httpSession) {
+        // ...
+    }
+}
+```
+
+스프링 시큐리티 기본 설정값은 로그아웃을 위한 페이지도 제공한다. `http://localhost:8080/logout`으로 접근하면 된다.
 
 ![](./220301_cookie_session_based/5.png)
-
 
 이처럼 프로젝트에 스프링 시큐리티를 추가하기만 하면 <u>모든 엔드포인트에 대한 HTTP 요청을 차단</u>하는데 이는 스프링 시큐리티의 기본 설정이 적용되기 때문이다. 기본 설정은 `SecurityAutoConfiguration` 클래스에 정의되어있다.
 ``` java
@@ -219,6 +237,237 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
+## 인증방법 커스터마이징 - 인메모리 방식
+지금까지 `user`와 스프링부트 구동 시 출력되는 비밀번호로 인증을 진행했다.
+
+![](./220301_cookie_session_based/2.png)
+
+인메모리 방식으로 인증방법을 커스터마이징할 수 있다.
+``` java
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .inMemoryAuthentication()
+                .withUser("yologger")
+                .password(passwordEncoder().encode("1234"))
+                .authorities("AUTHORITY_USER");
+    }
+}
+```
+
+## 인증방법 커스터마이징 - 온디스크 데이터베이스 방식
+대부분의 서비스는 회원가입 시 사용자 정보를 받아 데이터베이스에서 저장한다. 그리고 인증 시 데이터베이스에서 사용자 정보를 조회하여 비교한 후 인증 여부를 결정한다.
+
+온디스크 데이터베이스를 사용하여 인증을 구현해보자. 영속성 계층 클래스는 다음과 같다.
+``` java
+public enum AuthorityType {
+
+    ADMIN("ADMIN"),
+    USER("USER");
+
+    private String description;
+
+    AuthorityType(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+}
+```
+``` java
+@Entity
+@Table(name = "user")
+@NoArgsConstructor
+@Getter
+public class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private AuthorityType authority;
+
+    @Builder
+    public UserEntity(String name, String password, AuthorityType authority) {
+        this.name = name;
+        this.password = password;
+        this.authority = authority;
+    }
+}
+```
+``` java
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    public Optional<UserEntity> findOneByName(String name);
+}
+```
+서비스 계층은 다음과 같다. 회원가입 로직이 포함되어있다.
+``` java
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+
+    public Long register(RegistrationDto request) {
+        UserEntity user = UserEntity.builder()
+                .name(request.getName())
+                .authority(AuthorityType.USER)
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+
+        UserEntity saved = userRepository.save(user);
+        return saved.getId();
+    }
+}
+```
+컨트롤러 계층은 다음과 같다. 회원가입 페이지를 보여주는 메소드, 회원가입을 진행하는 메소드가 정의되어있다.
+``` java
+@Controller
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    // 회원가입 페이지
+    @GetMapping("/user/registration")
+    public String registrationPage() {
+        return "registration";
+    }
+
+    // 회원가입 로직
+    @PostMapping("/user/registration")
+    public String registration(RegistrationDto request) {
+        userService.register(request);
+        return "redirect:/login";
+    }
+}
+```
+``` java
+@Getter
+public class RegistrationDto {
+    private String name;
+    private String password;
+
+    @Builder
+    public RegistrationDto(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+}
+```
+`registration.mustache`는 다음과 같다.
+``` html
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>home</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div>
+    <form method="post" action="/user/registration">
+        <div>
+            <input id="name" type="text" name="name"/>
+            <label for="name">Name</label>
+        </div>
+        <div>
+            <input id="password" type="password" name="password"/>
+            <label for="password">Password</label>
+        </div>
+        <input type="submit" value="회원가입" />
+    </form>
+</div>
+</body>
+</html>
+```
+스프링 시큐리티 인증과 관련된 클래스는 다음과 같다.
+``` java
+@Service
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private final UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findOneByName(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getName())
+                .password(user.getPassword())
+                .authorities(new SimpleGrantedAuthority(user.getAuthority().getDescription()))
+                .build();
+    }
+}
+```
+스프링 시큐리티 구성 클래스는 다음과 같다.
+``` java
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsServiceImpl userDetailsService;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .formLogin()
+                .defaultSuccessUrl("/").and()
+            .csrf().disable()
+            .cors().disable()
+            .authorizeRequests((authorize) -> {
+                authorize.antMatchers(HttpMethod.GET, "/user/registration").permitAll();
+                authorize.antMatchers(HttpMethod.POST, "/user/registration").permitAll();
+                authorize.anyRequest().authenticated();
+            });
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+}
+```
+
+
+## 인증필터
+``` java {2}
+@Configuration
+@EnableWebSecurity(debug = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    // ...
+} 
+```
+
 각 기능은 `and()` 대신 <b>`disable()`</b>을 사용하여 비활성화할 수 있다.
 ``` java
 @Configuration
@@ -236,25 +485,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 ```
-
-
-## Filter
-https://vsh123.github.io/spring%20security/Spring-Security-Filter-chain/
-
-SessionManagementFilter
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## 사용자 데이터 클래스 설계
 `Role`과 `Authority`를 모두 사용한다. 따라서 사용자 데이터 클래스가 더 복잡하다.

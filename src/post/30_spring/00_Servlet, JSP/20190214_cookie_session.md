@@ -39,6 +39,8 @@ HTTP는 `비연결성(Connectionless)`과 `무상태성(Stateless)`을 가진다
 
 참고로 세션은 코드에서 다음과 같이 접근할 수 있다.
 ``` java {6}
+import javax.servlet.http.HttpSession;
+
 @WebServlet(name = "helloServlet", value = "/hello-servlet")
 public class HelloServlet extends HttpServlet {
 

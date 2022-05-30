@@ -1,5 +1,5 @@
 ---
-title: "Spring Security 시작하기"
+title: "Spring Security 개념 정리"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -29,7 +29,7 @@ dependencies {
 ## Security Filter
 스프링 시큐리티는 `Servlet Filter`를 기반으로 동작한다. 
 
-![](./220228_spring_security/0.png)
+![](./220305_spring_security/0.png)
 
 프로젝트에 의존성을 추가하기만 하면 스프링 시큐리티는 기본적으로 <u><b>모든 HTTP 엔드포인트 접근을 차단</b></u>한다.
 
@@ -63,23 +63,23 @@ public class TestController {
 
 이제 웹 브라우저에서 `http://localhost:8080/test/test1`로 접근해보자. `test1.mustache`를 보여주지 않고 `http://localhost:8080/login`로 리다이렉트되는 것을 확인할 수 있다. <u><b>스프링 시큐리티가 모든 엔드포인트에 대해 인증되지 않는 접근을 차단하기 때문이다.</b></u>
 
-![](./220228_spring_security/1.png)
+![](./220305_spring_security/1.png)
 
 인증을 하려면 로그인을 해야한다. 별도의 설정을 하지 않았다면 Username은 `user`이며, Password는 애플리케이션을 시작할 때 로그에 출력된다.
 
-![](./220228_spring_security/2.png)
+![](./220305_spring_security/2.png)
 
 이제 Username과 Password를 입력하여 로그인 해보자. 그리고 `http://localhost:8080/test/test1`로 접근하면 `test1.mustache`가 랜더링되는 것을 확인할 수 있다.
 
-![](./220228_spring_security/3.png)
+![](./220305_spring_security/3.png)
 
 `http://localhost:8080/logout`으로 접근하면 로그아웃 할 수 있다.
 
-![](./220228_spring_security/5.png)
+![](./220305_spring_security/5.png)
 
 스프링 시큐리티는 기본적으로 `Cookie-Session` 방식으로 인증 정보를 관리한다. 따라서 로그인 후 웹 브라우저에서 `Cookie`를 확인할 수 있다.
 
-![](./220228_spring_security/4.png)
+![](./220305_spring_security/4.png)
 
 세션은 기본적으로 메모리에 저장된다. 따라서 애플리케이션을 재시작하면 세션 정보가 사라지게 된다. 물론 쿠키와 세션을 데이터베이스에 저장할 수 있다.
 
@@ -125,7 +125,7 @@ Object credentials = authentication.getCredentials();
 ## SecurityContextHolder
 <b>`SecurityContextHolder`</b>는 `SecurityContext`를 래핑하고 있다.
 
-![](./220228_spring_security/7.png)
+![](./220305_spring_security/7.png)
 
 `SecurityContextHolder`는 `SecurityContext`와 스레드를 연결하는 역할을 한다. 좀 더 자세히 설명하자면 `SecurityContextHolder`를 통해 `SecurityContext`가 어떤 스레드에서 유효할지 설정할 수 있으며, 이를 `전략(Strategy)`라고 한다.
 
@@ -179,7 +179,7 @@ public abstract class WebSecurityConfigurerAdapter {
 ```
 스프링 시큐리티는 기본 로그인 페이지를 제공한다.
 
-![](./220228_spring_security/1.png)
+![](./220305_spring_security/1.png)
 
 물론 사용자가 직접 로그인 페이지를 정의할 수 있다.
 ``` java{9}
@@ -240,11 +240,11 @@ public abstract class WebSecurityConfigurerAdapter {
 }
 ```
 
-![](./220228_spring_security/8.png)
+![](./220305_spring_security/8.png)
 
 `HttpSecurity.logout()`은 기본 로그아웃 기능을 지원한다. 이 덕분에 `/logout` 경로로 이동하면 다음과 같이 기본 로그아웃 페이지에 접근할 수 있다.
 
-![](./220228_spring_security/5.png)
+![](./220305_spring_security/5.png)
 
 물론 다음과 같이 로그아웃과 관련된 기능을 커스터마이징할 수도 있다.
 ``` java
@@ -427,9 +427,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 ## 인증 방법 커스터마이징
 별도의 설정이 없다면 로그에 출력된 비밀번호, `user`로 인증할 수 있다.
 
-![](./220228_spring_security/1.png)
+![](./220305_spring_security/1.png)
 
-![](./220228_spring_security/2.png)
+![](./220305_spring_security/2.png)
 
 `configure(AuthenticationManagerBuilder auth)`메소드를 통해 인증 방식을 직접 구현할 수도 있다.
 ``` java
@@ -479,11 +479,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 이제 해당 정보로 인증할 수 있게 된다.
 
-![](./220228_spring_security/6.png)
+![](./220305_spring_security/6.png)
 
 인증에 성공하면 `Authentication` 객체에 인증 정보들이 저장된다.
 
-![](./220228_spring_security/9.png)
+![](./220305_spring_security/9.png)
 
 Role을 사용하지 않고 Authority만 사용하는 경우 다음과 같이 구현할 수도 있다.
 ``` java
