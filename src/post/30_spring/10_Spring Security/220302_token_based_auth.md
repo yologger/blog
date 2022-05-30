@@ -9,22 +9,117 @@ sidebarDepth: 0
 [[toc]]
 
 # Token 기반 인증 구현
-`Spring Security`와 `jjwt`를 사용하여 Token 기반 인증을 구현해보자.
+`Spring Security`와 `jjwt`를 사용한 Token 기반 인증 구현을 정리한다.
 
 ## 의존성 설정
 `Spring Security`와 `jjwt` 의존성을 추가한다.
 ``` groovy
 // build.gradle
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-security:${spring_security_version}'
-    implementation 'io.jsonwebtoken:jjwt:${jjwt_version}'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt'
 }
 ```
 
-## 데이터 설계
- `Authority`와 `Role`을 사용하지 않고 Token 기반 인증을 구현해본다.
+## Token 관리 객체
+``` properties
+# application.properties
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url=jdbc:mysql://localhost:3306/mydb
+spring.datasource.username=root
+spring.datasource.password=root
 
-사용자와 관련된 엔티티 클래스는 다음과 같다.
+# spring.jpa.hibernate.ddl-auto=none
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.generate-ddl=true
+spring.jpa.properties.hibernate.show_sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+jwt.token.secret=token_secret
+# 1day = 1440, 7days = 10080
+jwt.token.expire=1440
+```
+``` java
+@Component
+@Slf4j
+public class TokenProvider {
+
+    @Value("${jwt.token.secret}")
+    private String secret;
+
+    @Value("${jwt.token.expire}")
+    private long expireTimeInSeconds;
+
+    private static final String AUTHORITIES_KEY = "auth";
+
+    public String createToken(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        Date validity = Date.from(ZonedDateTime.now().plusMinutes(expireTimeInSeconds).toInstant());
+
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(SignatureAlgorithm.HS256, secret.getBytes())
+                .setExpiration(validity)
+                .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token);
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            log.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return false;
+    }
+
+    public Authentication getAuthentication(String token) {
+
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret.getBytes(StandardCharsets.UTF_8))
+                .parseClaimsJws(token)
+                .getBody();
+
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        User principal = new User(claims.getSubject(), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
+}
+```
+
+## 영속성 계층 구현
+``` java
+public enum AuthorityType {
+
+    ADMIN("ADMIN"),
+    USER("USER");
+
+    private String description;
+
+    AuthorityType(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+}
+```
 ``` java
 @Entity
 @Table(name = "user")
@@ -33,87 +128,292 @@ dependencies {
 public class UserEntity {
 
     @Id
-    @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String email;
+    private String name;
 
     @Column
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private AuthorityType authority;
+
     @Builder
-    public UserEntity(String email, String password) {
-        this.email = email;
+    public UserEntity(String name, String password, AuthorityType authority) {
+        this.name = name;
         this.password = password;
+        this.authority = authority;
     }
 }
 ```
 ``` java
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
+    public Optional<UserEntity> findOneByName(String name);
 }
 ```
 
-## 회원가입 구현
-회원가입을 위한 서비스 레이어 컴포넌트는 다음과 같다.
+## 서비스 계층
 
 ``` java
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    // ...
-    @Transactional
-    public ResponseEntity<JoinResponseDto> join(JoinRequestDto request) throws MemberAlreadyExistException {
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findOneByName(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        // Check If User already exists.
-        Optional<MemberEntity> result = memberRepository.findByEmail(request.getEmail());
-        if (result.isPresent()) throw new MemberAlreadyExistException("Member Already Exists.");
-
-        String encryptedPassword = passwordEncoder.encode(request.getPassword());
-        MemberEntity newMember = MemberEntity.builder()
-                .email(request.getEmail())
-                .password(encryptedPassword)
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getName())
+                .password(user.getPassword())
+                .authorities(new SimpleGrantedAuthority(user.getAuthority().getDescription()))
                 .build();
-
-        MemberEntity created = memberRepository.save(newMember);
-
-        JoinResponseDto response = JoinResponseDto.builder()
-                .memberId(created.getId())
-                .build();
-
-        return ResponseEntity.created(null).body(response);
     }
 }
 ```
 
-## 로그인을 통한 인증 구현
-로그인 구현을 위해서는 다음과 같이 설정 클래스를 작성한다.
+``` java
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final PasswordEncoder passwordEncoder;
+
+    private final UserRepository userRepository;
+
+    public Long register(RegisterRequestDto request) {
+
+        UserEntity user = UserEntity.builder()
+                .name(request.getName())
+                .authority(AuthorityType.USER)
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+
+        UserEntity saved = userRepository.save(user);
+        return saved.getId();
+    }
+}
+```
+
+## 컨트롤러 계층
+``` java
+@Getter
+public class RegisterRequestDto {
+    private String name;
+    private String password;
+
+    @Builder
+    public RegisterRequestDto(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+}
+``` 
+``` java
+@Getter
+public class LoginRequestDto {
+    private String name;
+
+    private String password;
+
+    @Builder
+    public LoginRequestDto(String name, String password) {
+        this.name = name;
+        this.password = password;
+    }
+}
+``` 
+``` java
+@Getter
+public class LoginResponseDto {
+    private String token;
+
+    public LoginResponseDto(String token) {
+        this.token = token;
+    }
+}
+```
+``` java
+@RestController
+@RequestMapping("/auth")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+
+    private final TokenProvider tokenProvider;
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(request.getName(), request.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+        String token = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
+
+        return new ResponseEntity<>(new LoginResponseDto(token), httpHeaders, HttpStatus.OK);
+    }
+}
+```
+``` java
+@RestController
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    @PostMapping("/user/registration")
+    public ResponseEntity<Long> register(@RequestBody RegisterRequestDto request) {
+        return new ResponseEntity(userService.register(request), HttpStatus.CREATED);
+    }
+}
+``` 
+``` java
+@RequestMapping("/test")
+public class TestController {
+
+    @GetMapping("/test1")   // 인증만 되면 다 접근 가능
+    String test() {
+        return "test1";
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")   // 인증 후 'USER', 'ADMIN' 권한을 가져야만 접근 가능
+    @GetMapping("/test2")
+    String test2() {
+        return "test2";
+    }
+
+    @PreAuthorize("hasAnyAuthority('USER')")   // 인증 후 'USER' 권한을 가져야만 접근 가능
+    @GetMapping("/test3")
+    String test3() {
+        return "test3";
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")   // 인증 후 'ADMIN' 권한을 가져야만 접근 가능
+    @GetMapping("/test4")
+    String test4() {
+        return "test4";
+    }
+}
+```
+
+## 보안 관련 컴포넌트
+``` java
+@Slf4j
+public class JwtFilter extends OncePerRequestFilter {
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    private TokenProvider tokenProvider;
+
+    public JwtFilter(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String jwt = resolveToken(request);
+        String requestURI = request.getRequestURI();
+
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            Authentication authentication = tokenProvider.getAuthentication(jwt);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            log.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);
+        } else {
+            log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI);
+        }
+
+        filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+```
+``` java
+@Component
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+}
+```
+``` java
+@Component
+public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+
+    @Override
+    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
+        response.sendError(HttpServletResponse.SC_FORBIDDEN);
+    }
+}
+```
 ``` java
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final MemberDetailsServiceImpl memberDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final TokenProvider tokenProvider;
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .httpBasic().disable()
+            .csrf().disable()
+            .cors().disable()
+            .formLogin().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler).and()
+            .authorizeRequests((authorize) -> {
+                authorize.antMatchers(HttpMethod.GET, "/user/registration").permitAll();
+                authorize.antMatchers(HttpMethod.POST, "/user/registration").permitAll();
+                authorize.antMatchers(HttpMethod.POST, "/auth/login").permitAll();
+                authorize.anyRequest().authenticated();
+            });
+    }
 
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // AuthenticationManager가 MemberDetailsServiceImpl를 사용하여 인증하도록 설정
+    @Bean
+    JwtFilter jwtFilter() {
+        return new JwtFilter(tokenProvider);
+    }
+    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(MemberDetailsServiceImpl)
+            .userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoder());
     }
 
-    // AuthenticationManager를 빈으로 등록
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
@@ -122,452 +422,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 }
 ```
 
-`MemberDetailsServiceImpl`클래스는 다음과 같다.
-``` java
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-@Service
-@RequiredArgsConstructor
-public class MemberDetailsServiceImpl implements UserDetailsService {
-
-    private final MemberRepository memberRepository;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        MemberEntity memberEntity = memberRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username Not Found."));
-
-        return User.builder()
-                .username(memberEntity.getEmail())
-                .password(memberEntity.getPassword())
-                .roles("USER")
-                .build();
-    }
-}
-```
-
-인증을 위한 서비스 레이어는 다음과 같다.
-``` java {22}
-@Service
-@RequiredArgsConstructor
-public class AuthService {
-
-    private final JwtUtil jwtUtil;
-
-    private final AuthenticationManager authenticationManager;
-
-    // 중략 ..
-
-    @Transactional
-    public ResponseEntity<LoginResponseDto> login(LoginRequestDto request) throws MemberNotExistException, InvalidPasswordException {
-
-        // Check if member exists.
-        MemberEntity member = memberRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new MemberNotExistException("Member does not exist."));
-
-        // Check if password correct.
-        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            throw new InvalidPasswordException("Invalid password exception");
-        }
-
-        // 인증 수행
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
-        // Principal(본인)
-        User me = (User) auth.getPrincipal();
-
-        // 토큰 생성
-        String accessToken = jwtUtil.generateAccessToken(member.getId(), member.getEmail(), member.getName(), member.getNickname());
-        String refreshToken = jwtUtil.generateRefreshToken(member.getId(), member.getEmail(), member.getName(), member.getNickname());
-
-        // DB 업데이트
-        member.setAccessToken(accessToken);
-        member.setRefreshToken(refreshToken);
-
-        LoginResponseDto response = LoginResponseDto.builder()
-                .memberId(member.getId())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .name(member.getName())
-                .nickname(member.getNickname())
-                .build();
-
-        return ResponseEntity.ok(response);
-    }
-}
-```
-여기서 핵심인 부분은 다음과 같다.
-``` java
-// 인증 수행
-Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-```
-`AuthenticationManager.authenticate()`를 호출하면 `UserDetailsService.loadUserByUsername()`가 호출된다. 이 메소드에서 데이터베이스로부터 사용자를 조회한다. 그리고 `org.springframework.security.core.userdetails.User`객체에 `username`, `password`를 설정하여 반환하면 스프링 시큐리티가 `UsernamePasswordAuthenticationToken` 객체로 전달한 `username`, `password`와 비교하여 인증 여부를 판단한다.
-``` java
-@Override
-public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    MemberEntity memberEntity = memberRepository.findByEmail(username)
-            .orElseThrow(() -> new UsernameNotFoundException("Username Not Found."));
-
-    return User.builder()
-            .username(memberEntity.getEmail())
-            .password(memberEntity.getPassword())
-            .roles("USER")
-            .build();
-}
-```
-
-`AuthenticationManager.authenticate()`는 인증에 성공하면 `Authoirzation` 객체에 인증 정보를 담아 반환한다. 이 객체에는 인증에 성공한 사용자의 정보가 담겨있다.
-``` java
-// 인증 
-Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
-// Principal(본인)
-User me = (User) auth.getPrincipal();
-```
-인증에 실패하면 세 가지 예외 중 하나를 발생시킨다.
-- `BadCredentialsException`: username 또는 password가 틀린 경우 발생한다.
-- `DisabledException`: 계정이 비활성화된 경우 발생한다.
-- `LockedException`: 계정이 잠긴 경우 발생한다.
-
-## 토큰 발급
-인증에 성공하면 JWT로 토큰을 발행하여 클라이언트에게 반환하면 해야한다. 서비스 보안의 중요도에 따라 액세스 토큰만 사용하기도 하며, 액세스 토큰과 리프레시 토큰을 모두 사용하기도 한다. 예제에서는 둘 다 사용한다.
-``` java {22}
-@Service
-@RequiredArgsConstructor
-public class AuthService {
-
-    private final JwtUtil jwtUtil;
-
-    private final AuthenticationManager authenticationManager;
-
-    // 중략 ..
-
-    @Transactional
-    public ResponseEntity<LoginResponseDto> login(LoginRequestDto request) throws MemberNotExistException, InvalidPasswordException {
-
-        // Check if member exists.
-        MemberEntity member = memberRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new MemberNotExistException("Member does not exist."));
-
-        // Check if password correct.
-        if (!passwordEncoder.matches(request.getPassword(), member.getPassword())) {
-            throw new InvalidPasswordException("Invalid password exception");
-        }
-
-        // 인증 수행
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
-        // Principal(본인)
-        User me = (User) auth.getPrincipal();
-
-        // 토큰 생성
-        String accessToken = jwtUtil.generateAccessToken(member.getId(), member.getEmail(), member.getName(), member.getNickname());
-        String refreshToken = jwtUtil.generateRefreshToken(member.getId(), member.getEmail(), member.getName(), member.getNickname());
-
-        // DB 업데이트
-        member.setAccessToken(accessToken);
-        member.setRefreshToken(refreshToken);
-
-        LoginResponseDto response = LoginResponseDto.builder()
-                .memberId(member.getId())
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .name(member.getName())
-                .nickname(member.getNickname())
-                .build();
-
-        return ResponseEntity.ok(response);        
-    }
-}
-``` 
-
-## 토큰 검증
-이제 클라이언트는 자원에 접근할 때 토큰을 함께 전송한다. 백엔드에서는 이 토큰이 유효한지를 먼저 검증해야한다. 이때 `Spring Filter`를 사용할 수 있다.
-
-우선 JWT를 발행하고 검증하는 `JwtUtil`클래스를 구현하자.
-``` java
-@Component
-public class JwtUtil {
-
-    @Value("${jwt.secret.access-token}")
-    private String accessTokenSecret;
-
-    @Value("${jwt.secret.refresh-token}")
-    private String refreshTokenSecret;
-
-    private long accessTokenExpire = 60 * 24 * 1;   // 1 day
-    private long refreshTokenExpire = 60 * 24 * 7;  // 7 days
-
-    public String generateAccessToken(Long id, String email, String name, String nickname) {
-
-        // Header
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("typ", "JWT");
-        headers.put("alg", "HS256");
-
-        // Payload
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("id", id);
-        payloads.put("email", email);
-        payloads.put("name", name);
-        payloads.put("nickname", nickname);
-
-        // Generate access token
-        String accessToken = Jwts.builder()
-                .setHeader(headers)         // Set headers
-                .setClaims(payloads)        // Set claims
-                .setSubject("member")       // Purpose of token
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(accessTokenExpire).toInstant()))  // Set expiration
-                .signWith(SignatureAlgorithm.HS256, accessTokenSecret.getBytes()) // Sign with HS256, Key
-                .compact();                 // Generate token
-
-        return accessToken;
-    }
-
-    public String generateRefreshToken(Long id, String email, String name, String nickname) {
-
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("typ", "JWT");
-        headers.put("alg", "HS256");
-
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("id", id);
-        payloads.put("email", email);
-        payloads.put("fullName", name);
-        payloads.put("nickname", nickname);
-
-        String refreshToken = Jwts.builder()
-                .setHeader(headers)
-                .setClaims(payloads)
-                .setSubject("member")
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(refreshTokenExpire).toInstant()))
-                .signWith(SignatureAlgorithm.HS256, refreshTokenSecret.getBytes())
-                .compact();
-
-        return refreshToken;
-    }
-
-
-    public void verifyAccessToken(String accessToken) throws UnsupportedEncodingException {
-        Jwts.parser()
-                .setSigningKey(accessTokenSecret.getBytes("UTF-8"))  // Set Key
-                .parseClaimsJws(accessToken);  // Parsing and verifying. throws error in case of failure.
-    }
-
-    public void verifyRefreshToken(String refreshToken) throws UnsupportedEncodingException, MalformedJwtException, SignatureException, ExpiredJwtException {
-        Jwts.parser()
-                .setSigningKey(refreshTokenSecret.getBytes("UTF-8"))  // Set Key
-                .parseClaimsJws(refreshToken);  // Parsing and verifying. throws error in case of failure.
-    }
-
-    public Long verifyAccessTokenAndGetMemberId(String accessToken) throws UnsupportedEncodingException, MalformedJwtException, SignatureException, ExpiredJwtException {
-        Claims claims = Jwts.parser()
-                .setSigningKey(accessTokenSecret.getBytes("UTF-8"))  // Set Key
-                .parseClaimsJws(accessToken)  // Parsing and verifying. throws error in case of failure.
-                .getBody();
-
-        Long id = claims.get("id", Long.class);
-        return id;
-    }
-}
-```
-그리고 필터를 다음과 같이 구현한다.
-``` java
-@AllArgsConstructor
-public class ValidateAccessTokenFilter extends OncePerRequestFilter {
-
-    private JwtUtil jwtUtil;
-    private List<String> notFilteredUrls;
-    private MemberRepository memberRepository;
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        log.info("Will validate access token.");
-
-        // Check if 'Authorization' header exists.
-        String authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !StringUtils.hasText(authHeader)) {
-
-            // Header
-            response.setStatus(GlobalErrorCode.MISSING_AUTHORIZATION_HEADER.getStatus());
-            response.setContentType("application/json;charset=utf-8");
-
-            // Body
-            JSONObject body = new JSONObject();
-            body.put("status", GlobalErrorCode.MISSING_AUTHORIZATION_HEADER.getStatus());
-            body.put("code", GlobalErrorCode.MISSING_AUTHORIZATION_HEADER.getCode());
-            body.put("message", GlobalErrorCode.MISSING_AUTHORIZATION_HEADER.getMessage());
-            response.getWriter().print(body);
-            log.info("INVALID ACCESS TOKEN: " + GlobalErrorCode.MISSING_AUTHORIZATION_HEADER.getMessage());
-            return;
-        }
-
-        // Check if 'Authorization' header starts with 'Bearer'
-        if (!authHeader.startsWith("Bearer")) {
-            // Header
-            response.setStatus(GlobalErrorCode.BEARER_NOT_INCLUDED.getStatus());
-            response.setContentType("application/json;charset=utf-8");
-
-            // Body
-            JSONObject body = new JSONObject();
-            body.put("status", GlobalErrorCode.BEARER_NOT_INCLUDED.getStatus());
-            body.put("code", GlobalErrorCode.BEARER_NOT_INCLUDED.getCode());
-            body.put("message", GlobalErrorCode.BEARER_NOT_INCLUDED.getMessage());
-            response.getWriter().print(body);
-            log.info("INVALID ACCESS TOKEN: " + GlobalErrorCode.BEARER_NOT_INCLUDED.getMessage());
-            return;
-        }
-
-        // Check if access token exists.
-        String accessToken = authHeader.substring(7);
-        if (accessToken == null || accessToken.trim().isEmpty()) {
-            // Header
-            response.setStatus(GlobalErrorCode.ACCESS_TOKEN_EMPTY.getStatus());
-            response.setContentType("application/json;charset=utf-8");
-
-            // Body
-            JSONObject body = new JSONObject();
-            body.put("status", GlobalErrorCode.ACCESS_TOKEN_EMPTY.getStatus());
-            body.put("code", GlobalErrorCode.ACCESS_TOKEN_EMPTY.getCode());
-            body.put("message", GlobalErrorCode.ACCESS_TOKEN_EMPTY.getMessage());
-            response.getWriter().print(body);
-            log.info("INVALID ACCESS TOKEN: " + GlobalErrorCode.ACCESS_TOKEN_EMPTY.getMessage());
-            return;
-        }
-
-        try {
-            // Compare with ex-access token
-
-            Long memberId = jwtUtil.verifyAccessTokenAndGetMemberId(accessToken);
-            Optional<MemberEntity> result = memberRepository.findById(memberId);
-            if (!result.isPresent()) {
-                // Header
-                response.setStatus(GlobalErrorCode.INVALID_ACCESS_TOKEN.getStatus());
-                response.setContentType("application/json;charset=utf-8");
-
-                // Body
-                JSONObject body = new JSONObject();
-                body.put("status", GlobalErrorCode.INVALID_ACCESS_TOKEN.getStatus());
-                body.put("code", GlobalErrorCode.INVALID_ACCESS_TOKEN.getCode());
-                body.put("message", GlobalErrorCode.INVALID_ACCESS_TOKEN.getMessage());
-
-                log.info("INVALID ACCESS TOKEN: " + GlobalErrorCode.INVALID_ACCESS_TOKEN.getMessage());
-                response.getWriter().print(body);
-                return;
-            }
-
-            if (!(accessToken.equals(result.get().getAccessToken()))) {
-                // Header
-                response.setStatus(GlobalErrorCode.INVALID_ACCESS_TOKEN.getStatus());
-                response.setContentType("application/json;charset=utf-8");
-
-                // Body
-                JSONObject body = new JSONObject();
-                body.put("status", GlobalErrorCode.INVALID_ACCESS_TOKEN.getStatus());
-                body.put("code", GlobalErrorCode.INVALID_ACCESS_TOKEN.getCode());
-                body.put("message", GlobalErrorCode.INVALID_ACCESS_TOKEN.getMessage());
-
-                log.info("INVALID ACCESS TOKEN: " + GlobalErrorCode.INVALID_ACCESS_TOKEN.getMessage());
-                response.getWriter().print(body);
-                return;
-            }
-
-            // Validate Access token
-            jwtUtil.verifyAccessToken(accessToken);
-            log.info("VALID ACCESS TOKEN");
-            filterChain.doFilter(request, response);
-            return;
-        } catch (ExpiredJwtException e) {
-            // Header
-            response.setStatus(GlobalErrorCode.EXPIRED_ACCESS_TOKEN.getStatus());
-            response.setContentType("application/json;charset=utf-8");
-
-            // Body
-            JSONObject body = new JSONObject();
-            body.put("status", GlobalErrorCode.EXPIRED_ACCESS_TOKEN.getStatus());
-            body.put("code", GlobalErrorCode.EXPIRED_ACCESS_TOKEN.getCode());
-            body.put("message", GlobalErrorCode.EXPIRED_ACCESS_TOKEN.getMessage());
-
-            log.info("INVALID ACCESS TOKEN: " + GlobalErrorCode.EXPIRED_ACCESS_TOKEN.getMessage());
-            response.getWriter().print(body);
-            return;
-        } catch (Exception e) {
-            // Header
-            response.setStatus(GlobalErrorCode.INVALID_ACCESS_TOKEN.getStatus());
-            response.setContentType("application/json;charset=utf-8");
-
-            // Body
-            JSONObject body = new JSONObject();
-            body.put("status", GlobalErrorCode.INVALID_ACCESS_TOKEN.getStatus());
-            body.put("code", GlobalErrorCode.INVALID_ACCESS_TOKEN.getCode());
-            body.put("message", GlobalErrorCode.INVALID_ACCESS_TOKEN.getMessage());
-            response.getWriter().print(body);
-            log.info("INVALID ACCESS TOKEN: " + GlobalErrorCode.INVALID_ACCESS_TOKEN.getMessage());
-            return;
-        }
-    }
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return notFilteredUrls.stream().anyMatch(exclude -> exclude.equalsIgnoreCase(request.getServletPath()));
-    }
-}
-```
-마지막으로 요청이 들어올 때마다 필터가 작동하도록 등록한다.
-``` java {42}
-@Configuration
-@EnableWebSecurity
-@RequiredArgsConstructor
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    private final MemberDetailsService memberDetailsService;
-    private final JwtUtil jwtUtil;
-    private final MemberRepository memberRepository;
-
-    // 중략 ...
-
-    private static final List<String> NOT_FILTERED_URLS = Arrays.asList(
-            "/profile",
-            "/auth/emailVerificationCode",
-            "/auth/confirmVerificationCode",
-            "/auth/join",
-            "/auth/login",
-            "/auth/logout",
-            "/auth/reissueToken",
-            "/test/test1",
-            "/test/test2",
-            "/test/test3",
-            "/test/test4",
-            "/test/test5"
-    );
-
-    // AccessToken 검증 필터 빈으로 등록
-    @Bean
-    public ValidateAccessTokenFilter validateAccessTokenFilter() {
-        ValidateAccessTokenFilter filter = new ValidateAccessTokenFilter(jwtUtil, NOT_FILTERED_URLS, memberRepository);
-        return filter;
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .httpBasic().disable()
-                .csrf().disable()
-                .cors().disable()
-                .formLogin().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .addFilterBefore(validateAccessTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests(authorize -> authorize
-                        .antMatchers("/test/**").permitAll()
-                        .antMatchers("/auth/**").permitAll()
-                        .antMatchers("/post/**").permitAll()
-                        .antMatchers("/member/**").permitAll()
-                        .antMatchers("/profile").permitAll()
-                        .anyRequest().authenticated()
-                );
-    }
-}
-
-```
