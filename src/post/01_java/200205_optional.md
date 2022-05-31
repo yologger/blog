@@ -20,8 +20,7 @@ person.getName();
 ```
 Exception in thread "main" java.lang.NullPointerException at Main.main(Main.java:16)
 ```
-
-이 예외를 피하기 위해 `null`을 체크해야하는데 이는 코드를 복잡하게 할 수 있다.
+`NullPointException`을 피하기 위한 조건문은 코드를 지저분하게 한다.
 ``` java
 Person person = null;
 if (person != null) {
@@ -165,7 +164,7 @@ Optional.of("ABCD")
 ``` text 출력 결과
 abcd
 ```
-위 코드는 [메소드 참조](/ko/2019/02/03/04_java/190203_method_reference/)을 사용하여 다음과 같이 단축할 수도 있다.
+위 코드는 `메소드 참조`을 사용하여 다음과 같이 단축할 수도 있다.
 ``` java
 Optional.of("ABCD")
     .map(String::toLowerCase)
@@ -222,6 +221,11 @@ System.out.println(value);  // Another thing
 ### orElseThrow()
 `orElseThrow()`는 Optional이 비어있다면 예외를 발생시킨다.
 ``` java
+UserEntity user = userRepository.findOneByName(username)
+    .orElseThrow(() -> new UsernameNotFoundException(username));
+```
+메소드 참조를 사용할 수도 있다.
+``` java
 String str = "Something";
 
 String value = Optional.ofNullable(str)
@@ -239,13 +243,13 @@ System.out.println(value);
 ```
 
 ## 원시타입 옵셔널
-물론 제너릭과 Wrapper 클래스를 사용하면 원시 타입의 옵셔널을 생성할 수 있다.
+제너릭과 Wrapper 클래스를 사용하면 원시 타입의 옵셔널을 생성할 수 있다.
 ``` java
 Optional<Integer> optional = Optional.of(1);
 
 optional.ifPresent(System.out::println);    // 1
 ```
-그러나 제네릭과 Wrapper 클래스를 사용하지 않고 원시 타입의 옵셔널을 생성할 수도 있다.
+그러나 제네릭과 Wrapper 클래스를 사용하지 않고도 원시 타입의 옵셔널을 생성할 수도 있다.
 ``` java
 OptionalInt optional = OptionalInt.of(1);
 

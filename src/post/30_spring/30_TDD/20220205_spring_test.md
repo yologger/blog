@@ -63,6 +63,8 @@ public class UserController {
 ```
 
 `MockMvc`는 테스트를 위한 `Spring MVC`의 진입점이다. 쉽게 말해 가상의 테스트용 엔드 포인트를 제공하며, 이 곳으로 HTTP 요청을 보내고 결과값을 테스트한다.
+
+#### GET 요청 테스트
 ``` java
 @WebMvcTest
 class Test {
@@ -72,18 +74,20 @@ class Test {
 
     @Test
     void test1() throws Exception {
-        mvc.perform(get("/post/test"))
-                .andExpect(content().string("post"));
-    }
-
-    @Test
-    void test2() throws Exception {
-        mvc.perform(get("/user/test"))
-                .andExpect(content().string("user"));
+            mvc.perform(MockMvcRequestBuilders.get("/test")
+                .param("name", "paul")
+                .cookie(new Cookie("key", "value"))
+                .header("헤더 값:")
+                .contentType(MediaType.APPLICATION_JSON)
+            ).andExpect(status().isOk())
+            .andExpect(header().string(HttpHeaders.AUTHORIZATION, "Bearer asdwje123kladsjl"))
+            .andExpect(jsonPath(expectByUsername , 1).value(containsString("nho Yo")))
+            .andExpect(content().string("expected value"));
     }
 
 }
 ```
+#### POST 요청 테스트
 HTTP POST는 다음과 같이 테스트할 수 있다.
 ``` java
 @WebMvcTest
@@ -105,7 +109,7 @@ class Test {
 
         String mockAccessToken = "123Aqweaq3qw12dsx4jk2";
 
-        mvc.perform(post("/auth/join")
+        mvc.perform(MockMvcRequestBuilders.post("/auth/join")
             .header(HttpHeaders.AUTHORIZATION, "Bearer " + mockAccessToken)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(body)
@@ -538,6 +542,39 @@ spring.jpa.hibernate.ddl-auto=none
 spring.jpa.generate-ddl=true
 spring.jpa.properties.hibernate.show_sql=true
 spring.jpa.properties.hibernate.format_sql=true
+```
+
+### @PersistenceContext
+`@PersistenceContext`를 사용하면 `EntityManager`를 주입받을 수 있다.
+``` java {4-5}
+@DataJpaTest
+class Test {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Test
+    public void test() {
+        String dummyEmail = "CR7@gmail.com";
+        String dummyName = "Cristiano Ronaldo";
+        String dummyPassword = "12341234";
+        String dummyNickname = "CR7";
+
+        MemberEntity dummyMember = MemberEntity.builder()
+                .email(dummyEmail)
+                .name(dummyName)
+                .password(dummyPassword)
+                .nickname(dummyNickname)
+                .authority(AuthorityType.USER)
+                .build();
+
+        entityManager.persist(dummyMember);
+
+        MemberEntity savedMember = entityManager.find(MemberEntity.class, 1L);
+
+        assertThat(savedMember.getAuthority()).isEqualTo(AuthorityType.USER);
+    }
+}
 ```
 
 ### @Commit, @Rollback

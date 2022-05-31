@@ -30,7 +30,7 @@ public class MemberEntity {
     private String password;
 }
 ```
-`Hibernate`는 <b>기본 생성자</b>로 엔티티 객체를 생성하기 때문에 `@Entity` 사용 시 <b>기본 생성자</b>를 반드시 정의해야한다.
+`Hibernate`는 <b>리플렉션</b>으로 엔티티 객체를 생성하기 때문에 `@Entity` 사용 시 <b>기본 생성자</b>를 반드시 정의해야한다.
 ``` java{15-18}
 @Entity
 public class MemberEntity {
@@ -55,7 +55,7 @@ public class MemberEntity {
 
 ## @Table
 엔티티와 매핑할 테이블을 지정한다. `name` 속성으로 생성될 테이블의 이름을 직접 지정할 수 있다.
-``` java{16-19}
+``` java{2}
 @Entity
 @Table(name = "member")
 public class MemberEntity {

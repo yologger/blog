@@ -260,7 +260,45 @@ public class TokenProvider {
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 ```
+인증에 성공했다면 접근을 제어할 차례다. 자원에 대한 접근은 `Authority` 또는 `Role`로 제어하며, 구성 클래스에서 `HttpSecurity`의 `authorizeRequests()`로 설정할 수 있다.
+``` java
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    // ...
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            // ...
+            .authorizeRequests((authorize) -> {authorize
+                .antMatchers("/member/**").authenticated()
+                .antMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+            });
+    }
+```
+물론 어노테이션으로도 접근을 제어할 수 있다.
+``` java {3}
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    /// ... 
+}
+```
+``` java
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @PreAuthorize("hasAnyAuthority('USER')")
+    @GetMapping("/test1")
+    public String test1(@AuthenticationPrincipal User user) {
+        return "test1";
+    }
+}
+```
 ## 스프링 시큐리티 구성 클래스
 스프링 시큐리티와 관련된 설정을 커스터마이징하려면 구성 클래스를 정의해야한다. 구성 클래스는 `WebSecurityConfigurerAdapter`를 상속하며, `@EnableWebSecurity`어노테이션을 추가해야한다.
 

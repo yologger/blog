@@ -76,10 +76,10 @@ Spring MVC의 핵심 컴포넌트로 사용자의 요청을 받은 후 이를 �
 컨트롤러가 반환하는 뷰의 이름을 바탕으로 실제 뷰를 탐색하여 반환한다.
 
 ## Spring Interceptor
-`Spring Interceptor` 는 DispatcherServlet과 Controller 사이에 위치하여 요청을 가로채 특정 작업을 수행하거나 응답을 가로채 추가적인 작업을 수행할 수 있다. 인터셉터는 보안, 인증, 에러처리 등에 활용되며, 특히 스프링 시큐리티에서 서블릿 필터와 함께 중요한 역할을 한다.
+`Spring Interceptor` 는 DispatcherServlet과 Controller 사이에 위치하며, 요청이 특정 컨트롤러로 들어가기 전 이를 가로채 특정 작업을 수행한다.
 
 ## Servlet Filter vs. Spring Interceptor
-`ServletFilter` 는 스프링 프레임워크 밖에서 실행되며 ServletDispatcher 이전에 호출된다. `Spring Interceptor` 는 스프링 프레임워크 안에서 실행되며, ServletDispatcher와 Controller 사이에서 동작한다.
+`ServletFilter` 는 스프링 프레임워크 밖에서 실행되며 ServletDispatcher 이전에 호출된다. 대표적으로 스프링 시큐리티가 인증 및 접근 제어를 위해 ServletFilter를 사용한다. `Spring Interceptor` 는 스프링 프레임워크 안에서 실행되며, ServletDispatcher와 Controller 사이에서 동작한다. 대표적으로 `Spring Validation`의 유효성 검증 어노테이션이 Spring Interceptor를 사용한다.
 
 ## AOP 
 - Aspect-oriented Programming
@@ -114,6 +114,7 @@ Spring MVC의 핵심 컴포넌트로 사용자의 요청을 받은 후 이를 �
 ### 쓰기 지연
 엔티티 매니저는 커밋하기 전까지 인메모리의 쿼리 저장소라는 공간에 쿼리를 쌓아둔다. 그리고 커밋하는 시점에 한꺼번에 데이터베이스에 반영하기 때문에 성능을 최적화할 수 있다.
 
+-
 ### 변경 감지(Dirty Checking)
 JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없다. 대신 엔티티를 조회해서 데이터를 변경하면 변경 기능이 동작하여 데이터베이스에 자동으로 반영된다.
 
@@ -121,7 +122,10 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 엔티티간 연관관계가 존재하는 경우, 처음부터 연관된 엔티티들을 모두 영속성 컨텍스트에 올려두는 것은 비효율적이다. `지연 로딩(Lazy Loading)`과 `Proxy 패턴`을 사용하면 연관된 엔티티들에 실제로 접근하는 시점에 SQL을 호출할 수 있다. 
 
 ## Spring Data JPA
-`Hibernate`보다 더 추상화된 방법으로 데이터베이스를 관리할 수 있다.
+`Hibernate`보다 더 추상화된 방법으로 데이터베이스를 관리할 수 있다. 내부적으로 `Hibernate`을 포함하고 있으며, `EntityManager`를 직접 관리하지 않고 `JpaRepository`을 사용할 수 있다. 또한 페이징, 정렬, JPQL, Query Method 기능을 추가적으로 제공한다.
+- `CrudRepository` 인터페이스는 CRUD 작업을 위한 다양한 메소드를 자동으로 생성한다.
+- `PagingAndSortingRepository`인터페이스는 `CrudRepository`를 상속하며 정렬 및 페이징 관련된 메소드가 추가적으로 생성된다.
+- `JpaRepository`인터페이스는 `PagingAndSortingRepository`를 상속하며 <u>영속성 컨텍스트 관리</u>, <u>Flush</u>, <u>Batch Delete</u> 같이 JPA와 관련된 메소드를 추가적으로 제공한다.
 
 ## 엔티티의 생명주기
 - 영속성 컨텍스트에서 관리되는 엔티티는 생명주기를 갖는다.
@@ -151,9 +155,9 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 ### N+1 쿼리 문제
 - 쿼리 1개의 결과가 N개일 때 N개의 쿼리가 추가적으로 실행되는 문제.
 - 두 엔티티 사이에 연관관계가 있을 떄 발생한다.
-- JPQL은 특정 엔티티와 연관된 엔티티를 조회할 때 먼저 특정 엔티티만을 조회한다. 그 후 패치 전략을 적용하여 연관관계에 있는 엔티티들을 즉시 로딩 또는 지연 로딩한다. 이 때문에 추가적인 쿼리가 발생하게 된다.
-- `JPQL`이나 `Query DSL`의 `페치 조인(Fetch Join)`을 사용하면 N+1 문제를 해결할 수 있다.
-- JPA에서 일반적인 조인은 연관된 엔티티는 함께 조회하지 않는다. 대상 엔티티를 먼저 조회한 후 패치 전략에 따라 연관된 엔티티를 즉시 로딩 또는 지연로딩하기 때문이다. 반면 `JPQL`이나 `Query DSL`의 `페치 조인(Fetch Join)`을 사용하면 연관된 엔티티들도 하나의 쿼리로 한꺼번에 조인하여 가져온다.
+- JPQL은 특정 엔티티와 연관된 엔티티를 조회할 때 먼저 특정 엔티티만을 조회한다. 그 후 패치 전략에 따라 연관관계에 있는 엔티티들을 즉시 로딩 또는 지연 로딩한다. 이 때문에 추가적인 쿼리가 발생하게 된다.
+- `JPQL`이나 `Query DSL`의 <b>`페치 조인(Fetch Join)`</b>을 사용하면 N+1 문제를 해결할 수 있다.
+- JPA의 일반적인 조인은 연관된 엔티티는 함께 조회하지 않는다. 대상 엔티티만 먼저 조회한 후 패치 전략에 따라 연관된 엔티티를 즉시 로딩 또는 지연로딩하기 때문이다. 반면 `JPQL`이나 `Query DSL`의 `페치 조인(Fetch Join)`을 사용하면 연관된 엔티티들도 하나의 쿼리로 한꺼번에 조인하여 가져온다.
 - 다만 페치 조인은 페이징 API를 사용할 수 없다는 단점이 있다.
 
 ## JPQL
@@ -165,6 +169,8 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 - `JPQL`은 쿼리를 <u>문자열</u>로 작성하기 때문에 코드 작성 시점이나 컴파일 타임에 오류를 검출할 수 없다.
 - `Query DSL`을 사용하면 문자열이 아닌 코드로 쿼리를 작성하여 문법적 오류를 컴파일 단계에저 검출할 수 있기 때문에 `타입 안정성`이 있다.
 - 또한 쿼리 결과를 엔티티가 아닌 사용자 정의 객체로 받을 수 있다.
+- Query DSL은 내부적으로 JPA의 EntityManager를 사용한다. 따라서 Query DSL로 조회한 엔티티도 JPA의 영속성 컨텍스트에서 관리된다.
+
 
 ## Spring vs. Spring Boot
 - 임베디드 톰캣을 사용한다.
@@ -173,7 +179,7 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 
 ## Spring Security
 - 인증과 접근 제어를 제공하는 스프링 모듈
-- 스프링 시큐리티는 기본적으로 모든 요청에 대해 접근을 차단한다.
+- 스프링 시큐리티는 여러 필터들의 묶음인 필터 체인으로 동작한다.
 - 스프링 구성파일의 `HttpSecurity`를 조작하여 접근을 제어할 수 있다.
 - 스프링 시큐리티는 `SpringContext`의 `Authentication`에 현재 스레드와 관련된 인증 정보를 유지하고 있다.
 

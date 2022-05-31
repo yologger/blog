@@ -446,6 +446,17 @@ public class TestController {
 }
 ```
 
+### @RequestHeader
+`@RequestHeader`로 헤더를 바인딩할 수 있다.
+``` java
+@GetMapping
+@RequestMapping("/test")
+public String test(
+    @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+) {
+    // ...
+}
+```
 
 ## @PostMapping
 `RequestMapping(method = RequestMethod.POST)`은 다음과 같이 단축할 수 있다. 

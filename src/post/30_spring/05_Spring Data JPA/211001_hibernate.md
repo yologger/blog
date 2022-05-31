@@ -243,7 +243,7 @@ Hibernate:
 ```
 
 ## 데이터 수정
-`Hibernate`는 `update()`와 같은 수정 메소드를 제공하지 않는다. 그저 엔티티의 값을 다음과 같이 수정하면 된다.
+`Hibernate`는 `update()`와 같은 수정 메소드를 제공하지 않는다. 그저 엔티티의 값을 다음과 같이 수정하면 된다. 이를 `변경 감지(Dirty Checking)`이라고 한다.
 ``` java
 MemberEntity member = new MemberEntity("john@gmail.com", "john", "1234");
 
@@ -253,7 +253,6 @@ member.setName("monica");
 
 entityManager.persist(member);
 ```
-이는 `Hibernate`의 `영속성 컨텍스트(Persistent Context)` 때문이다. 영속성 컨텍스트는 다음 포스트에서 다루겠다.
 
 ## 데이터 삭제
 데이터 삭제는 `remove()` 메소드를 사용한다.
@@ -267,4 +266,4 @@ entityManager.remove(member);
 Long id = 1L;
 MemberEntity member = entityManager.find(MemberEntity.class, id);
 ```
-데이터 여러 개 또는 조인 작업이 필요할 때는 `JPQL`, `QueryDSL` 등의 기술을 사용할 수 있다.
+여러 데이터 조회 또는 조인 작업은 `JPQL`, `QueryDSL` 등을 사용할 수 있다.

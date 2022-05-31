@@ -60,7 +60,7 @@ member.setPassword("1234");
 entityManager.persist(member);
 ```
 
-`EntityManager.find()`나 `JPQL`을 사용하여 조회한 엔티티 역시 영속성 컨텍스트에서 관리된다.
+`EntityManager.find()`, `JPQL`, `Query DSL`을 사용하여 조회한 엔티티 역시 영속성 컨텍스트에서 관리된다.
 ``` java
 Long id = 1L;
 MemberEntity member = entityManager.find(MemberEntity.class, id);
@@ -206,8 +206,7 @@ transaction.commit();
 transaction.begin();
 
 // 엔티티 생성
-member.setEmail("paul@gmail.com");
-member.setName("paul")
+MemberEntity member = new MemberEntity("paul@gmail.com", "paul");
 
 // 영속성 컨텍스트에 저장
 entityManager.persist(member);

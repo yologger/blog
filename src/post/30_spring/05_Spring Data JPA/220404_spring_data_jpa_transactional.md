@@ -80,7 +80,25 @@ public class MemberService {
 ```
 Not allowed to create transaction on shared EntityManager - use Spring transactions or EJB CMT instead.
 ```
-이 에러를 해결하려면 `@Transaction` 어노테이션을 사용해야한다.
+스프링에서 관리하는 EntityManager를 `Shared EntityManager`라고 하며, 이 EntityManager는 스프링이 지정한 방법인 `@Transactional` 어노테이션으로 트랜잭션을 처리해야한다.
+``` java  {7}
+@Service
+public class MemberService {
+
+    @PersistenceContext
+    EntityManager entityManager;
+
+    @Transactional
+    public void join(String email, String name, String password) {
+
+        // 엔티티 생성
+        MemberEntity member = new MemberEntity("paul@gmail.com", "paul", "1234");
+
+        // 데이터 삽입
+        entityManager.persist(member);
+    }
+}
+```
 
 참고로 `EntityManagerFactory`를 주입받으려면 `@PersistenceUnit`을 사용하면 된다.
 ``` java
@@ -89,7 +107,7 @@ EntityManagerFactory entityManagerFactory;
 ```
 
 ## @Transactional
-스프링 프레임워크는 서블릿 컨테이너 위에서 동작한다. 사용자가 HTTP 요청을 보낼 때마다 서블릿에 하나의 스레드를 할당한다. 이 스레드는 각 요청을 처리하게 된다. 이 말은 스프링 프레임워크가 멀티 스레드로 동작하며, 각 스레드에서 EntityManager로 메모리에 위치한 영속성 컨텍스트에 동시에 접근할 수 있기 때문에 `Thread Safe`하지 않다는 것을 의미한다.
+스프링 프레임워크는 서블릿 컨테이너 위에서 동작한다. 사용자가 HTTP 요청을 보낼 때마다 서블릿에 하나의 스레드를 할당한다. 이 스레드는 각 요청을 처리하게 된다. 이 말은 스프링 프레임워크도 멀티 스레드로 동작하며, 각 스레드에서 EntityManager로 메모리에 위치한 영속성 컨텍스트에 동시에 접근할 수 있기 때문에 `Thread Safe`하지 않다는 것을 의미한다.
 
 따라서 `Shared EntityManager`를 사용할 때는 스레드를 동기화하고 `Thread Safe`를 보장하기 위해 반드시 <b>`@Transactional`</b> 어노테이션을 추가해야한다.
 ``` java {10}
@@ -184,7 +202,7 @@ public class Test {
 }
 ```
 
-`@Transactional`을 사용하지 않는 경우도 다음과 같이 테스트 종료 후 데이터를 삭제하는 코드를 추가한다.
+`@Transactional`을 사용하지 않는 경우 다음과 같이 테스트 종료 후 데이터를 삭제하는 코드를 추가한다.
 ``` java
 public class Test {
 
@@ -235,8 +253,7 @@ class AuthControllerTest {
 ```
 
 ## @Commit, @Rollback
-
-`@Commit`, `@Rollback`은 Spring Test 라이브러리에 포함된 어노테이션으로 테스트 환경에서 사용한다.
+`@Commit`, `@Rollback`은 스프링 테스트 모듈에 포함된 어노테이션으로 테스트 환경에서 사용한다.
 ``` groovy
 // build.gradle
 dependencies {
