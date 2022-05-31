@@ -8,8 +8,8 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-# Spring Security
-`Spring Security`에 대해 정리한다.
+# 스프링 시큐리티
+<b>`스프링 시큐리티(Spring Security)`</b>는 인증 및 접근 제어를 제공하는 스프링 프레임워크 모듈이다. 보통 ID/Password 또는 Token 기반으로 인증을 진행하며, Role 또는 Authority로 접근 제어를 할 수 있다.
 
 ## 의존성 설정
 `Spring Security`를 사용하기 위해서 다음 의존성을 추가한다.
@@ -26,10 +26,10 @@ dependencies {
 ```
 예제를 위해 `Mustache`를 뷰 템플릿으로 설정해놨다.
 
-## Security Filter
-스프링 시큐리티는 `Servlet Filter`를 기반으로 동작한다. 
 
-`@EnableWebSecurity(debug = true)`로 설정하면 요청에 대해 동작하는 필터를을 확인할 수 있다.
+
+## 스프링 시큐리티 동작 원리
+스프링 시큐리티는 여러 필터들의 묶음인 필터 체인으로 동작한다. `@EnableWebSecurity(debug = true)`로 설정하면 요청에 대해 동작하는 필터들을 확인할 수 있다.
 ``` java {2}
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -38,14 +38,230 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 } 
 ```
 
-다음과 같이 콘솔에 필터가 출력된다.
+다음과 같이 로그에 작동한 필터들이 출력된다.
 
 ![](./220305_spring_security/10.png)
 
 ![](./220305_spring_security/11.png)
 
+클라이언트로부터 요청이 들어오면 이 필터들을 거치면서 인증과 접근 권한을 체크한다.
 
-## 구성 클래스
+폼 기반 ID/Password 인증의 경우 `UsernamePasswordAuthenticationFilter`에 도착하게된다. 이 필터는 먼저 ID와 Password로 `Authentication`의 구현체인 `UsernamePasswordAuthenticationToken`를 생성한다. 그 다음 `AuthenticationManager.authenticate()`를 호출한다.
+``` java {12,15}
+public class UsernamePasswordAuthenticationFilter {
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+		if (this.postOnly && !request.getMethod().equals("POST")) {
+			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+		}
+		String username = obtainUsername(request);
+		username = (username != null) ? username : "";
+		username = username.trim();
+		String password = obtainPassword(request);
+		password = (password != null) ? password : "";
+		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password);
+		// Allow subclasses to set the "details" property
+		setDetails(request, authRequest);
+		return this.getAuthenticationManager().authenticate(authRequest);
+	}    
+}
+```
+`AuthenticationManager.authenticate()`가 호출되면 `AuthenticationManager`는 `AutehnticationProvider`의 구현체를 사용하여 실질적인 인증을 진행한다. `AutehnticationProvider`의 구현체에는 ID/Password를 비교하는 실질적인 인증 로직이 포함되며, 디폴트 `AuthenticationProvider`는 `UserDetailsService`의 구현체로 인증을 진행한다. 따라서 보통 다음과 같이 `UserDetailsService`의 구현체를 구현하고 `AuthenticationManager`가 이 구현체를 사용하도록 설정한다.
+``` java
+@Service
+@RequiredArgsConstructor
+public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private final UserRepository userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserEntity user = userRepository.findOneByName(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getName())
+                .password(user.getPassword())
+                .authorities(new SimpleGrantedAuthority(user.getAuthority().getDescription()))
+                .build();
+    }
+}
+```
+``` java
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserDetailsServiceImpl userDetailsService;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    // 생략 ...
+}
+```
+인증에 성공하면 `AuthenticationManager`는 `isAuthenticated()`의 반환값이 `true`로 설정된 `Authentication`객체를 반환한다. `UsernamePasswordAuthenticationFilter`는 이 `Authentication`객체를 `SecurityContext`에 저장하게 된다. 따라서 소스코드에서 다음과 같이 인증 여부를 확인할 수 있게 된다.
+``` java
+SecurityContext securityContext = SecurityContextHolder.getContext();
+Authentication authentication = context.getAuthentication();
+if (authentication.isAuthenticated()) {
+    // .. 
+} else {
+    // ..
+}
+``` 
+
+토큰 기반 인증의 경우 일반적으로 요청에 포함된 토큰을 `UsernamePasswordAuthenticationFilter` 이전에 가로채어 검증한다. 
+``` java {13}
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    // ...
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            // ...
+            .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                .accessDeniedHandler(jwtAccessDeniedHandler).and()
+            .authorizeRequests((authorize) -> {
+                // ...
+            });
+    }
+
+    @Bean
+    JwtFilter jwtFilter() {
+        return new JwtFilter(tokenProvider);
+    }
+    
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+}
+```
+토큰을 검증하는 필터는 직접 구현해야한다.
+``` java {17,18,19-23}
+@Slf4j
+public class JwtFilter extends OncePerRequestFilter {
+
+    public static final String AUTHORIZATION_HEADER = "Authorization";
+
+    private TokenProvider tokenProvider;
+
+    public JwtFilter(TokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String jwt = resolveToken(request);
+        String requestURI = request.getRequestURI();
+
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            Authentication authentication = tokenProvider.getAuthentication(jwt);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            log.debug("No valid token.");
+        }
+        filterChain.doFilter(request, response);
+    }
+
+    private String resolveToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
+}
+```
+또한 토큰과 `Authentication`을 제어하는 유틸리티 클래스도 필요하다.
+``` java
+@Component
+@Slf4j
+public class TokenProvider {
+
+    @Value("${jwt.token.secret}")
+    private String secret;
+
+    @Value("${jwt.token.expire}")
+    private long expireTimeInSeconds;
+
+    private static final String AUTHORITIES_KEY = "auth";
+
+    public String createToken(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        Date validity = Date.from(ZonedDateTime.now().plusMinutes(expireTimeInSeconds).toInstant());
+
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .claim(AUTHORITIES_KEY, authorities)
+                .signWith(SignatureAlgorithm.HS256, secret.getBytes())
+                .setExpiration(validity)
+                .compact();
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(token);
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            log.info("잘못된 JWT 서명입니다.");
+        } catch (ExpiredJwtException e) {
+            log.info("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.info("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.info("JWT 토큰이 잘못되었습니다.");
+        }
+        return false;
+    }
+
+    public Authentication getAuthentication(String token) {
+
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret.getBytes(StandardCharsets.UTF_8))
+                .parseClaimsJws(token)
+                .getBody();
+
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+
+        User principal = new User(claims.getSubject(), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
+```
+
+## 스프링 시큐리티 구성 클래스
 스프링 시큐리티와 관련된 설정을 커스터마이징하려면 구성 클래스를 정의해야한다. 구성 클래스는 `WebSecurityConfigurerAdapter`를 상속하며, `@EnableWebSecurity`어노테이션을 추가해야한다.
 
 ``` java

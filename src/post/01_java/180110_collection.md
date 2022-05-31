@@ -1296,3 +1296,21 @@ map.put(11, "Bale");
 Map immutable = Collections.unmodifiableMap(map);
 immutable.put(9, "Benzema");  // UnsupportedOperationException
 ```
+
+### singleton()
+하나의 요소만 포함하는 불변 `Set`을 생성한다.
+``` java
+Set<Person> set = Collections.singleton(new Person("paul", 3));
+```
+
+### singletonList()
+하나의 요소만 포함하는 불변 `List`를 생성한다.
+``` java
+List<Person> list = Collections.singletonList(new Person("Paul", 3));
+```
+
+### singletonMap()
+하나의 요소만 포함하는 불변 `Map`를 생성한다.
+``` java
+Map<String, Person> map = Collections.singletonMap("p", new Person("Paul", 3));
+```
