@@ -12,7 +12,7 @@ sidebarDepth: 0
 `Docker` 사용법에 대해 정리한다.
 
 ## Virtual Machine
-한 운영체제에 가상의 여러 운영체제를 가상화하는 기술이다. 제품군에는 `VirtualBox`, `VMWare` 등이 있다.
+호스트 OS에 가상의 여러 게스트 OS를 가상화하는 기술이다. 제품군에는 `VirtualBox`, `VMWare` 등이 있다.
 
 ## Docker
 `Docker`는 컨테이너 가상화 플랫폼이다. Docker는 호스트 OS에 `Docker Container`라는 격리된 공간을 제공해준다. 
@@ -87,7 +87,7 @@ CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS         PORTS   
 b5df63051a50   centos:7   "/bin/bash"   28 seconds ago   Up 3 seconds             my_centos
 ```
 
-## 도커 컨테이너 접속, 빠져나오기
+## 도커 컨테이너 접속하기, 빠져나오기
 도커 컨테이너에는 두 가지 명령어로 접속할 수 있다. 
 
 ### docker attach
@@ -128,7 +128,7 @@ bash-5.1# ls
 ```
 `docker exec it` 명령어로 컨테이너에 접속한 경우 `exit` 명령어로 빠져나와도 컨테이너가 종료되지 않는다. 따라서 데몬 컨테이너에 접근하는데 사용할 수 있다.
 
-## 도커 이미지 다운, 컨테이너 생성, 시작, 접속 한번에 하기
+### docker run
 `docker run` 명령어를 사용하면 도커 이미지 다운, 도커 컨테이너 생성, 시작, 접속을 한 번에 할 수 있다.
 ``` shellsession
 // docker run -i -t --name [container_name] [image_name]
@@ -169,7 +169,7 @@ $ docker container prune
 ```
 
 ## 도커 이미지 만들기
-`docker commit`명령어를 사용하면 Docker container를 빌드하여 Docker image를 생성할 수 있다.
+`docker commit`명령어를 사용하면 도커 컨테이너를 빌드하여 도커 이미지를 생성할 수 있다.
 ``` shellsession
 $ docker images
 REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
@@ -248,7 +248,7 @@ $ docker create -i -t \
 -v /Users/yologger/mydata:/mydata \
 ubuntu:14.04
 ```
-위 명령어는 호스트 파일시스템 `/Users/yologger/mydata`이 도커 컨테이너 파일시스템 `/mydata`과 바인딩된다. 도커 컨테이너에 `/mydata` 디렉토리가 없다면 자동으로 생성된다.
+위 명령어는 호스트 파일시스템의 `/Users/yologger/mydata`를 도커 컨테이너 파일시스템 `/mydata`과 바인딩한다. 도커 컨테이너에 `/mydata` 디렉토리가 없다면 자동으로 생성된다.
 
 이제 도커 컨테이너 내부에 접속하여 `/mydata` 디렉토리가 존재하는지 확인해보자.
 ``` shellsession

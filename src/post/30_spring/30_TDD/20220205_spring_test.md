@@ -320,7 +320,6 @@ public class TestControllerTest {
 }
 ```
 
-
 #### POST 요청 테스트
 HTTP POST는 다음과 같이 테스트할 수 있다.
 ``` java
