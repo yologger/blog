@@ -65,28 +65,262 @@ public class UserController {
 `MockMvc`는 테스트를 위한 `Spring MVC`의 진입점이다. 쉽게 말해 가상의 테스트용 엔드 포인트를 제공하며, 이 곳으로 HTTP 요청을 보내고 결과값을 테스트한다.
 
 #### GET 요청 테스트
+첫 번째 예제다.
 ``` java
-@WebMvcTest
-class Test {
-
-    @Autowired
-    MockMvc mvc;
-
-    @Test
-    void test1() throws Exception {
-            mvc.perform(MockMvcRequestBuilders.get("/test")
-                .param("name", "paul")
-                .cookie(new Cookie("key", "value"))
-                .header("헤더 값:")
-                .contentType(MediaType.APPLICATION_JSON)
-            ).andExpect(status().isOk())
-            .andExpect(header().string(HttpHeaders.AUTHORIZATION, "Bearer asdwje123kladsjl"))
-            .andExpect(jsonPath(expectByUsername , 1).value(containsString("nho Yo")))
-            .andExpect(content().string("expected value"));
+@RestController
+public class TestController {
+    @GetMapping
+    @RequestMapping("/test1")
+    public ResponseEntity<String> test1() {
+        return ResponseEntity.ok("test1");
     }
-
 }
 ```
+``` java
+@WebMvcTest
+public class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void test1() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/test1"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("test1"))
+                .andDo(print());
+    }
+}
+```
+두 번째 예제다.
+``` java
+@RestController
+public class TestController {
+    @GetMapping
+    @RequestMapping("/test2/{name}/{nation}")
+    public ResponseEntity<String> test2(@PathVariable String name, @PathVariable String nation) {
+        return ResponseEntity.ok("test2" + name + nation);
+    }    
+}
+```
+``` java
+@WebMvcTest
+public class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void test2() throws Exception {
+        String name = "John";
+        String nation = "USA";
+        mvc.perform(MockMvcRequestBuilders.get("/test2/{name}/{nation}", name, nation))
+                .andExpect(status().isOk())
+                .andExpect(content().string("test2" + name + nation))
+                .andDo(print());
+    }    
+}
+```
+세 번째 예제다.
+``` java
+@RestController
+public class TestController {
+    @GetMapping
+    @RequestMapping("/test3")
+    public ResponseEntity<String> test3(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorization,
+            @RequestParam String name,
+            @RequestParam String nation
+    ) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, authorization);
+
+        return new ResponseEntity(name+nation, headers, HttpStatus.OK);
+    }    
+}
+```
+``` java
+@WebMvcTest
+public class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void test3() throws Exception {
+        String name = "John";
+        String nation = "USA";
+        String token = "Bearer werjklwerjweklrjlkwer";
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("name", name);
+        params.add("nation", nation);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, token);
+
+        mvc.perform(MockMvcRequestBuilders.get("/test3")
+                .headers(headers)
+                .params(params)
+                .cookie(new Cookie("key", "value"))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(header().string(HttpHeaders.AUTHORIZATION, token))
+        .andExpect(content().string(name+nation))
+        .andDo(print());
+    }
+}
+```
+네 번째 예제다.
+``` java
+@RestController
+public class TestController {
+    @GetMapping
+    @RequestMapping("/test4")
+    public ResponseEntity<Person> test4() {
+        Person p = Person.builder()
+                .name("paul")
+                .nation("USA")
+                .build();
+
+        return ResponseEntity.ok(p);
+    }    
+}
+```
+``` json
+{
+    "name": "paul",
+    "nation": "USA"
+}
+```
+``` java
+@WebMvcTest
+public class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void test4() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/test4"))
+                .andExpect(jsonPath("$.name", is("paul")))
+                .andExpect(jsonPath("$.nation", is("USA")))
+                .andDo(print());
+    }    
+}
+```
+다섯 번째 예제다.
+``` java
+@RestController
+public class TestController {
+    @GetMapping
+    @RequestMapping("/test5")
+    public ResponseEntity<List<Person>> test5() {
+        List<Person> people = new ArrayList<>(
+                Arrays.asList(
+                        Person.builder().name("ronaldo").nation("portugal").build(),
+                        Person.builder().name("son").nation("korea").build(),
+                        Person.builder().name("messi").nation("argentina").build()
+                )
+        );
+        return ResponseEntity.ok(people);
+    }    
+}
+```
+``` json
+[
+    {
+        "name": "ronaldo",
+        "nation": "portugal"
+    },
+    {
+        "name": "son",
+        "nation": "korea"
+    },
+    {
+        "name": "messi",
+        "nation": "argentina"
+    }
+]
+```
+``` java
+@WebMvcTest
+public class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void test5() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/test5"))
+                .andExpect(jsonPath("$[0].name", is("ronaldo")))
+                .andExpect(jsonPath("$[1].nation", is("korea")))
+                .andExpect(jsonPath("$[2]").exists())
+                .andExpect(jsonPath("$[3]").doesNotExist())
+                .andDo(print());
+    }    
+}
+```
+여섯 번째 예제다.
+``` java
+@RestController
+public class TestController {
+    @GetMapping
+    @RequestMapping("/test6")
+    public ResponseEntity<JSONObject> test6() {
+
+        HttpHeaders headers = new HttpHeaders();
+
+        JSONArray array = new JSONArray();
+        array.add(new Person("paul", "USA"));
+        array.add(new Person("smith", "UK"));
+        array.add(new Person("john", "Spain"));
+
+        JSONObject body = new JSONObject();
+        body.put("people", array);
+
+        return new ResponseEntity(body, headers, HttpStatus.OK);
+    }    
+}
+```
+``` json
+{
+    "people": [
+        {
+            "name": "paul",
+            "nation": "USA"
+        },
+        {
+            "name": "smith",
+            "nation": "UK"
+        },
+        {
+            "name": "john",
+            "nation": "Spain"
+        }
+    ]
+}
+```
+``` java
+@WebMvcTest
+public class TestControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void test6() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/test6"))
+                .andExpect(jsonPath("$.people[0].name", is("paul")))
+                .andExpect(jsonPath("$.people[2].nation", is("Spain")))
+                .andExpect(jsonPath("$.people[0]").exists())
+                .andExpect(jsonPath("$.people[3]").doesNotExist())
+                .andDo(print());
+
+    }
+}
+```
+
+
 #### POST 요청 테스트
 HTTP POST는 다음과 같이 테스트할 수 있다.
 ``` java
