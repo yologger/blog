@@ -93,7 +93,7 @@ CREATE TABLE post (
 - 삭제 이상
 
 ## 정규화
-- `이상현상`을 해결하기 위해 테이블을 <b>`무손실 분해`</b>하는 것
+- `이상현상`을 해결하고 데이터 중복을 최소화하기 위해 테이블을 <b>`무손실 분해`</b>하는 것
 - 조인의 증가로 데이터 처리시간이 늘어난다는 단점이 있기 때문에 일관성과 무결성을 고려해서 적절하게 분해해야한다.
 
 ## 인덱스
@@ -111,6 +111,97 @@ CREATE TABLE post (
 - `Consistency(일관성)`: 트랜잭션이 반영되고 나서도 데이터베이스의 무결성이 유지되어야 한다.
 - `Isolation(격리성)`: 트랜잭션 중간에 다른 트랜잭션의 연산이 끼어들지 못한다. 
 - `Durability(내구성)`: 성공적으로 수행된 트랜잭션은 데이터베이스에 영구적으로 반영되어야 한다.
+
+## JDBC
+- Java Database Connectivity
+- 데이터베이스 접근을 위한 Java API
+- 모든 영속성 계층 라이브러리는 내부적으로 JDBC를 사용한다.
+- `Connection` 객체로 데이터베이스와의 연결을 관리한다.
+- `Statement` 객체로 쿼리를 실행하고 `ResultSet`으로 결과를 받아볼 수 있다.
+``` java
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class App {
+    public static void main(String[] args) {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+
+            String url = "jdbc:mysql://localhost:3306/mydb";
+            connection = DriverManager.getConnection(url, "admin", "admin");
+
+            statement = connection.createStatement();
+
+            String sql = "SELECT * FROM member";
+
+            resultSet = statement.executeQuery(sql);
+
+            while(resultSet.next()){
+
+                String name = resultSet.getString(1);
+                String password = resultSet.getString(2);
+
+                System.out.println(name + " " + password);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace()
+        }
+        finally{
+            connection.close();
+            statement.close();
+            resultSet.close()
+        }
+    }
+}
+```
+
+## Connection Pool
+- 런타임에 `Connection` 객체를 매번 생성하는 것은 비효율적이다.
+- 애플리케이션 구동 시 `ConnectionPool`에 정해진 숫자의 `Connection` 객체를 미리 생성한다.
+- 필요한 경우 미리 생성된 `Connection` 객체을 할당하고 다 사용된 `Connection` 객체은 반납한다.
+- `Connection`수를 제한할 수 있다.
+
+## SQL Mapper
+- 자바 객체와 SQL를 매핑해주는 표준
+- 대표적인 구현체에는 myBatis가 있다 
+- 데이터베이스에 종속적인 SQL을 직접 작성해야한다.
+``` xml
+<!-- UserMapper.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="con.yologger.app.UserMapper">
+	<select id="findAll" resultType="com.yologger.app.User">
+		select * from user
+	</select>
+</mapper>
+```
+``` java
+import com.example.demo.dto.User; 
+import org.apache.ibatis.annotations.Mapper; 
+import org.apache.ibatis.annotations.Param; 
+import org.apache.ibatis.annotations.Select; 
+import java.util.List; 
+
+@Mapper 
+public interface UserMapper { 
+    @Select("SELECT * FROM user") 
+    List<User> findAll(); 
+}
+```
+
+## JPA
+- 관계형 데이터베이스의 테이블과 객체지향 프로그래밍의 객체를 매핑해주는 기술이다.
+- 데이터베이스에 독립적이며, JPA가 DB에 종속적인 쿼리를 대신 작성해준다
+- 복잡한 쿼리는 JPQL, QueryDSL로 직접 작성할 수 있다.
 
 ## RDBMS vs. NoSQL
 ### RDBMS

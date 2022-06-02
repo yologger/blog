@@ -121,7 +121,8 @@ Optional.ofNullable(person)
 
 ```
 
-## 값 가져오기
+## 값 가져오기, 예외 처리하기
+### get()
 `get()`을 사용하면 Optional이 가지고 있는 객체를 가져올 수 있다.
 ``` java
 String str = Optional.ofNullable("Hello").get();
@@ -131,56 +132,6 @@ String str = Optional.ofNullable("Hello").get();
 String str = Optional.ofNullable(null).get();   // NoSuchElementException
 ```
 
-## 필터링
-`filter()`을 사용하면 객체를 필터링할 수 있다.
-``` java
-Optional.of("ABCD")
-    .filter(v -> v.startsWith("AB"))
-    .ifPresent(value -> System.out.println(value));
-```
-
-``` text 출력 결과
-ABCD
-```
-
-``` java
-Optional.of("ABCD")
-    .filter(v -> v.startsWith("XY"))
-    .ifPresent(value -> System.out.println(value));
-```
-``` text 출력 결과
-
-```
-
-## 변환
-### map()
-`map()`을 사용하면 객체를 변환할 수 있다.
-``` java
-Optional.of("ABCD")
-    .map(value -> value.toLowerCase())
-    .ifPresent(value -> System.out.println(value));
-```
-
-``` text 출력 결과
-abcd
-```
-위 코드는 `메소드 참조`을 사용하여 다음과 같이 단축할 수도 있다.
-``` java
-Optional.of("ABCD")
-    .map(String::toLowerCase)
-    .ifPresent(System.out::println);
-```
-
-### flatMap()
-`flatMap()`을 사용하면 다른 Optional로 반환할 수 있다.
-``` java
-Optional.of("ABCD")
-    .flatMap(value -> Optional.of(value.toLowerCase()))
-    .ifPresent(System.out::println);    // abcd
-```
-
-
-## 기타
 ### orElse()
 `orElse()`는 Optional이 비어있다면 `orElse()`로 지정한 값을 반환한다.
 ``` java
@@ -241,6 +192,55 @@ String value = Optional.ofNullable(str)
 
 System.out.println(value);
 ```
+
+## 필터링
+`filter()`을 사용하면 객체를 필터링할 수 있다.
+``` java
+Optional.of("ABCD")
+    .filter(v -> v.startsWith("AB"))
+    .ifPresent(value -> System.out.println(value));
+```
+
+``` text 출력 결과
+ABCD
+```
+
+``` java
+Optional.of("ABCD")
+    .filter(v -> v.startsWith("XY"))
+    .ifPresent(value -> System.out.println(value));
+```
+``` text 출력 결과
+
+```
+
+## 변환
+### map()
+`map()`을 사용하면 객체를 변환할 수 있다.
+``` java
+Optional.of("ABCD")
+    .map(value -> value.toLowerCase())
+    .ifPresent(value -> System.out.println(value));
+```
+
+``` text 출력 결과
+abcd
+```
+위 코드는 `메소드 참조`을 사용하여 다음과 같이 단축할 수도 있다.
+``` java
+Optional.of("ABCD")
+    .map(String::toLowerCase)
+    .ifPresent(System.out::println);
+```
+
+### flatMap()
+`flatMap()`을 사용하면 다른 Optional로 반환할 수 있다.
+``` java
+Optional.of("ABCD")
+    .flatMap(value -> Optional.of(value.toLowerCase()))
+    .ifPresent(System.out::println);    // abcd
+```
+
 
 ## 원시타입 옵셔널
 제너릭과 Wrapper 클래스를 사용하면 원시 타입의 옵셔널을 생성할 수 있다.
