@@ -1,5 +1,5 @@
 ---
-title: "스프링 외부 설정(Externalized Configuration)과 Profile"
+title: "스프링 외부 설정과 Profile"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 ## 스프링 외부 설정
-스프링은 설정값(<b>`프로퍼티`</b>)을 소스코드에서 분리하여 외부에 위치시킬 수 있는 여러가지 방법을 제공한다. 이를 `외부 설정(Externalized Configuration)`이라고 한다.
+스프링은 설정값을 소스코드에서 분리하여 외부에 위치시킬 수 있는 여러가지 방법을 제공한다. 이를 `외부 설정(Externalized Configuration)`이라고 한다. 또한 설정값 하나하나를 `프로퍼티(Property)`라고 한다.
 
 스프링에서는 자주 사용되는 외부 설정 방법은 다음과 같다.
 - `@PropertySource`
@@ -387,7 +387,6 @@ public class TestControllerTest {
 }
 ```
 `src/main/resources`의 `application.properties`는 우선순위가 15이다. 반면 `@TestPropertySource`로 제공한 프로퍼티는 우선순위가 2다. 따라서 `@TestPropertySource`로 제공한 프로퍼티가 적용되며 중복된 프로퍼티는 덮어쓴다.
-
 
 ## Profile
 개발, 테스트, 운영 환경에 따라 다른 설정값을 사용할 수 있다. 이를 위해 스프링은 `프로파일(Profile)`이라는 기능을 제공한다.
