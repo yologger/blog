@@ -300,6 +300,91 @@ public class TestControllerTest {
 }
 ```
 
+### @ConfigurationProperties
+`@ConfigurationProperties`을 사용하면 `application.properties` 또는 `application.yml`의 프로퍼티를 클래스의 멤버변수로 바인딩할 수 있다.
+
+다음과 같이 `application.properties`가 있다고 가정하자.
+``` properties
+## application.properties
+user-info.email=paul@gmail.com
+user-info.name=paul
+user-info.age=30
+```
+별도의 클래스를 정의한 후 `@ConfigurationProperties` 어노테이션으로 속성값을 클래스에 바인딩할 수 있다.
+``` java {5}
+package com.yologger.samples.external_configuration;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(prefix = "user-info")
+@Configuration
+public class UserInfoProperties {
+    private String email;
+    private String name;
+    private int age;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+해당 클래스는 어플리케이션 내에서 다음과 같이 주입받을 수 있다.
+``` java {5}
+@RestController
+@RequestMapping("/test")
+public class TestController {
+
+    @Autowired UserInfoProperties userInfoProperties;
+
+    @GetMapping("/test")
+    public String test() {
+        return userInfoProperties.getEmail() + userInfoProperties.getName() + userInfoProperties.getAge();
+    }
+}
+```
+`@Configuration` 대신 `@EnableConfigurationProperties`을 사용할 수도 있다. `@EnableConfigurationProperties`은 `@ConfigurationProperties`어노테이션이 붙은 클래스를 빈으로 등록해준다.
+``` java{6}
+package com.yologger.samples.external_configuration;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+@ConfigurationProperties(prefix = "user-info")
+// @Configuration
+public class UserInfoProperties {
+    // ...
+}
+```
+``` java{2}
+@SpringBootApplication
+@EnableConfigurationProperties(UserInfoProperties.class)
+public class Application {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
 ### 테스트 어노테이션의 properties 속성
 `@SpringBootTest`, `@DataJpaTest` 같은 테스트 어노테이션의 <b>`properties`</b>속성으로 프로퍼티를 추가할 수 있다. 이미 존재하는 프로퍼티는 덮어쓴다.
 ``` properties
