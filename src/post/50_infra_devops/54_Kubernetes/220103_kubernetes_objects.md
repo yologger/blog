@@ -19,7 +19,7 @@ sidebarDepth: 0
 - `Service`
 - `Ingress`
 
-## 오브젝트 종류 확인하기
+다음 명령어로 쿠버네티스가 제공하는 모든 오브젝트를 확인할 수 있다.
 ``` shellsession
 $ kubectl api-resources
 NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND

@@ -569,7 +569,7 @@ Login Succeeded
 $ docker pull <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
 ```
 
-## Dockerfile
+## Dockerfile 파일
 지금까지 다음과 같은 순서로 `Docker image`를 생성했다.
 
 1. Docker image로 Docker container 생성
@@ -596,7 +596,8 @@ RUN apt update
 # 패키지 매니저로 git 설치
 RUN apt install -y git
 ```
-이제 `docker build` 명령어로 이미지를 생성하자. 마지막 인자로 `Dockerfile`이 위치하는 현재 디렉토리 `.`를 전달한다.
+### docker build 명령어
+이제 `docker build -t <IMAGE_NAME>:<TAG> .` 명령어로 이미지를 생성하자. 마지막 인자로 `Dockerfile`이 위치하는 현재 디렉토리 `.`를 전달한다.
 ``` shellsession{1}
 $ docker build -t my_ubuntu_image:0.1 .
 [+] Building 2.2s (8/8) FINISHED                                                                                              

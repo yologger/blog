@@ -89,9 +89,3 @@ $ docker-compose stop
 ``` shellsession
 $ docker-compose down
 ```
-
-kafka-topics --bootstrap-server localhost:9092 --topic test-topic --partitions 1 --replication-factor 1 --create
-
-kafka-console-consumer --bootstrap-server localhost:9092 --topic test-topic
-
-kafka-console-producer --bootstrap-server localhost:9092 --topic test-topic
