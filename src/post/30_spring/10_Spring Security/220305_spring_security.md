@@ -1092,3 +1092,86 @@ public class TestController {
     }
 }
 ```
+
+## HttpSecurity vs. WebSecurity
+스프링 시큐리티는 `HttpSecurity`로 인증 및 접근 제어 등을 설정한다.
+``` java
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        super.configure(web);
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests((authorize) -> authorize
+                .antMatchers("/test1").hasAuthority("USER")
+                .anyRequest().authenticated());
+    }
+}
+```
+`HttpSecurity`의 설정에 따라 여러 필터들로 구성된 <u>필터 체인</u>이 동작하여 인증 및 접근 권한을 체크하게 된다.
+```
+Security filter chain: [
+  DisableEncodeUrlFilter
+  WebAsyncManagerIntegrationFilter
+  SecurityContextPersistenceFilter
+  HeaderWriterFilter
+  CsrfFilter
+  LogoutFilter
+  RequestCacheAwareFilter
+  SecurityContextHolderAwareRequestFilter
+  AnonymousAuthenticationFilter
+  SessionManagementFilter
+  ExceptionTranslationFilter
+  AuthorizationFilter
+]
+```
+`WebSecurity`는 <u>필터 체인</u>을 무시하는데 사용한다. 따라서 `WebSecurity.ignoring().antMatchers()`에 명시한 엔드 포인트는 `HttpSecurity`에서 설정한 인증 및 접근 권한 확인을 건너뛰게 된다.
+``` java {4-8,14}
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/test1");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests((authorize) -> authorize
+                        .antMatchers("/test1").hasAuthority("USER") // 무시
+                        .anyRequest().authenticated());
+    }
+}
+```
+위 예제처럼 `WebSecurity`, `HttpSecurity`를 모두 설정한 경우 `WebSecurity`가 `HttpSecurity`보다 우선하기 때문에 `HttpSecurity`의 인가 설정은 무시된다.
+
+보통 `HttpSecurity`를 통해 인증 및 접근 제어을 설정한다. 그리고 `WebSecurity`로 정적 리소스 처럼 인증, 인가가 필요하지 않은 엔드포인트를 설정한다.
+``` java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+            .antMatchers("/publics/**");
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeHttpRequests((authorize) -> authorize
+                .anyRequest().authenticated());
+    }
+}
+```
