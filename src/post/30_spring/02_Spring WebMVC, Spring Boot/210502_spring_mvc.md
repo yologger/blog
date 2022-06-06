@@ -1,5 +1,5 @@
 ---
-title: "Spring MVC 시작하기"
+title: "Spring WebMVC 시작하기"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -7,13 +7,13 @@ sidebarDepth: 0
 
 [[toc]]
 
-## Spring MVC
-`Spring MVC`는 클라이언트의 요청을 받아 적절하게 처리한 후 응답하기 위한 스프링 프레임워크의 핵심 모듈이다. 
+# Spring WebMVC
+`Spring WebMVC`는 클라이언트의 요청을 받아 적절하게 처리한 후 응답하기 위한 스프링 프레임워크의 핵심 모듈이다. 
 
 ## DispatcherSevlet
-`DispatcherSevlet`은 Spring MVC의 핵심 컴포넌트로 사용자의 요청을 받은 후 이를 처리할 수 있는 컨트롤러를 찾아 요청을 위임한다. 이렇게 전면에 사용자 요청 수신을 전담하는 컴포넌트를 배치하는 패턴을 `Front Controller` 패턴이라고 한다. 
+`DispatcherSevlet`은 Spring WebMVC의 핵심 컴포넌트로 사용자의 요청을 받은 후 이를 처리할 수 있는 컨트롤러를 찾아 요청을 위임한다. 이렇게 전면에 사용자 요청 수신을 전담하는 컴포넌트를 배치하는 패턴을 `Front Controller` 패턴이라고 한다. 
 
-Spring MVC의 동작 원리를 그림으로 표현하면 다음과 같다.
+Spring WebMVC의 동작 원리를 그림으로 표현하면 다음과 같다.
 
 ![](./210502_spring_mvc/0.png)
 
