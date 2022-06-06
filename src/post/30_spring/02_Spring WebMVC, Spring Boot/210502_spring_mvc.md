@@ -508,3 +508,27 @@ public class PostController {
 
 }
 ```
+
+## Spring WebMVC 구성 클래스
+`Spring WebMVC` 구성 클래스는 `WebMvcConfigurer`인터페이스를 구현하여 정의한다. 다만 Spring Legacy와 Spring Boot의 설정이 조금 다르다.
+
+우선 Spring Legacy 프로젝트에서는 다음과 같이 구성 클래스를 정의할 수 있다. 이 때는 `@EnableWebMvc`가 제공하는 `WebMvcConfigurationSupport` 클래스를 사용하여 Spring WebMVC와 관련된 컴포넌트를 초기화한다.
+``` java {1}
+@EnableWebMvc
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+	// 생략 ...
+}
+```
+반면 Spring Boot 프로젝트에서는 보통 다음과 같이 구성 클래스를 정의한다. 이 때는 스프링 부트 `Auto Configuration`이 제공하는 `WebMvcAutoConfiguration` 클래스를 사용하여 Spring WebMVC와 관련된 컴포넌트를 초기화한다.
+``` java {1}
+// @EnableWebMvc
+@Configuration
+public class WebMvcConfig implements WebMvcConfigurer {
+	// 생략 ...
+}
+```
+
+`WebMvcConfigurer`인터페이스에서 제공하는 메소드는 다음과 같다. 이 메소드를 구현하여 `Spring WebMVC` 설정을 커스터마이징할 수 있다.
+
+![](./210502_spring_mvc/2.png)

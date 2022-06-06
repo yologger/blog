@@ -291,6 +291,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	// 생략 ...
 }
 ```
+`WebMvcAutoConfiguration`는 `WebMvcConfigurationSupport`보다 더 많은 컴포넌트를 자동으로 구성해준다. 따라서 스프링 부트 프로젝트에서 Spring WebMVC 설정을 커스터마이징 할 때는 `@EnableWebMvc`를 제외하여 `Auto Configuration` 기능을 사용하는 것이 좋다.
 
 반면 스프링 시큐리티의 경우 스프링 부트 `Auto Configuration`가 제공하는 설정을 사용하지 않고 개발자가 인증과 접근 제어를 직접 설정하는 경우가 많다. 따라서 보통 다음과 같이 구성 클래스를 구현한다.
 ``` java
