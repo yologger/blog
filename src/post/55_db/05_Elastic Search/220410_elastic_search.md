@@ -31,7 +31,7 @@ sidebarDepth: 0
     |DELETE|DELETE|
 
 ## ELK 스택
-- `ElasticSearch`은 빠른 검색을 위해 단독으로 사용되기도 하지만 `ELK(ElasticSearch / LogStash / Kibana)` + `Filebeat` 스택으로 사용되기도 한다.
+- `ElasticSearch`은 빠른 검색을 위해 단독으로 사용되기도 하지만 `ELK(ElasticSearch / LogStash / Kibana)` + `Beats` 스택으로 사용되기도 한다.
 - ELK 스택을 사용하면 여러 데이터소스에서 발생한 데이터를 수집, 가공, 분석한 후 시각화할 수 있다.
 - ELK 스택은 MSA 환경에서 여러 개별 서비스의 로그를 중앙 집중형 로깅하고 모니터링하는데 사용할 수 있다.
 - 빅데이터 분야에도 활용할 수 있다.
@@ -39,7 +39,7 @@ sidebarDepth: 0
 ![](./220410_elastic_search/1.png)
 
 
-### Filebeat
+### Beats
 - 여러 데이터 소스에 설치되어 데이터를 수집한 후 Logstash로 전송한다.
 
 ### Logstash
