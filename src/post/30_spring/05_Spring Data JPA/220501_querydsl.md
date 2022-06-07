@@ -9,15 +9,15 @@ sidebarDepth: 0
 [[toc]]
 
 # Query DSL
-`Hibernate`는 복잡한 쿼리 또는 조인을 처리하기 위해 `JPQL`을 제공한다. 그러나 `JPQL`은 큰 단점이 하나 있다. `JPQL` 예제를 살펴보자.
+Hibernate는 복잡한 쿼리 또는 조인을 처리하기 위해 `JPQL`을 제공한다. 그러나 JPQL은 큰 단점이 하나 있다. 예제를 살펴보자.
 
 ``` java {1}
 String jpql = "select m from MemberEntity as m";
 List<MemberEntity> members = entityManager.createQuery(jpql, MemberEntity.class).getResultList();
 ```
-`JPQL`은 <u>문자열</u>로 작성한다. 따라서 문법적 오류가 있어도 코드 작성 시점이나 컴파일 타임에 알아낼 수 없다. 
+JPQL은 <u>문자열</u>로 작성한다. 따라서 문법적 오류가 있어도 코드 작성 시점이나 컴파일 타임에 알아낼 수 없다. 
 
-`Spring Data JPA`의 `Query Method`도 비슷한 한계가 있다.
+`Spring Data JPA`의 JPQL도 같은 단점이 있다.
 ``` java {6}
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -28,19 +28,17 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     List<MemberEntity> findByEmailAndName(@Param("email") String email, @Param("name") String name);
 ```
 
-이러한 문제를 해결하기 위해 <b>`Query DSL(Domain Specific Language)`</b>가 등장했다. <b>`Query DSL`</b>은 다음과 같은 장점이 있다.
+이러한 문제를 해결하기 위해 <b>`Query DSL(Domain Specific Language)`</b>가 등장했다. Query DSL은 다음과 같은 장점이 있다.
 - 문자열이 아닌 코드로 작성한다.
 - 문법적 오류를 컴파일 단계에서 탐지할 수 있으므로 `타입 안정성`이 있다.
 - 쿼리 결과를 엔티티가 아닌 사용자 정의 객체로 받을 수 있다.
 
-이제 `Query DSL`에 대해 알아보자.
-
 ## 의존성 추가
-`Spring Boot`, `Gradle` 버전에 따라 `Query DSL`의 설정 방법이 조금씩 다르다. 이 포스트에서는 다음 버전을 기준으로 한다.
+Spring Boot, Gradle 버전에 따라 Query DSL 설정 방법이 조금씩 다르다. 이 포스트에서는 다음 버전을 기준으로 한다.
 - `Gradle 7.1.1`
 - `Spring Boot 2.5.3`
 
-`build.gradle`를 작성하자. 어두운 부분이 `Query DSL`과 관련된 설정이다.
+`build.gradle`를 작성하자. 어두운 부분이 Query DSL과 관련된 설정이다.
 
 ``` groovy {5,14,21-41}
 plugins {
@@ -87,9 +85,9 @@ compileQuerydsl {
 ```
 
 ## Q 클래스 생성하기
-`Query DSL`은 컴파일 시점에 <u>엔티티에 접두사`Q`를 붙인 클래스</u>를 생성한다. 만약 엔티티의 클래스 이름이 `MemberEntity`라면 `QMemberEntity`라는 `Q 클래스`가 생성된다.
+Query DSL은 컴파일 시점에 <u>엔티티에 접두사`Q`를 붙인 클래스</u>를 생성한다. 만약 엔티티의 클래스 이름이 MemberEntity라면 QMemberEntity라는 `Q 클래스`가 생성된다.
 
-엔티티 클래스 `MemberEntity`를 다음과 같이 정의하자.
+엔티티 클래스 MemberEntity를 다음과 같이 정의하자.
 ``` java
 @Entity
 @Table(name= "member")
@@ -134,7 +132,7 @@ public class MemberEntity {
     }
 }
 ```
-`PostEntity`클래스도 정의하자.
+PostEntity 클래스도 정의하자.
 ``` java
 @Entity
 @Table(name = "post")
@@ -172,7 +170,7 @@ public class PostEntity {
 ./gradlew compileQuerydsl
 ```
 
-그러면 다음 경로에 `QMemberEntity`와 `QPostEntity`클래스가 생성된다.
+그러면 다음 경로에 QMemberEntity와 QPostEntity클래스가 생성된다.
 
 ![](./220501_querydsl/2.png)
 
@@ -280,13 +278,13 @@ public class QueryDslConfiguration {
     }
 }
 ```
-`@PersistenceContext` 어노테이션을 추가하면 `Hibernate`의 `EntityManager`가 주입된다. 이 `EntityManager`를 인자로 받는 `JPAQueryFactory`를 빈으로 등록한다.
+Query DSL은 내부적으로 `EntityManager`를 사용한다. 이 Entity Manager를 `JPAQueryFactory`클래스 생성자로 전달한 후 빈으로 등록하면 된다.
 
 ## Query DSL과 영속성 컨텍스트
 Query DSL은 내부적으로 JPA의 EntityManager를 사용한다. 따라서 Query DSL로 조회한 엔티티도 JPA의 영속성 컨텍스트에서 관리된다. 
 
 ## 데이터 조회
-빈으로 등록한 `JpaQueryFactory` 객체로 복잡한 데이터 조회 및 조인 작업이 가능하다. 간단하게 `MemberEntity`의 모든 데이터를 조회해보자.
+빈으로 등록한 `JpaQueryFactory` 객체로 복잡한 데이터 조회 및 조인 작업이 가능하다.
 
 ### selectFrom(), fetch()
 `selectFrom()`으로 엔티티를 지정하고 `fetch()`를 호출하면 모든 데이터가 조회된다.
@@ -792,13 +790,14 @@ List<Tuple> tuples = jpaQueryFactory
 `QueryDSL`도 삭제를 위한 배치 쿼리를 지원한다. `QueryDSL`을 통한 삭제 작업 또한 영속성 컨텍스트를 무시하고 데이터베이스에 직접 적용한다는 점에 유의하자.
 
 ## Repository와 함께 사용하기
+Query DSL은 Spring Data JPA의 `Repository` 인터페이스와 함께 사용할 수 있다. 
 ``` java
 public interface PostCustomRepository {
     List<PostEntity> findAllPostsOrderByCreatedAtDescExceptBlocking(Long memberId, int offset, int limit);
     List<PostEntity> findAllByWriterId(Long memberId, int offset, int limit);
 }
 ```
-``` java
+``` java {4}
 @RequiredArgsConstructor
 public class PostCustomRepositoryImpl implements PostCustomRepository {
 

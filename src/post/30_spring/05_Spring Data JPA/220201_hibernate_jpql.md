@@ -6,7 +6,7 @@ sidebarDepth: 0
 ---
 
 # JPQL
-<b>`JPQL(Java Persistence Query Laungage)`</b>를 사용하면 좀 더 복잡한 조회를 하거나 조인 작업을 수행할 수 있다. <b>`JPQL`</b>은 데이터베이스 `SQL`과 매우 유사한 문법을 가지고 있다. 차이점이 있다면 데이터베이스의 테이블이 아닌 <u>객체, 즉 엔티티를 대상으로 쿼리를 수행한다</u>는 것이다.
+<b>`JPQL(Java Persistence Query Laungage)`</b>를 사용하면 좀 더 복잡한 조회를 하거나 조인 작업을 수행할 수 있다. JPQL은 데이터베이스 `SQL`과 매우 유사한 문법을 가지고 있다. 차이점이 있다면 데이터베이스의 테이블이 아닌 <u>객체, 즉 엔티티를 대상으로 쿼리를 수행한다</u>는 것이다.
 
 다음과 같은 객체, 즉 엔티티가 있다고 가정하자.
 
@@ -77,11 +77,11 @@ public class MemberEntity {
     }
 }
 ```
-그 다음 <b>문자열</b> 안에 `JPQL`을 작성한다.
+그 다음 `문자열` 안에 JPQL 문법을 작성한다.
 ``` java
 String jpql = "select m from MemberEntity as m";
 ```
-이제 JPQL과 `EntityManager`클래스의 `createQuery()`메소드로 `JPQL`을 실행할 수 있다.
+이제 JPQL과 `EntityManager.createQuery()`메소드로 JPQL을 실행할 수 있다.
 ``` java
 List<MemberEntity> members = entityManager.createQuery(jpql, MemberEntity.class).getResultList();
 ```

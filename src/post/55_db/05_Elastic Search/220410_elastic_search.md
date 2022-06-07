@@ -1,5 +1,5 @@
 ---
-title: "ElasticSearch, ELK 스택"
+title: "ElasticSearch, ELK 스택 시작하기"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -176,7 +176,7 @@ $ curl -XDELETE http://localhost:9200/person
 ```
 
 ## Type, Document
-`타입(Type)`은 관계형 데이터베이스의 테이블에 상응하며, `도큐먼트(Document)`는 관계형 데이터베이스의 로우에 사응한다.
+`타입(Type)`은 관계형 데이터베이스의 테이블에 상응하며, `도큐먼트(Document)`는 관계형 데이터베이스의 로우에 상응한다.
 
 ### 타입,  도큐먼트 생성
 타입과 도큐먼트는 다음과 같이 생성한다.
@@ -427,8 +427,8 @@ $ curl -XPOST http://localhost:9200/person/player/30\?pretty \
 }
 ```
 
-## 조회
-`_search`옵션으로 타입의 도큐먼트들을 조회할 수 있다.
+## 검색
+`_search`옵션으로 타입의 도큐먼트들을 검색할 수 있다.
 ```
 $ curl -XGET http://localhost:9200/person/player/_search\?pretty
 ```

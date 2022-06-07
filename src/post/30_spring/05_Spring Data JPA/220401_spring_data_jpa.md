@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 # Spring Data JPA
-<b>`Spring Data JPA`</b>는 스프링 프레임워크에서 `JPA`를 좀 더 편하게 사용할 수 있도록 하는 프로젝트다. 내부적으로 `Hibernate`을 포함하고 있으며, `EntityManager`를 직접 관리하지 않고 `JpaRepository`을 사용할 수 있다. 또한 페이징, 정렬, JPQL, Query Method 기능을 추가적으로 제공한다.
+<b>`Spring Data JPA`</b>는 스프링 프레임워크에서 JPA를 더 추상화하여 사용하기 쉽게 만든 프로젝트다. 내부적으로 Hibernate을 사용하며, `EntityManager`를 직접 관리하지 않고 `JpaRepository`인터페이스를 사용한다. 또한 Query Method, JPQL, 페이징, 정렬 기능을 추가적으로 제공한다.
 
 ## 설정
 `Spring Data JPA`를 사용하려면 의존성을 추가해야한다.
@@ -25,7 +25,7 @@ dependencies {
 ![](./220401_spring_data_jpa/1.png)
 
 ## CrudRepository
-`Spring Data JPA`의 `CrudRepository` 인터페이스는 CRUD 작업을 위한 다양한 메소드를 자동으로 생성한다.
+`CrudRepository` 인터페이스는 CRUD 작업을 위한 다양한 메소드를 자동으로 생성한다.
  
 ``` java
 import javax.persistence.Entity;
@@ -290,10 +290,12 @@ MemberEntity target = memberRepository.getById(1);
 엔티티가 없으면 `EntityNotFoundException`를 발생시킨다.
 
 ## Query Method
-`Spring Data JPA`는 `쿼리 메소드(Query Method)`라는 기능을 제공한다. 
+Spring Data JPA는 `쿼리 메소드(Query Method)`라는 기능을 제공한다. 
 
 ### 메소드 이름으로 JPQL 생성하기
-`Query Method`를 사용하면 <u>메소드 이름</u>으로 <u>JPQL 쿼리</u>를 생성할 수 있다. 다음과 같이 `MemberEntity`라는 엔티티 클래스가 있다고 가정하자.
+쿼리 메소드를 사용하면 <u>메소드 이름</u>으로 <u>JPQL 쿼리</u>를 생성할 수 있다. 
+
+예제를 살펴보자. 다음과 같이 MemberEntity 라는 엔티티 클래스가 있다.
 ``` java
 @Entity
 @Table(name= "member")

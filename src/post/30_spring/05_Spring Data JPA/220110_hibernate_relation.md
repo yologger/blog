@@ -1,5 +1,5 @@
 ---
-title: "Hibernate - 관계(Relation)"
+title: "Hibernate - 연관관계(Relation)"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -8,13 +8,13 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-# 관계(Relation)
-`Hibernate`의 <b>`관계(Relation)`</b>에 대해 정리한다.
+# 연관관계(Relation)
+Hibernate의 <b>`연관관계(Relation)`</b>에 대해 정리한다.
 
 ## @OneToMany
 하나의 요소에 여러 개의 다른 요소들이 연결될 수 있으면 `One-To-Many(일대다) 관계`라고 한다.
 
-예제를 살펴보자. 하나의 사용자는 여러 게시물를 가질 수 있으므로 일대다 관계이며, 이를 코드로 표현하면 다음과 같다.
+예제를 살펴보자. 하나의 사용자는 여러 게시물를 가질 수 있으므로 일대다 관계며, 이를 두 엔티티 사이에 연관관계가 있다는 것은 다음과 같이 정의한다.
 ``` java {16,17}
 // MemberEntity.java
 @Entity
@@ -51,26 +51,14 @@ public class MemberEntity {
 @Entity
 @Table(name= "post")
 public class PostEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
-    private String content;
-
-    public PostEntity(String content) {
-        this.content = content;
-    }
-
     // 생략 ...
 }
 ```
-`Hibernate`의 `hibernate.hbm2ddl.auto`을 `update`로 설정하고 애플리케이션을 실행하면 다음과 같은 구조로 테이블이 생성된다. 외래키가 아닌 `member_post`라는 별도의 테이블로 관계를 표현한 점에 주목하자.
+Hibernate의 `hibernate.hbm2ddl.auto`을 `update`로 설정하고 애플리케이션을 실행하면 다음과 같은 구조로 테이블이 생성된다. 외래키가 아닌 `member_post`라는 <u>별도의 테이블</u>로 관계를 표현한 점에 주목하자.
 
 ![](./220110_hibernate_relation/01.png) 
 
-관계는 다음과 같이 추가할 수 있다. <u>먼저 두 엔티티를 영속화한 후 사용자 정의 메소드로 관계를 추가한다.</u>
+연관관계는 <u>먼저 두 엔티티를 영속화한 후 사용자 정의 메소드로 추가한다.</u>
 
 ``` java
 // MemberEntity 영속화
@@ -118,22 +106,6 @@ mysql> SELECT * FROM member_post;
 @Entity
 @Table(name= "member")
 public class MemberEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
-    private String name;
-
-    @Column
-    private String password;
-
-    public MemberEntity(String name, String password) {
-        this.name = name;
-        this.password = password;
-    }
-
     // 생략 ...
 }
 ```
@@ -161,11 +133,11 @@ public class PostEntity {
     }
 }
 ```
-`Hibernate`의 `hibernate.hbm2ddl.auto`을 `update`로 설정하고 애플리케이션을 실행하면 다음과 같은 구조로 테이블이 생성된다. 이번에는 외래키로 관계를 표현한 점에 주목하자.
+Hibernate의 `hibernate.hbm2ddl.auto`을 `update`로 설정하고 애플리케이션을 실행하면 다음과 같은 구조로 테이블이 생성된다. 이번에는 <u>외래키</u>로 관계를 표현한 점에 주목하자.
 
 ![](./220110_hibernate_relation/02.png)
 
-관계는 다음과 같이 추가할 수 있다. 
+연관관계는 다음과 같이 추가한다.
 ``` java
 // PostEntity 영속화
 PostEntity post = new PostEntity("content1");
@@ -197,8 +169,8 @@ mysql> SELECT * FROM post;
 +----+----------+-----------+
 ```
 
-## 단방향 관계, 양방향 관계
-한쪽으로만 관계가 설정되면 <b>`단방향 관계`</b>라고 한다. 아래 예제는 `MemberEntity`에서 `PostEntity` 쪽으로 단방향 관계를 설정하고 있다.
+## 단방향 연관관계, 양방향 연관관계
+한쪽으로만 연관관계가 설정되면 <b>`단방향 연관관계`</b>라고 한다. 아래 예제는 MemberEntity에서 PostEntity 쪽으로 단방향 연관관계를 설정하고 있다.
 ``` java{5-6}
 @Entity
 @Table(name= "member")
@@ -218,7 +190,7 @@ public class PostEntity {
     // 중략 ...
 }
 ```
-양쪽으로 관계가 설정되면 <b>`양방향 관계`</b>라고 한다. 아래 예제는 양방향으로 관계를 설정하고 있다.
+양쪽으로 연관관계가 설정되면 <b>`양방향 연관관계`</b>라고 한다. 아래 예제는 양방향으로 연관관계를 설정하고 있다.
 ``` java{5-6}
 @Entity
 @Table(name= "member")
@@ -243,16 +215,16 @@ public class PostEntity {
 ```
 
 
-## 관계의 주인
-양방향 관계 설정 시 기본적으로 두 테이블의 관계를 <u>별도의 테이블</u>로 표현한다.
+## 연관관계의 주인
+양방향 연관관계 설정 시 기본적으로 두 테이블의 관계를 <u>별도의 테이블</u>로 표현한다.
 
 ![](./220110_hibernate_relation/01.png)
 
-양방향 관계 설정 시 두 테이블의 관계를 <u>외래 키(Foreign Key)</u>로도 표현할 수 있다. 이 때 외래 키가 생성되는 테이블을 <b>`관계의 주인`</b>이라고 한다.
+양방향 연관관계 설정 시 두 테이블의 관계를 <u>외래 키</u>로도 표현할 수 있다. 이 때 외래 키가 생성되는 테이블을 <b>`연관관계의 주인`</b>이라고 한다.
 
 ![](./220110_hibernate_relation/02.png)
 
-`관계의 주인`은 관계의 주인이 아닌 엔티티에서 `mappedBy` 속성으로 관계의 주인이 될 엔티티의 속성을 지정하면 된다.
+연관관계의 주인은 주인이 아닌 엔티티에서 `mappedBy` 속성으로 주인이 될 엔티티의 속성을 지정하면 된다.
 
 ``` java {7}
 @Entity
@@ -266,11 +238,11 @@ public class MemberEntity {
 }
 ``` 
 
-이 경우 관계의 주인인 엔티티에 외래 키 컬럼이 생성된다.
+이 경우 연관관계의 주인인 엔티티에 외래 키 컬럼이 생성된다.
 
 ![](./220110_hibernate_relation/1.png)
 
-그렇다면 왜 `관계의 주인`을 지정할까? 이는 객체지향 언어와 관계형 데이터베이스가 관계를 다르게 표현하기 때문이다. 객체 지향 언어에서는 `참조(Reference)`로 두 엔티티의 관계를 표현한다. 
+그렇다면 왜 `연관관계의 주인`을 지정할까? 이는 객체지향 언어와 관계형 데이터베이스가 연관관계를 다르게 표현하기 때문이다. 객체 지향 언어에서는 `참조(Reference)`로 두 엔티티의 관계를 표현한다. 
 ``` java {3-4}
 public class MemberEntity {
 
@@ -292,12 +264,12 @@ public class PostEntity {
 ``` 
 반면 `mappedBy`속성을 사용하는 경우 관계형 데이터베이스는 `외래 키`로 관계를 표현한다. 
 
-이처럼 두 엔티티를 양방향 관계로 매핑하면 객체의 참조는 둘인데 외래 키는 하나가 된다. 이러한 차이 때문에 <u>Hibernate에서는 두 객체 중 하나를 <b>`관계의 주인`</b>으로 설정해서 테이블 외래키를 관리하도록 해야한다</u>.
+이처럼 두 엔티티를 양방향 관계로 매핑하면 객체의 참조는 둘인데 외래 키는 하나가 된다. 이러한 차이 때문에 <u>Hibernate에서는 두 객체 중 하나를 <b>`연관관계의 주인`</b>으로 설정해서 테이블 외래키를 관리하도록 해야한다</u>.
 
-### 관계의 주인과 관련된 주의사항
-양방향 관계에서는 `관계의 주인`인 엔티티만이 외래 키를 관리할 수 있다. 다시 말해 <u>관계의 주인인 엔티티를 통해서만 관계를 추가, 변경, 삭제할 수 있다.</u> 
+### 연관관계의 주인과 관련된 주의사항
+양방향 연관관계에서는 `관계의 주인`인 엔티티만이 외래 키를 관리할 수 있다. 다시 말해 <u>관계의 주인인 엔티티를 통해서만 관계를 추가, 변경, 삭제할 수 있다.</u> 
 
-다음 예제는 관계의 주인인 `PostEntity`에서 관계를 설정하고 있다.
+다음 예제는 관계의 주인인 PostEntity에서 관계를 설정하고 있다.
 ``` java
 // MemberEntity 영속화
 MemberEntity member = new MemberEntity("Paul", "1234");
@@ -349,7 +321,7 @@ List<PostEntity> posts = member.getPosts();
 ### 엔티티 객체까지 고려한 양방향 관계
 관계의 주인이 아닌 엔티티에서 관계를 추가하면 데이터베이스에 반영되지 않고 무시된다. 그럼에도 <u>객체지향 관점에서는 관계의 주인이 아닌 쪽에도 데이터를 저장하는 것이 안전하다.</u> 
 
-예제를 살펴보자. 관계의 주인인 엔티티에만 데이터를 저장하고 있다. 마지막 줄의 `post.size()`의 결과 값이 `0`임에 주목하자.
+예제를 살펴보자. 관계의 주인인 엔티티에만 연관관계를 설정하고 있다. 마지막 줄의 `post.size()`의 결과 값이 `0`임에 주목하자.
 ``` java{13,14}
 // MemberEntity 영속화
 Member member = new Member("paul@gmail.com", "paul");
@@ -438,8 +410,8 @@ public class PostEntity {
 ## 관계가 있는 엔티티의 CRUD 연산
 관계에 있는 엔티티의 `CRUD 연산`에 대해 정리한다.
 
-### 데이터 저장
-관계를 매핑한 엔티티는 다음과 같이 저장한다.
+### 엔티티 저장과 연관관계 설정
+엔티티를 먼저 영속화한 후 연관관계를 설정한다.
 ``` java
 // MemberEntity 영속화
 MemberEntity member = new MemberEntity("Paul", "1234");
@@ -478,8 +450,8 @@ Hibernate:
         id=?
 ```
 
-### 데이터 조회
-관계가 매핑된 엔티티의 데이터 조회는 다음과 같이 할 수 있다.
+### 연관관계에 있는 엔티티 조회
+연관관계가 설정된 엔티티는 다음과 같이 조회한다. 
 ``` java
 MemberEntity member = entityManager.find(MemberEntity.class, id);
 List<PostEntity> posts = member.getPosts();
@@ -507,7 +479,7 @@ Hibernate:
         p1_0.writer_id = ?
 ```
 
-### 데이터 수정
+### 엔티티 수정
 Hibernate에는 `update()`같은 수정 메소드가 없다. 그저 엔티티의 속성값을 새롭게 설정하면 트랜잭션이 커밋될 때 플러시가 일어나면서 데이터베이스에 자동 저장된다. 이를 `변경 감지(Dirty Checking)`라고 한다.
 ``` java {8}
 // 트랜잭션 생성
@@ -535,7 +507,7 @@ Hibernate:
         id=?
 ```
 
-### 관계 제거
+### 연관관계 제거
 `null`을 사용하여 관계를 제거할 수 있다.
 ``` java{6}
 transaction.begin();
@@ -559,7 +531,7 @@ Hibernate:
 ```
 
 ### 엔티티 제거
-관계가 매핑된 엔티티를 삭제할 때는 관계를 먼저 제거한 후 엔티티를 삭제한다. 엔티티를 삭제할 때는 `EntityManager.remove()`메소드를 사용한다.
+연관관계가 설정된 엔티티들을 삭제할 때는 연관관계를 먼저 제거한 후 엔티티를 삭제한다. 엔티티를 삭제할 때는 `EntityManager.remove()`메소드를 사용한다.
 ``` java
 MemberEntity member = entityManager.find(MemberEntity.class, memberId);
 
@@ -613,23 +585,11 @@ public class MemberEntity {
 @Entity
 @Table(name= "profile")
 public class ProfileEntity {
-
-    @Id
-    @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column
-    private String address;
-
-    @Column
-    private String school;
-
     // 생략 ...
 }
 ```
 `@OneToOne` 역시 양방향 일대일 관계를 만들 수 있다.
-``` java
+``` java {11}
 // MemberEntity.java
 @Entity
 @Table(name= "member")
@@ -647,7 +607,7 @@ public class MemberEntity {
     // 생략 ...
 }
 ```
-``` java
+``` java {17}
 // ProfileEntity
 @Entity
 @Table(name= "profile")
@@ -674,9 +634,7 @@ public class ProfileEntity {
 ## @ManyToMany
 쇼핑몰을 개발하려고 한다. 한 사용자는 여러 상품을 구매할 수 있다. 한 상품을 여러 사용자가 구매할 수도 있다. 이러한 관계를 `Many-To-Many(다대다)`관계라고 한다.
 
-다대다 관계는 외래 키로만 표현할 수 없으며, <u><b>별도의 연결 테이블이 필요하다.</b></u>
-
-이제 다대다 일대일 관계를 만들어보자.
+다대다 연관관계는 `@ManyToMany`와 `@JoinTable` 어노테이션으로 표현한다.
 ``` java {14-19}
 // MemberEntity.java
 @Entity
@@ -719,11 +677,11 @@ public class ProductEntity {
 - <b>`@JoinTable.joinColumns`</b>: 연결 테이블에서 현재 테이블을 가리킬 외래키 컬럼을 지정한다.
 - <b>`@JoinTable.reverseJoinColumns`</b>: 연결 테이블이서 상대 테이블을 가리킬 외래키 컬럼을 지정한다.
 
-생성된 연결 테이블의 스키마는 다음과 같다.
+다대다 관계는 외래 키로만 표현할 수 없으며, <u><b>별도의 연결 테이블이 필요하다. </b></u> 위 코드로 생성된 연결 테이블의 스키마는 다음과 같다.
 
 ![](./220110_hibernate_relation/2.png)
 
-다대다 양방향 관계도 만들 수 있다. 이 경우 `mappedBy`를 지정하지 않은 쪽이 관계의 주인이 된다.
+다대다 관계 또한 양방향으로 설정할 수 있다. 이 경우 `mappedBy`를 지정하지 않은 쪽이 관계의 주인이 된다.
 ``` java {14,15}
 // ProductEntity.java
 @Entity
@@ -761,9 +719,6 @@ public class MemberProductEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "order_amount")
-    private int orderAmount;
-
     @ManyToOne
     @JoinColumn(name = "buyer_id")
     private MemberEntity buyer;
@@ -771,6 +726,9 @@ public class MemberProductEntity {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+
+    @Column(name = "order_amount")
+    private int orderAmount;
 
     // 중략..
 }
@@ -818,26 +776,30 @@ public class ProductEntity {
 ```
 이제 다음과 같이 사용할 수 있다.
 ``` java
+// MemberEntity 생성 & 영속화
 MemberEntity member = new MemberEntity();
 member.setEmail("paul@gmail.com");
 entityManager.persist(member);
 
+// ProductEntity 생성 & 영속화
 ProductEntity product = new ProductEntity();
 product.setName("iPhone 10");
 entityManager.persist(product);
 
+// MemberProductEntity 생성 
 MemberProductEntity memberProduct = new MemberProductEntity();
+
+// 연관관계 설정
 memberProduct.setBuyer(member);
 memberProduct.setProduct(product);
 memberProduct.setAmount(10);
+
+// MemberProductEntity 영속화
 entityManager.persist(memberProduct);
 ```
 
-## 영속성 전이, CascadeType
-특정 엔티티를 영속 상태로 만들 때 관계된 엔티티도 함께 영속 상태로 만드는 것을 `영속성 전이`라고 한다.
-
-### 사용법
-영속성 전이는 `cascade` 속성과 `CascadeType` 열거형으로 설정할 수 있다.
+## 영속성 전이
+특정 엔티티를 영속 상태로 만들 때 관계된 엔티티도 함께 영속 상태로 만드는 것을 `영속성 전이`라고 한다. 영속성 전이는 `cascade` 속성과 `CascadeType` 열거형으로 설정할 수 있다.
 ``` java {16}
 // MemberEntity.java
 @Entity
@@ -923,25 +885,29 @@ public class MemberEntity {
     // 중략 ...
 }
 ```
-`CascaseType.PERSIST`를 적용하지 않으면, 부모 엔티티를 영속화한 후 자식 엔티티도 영속화 해야한다. 
+`CascaseType.PERSIST`를 적용하지 않으면, 부모 엔티티와 자식 엔티티를 영속화 한 후 관계를 설정한다.
 ``` java
-// 부모 엔티티 영속화
+// 부모 엔티티 생성 & 영속화
 MemberEntity member = new MemberEntity("Paul", "1234");
 entityManager.persist(member);  
 
-// 자식 엔티티 영속화
+// 자식 엔티티 생성 & 영속화
 PostEntity post = new PostEntity("content1");
 entityManager.persist(post);  
 
-// 관계 설정
+// 연관관계 설정
 post.setWriter(member);
 ```
 
-`CascaseType.PERSIST`를 적용하면 부모 엔티티만 영속화해도 자식 엔티티가 영속화된다.
+`CascaseType.PERSIST`를 적용하면 먼저 관계를 설정한 후 부모 엔티티만 영속화하면 자식 엔티티도 영속화된다.
 ``` java
+// 부모 엔티티 생성
 MemberEntity member = new MemberEntity("Paul", "1234");
 
+// 자식 엔티티 생성
 PostEntity post = new PostEntity("content1");
+
+// 연관관계 설정
 post.setWriter(member);
 
 // 부모 엔티티만 영속화
@@ -967,6 +933,8 @@ Hibernate:
 데이터베이스에 실제로 반영되는 시점은 플러시가 호출될 때다.
 
 ### CascadeType.REMOVE
+`CascadeType.REMOVE`는 부모 엔티티를 삭제하면 연관관계에 있는 엔티티들도 자동으로 삭제한다.
+
 부모 엔티티를 삭제하기 전 데이터의 상태는 다음과 같다고 가정하자.
 ```
 > SELECT * FROM member;
@@ -1005,12 +973,13 @@ public class MemberEntity {
     // .. 
 }
 ```
-`MemberEntity`를 삭제하면
+부모 엔티티인 MemberEntity를 삭제하면
 ``` java
 MemberEntity member = entityManager.find(MemberEntity.class, 1L);
+// 부모 엔티티만 삭제
 entityManager.remove(member);
 ```
-다음 쿼리가 실행되어 `PostEntity`도 삭제되며,
+자식 엔티티인 PostEntity도 삭제되며, 실행되는 쿼리는 다음과 같다.
 ```
 Hibernate: 
     delete 
@@ -1071,8 +1040,8 @@ entityManager.persist(member);  // 부모 엔티티만 영속화
 MemberEntity target = entityManager.find(MemberEntity.class, 1L);
 
 entityManager.remove(target);
-``` 
-의도한대로 데이터베이스에서 데이터가 삭제되었다.
+```
+자식 엔티티도 삭제되었다. 
 ```
 > SELECT * FROM member;
 ```
@@ -1081,7 +1050,7 @@ entityManager.remove(target);
 ```
 
 ## 고아 객체
-부모 엔티티와 관계가 끊어진 자식 엔티티를 자동으로 삭제하는 기능을 `고아 객체 제거`라고 한다. 이 기능은 `orphanRemoval = true` 옵션으로 활성화한다. 
+부모 엔티티와의 관계가 끊어진 자식 엔티티를 `고아 객체`라고 한다. 그리고 부모 엔티티와 관계가 끊어진 자식 엔티티를 자동으로 삭제하는 기능을 `고아 객체 제거`라고 한다. 이 기능은 `orphanRemoval = true` 옵션으로 활성화한다. 
 ``` java {13}
 @Entity
 @Table(name= "member")
@@ -1119,12 +1088,13 @@ public class MemberEntity {
 +----+----------------+
 ```
 ```
-> SELECT * FROM member;
-+----+----------------+
-| id | email          |
-+----+----------------+
-|  1 | Paul@gmail.com |
-+----+----------------+
+> SELECT * FROM post;
++----+----------+-----------+
+| id | content  | writer_id |
++----+----------+-----------+
+|  1 | content1 |         1 |
+|  2 | content2 |         1 |
++----+----------+-----------+
 ```
 이제 부모 엔티티의 컬렉션에서 자식 엔티티의 참조를 제거해보자.
 ``` java
@@ -1170,7 +1140,7 @@ member.getPosts().remove(0);
 MemberEntity member = entityManager.find(MemberEntity.class, 1L);  // 이 시점에 데이터베이스 조회
 String email = member.getEmail();
 ```
-조회된 엔티티의 타입은 `MemberEntity`이며, 속성값들도 다 채워져있는 것을 확인할 수 있다.
+조회된 엔티티의 타입은 MemberEntity이며, 속성값들도 다 채워져있는 것을 확인할 수 있다.
 
 ![](./220110_hibernate_relation/4.png)
 
@@ -1192,9 +1162,9 @@ String email = member.getEmail();  // 이 시점에 데이터베이스 조회
 이처럼 프록시 객체를 사용하면 데이터베이스 조회를 속성값에 실제로 접근하는 시점으로 미룰 수 있다.
 
 ## 글로벌 페치 전략
-엔티티를 조회할 때 관계된 엔티티들을 어떻게 조회할 것인가를 결정하는 것을 `글로벌 패치 전략`이라고 한다. 글로벌 패치 전략은 크게 두 가지 방법이 있다.
+엔티티를 조회할 때 관계된 엔티티들을 언제 조회할 것인가를 결정하는 것을 `글로벌 패치 전략`이라고 한다. 글로벌 패치 전략은 크게 두 가지 방법이 있다.
 
-### Eager fetch
+### 즉시 로딩
 엔티티를 조회할 때 관계된 모든 엔티티를 함께 조회하는 것을 `즉시 로딩(Eager fetch)`라고 한다. 즉시 로딩은 다음과 같이 설정한다. 
 
 ``` java{7}
@@ -1233,7 +1203,7 @@ Hibernate:
     where
         m1_0.id = ?
 ```
-### Lazy fetch 
+### 지연 로딩
 엔티티를 조회할 때 관계된 엔티티들을 함께 조회하지 않고, 관계된 엔티티에 실제로 접근할 때 조회하는 것을 `지연 로딩(Lazy fetch)`라고 한다. 지연 로딩을 활성화하려면 `fetch` 속성을 `FetchType.Lazy`로 설정하면 된다.
 ``` java {7}
 @Entity

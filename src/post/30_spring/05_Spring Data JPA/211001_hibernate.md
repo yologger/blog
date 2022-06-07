@@ -8,17 +8,16 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-## 용어정리
+## 용어 정리
 
-- <b>`ORM(Object-Relational Mapping)`</b>: 관계형 데이터베이스의 테이블과 객체지향 프로그래밍의 객체를 매핑해주는 기술이다. 
-
-- <b>`JPA(Java Persistence API)`</b>: `Java` 진형의 `ORM`을 `JPA`라고 한다. 
-- <b>`Hibernate`</b>: `JPA`는 기능을 설명하는 `명세(Specification)`이므로 기능을 실제로 구현한 `구현체(Implementation)`가 필요하다. `Hibernate`는 `JPA`의 구현체 중 하나다.
+- <b>`ORM(Object-Relational Mapping)`</b>: 관계형 데이터베이스의 테이블과 객체지향 프로그래밍의 객체를 매핑해주는 기술
+- <b>`JPA(Java Persistence API)`</b>: Java 진형의 ORM 표준
+- <b>`Hibernate`</b>: JPA는 명세고 Hibernate는 구현체다.
 
 
 ## Hibernate 시작하기
-`Gradle` 기반의 `Java` 프로젝트에서 `Hibernate`를 시작해보자. `Hibernate`를 사용하려면 다음 의존성을 추가해야한다.
-``` groovy
+Gradle 기반의 Java 프로젝트에서 `Hibernate`를 시작해보자. Hibernate를 사용하려면 다음 의존성을 추가해야한다.
+``` groovy {2,3}
 dependencies {
     // Hibernate Entity Manager
     implementation 'org.hibernate:hibernate-entitymanager'
@@ -34,7 +33,7 @@ dependencies {
 
 ![](./211001_hibernate/1.png)
 
-그 다음 `src/main/resources/META-INF`에 `persistence.xml`을 생성한다. 이 파일에는 `Hibernate` 관련 설정을 작성한다.
+그 다음 `src/main/resources/META-INF`에 `persistence.xml`을 생성한다. 이 파일에는 Hibernate 관련 설정을 작성한다.
 
 ![](./211001_hibernate/2.png)
 
@@ -91,18 +90,18 @@ dependencies {
     |속성값|설명|
     |------|---|
     |`create`|무조건 테이블을 새로 생성한다.|
-    |`create-drop`|기존 테이블이 존재하는 경우 `drop`을 먼저 수행한다.|
+    |`create-drop`|기존 테이블이 존재하는 경우 `drop` 후 재생성한다.|
     |`update`|테이블이 없는 경우 테이블을 생성하고, 있는 경우 테이블 스키마를 변경한다.|
     |`validation`|테이블 스키마의 유효성을 확인하기만 한다.|
     |`none`|사용하지 않음|
 
-    `hibernate.hbm2ddl.auto` 옵션은 매우 신중하게 설정해야한다. 특히 운영 환경에서는 `create`, `create-drop`, `update`를 절대 사용하면 안된다. 보통 속성값을 다음과 같이 설정한다.
+    `hibernate.hbm2ddl.auto` 옵션은 매우 신중하게 설정해야한다. 특히 운영 환경에서는 `create`, `create-drop`, `update`를 절대 사용하면 안되며, 보통 속성값을 다음과 같이 설정한다.
     - 개발 초기 단계에는 `create` 또는 `update`를 사용한다.
     - 테스트 환경에서는 `create` 또는 `update`를 사용한다.
     - 운영 환경에서는 `validate` 또는 `none`을 사용한다.
 
 ## Entity 설계
-이제 관계형 데이터베이스의 테이블과 매핑할 엔티티를 작성하자.
+관계형 데이터베이스의 테이블과 매핑할 엔티티는 다음과 같이 정의한다.
 ``` java
 package com.yologger.project;
 
@@ -110,8 +109,6 @@ import javax.persistence.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import lombok.Builder;
 
 @Entity
 @Table(name= "member")
@@ -131,10 +128,11 @@ public class MemberEntity {
     @Column
     private String password;
 
+    // 기본 생성자
     public MemberEntity() {
-
     }
 
+    // 생성자
     public MemberEntity(String email, String name, String password) {
         this.email = email;
         this.name = name;
@@ -187,8 +185,46 @@ public class MemberEntity {
 }
 ```
 
+`Lombok`을 사용한다면 다음과 같이 단축할 수 있다.
+
+``` java
+package com.yologger.project;
+
+import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
+@Table(name= "member")
+@NoArgsConstructor
+public class MemberEntity {
+
+    @Id
+    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String email;
+
+    @Column
+    private String name;
+
+    @Column
+    private String password;
+
+    @Builder
+    public MemberEntity(String email, String name, String password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
+    }
+}
+```
+
 ## 데이터 등록
-`Hibernate`는 `EntityManager` 객체를 통해 CRUD 작업을 수행한다. 데이터 등록을 해보자.
+Hibernate는 `EntityManager` 객체를 통해 CRUD 연산을 수행한다. 데이터 등록을 해보자.
 ``` java
 package com.yologger.project;
 
@@ -231,7 +267,7 @@ public class App {
     }
 }
 ```
-앱을 실행하면 로그에서 데이터베이스 쿼리를 확인할 수 있다.
+애플리케이션을 구동하면 실행되는 쿼리는 다음과 같다.
 ```
 Hibernate: 
     insert 
@@ -243,7 +279,7 @@ Hibernate:
 ```
 
 ## 데이터 수정
-`Hibernate`는 `update()`와 같은 수정 메소드를 제공하지 않는다. 그저 엔티티의 값을 다음과 같이 수정하면 된다. 이를 `변경 감지(Dirty Checking)`이라고 한다.
+Hibernate는 `update()`와 같은 수정 메소드를 제공하지 않는다. 그저 엔티티의 속성값을 수정하면 데이터베이스에 반영된다. 이를 `변경 감지(Dirty Checking)`이라고 한다.
 ``` java
 MemberEntity member = new MemberEntity("john@gmail.com", "john", "1234");
 

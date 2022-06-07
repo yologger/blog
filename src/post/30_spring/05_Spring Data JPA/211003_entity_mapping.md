@@ -9,10 +9,10 @@ sidebarDepth: 0
 [[toc]]
 
 # Entity Mapping
-`Hibernate`의 `Entity Mapping`에 대해 정리한다.
+Hibernate의 `Entity Mapping`에 대해 정리한다.
 
 ## @Entity
-`Hibernate`를 사용하여 테이블과 매핑할 클래스에는 `@Entity` 어노테이션을 필수로 붙여아한다.
+테이블과 매핑할 클래스에는 `@Entity` 어노테이션을 필수로 붙여아한다.
 
 ``` java
 @Entity
@@ -30,7 +30,7 @@ public class MemberEntity {
     private String password;
 }
 ```
-`Hibernate`는 <b>리플렉션</b>으로 엔티티 객체를 생성하기 때문에 `@Entity` 사용 시 <b>기본 생성자</b>를 반드시 정의해야한다.
+Hibernate는 <u>리플렉션</u>으로 엔티티 객체를 생성하기 때문에 `@Entity` 사용 시 <u>기본 생성자</u>를 반드시 정의해야한다.
 ``` java{15-18}
 @Entity
 public class MemberEntity {
@@ -87,7 +87,7 @@ public class MemberEntity {
 
 ## 기본키
 ### 단일 기본키와 @id
-`@id`를 사용하면 단일 컬럼의 기본키를 지정할 수 있다.
+영속성 컨텍스트는 엔티티를 식별자 값으로 구분하므로 반드시 엔티티에 식별자 값이 있어야한다. `@id`를 사용하면 단일 컬럼의 기본키를 지정할 수 있다. 
 ``` java{5}
 @Entity
 @Table(name = "member")
@@ -99,7 +99,7 @@ public class MemberEntity {
     // 생략 ...
 }
 ```
-`@GeneratedValue`의 `strategy`속성을 `GenerationType.IDENTITY`로 지정하면 기본키 생성을 데이터베이스에게 위임한다. `MySQL`의 경우 `AUTO_INCREMENT`를 추가하는 것과 동일하다.
+`@GeneratedValue`의 `strategy`속성을 `GenerationType.IDENTITY`로 지정하면 기본키 생성을 데이터베이스에게 위임한다. MySQL의 경우 AUTO_INCREMENT를 추가하는 것과 동일하다.
 ``` java{6}
 @Entity
 @Table(name = "member")
@@ -119,7 +119,7 @@ create table member (
 ```
 
 ### 복합 기본키
-복합키를 생성하려면 먼저 `Serializable`인터페이스를 구현한 <b>`식별자 클래스`</b>를 정의해야한다. 식별자 클래스는 `equal()`과 `hashCode()` 메소드를 구현해야한다.
+복합키를 생성하려면 먼저 `Serializable`인터페이스를 구현한 <b>`식별자 클래스`</b>를 정의해야한다. 또한 식별자 클래스는 `equal()`과 `hashCode()` 메소드를 구현해야한다.
 ``` java
 public class OrderId implements Serializable {
 
@@ -134,7 +134,7 @@ public class OrderId implements Serializable {
 
 }
 ```
-그리고 `@IdClass`어노테이션으로 식별자 클래스를 지정하면 된다.
+그 다음 `@IdClass`어노테이션으로 식별자 클래스를 지정하면 된다.
 ``` java {3}
 @Entity
 @Table(name = "order")
@@ -152,7 +152,7 @@ public class Order {
 ```
 
 ## @Column
-`@Column`은 엔티티 클래스의 멤버변수와 테이블의 컬럼을 매핑하는데 사용된다.
+`@Column`은 테이블의 컬럼을 엔티티 클래스의 멤버변수에 매핑하는데 사용된다.
 
 ### name 속성
 생성되는 테이블 컬럼의 이름을 지정한다.
@@ -239,7 +239,7 @@ create table member {
 ```
 
 ### unique 속성
-컬럼을 유니크 키로 지정할 수 있다.
+컬럼을 유일키로 지정할 수 있다.
 ``` java{7}
 @Entity
 @Table(name = "member")
@@ -251,6 +251,12 @@ public class MemberEntity {
     private String email;
 
     // 생략 ...
+}
+```
+``` sql
+create table member {
+    email varchar(100) UNIQUE KEY,
+    // ...
 }
 ```
 
@@ -412,7 +418,7 @@ ADD CONSTRAINT unq_email_name UNIQUE (email, name);
 ```
 
 ## Entity Lifecycle Method
-Hibernate는 엔티티가 영속, 준영속, 삭제될 때 특정 메소드가 콜백되도록 구현할 수 있다. 이를 `Entity Lifecycle Method`라고 하며, 7개의 어노테이션으로 정의할 수 있다.
+Hibernate는 엔티티가 영속, 준영속, 삭제될 때 특정 메소드가 콜백되도록 구현할 수 있다. 이를 `Entity Lifecycle Method`라고 하며, 7개의 어노테이션으로 정의한다.
 
 |어노테이션|설명|
 |------|---|

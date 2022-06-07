@@ -42,7 +42,7 @@ try {
 entityManagerfactory.close();
 ```
 
-Spring Data JPA는 스프링 어플리케이션이 시작될 때 EntityManager객체를 Spring IoC Container에 자동으로 등록해준다. 이렇게 Spring IoC Container에서 관리하는 EntityManager를 `Shared EntityManager` 또는 `Managed EntityManager`라고 한다. <b>`@PersistenceContext`</b> 어노테이션을 사용하면 이 EntityManager를 주입받을 수 있다. 
+Spring Data JPA는 스프링 어플리케이션이 시작될 때 EntityManager객체를 Spring IoC Container에 자동으로 등록해준다. 이렇게 Spring IoC Container에서 관리하는 EntityManager를 `Shared EntityManager` 또는 `Managed EntityManager`라고 한다. `@PersistenceContext` 어노테이션을 사용하면 이 EntityManager를 주입받을 수 있다. 
 ``` java {6,7}
 import javax.persistence.PersistenceContext;
 
@@ -80,7 +80,7 @@ public class MemberService {
 ```
 Not allowed to create transaction on shared EntityManager - use Spring transactions or EJB CMT instead.
 ```
-스프링에서 관리하는 EntityManager를 `Shared EntityManager`라고 하며, 이 EntityManager는 스프링이 지정한 방법인 `@Transactional` 어노테이션으로 트랜잭션을 처리해야한다.
+`Shared EntityManager`는 스프링이 지정한 방법인 `@Transactional` 어노테이션으로 트랜잭션을 처리해야한다.
 ``` java  {7}
 @Service
 public class MemberService {
@@ -191,6 +191,8 @@ public class MemberService {
 
 `@Transactional` 어노테이션은 Unchecked Exception이 발생했을 때만 롤백한다. Checked Exception이 발생해도 롤백을 하고 싶으면 `@Transactional(rollbackFor = Exception.class)`로 지정해야한다.
 
+
+## @Transactional과 테스트
 테스트 클래스나 테스트 메소드에서 `@Transactional` 어노테이션을 추가하면 테스트가 끝난 후 자동으로 롤백된다. 
 ``` java
 @SpringBootTest

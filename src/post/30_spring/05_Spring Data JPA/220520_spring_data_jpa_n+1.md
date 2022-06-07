@@ -100,7 +100,7 @@ class Test {
 }
 ```
 `FetchType.LAZY`에서도 프록시 객체에 접근할 때 N+1 문제가 발생한다.
-``` 
+``` {9-22,24-37,39-52}
 Hibernate: 
     select
         memberenti0_.id as id1_0_,
@@ -108,6 +108,7 @@ Hibernate:
         memberenti0_.password as password3_0_ 
     from
         member memberenti0_
+
 Hibernate: 
     select
         posts0_.writer_id as writer_i3_1_0_,
@@ -122,6 +123,7 @@ Hibernate:
 Content: content1
 Content: content2
 Content: content3
+
 Hibernate: 
     select
         posts0_.writer_id as writer_i3_1_0_,
@@ -136,6 +138,7 @@ Hibernate:
 Content: content4
 Content: content5
 Content: content6
+
 Hibernate: 
     select
         posts0_.writer_id as writer_i3_1_0_,
