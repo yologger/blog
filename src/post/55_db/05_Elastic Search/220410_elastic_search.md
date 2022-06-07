@@ -1,5 +1,5 @@
 ---
-title: "ElasticSearch 정리"
+title: "ElasticSearch, ELK 스택"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -30,14 +30,13 @@ sidebarDepth: 0
     |INSERT|POST|
     |DELETE|DELETE|
 
-## ELK
+## ELK 스택
 - `ElasticSearch`은 빠른 검색을 위해 단독으로 사용되기도 하지만 `ELK(ElasticSearch / LogStash / Kibana)` + `Filebeat` 스택으로 사용되기도 한다.
 - ELK 스택을 사용하면 여러 데이터소스에서 발생한 데이터를 수집, 가공, 분석한 후 시각화할 수 있다.
 - ELK 스택은 MSA 환경에서 여러 개별 서비스의 로그를 중앙 집중형 로깅하고 모니터링하는데 사용할 수 있다.
 - 빅데이터 분야에도 활용할 수 있다.
 
 ![](./220410_elastic_search/1.png)
-
 
 
 ### Filebeat
@@ -55,9 +54,7 @@ sidebarDepth: 0
 ### Kibana
 - ElasticSearch에 저장된 데이터를 시각화한다.
 
-# Elastic Search 시작하기
-
-## 설치
+## Elastic Search 설치
 Mac OS 환경에서는 Homebrew로 쉽게 설치할 수 있다.
 ``` 
 $ brew install elastic/tap/elasticsearch-full
