@@ -45,21 +45,11 @@ Person<Integer> person = new Person<Integer>(3);
 Integer age = new Integer(30);
 Double height = new Double(165.3);
 ```
-`Wrapper 클래스`에서 기본 타입의 값을 얻어내는 것을 `언박싱(Boxing)`이라고 한다. Wrapper 클래스의 `xxxValue()` 메소드를 사용하여 언박싱을 할 수 있다.
+`Wrapper 클래스`에서 원시 타입의 값을 얻어내는 것을 `언박싱(Boxing)`이라고 한다. Wrapper 클래스의 `xxxValue()` 메소드를 사용하여 언박싱을 할 수 있다.
 ``` java
 int _age = age.intValue();
 double _height = height.doubleValue();
 ``` 
-## Wrapper 형변환
-다른 타입으로 형변환할 때도 `xxxValue()`메소드를 사용할 수 있다.
-``` java
-Double age = new Double(130.32);
-
-System.out.println(age.intValue());  // 130
-System.out.println(age.longValue());  // 130
-System.out.println(age.floatValue());  // 130.32
-System.out.println(age.doubleValue());  // 130.32
-```
 
 ## 오토 박싱과 오토 언박싱
 직접적으로 박싱/언박싱을 하지 않아도 자동으로 박싱/언박싱이 일어나기도 한다. `Wrapper 클래스`에 원시 타입의 데이터를 할당할 경우 오토 박싱이 된다.
@@ -71,33 +61,44 @@ Integer age = 30;
 int _age = age;
 ``` 
 
+## Wrapper 타입 형변환
+다른 타입으로 형변환할 때도 `xxxValue()`메소드를 사용할 수 있다.
+``` java
+Double height = new Double(177.32);
+
+System.out.println(height.intValue());  // 177
+System.out.println(height.longValue());  // 177
+System.out.println(height.floatValue());  // 177.32
+System.out.println(height.doubleValue());  // 177.32
+```
+
 ## 기본타입을 문자열로 변환
 
+### + 연산자
+`+`연산자를 사용하면 원시 타입을 문자열로 변경할 수 있다.
+```  java
+String age = 30 + "";
+String weight = 70.3 + "";
+```
+
 ### String.valueOf()
-`String.valueOf()`를 사용해도 기본타입을 문자열로 변경할 수 있다.
+`String.valueOf()`를 사용해도 원시 타입을 문자열로 변경할 수 있다.
 ``` java
 String age = String.valueOf(30);
 String weight  = String.valueOf(70.5);
 ```
 
 ### Wrapper.toString()
-Wrapper 클래스의 `toString()`을 사용하면 기본타입을 문자열로 변경할 수 있다.
+Wrapper 클래스의 `toString()`을 사용하면 원시 타입을 문자열로 변경할 수 있다.
 ``` java
 String age = Integer.toString(30);
 String weight = Double.toString(70.3);
 ```
 
-### + 연산자
-`+`연산자를 사용하면 기본타입을 문자열로 변경할 수 있다.
-```  java
-String age = 30 + "";
-String weight = 70.3 + "";
-```
-
 ## 문자열을 기본타입으로 변환
 
 ### Wrapper.valueOf()
-Wrapper 클래스의 `valueOf()`메소드는 문자열을 Wrapper 클래스 변환한다.
+Wrapper 클래스의 `valueOf()`메소드는 문자열을 Wrapper 클래스로 변환한다.
 ``` java
 Integer age = Integer.valueOf("34");
 Double weight = Double.valueOf("70.3");

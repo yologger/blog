@@ -1,0 +1,12 @@
+{"index":{"_id":1, "_index" : "post"}}
+{"content":"hello world"}
+{"index":{"_id":2, "_index" : "post"}}
+{"content":"hello world nice to meet you"}
+{"index":{"_id":3, "_index" : "post"}}
+{"content":"hello world see you again"}
+{"index":{"_id":4, "_index" : "post"}}
+{"content":"see you again good bye"}
+{"index":{"_id":5, "_index" : "post"}}
+{"content":"good bye have a nice day"}
+{"index":{"_id":6, "_index" : "post"}}
+{"content":"hello world nice to meet you good bye have a nice day"}
