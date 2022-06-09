@@ -1103,12 +1103,6 @@ curl -XPUT http://localhost:9200/player/_doc/4?pretty \
 }
 ```
 
-
-## ElasticSearch의 자료형
-[공식 문서](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html)
-
-https://esbook.kimjmin.net/06-text-analysis/6.1-indexing-data
-
 ## 집계
 `집계(Aggregation)`은 모든 데이터의 분석 및 요약을 제공하는 기능이다. 관계형 데이터베이스의 `Grouping`, `Project`에 상응한다.
 

@@ -22,7 +22,7 @@ dependencies {
 ```
 
 ## 스프링 시큐리티 기본 설정
-프로젝트에 의존성을 추가하면 스프링 시큐리티는 기본적으로 <u>쿠키-세션 기반</u>으로 동작하며 <u>모든 엔드포인트에 대한 HTTP 요청을 차단</u>한다.
+프로젝트에 의존성을 추가하면 스프링 시큐리티는 기본적으로 <u>쿠키-세션 기반</u>으로 동작한다.
 
 예제를 살펴보자. 다음과 같은 컨트롤러가 있다. 이 컨트롤러는 `home.mustache` 뷰를 보여준다.
 ``` java
@@ -49,7 +49,29 @@ public class MainController {
 </body>
 </html>
 ```
-이제 웹 브라우저에서 `http://localhost:8080`로 접근해보자. `home.mustache`를 보여주지 않고 `http://localhost:8080/login`로 리다이렉트된다. 스프링 시큐리티가 모든 엔드포인트에 대해서 인증되지 않은 접근을 차단하기 때문이다. 스프링 시큐리티의 기본 설정은 다음과 같이 로그인 페이지를 자동으로 제공한다.
+이제 웹 브라우저에서 `http://localhost:8080`로 접근해보자. 웹 브라우저에 쿠키가 저장된 것을 확인할 수 있다.
+
+![](./220301_cookie_session_based/0.png)
+
+쿠키-세션 방식은 스프링 시큐리티 구성파일에서 다음과 같이 비활성화할 수 있다.
+
+``` java
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+}
+```
+
+이 경우 웹 브라우저에 어떠한 쿠키도 저장되지 않는다.
+
+![](./220301_cookie_session_based/01.png)
+
+프로젝트에 의존성만을 추가하면 스프링 시큐리티는 기본적으로 <u>모든 엔드포인트에 대한 HTTP 요청을 차단</u>한다. 따라서 `http://localhost:8080/test`로 접근하면 `home.mustache`를 보여주지 않고 `http://localhost:8080/login`로 리다이렉트된다. 스프링 시큐리티는 기본적으로 모든 엔드포인트에 대해서 인증되지 않은 접근을 차단하기 때문이다. 또한 스프링 시큐리티의 기본 설정은 다음과 같이 로그인 페이지를 자동으로 제공한다.
 
 ![](./220301_cookie_session_based/1.png)
 

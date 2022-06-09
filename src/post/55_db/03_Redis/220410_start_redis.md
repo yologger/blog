@@ -8,9 +8,9 @@ sidebarDepth: 0
 [[toc]]
 
 # Redis 정리
-- `Key-Value` 구조의 NoSQL Database
+- `Key-Value` 구조의 NoSQL 데이터베이스
 - 관계형 데이터베이스처럼 테이블을 설계하거나 외래키 설정이 불가능하다.
-- 디스크 기반이 아니라 인메모리 방식을 사용하기 때문에 입출력 연산이 적어 속도가 매우 빠르다.
+- 디스크 기반이 아니라 인메모리 방식을 사용하기 때문에 입출력 적어 속도가 빠르다.
 - 인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업한다.
     - 디스크에 데이터를 저장
     - 다른 노드에 복사본 저장
@@ -23,7 +23,7 @@ sidebarDepth: 0
 
 ### Redis 설치
 `Mac OS`에서는 `Homebrew`로 Redis를 설치할 수 있다.
-``` shellsession
+``` 
 $ brew install redis
 ```
 설치 정보를 확인해보자.
@@ -52,7 +52,7 @@ install-on-request: 76,894 (30 days), 154,909 (90 days), 643,952 (365 days)
 build-error: 14 (30 days)
 ```
 버전을 확인해보자.
-``` shellsession
+``` 
 $ redis-server --version
 Redis server v=6.2.6 sha=00000000:0 malloc=libc bits=64 build=c6f3693d1aced7d9
 ```
@@ -80,7 +80,7 @@ redis.conf.default
 
 ### Redis 시작
 `redis-server` 명령어로 Redis를 시작할 수 있다.
-``` shellsession
+``` 
 $ redis-server
 52712:C 15 Apr 2022 11:06:15.382 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
 52712:C 15 Apr 2022 11:06:15.382 # Redis version=6.2.6, bits=64, commit=00000000, modified=0, pid=52712, just started
@@ -123,25 +123,37 @@ redis   started yologger ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 
 ### Redis 재시작
 ``` shellsession
-$ brew services stop redis
+$ brew services restart redis
 ```
 
 ### Redis 종료
 ``` shellsession
-$ brew services restart redis
+$ brew services stop redis
 ```
 
 ## redis-cli
-`redis-cli`는 CLI database client다. redis-cli로 redis에 접속해보자.
+`redis-cli`는 커맨드라인 기반 데이터베이스 칼라이언트다. redis-cli로 redis에 접속해보자.
 ``` shellsession
 $ redis-cli
 > 
 ```
 
-## Redis 사용법
-Redis 사용법에 대해 정리한다.
+## Redis의 데이터 타입
+`Redis`는 관계형 데이터베이스가 아니기 때문에 관계형 데이터베이스의 일반적인 데이터 타입을 지원하지 않는다. Redis가 지원하는 데이터 타입은 다음과 같다. 
+- String
+- List
+- Set
+- Hash
 
-### 데이터 저장
+## String
+Redis는 대부분의 데이터를 문자열로 표현한다. <u>숫자, 날짜, 시간 등도 <b>문자열</b>로 저장된다.</u>
+```
+> set name "Paul"
+> set age 35
+> set createdAt "2022-04-03 21:51:13.742000"
+```
+
+### String 저장
 `SET <KEY> <VALUE>`로 데이터를 저장한다.
 ```
 > SET name "paul"
@@ -160,7 +172,7 @@ OK
 OK
 ```
 
-### 데이터 조회
+### String 조회
 `GET <KEY>`로 데이터를 조회한다.
 ```
 > GET name
@@ -200,7 +212,7 @@ OK
 2) "nation"
 ```
 
-### 데이터 삭제
+### String 삭제
 `DEL <KEY>`로 데이터를 삭제한다.
 ```
 > DEL name
@@ -224,28 +236,6 @@ OK
 (integer) 0
 ```
 
-## Medis 2
-`Medis 2`는 Redis를 위한 GUI Database Client다. Medis는 애플 앱 스토어에서 설치할 수 있다.
-
-![](./220410_start_redis/1.png)
-
-![](./220410_start_redis/2.png)
-
-
-## Redis의 데이터 타입
-`Redis`는 관계형 데이터베이스가 아니기 때문에 관계형 데이터베이스의 일반적인 데이터 타입을 지원하지 않는다. Redis가 지원하는 데이터 타입은 다음과 같다. 
-- String
-- List
-- Set
-- Hash
-
-## String
-Redis는 대부분의 데이터를 문자열로 표현한다. <u>숫자, 날짜, 시간 등도 <b>문자열</b>로 저장된다.</u>
-```
-> set name "Paul"
-> set age 35
-> set createdAt "2022-04-03 21:51:13.742000"
-```
 String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/command/strings.php)에서 확인할 수 있다.
 
 ## List
@@ -550,7 +540,7 @@ OK
 2) "paul@gmail.com"
 ```
 
-## TYPE
+## TYPE 명령어
 `TYPE <KEY>` 명령어로 타입을 확인할 수 있다.
 ```
 > TYPE person
@@ -559,6 +549,16 @@ set
 > TYPE person:a4be06b1-b445-42fe-a70f-0fdee111cf55
 hash
 ```
+## FLUSHALL 명령어
+`FLUSHALL` 명령어로 모든 키를 삭제할 수 있다.
+```
+> FLUSHALL
+OK
+
+> KEYS *
+(empty array)
+```
+
 
 ## Redis Expire
 `Redis`는 저장한 데이터에 expire를 설정할 수 있다. `EXPIRE [KEY] [SECOND]` 명령어를 사용하면 된다.
@@ -702,6 +702,14 @@ appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (alw
 
 ## Publish/Subscribe 모델과 Message Queue
 레디스는 `Publish/Subscribe` 모델을 지원하기 때문에 `Message Queue`로도 활용할 수 있다.
+
+
+## Medis 2
+`Medis 2`는 Redis를 위한 GUI Database Client다. Medis는 애플 앱 스토어에서 설치할 수 있다.
+
+![](./220410_start_redis/1.png)
+
+![](./220410_start_redis/2.png)
 
 ## Redis Labs
 `Redis` 클라우드 서비스를 제공한다.
