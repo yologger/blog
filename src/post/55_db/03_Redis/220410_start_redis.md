@@ -700,8 +700,46 @@ appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (alw
 
 레디스는 Master/Slave 모델의 Replication을 제공한다. 여러 레디스 노드 중 하나를 Master로 선정하여 사용하고, 데이터를 다른 노드에 저장한다. Master 노드에 장애가 발생하면 다른 Slave 노드를 Master로 승격하며, 특정 Slave 노드를 Master 노드로 변경할 수도 있다.
 
-## Publish/Subscribe 모델과 Message Queue
-레디스는 `Publish/Subscribe` 모델을 지원하기 때문에 `Message Queue`로도 활용할 수 있다.
+## Redis PUB/SUB
+`Redis PUB/SUB`를 사용하면 Redis를 메시지 브로커로 사용할 수 있다. Redis PUB/SUB은 `채널(Channel)`을 통해 메시지를 전달한다.
+
+메시지 수신 역할을 할 터미널을 오픈하고 다음 명령어를 입력하면 채널을 구독하게 된다.
+```
+> subscribe <CHANNEL_NAME>
+```
+```
+> subscribe test_channel
+```
+메시지 전송 역할을 할 터미널을 오픈하고 다음 명령어를 입력하면 채널로 메시지를 보내게 된다.
+```
+> publish <CHANNEL_NAME> <MESSAGE>
+```
+```
+> publish test_channel 'Hello Redis'
+```
+수신 측 터미널에 메시지가 출력된다.
+```
+> subscribe test_channel
+Reading messages... (press Ctrl-C to quit)
+1) "message"
+2) "test_channel"
+3) "Hello world"
+```
+
+`Redis PUB/SUB`은 다음과 같은 특징이 있다.
+- 한 채널을 여러 구독자가 구독할 수 있다. 
+- Kakfa 처럼 메시지를 저장(Queuing)하지 않기 때문에 구독 전 전송된 메시지는 읽을 수 없고, 메시지가 유실될 수도 있다.
+
+
+## Redis Stream
+레디스 5.0부터 도입된 `Redis Stream`은 Redis Channel과 다르게 메시지를 저장(Queing)한다. 이 때문에 메시지 브로커보단 메시지 큐에 가깝다.
+
+::: tip information
+정리 중인 컨텐츠 입니다.
+:::
+
+
+
 
 
 ## Medis 2
@@ -713,3 +751,4 @@ appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (alw
 
 ## Redis Labs
 `Redis` 클라우드 서비스를 제공한다.
+

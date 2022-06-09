@@ -37,7 +37,7 @@ sidebarDepth: 0
 ``` java
 Long userId = 1L;
 
-getUserDataFromNetwork(userId, () -> {
+getUserDataFromNetwork(userId, (userData) -> {
     // 네트워크 통신 또는 입출력을 실행하는 구문
 });
 ```
