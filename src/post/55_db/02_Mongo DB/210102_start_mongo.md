@@ -22,30 +22,30 @@ sidebarDepth: 0
 
 ### 설치
 `Mac OS`에서는 `Homebrew`로 Mongo DB를 설치할 수 있다.
-``` shellsession
+``` 
 $ brew tap mongodb/brew
 
 $ brew install mongodb-community@4.2
 ```
 
 ### 서비스 시작
-``` shellsession
+``` 
 $ brew services start mongodb-community@4.2 
 ```
 
 ### 서비스 재시작
-``` shellsession
+``` 
 $ brew services restart mongodb-community@4.2
 ```
 
 ### 서비스 종료
-``` shellsession
+``` 
 $ brew services stop mongodb-community@4.2
 ```
 
 ### Mongo DB 접속
 `mongo` 명령어로 Mongo DB에 접속할 수 있다.
-``` shellsession
+``` 
 $ mongo
 > 
 ```
@@ -67,11 +67,6 @@ $ mongo 192.168.0.1/my_db
 // mongo -u [사용자 이름] -p [비밀번호] [몽고서버 IP]/[데이터베이스 이름]
 $ mongo -u user1 -p 1234 192.168.0.1/my_db
 ```
-
-
-
-## Compass
-`Compass`는 Mongo DB를 위한 GUI database clinet다. [이 곳](https://www.mongodb.com/try/download/compass)에서 다운받을 수 있다.
 
 ## Mongo DB 사용법
 
@@ -99,7 +94,7 @@ my_db
 ```
 
 ### 데이터베이스 삭제
-`dropDatabase()`로 현재 데이터베이스를 삭제한다.
+`db.dropDatabase()`로 현재 데이터베이스를 삭제한다.
 ```
 > db.dropDatabase()
 { "dropped" : "my_db", "ok" : 1 }
@@ -132,6 +127,8 @@ true
 <b>`Document`</b>는 RDBMS의 `Row`에 해당하며, <b>`Field`</b>는 `Column`에 해당한다.
 
 ### Document 저장
+
+#### insertOne()
 `db.<콜렉션이름>.insertOne()` 메소드로 Document 한 개를 생성할 수 있다.
 ```
 > db.member.insertOne({ name: "Paul"})
@@ -156,6 +153,7 @@ Document는 배열을 포함할 수도 있다.
 > db.member.insertOne({ name: "jordan", children: ["ramos", "benzema"] })
 ```
 
+#### insertMany()
 `db.<콜렉션이름>.insertMany()` 메소드로 여러 Document를 한꺼번에 생성할 수 있다.
 
 ```
@@ -164,7 +162,8 @@ Document는 배열을 포함할 수도 있다.
 
 
 ### Document 조회
-Mongo DB는 `JSON Document` 기반으로 데이터를 관리한다. `db.콜렉션.find()` 메소드로 모든 Document를 조회할 수 있다.
+#### find()
+`db.콜렉션.find()` 메소드로 모든 Document를 조회할 수 있다.
 ```
 > db.member.find()
 { "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
@@ -179,16 +178,6 @@ Mongo DB는 `JSON Document` 기반으로 데이터를 관리한다. `db.콜렉�
 ```
 `pretty()`로 데이터를 보기 좋게 출력할 수 있다.
 ```
-> db.member.find()
-{ "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
-{ "_id" : ObjectId("625ad77b8d6dabdee5230bef"), "name" : "john" }
-{ "_id" : ObjectId("625adc3d8d6dabdee5230bf6"), "name" : "john" }
-{ "_id" : ObjectId("625ad79e8d6dabdee5230bf0"), "name" : "messi" }
-{ "_id" : ObjectId("625ad79e8d6dabdee5230bf1"), "name" : "ronaldo" }
-{ "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : true, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
-{ "_id" : ObjectId("625ad8ab8d6dabdee5230bf3"), "name" : "rachel", "age" : 25, "isMarried" : false, "weight" : 60.5, "job" : "programmer" }
-{ "_id" : ObjectId("625ada168d6dabdee5230bf4"), "name" : "marry", "phone" : { "name" : "iPhone 10", "manufacturer" : "Apple" } }
-{ "_id" : ObjectId("625ada838d6dabdee5230bf5"), "name" : "jordan", "children" : [ "ramos", "benzema" ] }
 > db.member.find().pretty()
 { "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
 { "_id" : ObjectId("625ad77b8d6dabdee5230bef"), "name" : "john" }
@@ -227,17 +216,18 @@ Mongo DB는 `JSON Document` 기반으로 데이터를 관리한다. `db.콜렉�
 	]
 }
 ```
-
-`findOne()`는 하나의 Document를 조회한다.
-```
-> db.member.findOne() 
-```
-
 다음과 같이 조건을 추가할 수 있다.
 ```
-> db.member.find({ name: "paul" })
+> db.member.find({ name: "Paul" })
 { "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
 ```
+
+#### findOne()
+`findOne()`는 하나의 Document를 조회한다.
+```
+> db.member.findOne({ name: "Paul" }) 
+```
+
 
 #### eq (equal)
 ```
@@ -273,8 +263,7 @@ Mongo DB는 `JSON Document` 기반으로 데이터를 관리한다. `db.콜렉�
 
 #### lte
 ```
-> db.member.find({age: {$#### lte
-: 30}})
+> db.member.find({age: {$lte: 30}})
 ```
 
 #### in
@@ -285,8 +274,7 @@ Mongo DB는 `JSON Document` 기반으로 데이터를 관리한다. `db.콜렉�
 ```
 #### nin
 ```
-> db.member.find({name: {$#### nin
-: ["monica", "paul"]}})
+> db.member.find({name: {$nin: ["monica", "paul"]}})
 ```
 
 #### and
@@ -302,40 +290,129 @@ Mongo DB는 `JSON Document` 기반으로 데이터를 관리한다. `db.콜렉�
 { "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : true, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
 ```
 
-### Field 데이터 타입
-`Field`에는 자바스크립트의 데이터 타입을 저장할 수 있다. 자바스크립트 외에도 몇 개의 특수한 데이터타입을 저장할 수 있는데 그 중 하나가 각 Document를 구분하기 위한 `ObjectId`다. 모든 데이터 타입은 [이 곳](https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm)에서 확인할 수 있다.
-
 ### Document 수정
-#### 특정 필드 수정
-`db.<도큐먼트이름>.updateOne()`으로 도큐먼트의 특정 필드를 수정할 수 있다.
-``` {4}
-> db.member.find({name: "monica"})
-{ "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : false, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
+#### updateOne()
+`db.<도큐먼트이름>.updateOne()`은 도큐먼트 하나를 수정하는데 사용한다. 
 
-> db.member.updateOne({name: "monica"}, {$set: {age: 35, isMarried: true}})
+`$set` 옵션으로 도큐먼트 하나의 특정 필드를 수정할 수 있다.
+``` {5,18}
+> db.member.find({name : "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 25,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer"
+}
+
+> db.member.updateOne({name: "rachel"}, {$set: {"age": 35}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.member.find({name: "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer"
+}
+```
+특정 필드를 추가할 수도 있다.
+``` {22}
+> db.member.find({name: "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer"
+}
+
+> db.member.updateOne({name: "rachel"}, {$set: {"nation": "USA"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.member.find({name: "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer",
+	"nation" : "USA"
+}
+```
+
+`$unset` 옵션으로 도큐먼트 하나의 특정 필드를 삭제할 수 있다.
+``` {6}
+> db.member.findOne({"name": "rachel"})
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer",
+	"nation" : "USA"
+}
+
+> db.member.updateOne({"name": "rachel"}, {$unset: {"isMarred": "false"}})
 { "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
 
-> db.member.find({name: "monica"})
-{ "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : true, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
+> db.member.findOne({"name": "rachel"})
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer",
+	"nation" : "USA"
+}
 ```
 
-
-#### 다른 Document로 대체하기
-``` {1}
-> db.member.update({ name: "paul"}, { name: "ping", age: 20})
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+#### updateMany()
+`updateMany()`으로 여러 도큐먼트를 수정할 수 있다.
+```
+> db.member.updateMany({}, {$set: {"isMarred": "false"}})
+{ "acknowledged" : true, "matchedCount" : 10, "modifiedCount" : 10 }
 ```
 
-#### 특정 Field 제거하기
-``` {4}
-> db.member.find({name: "monica"})
-{ "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : false, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
+#### update()
+`update()`으로 기존의 도큐먼트를 다른 도큐먼트로 대체할 수 있다.
+한 도큐먼트를 다른 도큐먼트로 대체할 수도 있다.
+```
+> db.member.find({name: "Paul"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Paul" }
 
-> db.member.update({name: "monica"}, {$unset: {isMarried: true}})
+> db.member.update({name: "Paul"}, {name: "Smith"})
 WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 
-> db.member.find({name: "monica"})
-{ "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
+> db.member.find({name: "Paul"})
+
+> db.member.find({name: "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith" }
+```
+
+물론 `update()`에서도 `$set`, `$unset`을 사용할 수 있다.
+```
+> db.member.find({"name": "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false" }
+
+> db.member.update({"name": "Smith"}, {$set: {nation: "England"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.member.find({"name": "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false", "nation" : "England" }
+
+> db.member.update({"name": "Smith"}, {$unset: {nation: "England"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.member.find({"name": "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false" }
 ```
 
 ### Document 삭제
@@ -351,6 +428,9 @@ WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
 ```
 > db.member.deleteMany({})
 ```
+
+## Field 데이터 타입
+Field에는 기본적으로 <u>자바스크립트의 데이터 타입</u>을 저장할 수 있다. 자바스크립트 외에도 몇 개의 특수한 데이터타입을 저장할 수 있는데 그 중 하나가 각 Document를 구분하기 위한 `ObjectId`다. 모든 데이터 타입은 [이 곳](https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm)에서 확인할 수 있다.
 
 ## _id 필드
 관계형 데이터베이스에는 `기본 키(primary key)`로 모든 Row를 고유하게 구분한다. `Mongo DB`도 유사한 개념의 `_id` Field로 Document를 고유하게 구분한다. Document를 저장할 때 명시적으로 값을 제공하지 않으면 Mongo DB가 `_id` 값을 자동으로 생성한다.
@@ -495,7 +575,7 @@ WriteResult({ "nInserted" : 1 })
 
 ## 사용자 관리
 Mongo DB에 처음 접속하면 인증이 비활성화 되어있기 때문에 누구나 인증없이 데이터베이스 접근할 수 있다. 심지어 원격 접속도 인증이 필요없다.
-``` shellsession
+```
 $ mongo		// 인증 없이 접속
 >
 ```
@@ -633,7 +713,7 @@ my_db  0.000GB
 ```
 
 다음과 같이 Mongo DB와의 세션을 연결할 때 사용자, 비밀번호 정보를 전달할 수도 있다.
-``` shellsession {1}
+``` {1}
 $ mongo -u "user" -authenticationDatabase "my_db"
 MongoDB shell version v4.2.19
 Enter password: <USER_PASSWORD>
@@ -690,3 +770,8 @@ mydb    0.000GB
 ::: warning Notification
 준비 중인 컨텐츠입니다.
 :::
+
+
+
+## Compass
+`Compass`는 Mongo DB를 위한 GUI database clinet다. [이 곳](https://www.mongodb.com/try/download/compass)에서 다운받을 수 있다.

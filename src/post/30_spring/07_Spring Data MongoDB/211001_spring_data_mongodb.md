@@ -13,7 +13,9 @@ sidebarDepth: 0
 `Spring Data MongoDB`를 사용하려면 다음 의존성을 추가해야한다.
 ``` groovy
 // build.gradle
-implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+}
 ```
 
 ## 환경 설정
@@ -27,7 +29,7 @@ spring.date.mongodb.password=
 
 ## Document 정의
 ### @Document
-객체에 `@Document`를 추가하여 도큐먼트로 지정한다.
+객체에 `@Document`를 추가하여 클래스를 도큐먼트에 매핑할 수 있다.
 
 ``` java
 @Document

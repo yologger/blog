@@ -221,8 +221,8 @@ public interface UserMapper {
     - JOIN을 지원하지 않는다.
     - 정형화된 스키마가 없고 자유로운 형태의 데이터를 저장할 수 있다.
     - 대용량 데이터 처리에 적합하다.
-    - 수평적 확장(Scale-out)을 위한 클러스터링, 분산 저장 기능을 제공한다.
-    - 대표적인 제품군에는 `Key-Value` 기반의 `Redis`, `Document` 기반의 `Mongo DB`가 있다.
+    - 수평적 확장을 위한 클러스터링, 분산 저장 기능을 제공한다.
+    - 대표적인 제품군에는 `Key-Value` 기반의 `Redis`, `Document` 기반의 `Mongo DB`, `ElasticSearch`가 있다.
 - RDBMS와 NoSQL은 대체 관계가 아니라 상호보완관계다. 필요한 시점과 상황에 따라 적절히 사용하는게 좋다.
 
 ## Redis
@@ -272,6 +272,3 @@ public interface UserMapper {
 
 ## Sharding
 `샤딩(Sharding)`은 여러 데이터베이스 인스턴스에 데이터를 분산 저장하는 기술이다. 이를 통해 트래픽을 분산할 수 있다. 또한 레플리케이션을 통해 백업 및 복구가 가능해진다. 그 외에도 여러 데이터베이스 인스턴스에 라우팅을 제공하기 위해 라우팅 서버가 필요하다.
-
-## Elastic Search
-- 검색 엔진

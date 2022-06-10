@@ -55,7 +55,7 @@ $ kafka-topics \
 
 
 ## Producer
-Consumer 역할을 하는 `kafka-producer` 프로젝트는 HTTP 요청이 오면 Kafka 서버로 메시지를 전송한다. 이 프로젝트의 의존성은 다음과 같다.
+Producer 역할을 하는 `kafka-producer` 프로젝트는 HTTP 요청이 오면 Kafka 서버로 메시지를 전송한다. 이 프로젝트의 의존성은 다음과 같다.
 
 ``` groovy {4}
 // build.gradle 
@@ -101,11 +101,11 @@ HTTP 요청을 받는 컨트롤러는 다음과 같다.
 @RestController
 @RequestMapping("/kafka")
 public class KafkaController {
-    @Autowired KafkaProducerService service;
+    @Autowired KafkaProducerService kafkaService;
 
     @GetMapping("/send")
     public void kafka() {
-        service.sendMessage("Test message");
+        kafkaService.sendMessage("Test message");
     }
 }
 ```
