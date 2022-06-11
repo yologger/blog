@@ -40,8 +40,9 @@ sidebarDepth: 0
 - 클래스 앞에 붙이면 상속 불가능한 메소드
 
 ## Unchecked Exception vs. Checked Exception
-- `Unchecked Exception`은 예외처리를 강제하지 않는 예외
-- `Checked Exception`은 예외처리를 강제하는 예외
+`RuntimeException`을 상속하는 클래스를 <b>`Unchecked Exception`</b>라고 한다. 이 예외는 코드에서의 예외처리를 강제하지 않는다. 대표적으로 `NullPointException`, `ClassCastException` 등이 있다.
+
+`RuntimeException`을 상속하지 않는 클래스를 <b>`Checked Exception`</b>라고 한다. 이 예외에서는 코드에서의 예외처리를 강제한다. 따라서 `try-catch` 문으로 감싸주거나 `throw` 구문으로 예외처리를 전가해야한다. 대표적으로 `IOException`, `ClassNotFoundException` 등이 있다.
 
 ## 제너릭
 - 클래스 내부에서 사용되는 변수의 타입을 클래스 외부에서 지정하는 것
