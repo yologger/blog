@@ -20,7 +20,7 @@ sidebarDepth: 0
 - `Ingress`
 
 다음 명령어로 쿠버네티스가 제공하는 모든 오브젝트를 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl api-resources
 NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND
 pods                              po           v1                                     true         Pod
@@ -63,12 +63,12 @@ spec:
 
 ### 팟 생성 및 실행
 `kubectl apply -f <YAML 파일>` 명령어로 클러스터에서 팟을 실행할 수 있다.
-``` shellsession
+```   
 $ kubectl apply -f nginx-pod.yml
 pod/nginx-pod created
 ```
 하나의 도커 컨테이너가 생성된 것도 확인할 수 있다.
-``` shellsession
+```   
 $ docker ps -al
 ONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS     NAMES
 fe068fdc944c   nginx     "/docker-entrypoint.…"   24 seconds ago   Up 24 seconds             k8s_nginx-container_nginx-pod_default_e1574fb9-c59e-4916-8bcc-188a5640f6cd_0
@@ -103,7 +103,7 @@ spec:
 
 ### 오브젝트 목록 확인
 `kubectl get <오브젝트 이름>` 명령어로 오브젝트 목록을 확인할 수 있다. `READY`의 `1/1`은 한 개의 컨테이너 중 한 개의 컨테이너가 정상 실행 중이라는 의미다.
-``` shellsession
+```   
 $ kubectl get pods
 NAME        READY   STATUS    RESTARTS   AGE
 nginx-pod   1/1     Running   0          3m
@@ -111,7 +111,7 @@ nginx-pod   1/1     Running   0          3m
 
 
 `-o wide` 옵션으로 클러스터 내부에서 팟에 할당된 IP도 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl get pods -o wide
 NAME        READY   STATUS    RESTARTS   AGE   IP          NODE             NOMINATED NODE   READINESS GATES
 nginx-pod   1/1     Running   0          70m   10.1.0.33   docker-desktop   <none>           <none>
@@ -119,7 +119,7 @@ nginx-pod   1/1     Running   0          70m   10.1.0.33   docker-desktop   <non
 
 ### 오브젝트 상세정보 확인
 `kubectl describe <오브젝트 종류> <오브젝트 이름>`으로 오브젝트의 상세한 정보를 확인할 수 있다.
-``` shellsession {5,10}
+```    {5,10}
 $ kubectl describe pods nginx-pod    
 Name:         nginx-pod
 Namespace:    default
@@ -143,13 +143,13 @@ Containers:
 
 ### 컨테이너 내부에 접속하기
 `kubectl exec -it <팟 이름> -c <컨테이너 이름> <사용할 쉘>`로 팟 내부 컨테이너에 접속할 수 있다.
-``` shellsession
+```   
 $ kubectl exec -it nginx-pod -c nginx-container bash
 root@nginx-pod:/# 
 ```
 
 `Nginx`가 실행 중인지 확인해보자.
-``` shellsession
+```   
 $ curl localhost
 <!DOCTYPE html>
 <html>
@@ -178,20 +178,20 @@ Commercial support is available at
 
 ### 팟 로그 확인하기
 `kubectl logs nginx-pod` 명령어로 팟 로그를 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl logs nginx-pod
 ```
 
 ### 팟 삭제
 `kubectl delete -f <yml 파일>` 명령어로 팟을 삭제할 수 있다.
-``` shellsession
+```   
 $ kubectl delete -f nginx-pod.yml
 pod "nginx-pod" deleted
 ```
 
 ### 모든 팟 삭제
 `kubectl delete pods --all` 명령어로 모든 팟을 삭제할 수 있다.
-``` shellsession
+```   
 $ kubectl delete pods --all 
 ```
 
@@ -221,7 +221,7 @@ spec:
 ```
 
 두 개의 컨테이너가 생성된 것을 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl get pods              
 NAME        READY   STATUS    RESTARTS   AGE
 nginx-pod   2/2     Running   0          116s
@@ -260,24 +260,24 @@ spec:
 - `spec.replicas`: 생성할 팟의 수
 
 이제 다음과 같이 레플리카셋을 생성하자.
-``` shellsession
+```   
 $ kubectl apply -f nginx-replicaset.yml
 ```
 세 개의 팟이 생성된 것을 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl get pods
 NAME                     READY   STATUS    RESTARTS   AGE
 nginx-replicaset-6txwh   1/1     Running   0          102s
 nginx-replicaset-tvsg6   1/1     Running   0          102s
 nginx-replicaset-xc5xt   1/1     Running   0          102s
 ```
-``` shellsession
+```   
 $ kubectl get replicaset
 NAME               DESIRED   CURRENT   READY   AGE
 nginx-replicaset   3         3         3       2m25s
 ```
 레플리카를 다섯 개로 수정하고 `kubectl apply -f` 명령어를 다시 실행해보자.
-``` shellsession {3,4}
+```    {3,4}
 $ kubectl get pods                  
 NAME                     READY   STATUS              RESTARTS   AGE
 nginx-replicaset-5xltl   1/1     Running             0          4s
@@ -319,24 +319,24 @@ spec:
 ```
 
 이제 디플로이먼트를 생성하자. 이때 `--record` 옵션을 추가한다.
-``` shellsession
+```   
 $ kubectl apply -f nginx-deployment.yml --record
 deployment.apps/nginx-deployment created
 ```
 디플로이먼트가 생성되었다.
-``` shellsession
+```   
 $ kubectl get deployment
 NAME               READY   UP-TO-DATE   AVAILABLE   AGE
 nginx-deployment   3/3     3            3           116s
 ```
 하나의 레플리카도 생성되었다.
-``` shellsession
+```   
 $ kubectl get replicaset
 NAME                          DESIRED   CURRENT   READY   AGE
 nginx-deployment-796dd5cd88   3         3         3       3m50s
 ```
 세 개의 팟도 생성되었다.
-``` shellsession
+```   
 $ kubectl get pods
 NAME                                READY   STATUS    RESTARTS   AGE
 nginx-deployment-796dd5cd88-mnlpc   1/1     Running   0          105s
@@ -356,11 +356,11 @@ containers:
 ```
 
 그 다음 `kubectl apply -f` 명령어를 다시 실행한다.
-``` shellsession
+```   
 $ kubectl apply -f nginx-deployment.yml --record
 ```
 팟들이 새롭게 생성된 것을 확인할 수 있다. 쿠버네티스가 각각의 팟들을 새로운 버전으로 롤링 업데이트한 것이다.
-``` shellsession
+```   
 $ kubectl get pods
 NAME                               READY   STATUS    RESTARTS   AGE
 nginx-deployment-664f4c64c-6wxxs   1/1     Running   0          32s
@@ -368,18 +368,18 @@ nginx-deployment-664f4c64c-ksdt4   1/1     Running   0          23s
 nginx-deployment-664f4c64c-xz7vc   1/1     Running   0          25s
 ```
 이제 레플리카 셋을 확인해보자. 기존 레플리카셋과 새로운 레플리카셋이 존재한다.
-``` shellsession
+```   
 $ kubectl get replicaset
 NAME                          DESIRED   CURRENT   READY   AGE
 nginx-deployment-664f4c64c    3         3         3       2m59s
 nginx-deployment-796dd5cd88   0         0         0       10m
 ```
 다음 명령어로 이전 버전으로 롤백을 할 수도 있다.
-``` shellsession
+```   
 $ kubectl rollout undo deployment nginx-deployment --to-revision=1
 deployment.apps/nginx-deployment rolled back
 ```
-``` shellsession
+```   
 $ kubectl get pods
 NAME                                READY   STATUS    RESTARTS   AGE
 nginx-deployment-796dd5cd88-gtmjz   1/1     Running   0          12s
@@ -409,7 +409,7 @@ nginx-deployment-796dd5cd88-tnh5j   1/1     Running   0          11s
 
 ### 팟 주소 고정
 쿠버네티스는 기본적으로 팟에 유동적으로 IP를 할당한다. 
-``` shellsession
+```   
 $ kubectl get pods -o wide
 NAME                               READY   STATUS    RESTARTS   AGE   IP         
 nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          6s    10.1.0.54   
@@ -444,7 +444,7 @@ spec:
           ports:
           - containerPort: 80
 ```
-``` shellsession
+```   
 $ kubectl apply -f nginx-deployment.yml
 
 $ kubectl get pods -o wide
@@ -454,7 +454,7 @@ nginx-deployment-664f4c64c-5r55z   1/1     Running   0          6s    10.1.0.55
 ```
 
 그 다음 `10.1.0.54` 팟에 접속하여 `10.1.0.55`과 통신할 수 있는지 확인해보자.
-``` shellsession
+```   
 $ kubectl exec -it nginx-deployment-664f4c64c-4sbfd bash
 ```
 팟 사이에 정상적으로 통신이 되는 것을 확인할 수 있다.
@@ -519,12 +519,12 @@ spec:
   type: ClusterIP  ## 서비스 타입
 ```
 서비스를 생성한다.
-``` shellsession
+```   
 $ kubectl apply -f nginx-service-clusterip.yml 
 service/nginx-service-clusterip created
 ```
 생성된 서비스는 다음과 같다.
-``` shellsession {4}
+```    {4}
 $ kubectl get services
 NAME                      TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 kubernetes                ClusterIP   10.96.0.1       <none>        443/TCP    9m47s
@@ -592,12 +592,12 @@ spec:
 ```
 
 서비스를 생성하자.
-``` shellsession
+```   
 $ kubectl apply -f nginx-service-nodeport.yml 
 ```
 
 생성된 서비스는 다음과 같다.
-``` shellsession {4}
+```    {4}
 $ kubectl get services
 NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
 kubernetes                ClusterIP   10.96.0.1        <none>        443/TCP          49s
@@ -605,16 +605,16 @@ nginx-service-clusterip   NodePort    10.107.159.253   <none>        9999:30553/
 ```
 
 클러스터 내부에서 사용되는 `9999` 포트 외에도 `30553`라는 포트가 생성됐다. `30553` 포트는 외부 네트워크로 노출되는 포트이며, 외부 네트워크에서 팟과 통신할 수 있다.
-``` shellsession
+```   
 $ curl <워커노드 PUBLIC IP>:30553
 ```
 
-::: danger
+::: danger Info
 AWS EC2에서 쿠버네티스를 구축한 경우 보안 그룹에서 해당 포트를 개방해야한다.
 :::
 
 이제 클러스터의 노드에서도 팟과 통신할 수 있다.
-``` shellsession
+```   
 $ curl <워커노드 PUBLIC IP>:30553
 <!DOCTYPE html>
 <html>
@@ -707,7 +707,7 @@ spec:
 
 ### 네임스페이스 목록 확인
 `kubectl get namespaces` 명령어로 네임스페이스 목록을 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl get namespaces 
 NAME              STATUS   AGE
 kube-public       Active   25h
@@ -726,15 +726,15 @@ kind: Namespace
 metadata:
   name: my-namespace
 ```
-``` shellsession
+```   
 $ kubectl apply -f my_namespace.yml 
 ```
 `kubectl create namespace <네임스페이스 이름>` 명령어로도 네임스페이스를 생성할 수 있다.
-``` shellsession
+```   
 $ kubectl create namespace your-namespace
 ```
 2개의 네임스페이스가 생성된 것을 확인할 수 있다.
-``` shellsession {6-7}
+```    {6-7}
 $ kubectl get namespace 
 NAME              STATUS   AGE
 default           Active   25h
@@ -764,14 +764,14 @@ spec:
 
 ### 특정 네임스페이스에 포함되는 오브젝트만 조회하기
 `--all-namespaces` 옵션으로 네임스페이스 정보도 함께 출력할 수 있다.
-``` shellsession
+```   
 $ kubectl get pods --all-namespaces
 NAMESPACE      NAME           READY   STATUS    RESTARTS         AGE
 my-namespace   nginx-pod      1/1     Running   0                5m27s
 ...
 ```
 `-n <네임스페이스 이름>` 옵션으로 특정 네임스페이스에 속하는 오브젝트만 조회할 수 있다.
-``` shellsession
+```   
 $ kubectl get pods -n my-namespace
 NAME        READY   STATUS    RESTARTS   AGE
 nginx-pod   1/1     Running   0          7m45s
@@ -779,7 +779,7 @@ nginx-pod   1/1     Running   0          7m45s
 
 ### 네임스페이스 삭제
 `kubectl delete namespace <네임스페이스 이름>` 명령어로 네임스페이스를 삭제할 수 있다.
-``` shellsession
+```   
 $ kubectl create configmap my-configmap
  --from-literal NAME=paul
 ```
@@ -789,7 +789,7 @@ $ kubectl create configmap my-configmap
 
 ### 컨피그맵 생성
 `kubectl create configmap <이름> --from-literal <키=값>`으로 컨피그맵을 생성할 수 있다.
-``` shellsession
+```   
 $ kubectl create configmap my-configmap --from-literal DB_URL=localhost
 ```
 
@@ -806,13 +806,13 @@ data:
   DB_PASSWORD: mypassword
 ```
 
-``` shellsession
+```   
 $ kubectl apply -f your-configmap.yml
 ```
 
 ### 컨피그맵 확인
 `kubectl get configmap`명령어로 컨피그맵을 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl get configmap
 NAME               DATA   AGE
 my-configmap       1      70s
@@ -820,7 +820,7 @@ your-configmap     3      13s
 ```
 
 `kubectl describe configmap <컨피그맵 이름>`으로 컨피그맵의 키-값을 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl describe configmap your-configmap
 Name:         your-configmap
 Namespace:    default
@@ -867,19 +867,19 @@ spec:
 ```
 
 그 다음 컨테이너를 생성하자.
-``` shellsession
+```   
 $ kubectl apply -f nginx-pod.yml           
 pod/nginx-pod created
 ```
 
 그리고 컨테이너 내부에 접속한다.
-``` shellsession
+```   
 $ kubectl exec -it nginx-pod -c nginx-container bash
 root@nginx-pod:/#
 ```
 
 컨피그맵의 키-값이 컨테이너에 환경변수로 등록된 것을 확인할 수 있다.
-``` shellsession
+```   
 root@nginx-pod:/# echo $DB_PASSWORD
 mypassword
 
@@ -893,7 +893,7 @@ mypassword
 
 ### 컨피그맵 삭제
 `kubectl delete configmap <컨피그맵 이름>` 명령어로 컨피그맵을 삭제할 수 있다.
-``` shellsession
+```   
 $ kubectl delete configmap my-configmap
 ```
 
@@ -902,7 +902,7 @@ $ kubectl delete configmap my-configmap
 
 ### 시크릿 생성
 `kubectl create secret generic <시크릿 이름> --from-literal <키=값>` 명령어로 시크릿을 생성한다.
-``` shellsession
+```   
 $ kubectl create secret generic my-secret --from-literal DB_PASSWORD=1234
 ```
 
@@ -918,13 +918,13 @@ stringData:
   DB_USER: myuser
   DB_PASSWORD: mypass
 ```
-``` shellsession
+```   
 $ kubectl apply -f your-secret.yml
 ```
 
 ### 시크릿 확인
 `kubectl get secrets`명령어로 모든 시크릿을 확인할 수 있다.
-``` shellsession
+```   
 $ kubectl get secrets 
 NAME                  TYPE                                  DATA   AGE
 default-token-jsdgt   kubernetes.io/service-account-token   3      26h
@@ -932,7 +932,7 @@ my-secret             Opaque                                1      10m
 your-secret           Opaque                                3      65s
 ```
 `kubectl describe secret <시크릿 이름>` 명령어로 시크릿의 키-값을 확인해보자. 
-``` shellsession
+```   
 $ kubectl describe secret your-secret
 Name:         your-secret
 Namespace:    default
@@ -948,7 +948,7 @@ DB_URL:       9 bytes
 DB_USER:      6 bytes
 ```
 컨피그맵과 다르게 값을 직접 출력하지 않고 바이트 수만을 보여준다. `kubectl get secret <시크릿 이름> -o yaml` 명령어를 사용하면 저장된 값도 확인할 수 있다.
-``` shellsession {4-6}
+```    {4-6}
 $ kubectl get secret your-secret -o yaml
 apiVersion: v1
 data:
@@ -990,7 +990,7 @@ spec:
 
 ### 시크릿 삭제
 `kubectl delete secret <시크릿 이름>` 명령어로 시크릿을 삭제할 수 있다.
-``` shellsession
+```   
 $ kubectl delete secret my-secret
 ```
 
@@ -1113,7 +1113,7 @@ spec:
               number: 22222
 ```
 이제 설정파일로 인그레스 오브젝트를 생성한다.
-``` shellsession
+```   
 $ kubectl apply -f my-ingress.yml
 ```
 
@@ -1123,7 +1123,7 @@ $ kubectl apply -f my-ingress.yml
 인그레스 오브젝트만 생성해서는 아무 일도 일어나지 않는다. 외부 요청을 실제로 처리하는 서버가 필요하며, 이 서버를 `인그레스 컨트롤러`라고 한다. 인그레스 컨트롤러는 많은 제품군이 있으며, 여기서는 쿠버네티스 환경에서 활발히 사용되고 있는 `Nginx 인그레스 컨트롤러`를 사용해보자. 
 
 우선 다음 명령어를 입력하여 `Nginx 인그레스 컨트롤러`를 설치한다.
-```shellsession{1}
+```  {1}
 $ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
 namespace/ingress-nginx created
 serviceaccount/ingress-nginx created
@@ -1147,20 +1147,20 @@ job.batch/ingress-nginx-admission-patch created
 ```
 
 `Nginx 인그레스 컨트롤러`를 설치하면 관련된 여러 오브젝트가 `ingress-nginx` 네임스페이스에 자동으로 생성된다. 우선 팟과 디플로이먼트를 확인해보자. Nginx 웹 서버가 팟으로 동작하는 것을 확인할 수 있다.
-``` shellsession{5}
+```   {5}
 $ kubectl get pods -n ingress-nginx
 NAME                                       READY   STATUS      RESTARTS   AGE
 ingress-nginx-admission-create--1-x7fdd    0/1     Completed   0          4m42s
 ingress-nginx-admission-patch--1-ncz4v     0/1     Completed   1          4m42s
 ingress-nginx-controller-8cf5559f8-hvqkq   1/1     Running     0          4m42s
 ```
-``` shellsession{3}
+```   {3}
 $ kubectl get deployments -n ingress-nginx
 NAME                       READY   UP-TO-DATE   AVAILABLE   AGE
 ingress-nginx-controller   1/1     1            1           5m
 ```
 Nginx 웹 서버도 하나의 팟으로 동작하기 때문에 외부 노출을 위한 서비스가 필요하다. `Nginx 인그레스 컨트롤러`를 설치하면 필요한 서비스 또한 자동으로 생성된다.
-``` shellsession {3}
+```    {3}
 $ kubectl get services -n ingress-nginx  
 NAME                                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx-controller             NodePort    10.108.230.135   <none>        80:32508/TCP,443:32527/TCP   5m13s
@@ -1177,7 +1177,7 @@ AWS EC2에서 쿠버네티스를 구축한 경우 보안 그룹에서 해당 포
 :::
 
 이제 외부에서 인그레스 컨트롤러의 `service1` 서비스로 요청을 보내보자.
-``` shellsession {1}
+```    {1}
 $ curl <워커노드 PUBLIC IP>:32508/service1
 <!DOCTYPE html>
 <html>
@@ -1204,7 +1204,7 @@ Commercial support is available at
 </html>
 ```
 `service2`로의 요청도 처리되는 것을 확인할 수 있다.
-``` shellsession
+```   
 $ curl <워커노드 PUBLIC IP>/service2
 <!DOCTYPE html>
 <html>

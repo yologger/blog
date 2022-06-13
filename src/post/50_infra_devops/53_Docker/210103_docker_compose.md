@@ -14,7 +14,7 @@ sidebarDepth: 0
 ## Docker Compose 설치
 Mac OS의 경우 `Docker Desktop on Mac`에 `Docker Compose`가 내장되어있다.
 
-``` shellsession
+```   
 $ docker-compose -version
 docker-compose version 1.29.2, build 5becea4c
 ```
@@ -50,23 +50,23 @@ services:
 
 ## Docker Compose 실행
 `docker-compose up` 명령어로 컨테이너들을 포그라운드로 실행할 수 있다.
-``` shellsession
+```   
 $ docker-compose up
 ```
 
 `-d` 옵션을 추가하면 백그라운드로 실행한다.
-``` shellsession
+```   
 $ docker-compose up -d
 ```
 
 만약 파일 이름이 `docker-compose.yml`이 아니라면 `-f` 옵션으로 파일 이름을 지정할 수 있다.
-``` shellsession
+```   
 $ docker-compose -f my-docker-compose.yml up -d
 ```
 
 ### Docker Compose 컨테이너들 확인하기
 `docker-compose ps` 명령어로 컨테이너들을 확인할 수 있다. 
-``` shellsession
+```   
 $ docker-compose ps
     Name                   Command               State                 Ports              
 ------------------------------------------------------------------------------------------
@@ -76,16 +76,16 @@ project_web_1   /docker-entrypoint.sh ngin ...   Up      0.0.0.0:80->80/tcp
 ```
 
 ### Docker Compose 재시작
-``` shellsession
+```   
 $ docker-compose restart
 ```
 
 ### Docker Compose 중지
-``` shellsession
+```   
 $ docker-compose stop
 ```
 
 ### Docker Compose 삭제
-``` shellsession
+```   
 $ docker-compose down
 ```

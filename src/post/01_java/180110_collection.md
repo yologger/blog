@@ -547,9 +547,8 @@ System.out.println(set);  // []
 
 - `키(Key)`에는 중복된 값이 입력될 수 없다.
 - `값(Value)`는 중복된 값이 입력될 수 있다.
-- 순서가 유지되지 않는다.
 
- 자바 API에서 제공하는 Map의 정의는 다음과 같다.
+자바 API에서 제공하는 Map의 정의는 다음과 같다.
 ``` java
 public interface Map<K, V> {
     int size();
@@ -1265,6 +1264,24 @@ Map map = Collections.emptyMap();
 map.put(7, "Ronaldo");  // UnsupportedOperationException
 ```
 
+### singleton()
+하나의 요소만 포함하는 불변 `Set`을 생성한다.
+``` java
+Set<Person> set = Collections.singleton(new Person("paul", 3));
+```
+
+### singletonList()
+하나의 요소만 포함하는 불변 `List`를 생성한다.
+``` java
+List<Person> list = Collections.singletonList(new Person("Paul", 3));
+```
+
+### singletonMap()
+하나의 요소만 포함하는 불변 `Map`를 생성한다.
+``` java
+Map<String, Person> map = Collections.singletonMap("p", new Person("Paul", 3));
+```
+
 ### unmodifiableList()
 `List`를 불변 객체로 만들어 반환한다.
 ``` java {4}
@@ -1295,22 +1312,4 @@ map.put(11, "Bale");
 
 Map immutable = Collections.unmodifiableMap(map);
 immutable.put(9, "Benzema");  // UnsupportedOperationException
-```
-
-### singleton()
-하나의 요소만 포함하는 불변 `Set`을 생성한다.
-``` java
-Set<Person> set = Collections.singleton(new Person("paul", 3));
-```
-
-### singletonList()
-하나의 요소만 포함하는 불변 `List`를 생성한다.
-``` java
-List<Person> list = Collections.singletonList(new Person("Paul", 3));
-```
-
-### singletonMap()
-하나의 요소만 포함하는 불변 `Map`를 생성한다.
-``` java
-Map<String, Person> map = Collections.singletonMap("p", new Person("Paul", 3));
 ```

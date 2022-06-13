@@ -31,11 +31,11 @@ sidebarDepth: 0
 
 ### Mac OS에 Docker 설치
 Mac OS 환경에서는 [Homebrew](https://brew.sh/)로 `Docker Desktop on Mac`을 쉽게 설치할 수 있다.
-``` shellsession
+```  
 $ brew install --cask docker 
 ```
 도커 버전을 확인해보자.
-``` shellsession
+```  
 $ docker -v
 Docker version 20.10.11, build dea9396
 ```
@@ -45,30 +45,27 @@ Docker version 20.10.11, build dea9396
 ![](./210101_start_docker/2.png)
 
 ## 도커 이미지 검색 
-`docker search` 명령어로 도커 이미지를 검색할 수 있다.
-``` shellsession
-// docker search <image_name>
+`docker search <IMAGE_NAME>` 명령어로 도커 이미지를 검색할 수 있다.
+```  
 $ docker search centos
 ```
 ## 도커 이미지 다운로드
-`docker pull`명령어로 도커 이미지를 다운받을 수 있다. `centos:7` 이미지를 다운받아보자.
-``` shellsession
-// docker pull <image_name>
+`docker pull <IMAGE_NAME>`명령어로 도커 이미지를 다운받을 수 있다. `centos:7` 이미지를 다운받아보자.
+```  
 $ docker pull centos:7
 ``` 
 
 ## 다운받은 도커 이미지 확인
 `docker images` 명령어로 다운받은 도커 이미지 목록을 확인할 수 있다.
-``` shellsession
+```  
 $ docker images
 REPOSITORY          TAG       IMAGE ID       CREATED        SIZE
 centos              7         eeb6ee3f44bd   3 months ago   204MB
 ```
 
 ## 도커 컨테이너 생성
-`docker create` 명령어로 도커 컨테이너를 생성할 수 있다. 자세한 실행 옵션은 [이 곳](https://docs.docker.com/engine/reference/commandline/create/)에서 확인할 수 있다.
-``` shellsession
-// docker create -i -t --name <container_name> <image_name> 
+`docker create -i -t --name <CONTAINER> <IMAGE>` 명령어로 도커 컨테이너를 생성할 수 있다.
+```  
 $ docker create -i -t --name my_centos centos:7
 ```
 자주 사용하는 옵션은 다음과 같다.
@@ -76,11 +73,12 @@ $ docker create -i -t --name my_centos centos:7
 - `-i -t`: `docker attach`명령어로 컨테이너 내부에 진입할 수 있다.
 - `-d`: 컨테이너를 백그라운드로 실행한다.
 
+자세한 실행 옵션은 [이 곳](https://docs.docker.com/engine/reference/commandline/create/)에서 확인할 수 있다.
+
 ## 도커 컨테이너 실행
-`docker start` 명령어로 도커 컨테이너를 시작한다.
-``` shellsession
-$ docker start <container_name>
-docker start my_centos
+`docker start <CONTAINER>` 명령어로 도커 컨테이너를 시작한다.
+```  
+$ docker start my_centos
 
 $ docker ps -al          
 CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS         PORTS     NAMES
@@ -91,22 +89,17 @@ b5df63051a50   centos:7   "/bin/bash"   28 seconds ago   Up 3 seconds           
 도커 컨테이너에는 두 가지 명령어로 접속할 수 있다. 
 
 ### docker attach
-`docker attach`명령어로 컨테이너 내부로 접속할 수 있다.
-```
-docker attach <컨테이너 이름>
-docker attach <컨테이너 ID>
-```
-`docker attach`명령어는 `root` 계정으로 컨테이너에 접속한다.
-``` shellsession
+`docker attach <CONTAINER_NAME>` 또는 `docker attach <CONTAINER_ID>`명령어로 컨테이너 내부로 접속할 수 있다.
+```  
 $ docker attach my_centos
 [root@a9adb823231 /]# 
 ```
 `exit`을 입력하여 컨테이너에서 빠져나올 수 있다.
-``` shellsession
+```  
 [root@a9adb823231 /]# exit 
 ```
-`exit`을 사용하여 컨테이너에서 빠져나오면 컨테이너가 종료된다.
-``` shellsession
+참고로 `exit`을 사용하여 컨테이너에서 빠져나오면 컨테이너도 종료된다.
+```  
 $ docker ps -a
 CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS                       PORTS     NAMES
 b5df63051a50   centos:7   "/bin/bash"   4 minutes ago   Exited (127) 4 seconds ago             my_centos
@@ -116,36 +109,29 @@ b5df63051a50   centos:7   "/bin/bash"   4 minutes ago   Exited (127) 4 seconds a
 백그라운드로 실행되는 컨테이너에 `docker attach`로 접속하면 커맨드는 입력할 수 없고 출력되는 로그만 확인할 수 있다.
 
 ### docker exec -it
-`docker exec -it` 명령어는 별도의 쉘 세션을 생성하여 컨테이너에 접속한다.
-```
-$ docker exec -it <CONTAINER NAME> <SHELL>
-$ docker exec -it <CONTAINER ID> <SHELL>
-```
-
-``` shellsession
+`docker exec -it <CONTAINER> <SHELL>` 명령어는 별도의 쉘 세션을 생성하여 컨테이너에 접속한다.
+```  
 $ docker exec -it 75ef6d64fead /bin/bash 
 bash-5.1# ls
 ```
 `docker exec it` 명령어로 컨테이너에 접속한 경우 `exit` 명령어로 빠져나와도 컨테이너가 종료되지 않는다. 따라서 데몬 컨테이너에 접근하는데 사용할 수 있다.
 
 ### docker run
-`docker run` 명령어를 사용하면 도커 이미지 다운, 도커 컨테이너 생성, 시작, 접속을 한 번에 할 수 있다.
-``` shellsession
-// docker run -i -t --name [container_name] [image_name]
+`docker run -i -t --name [container_name] [image_name]` 명령어를 사용하면 도커 이미지 다운, 도커 컨테이너 생성, 시작, 접속을 한 번에 할 수 있다.
+```  
 $ docker run -i -t --name my_centos ubuntu:14.04
 root@bdccae5606a1:/#
 ```
 
 ## 도커 컨테이너 정지
-`docker stop` 명령어를 사용하면 도커 컨테이너를 정지할 수 있다.
-``` shellsession
-// docker stop <container_name>
+`docker stop <container_name>` 명령어를 사용하면 도커 컨테이너를 정지할 수 있다.
+```  
 $ docker stop my_centos
 ```
 
 ## 도커 컨테이너 목록, 상태 확인
 `docker ps`명령어로 도커 컨테이너 목록을 확인할 수 있다. 어떤 옵션도 추가하지 않으면 실행 중인 컨테이너 목록만 출력된다. 정지된 컨테이너 목록까지 확인하려면 `-a` 옵션을 추가한다.
-``` shellsession
+```  
 $ docker ps -a
 CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS    PORTS     NAMES
 b5df63051a50   centos:7   "/bin/bash"   7 seconds ago   Created             my_centos
@@ -158,28 +144,26 @@ b5df63051a50   centos:7   "/bin/bash"   7 seconds ago   Created             my_c
 - `Pause`: 일시 중지된 상태
 
 ## 도커 컨테이너 삭제
-`docker rm` 명령어를 사용하면 도커 컨테이너를 삭제할 수 있다.
-``` shellsession
-// docker rm <container_name>
+`docker rm <container_name>` 명령어를 사용하면 도커 컨테이너를 삭제할 수 있다.
+```  
 $ docker rm my_centos
 ```  
-`docker container prune` 명령어를 사용하면 모든 도커 컨테이너를 삭제한다.
-``` shellsession
+`docker container prune` 명령어는 모든 도커 컨테이너를 삭제한다.
+```  
 $ docker container prune
 ```
 
 ## 도커 이미지 만들기
-`docker commit`명령어를 사용하면 도커 컨테이너를 빌드하여 도커 이미지를 생성할 수 있다.
-``` shellsession
+`docker commit -a <AUTHOR> -m <MESSAGE> <ORIGINAL_CONTAINER> <COPIED_CONTAINER>:<TAG>`명령어를 사용하면 도커 컨테이너를 빌드하여 도커 이미지를 생성할 수 있다.
+```  
 $ docker images
 REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
 ```
-``` shellsession{2}
-// docker commit -a [author] -m [message] ORIGINAL_CONTAINER COPIED_CONTAINER:TAG
+```
 $ docker commit -a "yologger" -m "This is message" copied_image copied_image:0.0.1
 ```
-``` shellsession{4}
+```  {4}
 $ docker images
 REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
@@ -188,7 +172,7 @@ copied_image        0.1     0903d3cdd37e   4 seconds ago   211MB
 
 ## 도커 이미지 삭제
 `docker image rmi` 명령어로 이미지를 삭제할 수 있다.
-```shellsession{6}
+``` {6}
 $ docker images
 REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
@@ -203,18 +187,17 @@ original_image      3.1     0903d3cdd37e   12 months ago   211MB
 도커 이미지가 도커 컨테이너로 사용 중이라면 컨테이너를 먼저 삭제해야한다.
 
 ## 도커 이미지 이름, 태그 변경하기
-`docker tag`명령어로 이미지 이름과 태그를 변경할 수 있다.
-```shellsession
+`docker tag [기존이미지명:기존태그명] [새로운이미지명:새로운태그명]`명령어로 이미지 이름과 태그를 변경할 수 있다.
+``` 
 $ docker images
 REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
 ```
-``` shellsession
-// docker tag [기존이미지명:기존태그명] [새로운이미지명:새로운태그명]
+```  
 $ docker tag copied_image:0.1 new_image:0.1
 ```
 기존 이미지가 사라지는 것은 아니며, 새로운 이미지가 생성된다.
-``` shellsession{4}
+```  {4}
 $ docker images
 REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
@@ -233,7 +216,7 @@ new_image           0.1     eeb6ee3f44bd   4 seconds ago   211MB
 도커 컨테이너는 호스트의 볼륨을 공유할 수 있다. 도커 컨테이너를 생성할 때 `-v` 또는 `--volume` 옵션으로 호스트의 볼륨과 컨테이너의 볼륨을 바인딩할 수 있다.
 
 우선 호스트 OS에 `mydata` 디렉토리를 생성하자.
-``` shellsession
+```  
 $ mkdir mydata
 
 $ cd mydata
@@ -242,7 +225,7 @@ $ pwd
 /Users/yologger/mydata
 ``` 
 이제 호스트 OS의 디렉토리를 공유하는 Ubuntu 컨테이너를 생성해보자.
-``` shellsession
+```  
 $ docker create -i -t \
 --name my_container \
 -v /Users/yologger/mydata:/mydata \
@@ -251,7 +234,7 @@ ubuntu:14.04
 위 명령어는 호스트 파일시스템의 `/Users/yologger/mydata`를 도커 컨테이너 파일시스템 `/mydata`과 바인딩한다. 도커 컨테이너에 `/mydata` 디렉토리가 없다면 자동으로 생성된다.
 
 이제 도커 컨테이너 내부에 접속하여 `/mydata` 디렉토리가 존재하는지 확인해보자.
-``` shellsession
+```  
 $ docker start my_container
 
 $ docker attach my_container
@@ -261,20 +244,20 @@ mydata
 ...
 ```
 도커 컨테이너에도 `mydata` 디렉토리가 생성된 것을 확인할 수 있다. 이제 이 디렉토리 안에 파일을 생성해본다.
-``` shellsession
+```  
 root@308220530da1:/# cd mydata
 
 root@308220530da1:/mydata# echo "Hello world" > hello.txt
 ```
 도커 컨테이너에서 빠져나와 호스트 OS의 `/Users/yologger/mydata`를 확인해본다.
-``` shellsession
+```  
 $ ls
 hello.txt
 ```
 
 ### 컨테이너 볼륨 공유
 지금까지 `-v` 옵션으로 볼륨을 사용하는 컨테이너를 생성했다.
-``` shellsession
+```  
 $ docker create -i -t \
 --name my_container \
 -v /Users/yologger/mydata:/mydata \
@@ -282,14 +265,14 @@ ubuntu:14.04
 ```
 
 `--volumes-from` 옵션을 사용하면 이미 볼륨을 사용하는 다른 컨테이너의 볼륨을 공유할 수 있다.
-``` shellsession {3}
+```   {3}
 $ docker create -i -t \
 --name your_container \
 --volumes-from my_container \
 ubuntu:14.04
 ```
 이제 `my_container`와 `your_container`는 호스트의 `/Users/yologger/mydata:/mydata` 디렉토리를 공유하게 된다. `your_container`에서도 `/mydata` 디렉토리를 확인할 수 있다.
-``` shellsession
+```  
 $ docker start your_container
 
 $ docker attach your_container
@@ -306,19 +289,19 @@ Hello World
 `도커 볼륨`은 도커가 직접 관리하는 볼륨이다. `docker volume` 명령어로 도커 볼륨을 관리할 수 있다.
 
 `docker volume create <볼륨 이름>` 명령어로 볼륨을 생성할 수 있다.
-``` shellsession
+```  
 $ docker volume create my_volume
 ```
 
 `docker volume ls` 명령어로 볼륨 목록을 확인할 수 있다.
-``` shellsession
+```  
 $ docker volume ls
 DRIVER    VOLUME NAME
 local     my_volume
 ...
 ```
 `docker inspect volume <볼륨 이름>` 명령어로 호스트 OS에서 볼륨이 실제로 저장되는 위치를 확인할 수 있다.
-``` shellsession {7}
+```   {7}
 $ docker inspect --type volume my_volume
 [
     {
@@ -340,7 +323,7 @@ $ docker create -i -t \
 ubuntu:14.04
 ```
 도커 볼륨과 바인딩 되었는지 확인해보자.
-``` shellsession {7}
+```   {7}
 $ docker start my_container
 my_container
 
@@ -352,7 +335,7 @@ mydata
 ```
 
 `docker volume rm <볼륨 이름>` 명령어로 볼륨을 삭제할 수 있다.
-``` shellsession
+```  
 $ docker volume rm my_volume
 ```
 
@@ -387,7 +370,7 @@ Repository의 이름은 이미지의 이름과 동일해야한다.
 ![](./210101_start_docker/4.png)
 
 이제 업로드할 이미지 이름 앞에 <b><u>사용자 이름</u></b>을 추가한다.
-``` shellsession
+```  
 $ docker tag test_image:0.1 yologger1013/test_image:0.1
 REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
 test_image                  0.1       0903d3cdd37e   41 minutes ago   211MB
@@ -395,7 +378,7 @@ yologger1013/test_image     0.1       0903d3cdd37e   41 minutes ago   211MB
 ```
 
 그리고 `docker login` 명령어로 도커 허브에 로그인한다.
-``` shellsession
+```  
 $ docker login
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 Username: yologger1013
@@ -407,7 +390,7 @@ For better security, log in with a limited-privilege personal access token. Lear
 ```
 
 마지막으로 `docker push` 명령어로 이미지를 업로드한다.
-``` shellsession
+```  
 $ docker push yologger1013/test_image:0.1
 The push refers to repository [docker.io/yologger1013/test_image]
 d4b7a766cea6: Pushed 
@@ -423,7 +406,7 @@ f2fa9f4cf8fd: Mounted from library/ubuntu
 
 ### 도커 허브에서 이미지 다운받기
 `docker pull` 명령어로 도커 허브에서 이미지를 다운받을 수 있다.
-``` shellsession
+```  
 $ docker pull yologger1013/test_image:0.1 
 
 $ docker images
@@ -570,16 +553,16 @@ $ docker pull <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/<IMAGE>:<TAG>
 ```
 
 ## Dockerfile 파일
-지금까지 다음과 같은 순서로 `Docker image`를 생성했다.
+지금까지 다음과 같은 순서로 도커 이미지를 생성했다.
 
 1. Docker image로 Docker container 생성
 2. Docker container에 접속하여 필요한 어플리케이션 설치
 3. `docker commit` 명령어로 이미지 생성
 
-이러한 과정들을 `Dockerfile`라는 스크립트 파일에 나열한 후, 이 파일로 쉽게 Docker image를 생성할 수 있다.
+이러한 과정들을 <b>`Dockerfile`</b>라는 스크립트 파일에 나열한 후 쉽게 도커 이미지를 생성할 수 있다.
 
 예제를 살펴보자. 베이스가 되는 `ubuntu:18.04` 이미지에 `git`이 설치된 새로운 이미지를 생성할 것이다. 우선 디렉토리를 생성하자.
-```shellsession
+``` 
 $ mkdir my_project
 
 $ cd my_project 
@@ -598,7 +581,7 @@ RUN apt install -y git
 ```
 ### docker build 명령어
 이제 `docker build -t <IMAGE_NAME>:<TAG> .` 명령어로 이미지를 생성하자. 마지막 인자로 `Dockerfile`이 위치하는 현재 디렉토리 `.`를 전달한다.
-``` shellsession{1}
+```  {1}
 $ docker build -t my_ubuntu_image:0.1 .
 [+] Building 2.2s (8/8) FINISHED                                                                                              
  => [internal] load build definition from Dockerfile                                                                     0.0s
@@ -616,13 +599,13 @@ $ docker build -t my_ubuntu_image:0.1 .
  => => naming to docker.io/library/my_ubuntu_image:0.1        
 ```
 생성된 이미지를 확인할 수 있다.
-``` shellsession
+```  
 $ docker images
 REPOSITORY        TAG       IMAGE ID       CREATED          SIZE
 my_ubuntu_image   0.1       abf23e9807b8   24 minutes ago   197MB
 ```
 마지막으로 생성한 이미지로 컨테이너를 생성해서 `git`이 설치되어있는지 확인해보자.
-``` shellsession
+```  
 $ docker create -i -t --name my_ubuntu_container my_ubuntu_image:0.1
 
 $ docker ps -a
@@ -634,7 +617,7 @@ $ docker start my_ubuntu_container
 $ docker attach my_ubuntu_container
 ```
 `git`이 설치된 것을 확인할 수 있다.
-``` shellsession
+```  
 root@1143426a0e96:/# git --version
 git version 2.17.1
 ```

@@ -64,20 +64,20 @@ AWS EC2와 같은 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스�
 
 `kubectl version` 명령어로 쿠버네티스 버전을 확인해보자.
 
-``` shellsession
+```  
 $ kubectl version  
 Client Version: version.Info{Major:"1", Minor:"22", GitVersion:"v1.22.4", GitCommit:"b695d79d4f967c403a96986f1750a35eb75e75f1", GitTreeState:"clean", BuildDate:"2021-11-17T15:48:33Z", GoVersion:"go1.16.10", Compiler:"gc", Platform:"darwin/amd64"}
 Server Version: version.Info{Major:"1", Minor:"22", GitVersion:"v1.22.4", GitCommit:"b695d79d4f967c403a96986f1750a35eb75e75f1", GitTreeState:"clean", BuildDate:"2021-11-17T15:42:41Z", GoVersion:"go1.16.10", Compiler:"gc", Platform:"linux/amd64"}
 ```
 
 `kubectl get nodes`명령어로 클러스터에 포함된 노드들을 확인할 수 있다. 현재 하나의 노드를 확인할 수 있다.
-``` shellsession
+```  
 $ kubectl get nodes
 NAME             STATUS   ROLES                  AGE   VERSION
 docker-desktop   Ready    control-plane,master   66m   v1.22.4
 ```
 
-## AWS EC2에서 쿠버네티스 클러스터 구축하기
+## AWS EC2에서 쿠버네티스 클러스터 구축해보기
 쿠버네티스 클러스터를 구성하기 위한 조건은 다음과 같다.
 
 - 서버가 2개의 CPU core, 2GB RAM 이상이어야 한다.
