@@ -289,6 +289,18 @@ List<String> list = Arrays.asList("Paul", "John", "Smith", "Monica", "Chandler",
 List<String> subList = list.subList(1, 4);      // [John, Smith, Monica]
 ```
 
+#### List.clear()
+``` java
+List<String> list = new ArrayList<>();
+list.add("john");
+list.add("paul");
+list.add("smith");
+System.out.println(list);   // [john, paul, smith]
+
+list.clear();
+System.out.println(list);   // []
+```
+
 #### List.toArray()
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
@@ -527,7 +539,7 @@ for (Integer element: set) {
 }
 ```
 
-#### Set.clear();
+#### Set.clear()
 ``` java
 Set<Integer> set = new HashSet<>();
 set.add(1);
@@ -755,6 +767,8 @@ Map<Integer, String> players = new TreeMap<Integer, String>();
 players.put(7, "Ronaldo");
 players.put(9, "Benzema");
 players.put(11, "Bale");
+
+System.out.println(players);    // {7=Ronaldo, 9=Benzema, 11=Bale}
 ```
 
 #### Map.get()
@@ -818,6 +832,18 @@ for (Integer key: players.keySet()) {
 }
 ```
 
+#### Map.clear()
+``` java
+Map<Integer, String> players = new TreeMap<Integer, String>();
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+System.out.println(players);    // {7=Ronaldo, 9=Benzema, 11=Bale}
+
+players.clear();
+System.out.println(players);    // {}
+```
+
 ## Stack
 `Stack`을 사용할 때는 <b>`Stack`</b>클래스를 사용한다.
 ``` java
@@ -837,6 +863,13 @@ stack.peek();
 ``` java
 Integer value = stack.pop();
 ```
+`clear()`로 모든 요소를 클리어할 수 있다.
+``` java
+stack.clear();
+
+System.out.println(stack);  // []
+```
+
 
 ## Queue
 `Queue`를 사용할 때는 <b>`Queue`</b>인터페이스와 <b>`LinkedList`</b>클래스로 구현한다.
@@ -874,6 +907,14 @@ System.out.println(queue.remove());     // 1
 System.out.println(queue.remove());       // 2
 
 System.out.println(queue.toString());   // [3, 4]
+```
+`clear()`로 모든 요소를 제거할 수 있다.
+``` java
+Queue<Integer> queue = new LinkedList<Integer>();
+queue.add(1);
+queue.add(2);
+
+queue.clear();
 ```
 
 ## Deque

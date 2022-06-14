@@ -178,7 +178,7 @@ public class MemberEntity {
 `name` 속성을 생략하면 멤버변수의 이름으로 컬럼을 생성한다.
 
 ### nullable 속성
-`nullable = true`로 `NOT NULL` 제약조건을 추가할 수 있다.
+`nullable = false`로 `NOT NULL` 제약조건을 추가할 수 있다.
 ``` java{10,13}
 @Entity
 @Table(name = "member")

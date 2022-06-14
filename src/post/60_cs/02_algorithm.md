@@ -24,13 +24,13 @@ sidebarDepth: 0
 - 다만 <u><b>시간</b></u>이 더 중요한 요소다.
 
 ## 실행 횟수
-- 실제 실행시간은 하드웨어의 성능에 따라 달라질 수 있다.
+- 알고리즘의 실제 실행 시간은 하드웨어의 성능에 따라 달라질 수 있다. 
 - 따라서 <b><u>실행 횟수</u></b>로 알고리즘의 성능을 비교한다.
+- 알고리즘의 실행 시간은 입력 크기 $n$에 따른 <b><u>실행 횟수</u></b>를 함수 $f(n)$으로 표현할 수 있다.
+    - $f(n) = n^4+20n^2+3n+40$
 - 실행 횟수에 가장 많은 영향을 주는 요소는 <b><u>반복문</u></b>이다.
 
 ## 점근적 표기법
-- 점근적 표기법에서는 알고리즘의 수행 시간을 입력 크기 $n$에 따른 <b><u>실행 횟수</u></b>를 함수 $f(n)$으로 표현한다.
-    - $f(n) = n^4+20n^2+3n+40$
 - 증가율
     - $f(n) = n^4+20n^2+3n+40$ 이라는 알고리즘에서 가장 큰 증가율을 갖는 계수는 $n^4$
 - 점근적 표기법
@@ -70,6 +70,7 @@ sidebarDepth: 0
 
 ## 정렬
 ### 버블 정렬
+::: details 버블 정렬
 ``` java
 import java.util.ArrayList;
 import java.util.Collections;
@@ -95,8 +96,10 @@ ArrayList notSorted = new ArrayList(Arrays.asList(3, 8, 1, 9, 2));
 BubbleSort bubbleSort = new BubbleSort();
 bubbleSort.sort(list);
 ```
+:::
 
 ### 선택 정렬
+::: details 선택 정렬
 ``` java
 public class SelectionSort {
 
@@ -123,8 +126,10 @@ ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 
 SelectionSort selectionSort = new SelectionSort();
 selectionSort.sort(notSorted);
 ```
+:::
 
 ### 삽입 정렬
+::: details 삽입 정렬
 ``` java
 ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 2, 7, 1, 3));
 
@@ -137,15 +142,12 @@ ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 
 InsertionSort insertionSort = new InsertionSort();
 insertionSort.sort(notSorted);
 ```
+:::
 
 ## 탐색
 ### 순차 탐색
-``` java
-ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 2, 7, 1, 3));
-
-InsertionSort insertionSort = new InsertionSort();
-insertionSort.sort(notSorted);
-```
+데이터가 정렬되어있지 않아도 되며, `O(n)`의 시간복잡도를 가진다.
+::: details 순차 탐색
 ``` java
 ArrayList<Integer> list = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 2, 7, 1, 3));
 
@@ -153,8 +155,11 @@ BinarySearch binarySearch = new BinarySearch();
 System.out.println(binarySearch.search(list, 3));
 System.out.println(binarySearch.search(list, 11));
 ```
+:::
+
 ### 이진 탐색
-데이터가 정렬되어있어야 한다.
+데이터가 정렬되어있어야 하며, `O(logn)`의 시간복잡도를 가진다.
+::: details 이진 탐색
 ``` java
 import java.util.ArrayList;
 
@@ -190,6 +195,7 @@ System.out.println(binarySearch.search(list, 3));
 System.out.println(binarySearch.search(list, 7));
 System.out.println(binarySearch.search(list, 20));
 ```
+:::
 
 
 ## 재귀(Recursion)
@@ -197,6 +203,7 @@ System.out.println(binarySearch.search(list, 20));
 ``` java
 function(입력) {
     if (입력 <= 일정값) {
+            // 자기 자신을 호출
             return function(입력-1);
     } else {
             // 탈출 조건이 있어야 한다.
@@ -208,7 +215,8 @@ function(입력) {
 
 ![](./02_algorithm/6.png)
 
-### Factorial 구하기
+### Factorial
+::: details Factorial
 ``` java
 public class Factorial {
     public Integer factorial(Integer n) {
@@ -228,8 +236,10 @@ System.out.println(factorial.factorial(2)); // 1*2
 System.out.println(factorial.factorial(3)); // 1*2*3
 System.out.println(factorial.factorial(4)); // 1*2*3*4
 ```
+:::
 
 ### 피보나치
+::: details 피보나치
 ``` java
 public int fibonacci(int n) {
     if (n == 0) {
@@ -241,8 +251,10 @@ public int fibonacci(int n) {
     }
 }
 ```
+:::
 
-### 배열의 합 구하기
+### 배열의 합
+::: details 배열의 합
 ``` java
 public static int sum(ArrayList<Integer> dataList) {
     if (dataList.size() == 0) {
@@ -252,21 +264,21 @@ public static int sum(ArrayList<Integer> dataList) {
     }
 }
 ```
+:::
 
 ## 탐욕 알고리즘 (Greedy Algorithm)
 - 지금 이 순간에서의 최적의 답을 구하는 전략
 - 반드시 최적의 해는 아니다.
 
 ### 최소 동전 문제
-- 10, 100, 500원을 사용해서 최소한의 동전으로 710원을 거슬러주는 방법은?
+::: details 최소 동전 문제
+- 10원, 100원, 500원을 사용해서 최소한의 동전으로 710원을 거슬러주는 방법은?
 - 큰 수부터 선택해보자.
-    - 500 1개 / 100 2개 / 10 1개
-    - 총 4개
+    - 500 1개 / 100 2개 / 10 1개 => 총 4개
 - 10원, 30원, 40원, 50원을 사용해서 최소한의 동전으로 70원을 거슬러주는 방법은?
 - 마찬가지로 큰 수부터 선택해보자.
-    - 50원 1개 / 10원 2개
-    - 총 3개
-    - 최적의 답이 아니다. (30원 1개 / 40원 1개, 총 2개)
+    - 50원 1개 / 10원 2개 => 총 3개 => 최적의 답이 아니다.
+    - 40원 1개 / 30원 1개 => 총 2개
 
 ```java
 public Integer coin(Integer price, ArrayList<Integer> coinList) {
@@ -292,8 +304,9 @@ public Integer coin(Integer price, ArrayList<Integer> coinList) {
 ArrayList<Integer> list = new ArrayList<Integer>(Arrays.asList(500, 100, 50, 10))
 coin(710, list);
 ```
+:::
 
-### 그리디 알고리즘 문제
+### 체육복
 
 ::: details 체육복
 점심시간에 도둑이 들어, 일부 학생이 체육복을 도난당했습니다. 다행히 여벌 체육복이 있는 학생이 이들에게 체육복을 빌려주려 합니다. 학생들의 번호는 체격 순으로 매겨져 있어, 바로 앞번호의 학생이나 바로 뒷번호의 학생에게만 체육복을 빌려줄 수 있습니다. 예를 들어, 4번 학생은 3번 학생이나 5번 학생에게만 체육복을 빌려줄 수 있습니다. 체육복이 없으면 수업을 들을 수 없기 때문에 체육복을 적절히 빌려 최대한 많은 학생이 체육수업을 들어야 합니다.
@@ -346,7 +359,7 @@ class Solution {
 - 무식하게 모든 경우의 수를 탐색하는 전략
 - 컴퓨터의 빠른 연산 속도를 이용
 
-### 완전 탐색 문제
+### 모의고사
 ::: details 모의고사
 수포자는 수학을 포기한 사람의 준말입니다. 수포자 삼인방은 모의고사에 수학 문제를 전부 찍으려 합니다. 수포자는 1번 문제부터 마지막 문제까지 다음과 같이 찍습니다.
 
@@ -361,42 +374,35 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] answers) {
         
-        int[] oneMarkings = {1, 2, 3, 4, 5};
-        int[] twoMarkings = {2, 1, 2, 3, 2, 4, 2, 5};
-        int[] threeMarkings = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
+        int[] first = {1, 2, 3, 4, 5};
+        int[] second = {2, 1, 2, 3, 2, 4, 2, 5};
+        int[] third = {3, 3, 1, 1, 2, 2, 4, 4, 5, 5};
         
-        int oneCount = 0;
-        int twoCount = 0;
-        int threeCount = 0;
-          
+        int firstCount = 0;
+        int secondCount = 0;
+        int thirdCount = 0;
+        
         for (int i=0; i<answers.length; i++) {
-            if (answers[i] == oneMarkings[i%oneMarkings.length]) oneCount++;
-            if (answers[i] == twoMarkings[i%twoMarkings.length]) twoCount++;
-            if (answers[i] == threeMarkings[i%threeMarkings.length]) threeCount++;
+            if(answers[i] == first[i%first.length]) firstCount++;
+            if(answers[i] == second[i%second.length]) secondCount++;
+            if(answers[i] == third[i%third.length]) thirdCount++;
+        } 
+
+        int max = Math.max(firstCount, Math.max(secondCount, thirdCount));
+        
+        ArrayList<Integer> answerList = new ArrayList<Integer>();
+        
+        if (max == firstCount) answerList.add(1);
+        if (max == secondCount) answerList.add(2);
+        if (max == thirdCount) answerList.add(3);
+        
+        int[] answer = new int[answerList.size()];
+        
+        for (int i=0; i<answerList.size(); i++) {
+            answer[i] = answerList.get(i);
         }
         
-        ArrayList<Integer> member = new ArrayList<Integer>();
-        
-        int max = Math.max(oneCount, Math.max(twoCount, threeCount));
-        
-        if (oneCount == max) {
-            member.add(1);
-        }
-        
-        if (twoCount == max) {
-            member.add(2);
-        }
-        
-        if (threeCount == max) {
-            member.add(3);
-        }
-        
-        int[] solution = new int[member.size()];
-        for (int i=0; i<member.size(); i++) {
-            solution[i] = member.get(i);
-        }
-        
-        return solution;
+        return answer;
     }
 }
 ```
@@ -406,6 +412,7 @@ class Solution {
 Brute Force + 가지 치기(Pruning)
 
 ### 부분 수열의 합
+::: details 부분 수열의 합
 N개의 정수로 이루어진 수열이 있을 때, 크기가 양수인 부분수열 중에서 그 수열의 원소를 다 더한 값이 S가 되는 경우의 수를 구하는 프로그램을 작성하시오.
 ``` java
 public class Main {
@@ -449,9 +456,10 @@ public class Main {
 }
 ```
 `dfs` 탐색을 먼저 하되, 조건을 충족하지 않으면 이전 깊이로 돌아간다.
+:::
 
-
-### N과 M 문제
+### N과 M
+::: details N과 M
 자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오
 - 1부터 N까지의 자연수 중에서 중복 없이 M개를 고른 수열
 ``` java
@@ -486,11 +494,13 @@ public static void dfs(int N, int M, int depth) {
 	return;
 }
 ```
+:::
 
 ## 분할 정복 (Divide & Conquer)
 큰 문제를 부분 문제로 나누어 계산하는 전략
 
-### 병합정렬        
+### 병합정렬    
+::: details 병합정렬    
 ```java
 import java.util.ArrayList;
 
@@ -553,12 +563,14 @@ MergeSort mergeSort = new MergeSort();
 
 System.out.println(mergeSort.sort(notSorted));
 ```
-        
-- 퀵 정렬의 시간복잡도는 $O(nlogn)$
-- $logn$개로 분할, 각 단계에서 $n$번 비교
+:::
     
 ### 퀵 정렬
-맨 앞 pivot을 기준으로 작은 값은 앞에, 큰 값은 뒤에 배치한다.        
+- 맨 앞 pivot을 기준으로 작은 값은 앞에, 큰 값은 뒤에 배치한다.        
+- 퀵 정렬의 시간복잡도는 $O(nlogn)$
+- $logn$개로 분할, 각 단계에서 $n$번 비교      
+
+::: details 퀵 정렬
 ```java
 public class QuickSort {
     public ArrayList<Integer> sort(ArrayList<Integer> list) {
@@ -596,6 +608,7 @@ ArrayList<Integer> notSorted = new ArrayList<>(Arrays.asList(4, 9, 10, 6, 5, 8, 
 QuickSort quickSort = new QuickSort();
 System.out.println(quickSort.sort(notSorted));
 ```
+::: 
 시간복잡도는 $O(nlogn)$며, 최악의 경우 $O(n^2)$다.
 
 
@@ -604,7 +617,8 @@ System.out.println(quickSort.sort(notSorted));
 - Memorization: 부분 문제의 결과값을 저장하여 재활용하는 전략
 
 ### 피보나치 
-#### 방법 1. Recursive
+::: details 피보나치
+- 방법 1. Recursive
 ``` java
 public int fibonacci(int n) {
     if (n == 0) {
@@ -624,7 +638,7 @@ fibonacci(5);   // 5
 fibonacci(6);   // 8
 ```
         
-#### 방법 2. DP
+- 방법 2. DP
         
 ``` java
 public int fibonacci(int n) {
@@ -647,8 +661,9 @@ fibonacci(4);   // 3
 fibonacci(5);   // 5
 fibonacci(6);   // 8
 ```
+:::
 
-### 동적 계획법
+### 타겟 넘버
 ::: details 타겟 넘버
 n개의 음이 아닌 정수들이 있습니다. 이 정수들을 순서를 바꾸지 않고 적절히 더하거나 빼서 타겟 넘버를 만들려고 합니다. 예를 들어 [1, 1, 1, 1, 1]로 숫자 3을 만들려면 다음 다섯 방법을 쓸 수 있습니다.
 

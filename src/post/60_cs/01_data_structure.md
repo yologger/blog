@@ -9,15 +9,15 @@ sidebarDepth: 0
 [[toc]]
 
 ## 자료 구조의 종류
-`자료 구조`는 크게 `선형 구조`와 `비선형 구조`로 나뉜다.
-- `선형 구조`
+자료 구조는 크게 `선형 구조`와 `비선형 구조`로 나뉜다.
+- 선형 구조
     - `Array`
     - `Dynamic Array`
     - `Stack`
     - `Queue`
     - `Deque`
     - `Linked List`
-- `비선형 구조`
+- 비선형 구조
     - `Tree`
     - `Graph`
 
@@ -123,11 +123,13 @@ Queue<Integer> queue = new LinkedList<Integer>();
 queue.add(1);
 queue.add(2);
 
+queue.peek();   // 1
+
 queue.remove();    // 1
 queue.remove();    // 2
 ```
 
-### Queue 문제
+### 기능 개발
 ::: details 기능 개발
 프로그래머스 팀에서는 기능 개선 작업을 수행 중입니다. 각 기능은 진도가 100%일 때 서비스에 반영할 수 있습니다.
 
@@ -155,10 +157,10 @@ class Solution {
         
         ArrayList<Integer> completedCount = new ArrayList<Integer>();
         
-        ArrayList<Integer> queue = new ArrayList<Integer>();
+        Queue<Integer> queue = new LinkedList();
         
         for (int i=0; i<remainTime.length; i++) {
-            if (queue.size() > 0 && queue.get(0) < remainTime[i]) {
+            if (queue.size() > 0 && queue.peek() < remainTime[i]) {
                 completedCount.add(queue.size());
                 queue.clear();
             }
@@ -203,8 +205,8 @@ deque.removeLast();     // 3
 - `Key`와 `Hash Function`으로 데이터를 저장할 주소값을 계산한다. 
     - `HashFunction(key)` = `해시 함수의 반환값` = `해시 값` = `해시 주소` = `Hash Table의 인덱스`
 - `Hash Table`은 보통 고정된 `배열`로 설계한다.
-- 직접 접근을 하기 때문에 쓰기, 읽기, 검색이 빠르다.
-- `충돌(Collision)`이 발생하지 않도록 잘 설계해야한다.
+- 직접 접근을 하기 때문에 쓰기, 읽기, 검색에 `O(1)`의 시간 복잡도를 가진다.
+- `충돌(Collision)`이 발생하면 검색하는데 `O(n)`의 시간 복잡도가 걸릴 수도 있으므로 충돌이 발생하지 않도록 잘 설계해야한다.
 
 ### 구현
 ``` java
@@ -481,7 +483,7 @@ map.put(3, "Paul");
 map.get(2);
 ```
 
-### Hash Table 문제
+### 완주하지 못한 선수
 
 ::: details 완주하지 못한 선수
 수많은 마라톤 선수들이 마라톤에 참여하였습니다. 단 한 명의 선수를 제외하고는 모든 선수가 마라톤을 완주하였습니다.
@@ -534,6 +536,8 @@ class Solution {
 ```
 :::
 
+### 전화번호 목록
+
 ::: details 전화번호 목록
 전화번호부에 적힌 전화번호 중, 한 번호가 다른 번호의 접두어인 경우가 있는지 확인하려 합니다.
 전화번호가 다음과 같을 경우, 구조대 전화번호는 영석이의 전화번호의 접두사입니다.
@@ -571,6 +575,7 @@ class Solution {
 ```
 :::
 
+### 위장 
 ::: details 위장
 스파이들은 매일 다른 옷을 조합하여 입어 자신을 위장합니다.
 
@@ -965,7 +970,7 @@ head.add(new Student("John", 10));
 head.add(new Student("Son", 20));
 ```
 
-### PriorityQueue 문제
+### 더 맵게
 ::: details 더 맵게
 매운 것을 좋아하는 Leo는 모든 음식의 스코빌 지수를 K 이상으로 만들고 싶습니다. 모든 음식의 스코빌 지수를 K 이상으로 만들기 위해 Leo는 스코빌 지수가 가장 낮은 두 개의 음식을 아래와 같이 특별한 방법으로 섞어 새로운 음식을 만듭니다.
 ```
@@ -1049,6 +1054,7 @@ int[][] graph = {
         {0, 0, 1, 0, 0, 0}
 };
 ```
+`graph[0][1]`은 0번 Vertext와 1번 Vertext 사이에 Edge가 존재함을 의미한다.
 
 ### 인접 리스트
 그래프를 인접 리스트로 구현하면 다음과 같다.
@@ -1074,6 +1080,48 @@ graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
 ### DFS(깊이 우선 탐색)
 `DFS`는 `Stack` 또는 `재귀(Recursion)`을 통해 구현할 수 있다.
 
+인접 행렬을 `Stack`으로 풀면 다음과 같다.
+``` java
+public class App {
+    public static void main(String[] args) {
+        int[][] graph = {
+                {0, 1, 1, 0, 1, 0},
+                {1, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 0, 1, 0},
+                {1, 0, 1, 1, 0, 0},
+                {0, 0, 1, 0, 0, 0}
+        };
+
+        System.out.println(bfs(graph, 0));
+    }
+
+    public static ArrayList<Integer> bfs(int[][] graph, int start) {
+        Stack<Integer> needVisit = new Stack<Integer>();
+        ArrayList<Integer> visited = new ArrayList<Integer>();
+
+        needVisit.push(start);
+
+        while(needVisit.size() > 0) {
+            int node = needVisit.pop();
+
+            // 방문하지 않았다면
+            if (!visited.contains(node)) {
+                // 방문하고
+                visited.add(node);
+                // 인접한 노드를 needVisit에 넣는다
+                for (int i=0; i<graph[node].length; i++) {
+                    if (graph[node][i] == 1 && !visited.contains(i)) {
+                        needVisit.push(i);
+                    }
+                }
+            }
+        }
+        return visited;
+    }
+}
+```
+
 인접 행렬을 `재귀(Recursion)`로 풀면 다음과 같다.
 ``` java
 public class App {
@@ -1090,99 +1138,22 @@ public class App {
 
         boolean[] isVisited = new boolean[graph.length];
 
-        List<Integer> visitedList = new ArrayList<>();
+        List<Integer> visited = new ArrayList<>();
 
-        dfs(graph, 0, isVisited, visitedList);
+        dfs(graph, 0, isVisited, visited);
 
-        System.out.println(visitedList);    // [0, 1, 2, 4, 3, 5]
+        System.out.println(visited);    // [0, 1, 2, 4, 3, 5]
     }
 
-    public static void dfs(int[][] graph, int start, boolean[] isVisited, List<Integer> visitedList) {
+    public static void dfs(int[][] graph, int start, boolean[] isVisited, List<Integer> visited) {
         isVisited[start] = true;
-        visitedList.add(start);
+        visited.add(start);
 
-        // 정점 i로의 경로가 존재하고, 정점 i를 방문하지 않았다면,
+        // 인접한 노드 중에서
         for (int i=0; i<graph[start].length; i++) {
+            // 정점 start에서 정점 i로의 경로가 존재하고, 정점 i를 방문하지 않았다면,
             if (graph[start][i] == 1 && isVisited[i] == false) {
                 dfs(graph, i, isVisited, visitedList);
-            }
-        }
-    }
-}
-```
-
-인접 행렬을 `Stack`으로 풀면 다음과 같다.
-``` java
-public class App {
-
-    public static void main(String[] args) {
-        int[][] graph = {
-                {0, 1, 1, 0, 1, 0},
-                {1, 0, 0, 0, 0, 0},
-                {1, 0, 0, 0, 1, 1},
-                {0, 0, 0, 0, 1, 0},
-                {1, 0, 1, 1, 0, 0},
-                {0, 0, 1, 0, 0, 0}
-        };
-        
-        System.out.println(dfs(graph, 0));  // [0, 4, 3, 2, 5, 1]
-    }
-
-    public static ArrayList<Integer> dfs(int[][] graph, int start) {
-        Stack<Integer> needVisit = new Stack<>();
-        ArrayList<Integer> visited = new ArrayList<>();
-
-        needVisit.push(start);
-
-        while(needVisit.size() > 0) {
-            int node = needVisit.pop();
-            // 방문하지 않았다면
-            if (!visited.contains(node)) {
-                // 방문
-                visited.add(node);
-                // 인접한 노드들을 푸시
-                for (int i=0; i<graph[node].length; i++) {
-                    if (graph[node][i] == 1)
-                        needVisit.push(i);
-                }
-            }
-        }
-
-        return visited;
-    }
-}
-```
-
-인접 리스트를 `재귀(Recursion)`으로 풀면 다음과 같다.
-``` java
-public class App {
-
-    public static void main(String[] args) {
-
-        HashMap<Integer, ArrayList<Integer>> graph = new HashMap();
-
-        graph.put(0, new ArrayList<Integer>(Arrays.asList(1, 2, 4)));
-        graph.put(1, new ArrayList<Integer>(Arrays.asList(0)));
-        graph.put(2, new ArrayList<Integer>(Arrays.asList(0, 4, 5)));
-        graph.put(3, new ArrayList<Integer>(Arrays.asList(4)));
-        graph.put(4, new ArrayList<Integer>(Arrays.asList(0, 2, 3)));
-        graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
-
-        boolean[] isVisited = new boolean[graph.size()];
-        ArrayList<Integer> visitedList = new ArrayList<>();
-
-        dfs(graph, 0, isVisited, visitedList);
-
-        System.out.println(visitedList);
-    }
-
-    public static void dfs(HashMap<Integer, ArrayList<Integer>> graph, int start, boolean[] isVisited, ArrayList<Integer> visitedList) {
-        isVisited[start] = true;
-        visitedList.add(start);
-        ArrayList<Integer> adjacent = graph.get(start);
-        for (int node: adjacent) {
-            if (isVisited[node] == false) {
-                dfs(graph, node, isVisited, visitedList);
             }
         }
     }
@@ -1232,7 +1203,41 @@ public class App {
     }
 }
 ```
+인접 리스트를 `재귀(Recursion)`으로 풀면 다음과 같다.
+``` java
+public class App {
 
+    public static void main(String[] args) {
+
+        HashMap<Integer, ArrayList<Integer>> graph = new HashMap();
+
+        graph.put(0, new ArrayList<Integer>(Arrays.asList(1, 2, 4)));
+        graph.put(1, new ArrayList<Integer>(Arrays.asList(0)));
+        graph.put(2, new ArrayList<Integer>(Arrays.asList(0, 4, 5)));
+        graph.put(3, new ArrayList<Integer>(Arrays.asList(4)));
+        graph.put(4, new ArrayList<Integer>(Arrays.asList(0, 2, 3)));
+        graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
+
+        boolean[] isVisited = new boolean[graph.size()];
+        ArrayList<Integer> visitedList = new ArrayList<>();
+
+        dfs(graph, 0, isVisited, visitedList);
+
+        System.out.println(visitedList);
+    }
+
+    public static void dfs(HashMap<Integer, ArrayList<Integer>> graph, int start, boolean[] isVisited, ArrayList<Integer> visitedList) {
+        isVisited[start] = true;
+        visitedList.add(start);
+        ArrayList<Integer> adjacent = graph.get(start);
+        for (int node: adjacent) {
+            if (isVisited[node] == false) {
+                dfs(graph, node, isVisited, visitedList);
+            }
+        }
+    }
+}
+```
 
 ### BFS(너비 우선 탐색)
 BFS는 `Queue`를 사용하면 된다.
@@ -1240,9 +1245,7 @@ BFS는 `Queue`를 사용하면 된다.
 인접 행렬을 `Queue`로 해결해보자.
 ``` java
 public class App {
-
     public static void main(String[] args) {
-
         int[][] graph = {
                 {0, 1, 1, 0, 1, 0},
                 {1, 0, 0, 0, 0, 0},
@@ -1252,30 +1255,37 @@ public class App {
                 {0, 0, 1, 0, 0, 0}
         };
 
-        boolean[] isVisited = new boolean[graph.length];
-
-        System.out.println(dfs(graph, 0, isVisited));
+        System.out.println(bfs(graph, 0));  // [0, 1, 2, 4, 5, 3]
+        System.out.println(bfs(graph, 1));  // [1, 0, 2, 4, 5, 3]
+        System.out.println(bfs(graph, 2));  // [2, 0, 4, 5, 1, 3]
+        System.out.println(bfs(graph, 3));  // [3, 4, 0, 2, 1, 5]
+        System.out.println(bfs(graph, 4));  // [4, 0, 2, 3, 1, 5]
+        System.out.println(bfs(graph, 5));  // [5, 2, 0, 4, 1, 3]
     }
 
-    public static ArrayList<Integer> dfs(int[][] graph, int start, boolean[] isVisited) {
+    public static ArrayList<Integer> bfs(int[][] graph, int start) {
         ArrayList<Integer> needVisit = new ArrayList<>();
-        ArrayList<Integer> visitedList = new ArrayList<>();
-        isVisited[start] = true;
+        ArrayList<Integer> visited = new ArrayList<>();
+
         needVisit.add(start);
-        visitedList.add(start);
 
         while(needVisit.size() > 0) {
             int node = needVisit.remove(0);
-            for (int i=0; i<graph[node].length; i++) {
-                if (graph[node][i] == 1 && isVisited[i] == false) {
-                    needVisit.add(i);
-                    isVisited[i] = true;
-                    visitedList.add(i);
+
+            // node를 방문하지 않았다면
+            if (!visited.contains(node)) {
+                // node를 방문하고
+                visited.add(node);
+
+                // 인접한 노드를 needVisit에 넣는다.
+                for (int i=0; i< graph[node].length; i++) {
+                    if (graph[node][i] == 1) {
+                        needVisit.add(i);
+                    }
                 }
             }
         }
-
-        return visitedList;
+        return visited;
     }
 }
 ```
@@ -1321,13 +1331,15 @@ public class App {
 }
 ```
 
-### DFS, BFS 문제
+### 네트워크
+
 ::: details 네트워크
 네트워크란 컴퓨터 상호 간에 정보를 교환할 수 있도록 연결된 형태를 의미합니다. 예를 들어, 컴퓨터 A와 컴퓨터 B가 직접적으로 연결되어있고, 컴퓨터 B와 컴퓨터 C가 직접적으로 연결되어 있을 때 컴퓨터 A와 컴퓨터 C도 간접적으로 연결되어 정보를 교환할 수 있습니다. 따라서 컴퓨터 A, B, C는 모두 같은 네트워크 상에 있다고 할 수 있습니다.
 
 컴퓨터의 개수 n, 연결에 대한 정보가 담긴 2차원 배열 computers가 매개변수로 주어질 때, 네트워크의 개수를 return 하도록 solution 함수를 작성하시오.
 
 - 입출력 예제
+
 |n|computers|return|
 |------|---|---|
 |3|[[1, 1, 0], [1, 1, 0], [0, 0, 1]]|2|
@@ -1336,26 +1348,25 @@ public class App {
 ``` java
 class Solution {
     public int solution(int n, int[][] computers) {
-        
         int networkCount = 0;
         boolean[] isVisited = new boolean[n];
         
-        // 모든 노드에 대해서 DFS 수행
-        for (int i=0; i<n; i++) {
-            if (!isVisited[i]) {
+        // 모든 노드에 대해서 dfs 수행
+        for (int i=0; i<computers.length; i++) {
+            if (isVisited[i] == false) {
                 networkCount ++;
-                dfs(n, computers, i, isVisited);
-            }
+                dfs(computers, i, isVisited);
+            }    
         }
         
         return networkCount;
     }
     
-    public void dfs(int n, int[][] computers, int start, boolean[] isVisited) {
+    public void dfs(int[][] graph, int start, boolean[] isVisited) {
         isVisited[start] = true;
-        for (int j=0; j<n; j++) {
-            if (computers[start][j] == 1 && !isVisited[j]) {
-                dfs(n, computers, j, isVisited);
+        for (int i=0; i<graph[start].length; i++) {
+            if (graph[start][i] == 1 && isVisited[i] == false) {
+                dfs(graph, i, isVisited);
             }
         }
     }
@@ -1363,6 +1374,7 @@ class Solution {
 ```
 :::
 
+### 단어 변환
 
 ::: details 단어 변환
 두 개의 단어 begin, target과 단어의 집합 words가 있습니다. 아래와 같은 규칙을 이용하여 begin에서 target으로 변환하는 가장 짧은 변환 과정을 찾으려고 합니다.

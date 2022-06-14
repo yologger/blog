@@ -279,7 +279,7 @@ Hibernate:
 ```
 
 ## 데이터 수정
-Hibernate는 `update()`와 같은 수정 메소드를 제공하지 않는다. 그저 엔티티의 속성값을 수정하면 데이터베이스에 반영된다. 이를 `변경 감지(Dirty Checking)`이라고 한다.
+Hibernate는 `update()`와 같은 수정 메소드를 제공하지 않는다. 그저 엔티티의 속성값을 수정하면 커밋 시점에 데이터베이스에 반영된다. 이를 `변경 감지(Dirty Checking)`이라고 한다.
 ``` java
 MemberEntity member = new MemberEntity("john@gmail.com", "john", "1234");
 
