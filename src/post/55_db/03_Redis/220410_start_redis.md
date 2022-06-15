@@ -110,30 +110,30 @@ $ redis-server
 ```
 
 `brew services start redis`로 redis를 백그라운드로 실행할 수 있다.
-``` shellsession
+```  
 $ brew services start redis
 ```
 
 ### Redis 상태 확인
-``` shellsession
+```  
 $ brew services list
 Name    Status  User     File             
 redis   started yologger ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
 ```
 
 ### Redis 재시작
-``` shellsession
+```  
 $ brew services restart redis
 ```
 
 ### Redis 종료
-``` shellsession
+```  
 $ brew services stop redis
 ```
 
 ## redis-cli
-`redis-cli`는 커맨드라인 기반 데이터베이스 칼라이언트다. redis-cli로 redis에 접속해보자.
-``` shellsession
+`redis-cli`는 커맨드라인 기반 데이터베이스 클라이언트다. redis-cli로 redis에 접속해보자.
+```  
 $ redis-cli
 > 
 ```
@@ -154,7 +154,7 @@ Redis는 대부분의 데이터를 문자열로 표현한다. <u>숫자, 날짜,
 ```
 
 ### String 저장
-`SET <KEY> <VALUE>`로 데이터를 저장한다.
+`SET <KEY> <VALUE>`로 문자열을 저장한다.
 ```
 > SET name "paul"
 OK
@@ -173,7 +173,7 @@ OK
 ```
 
 ### String 조회
-`GET <KEY>`로 데이터를 조회한다.
+`GET <KEY>`로 문자열을 조회한다.
 ```
 > GET name
 "paul"
@@ -213,7 +213,7 @@ OK
 ```
 
 ### String 삭제
-`DEL <KEY>`로 데이터를 삭제한다.
+`DEL <KEY>`로 문자열을 삭제한다.
 ```
 > DEL name
 (integer) 1
@@ -239,7 +239,7 @@ OK
 String과 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/command/strings.php)에서 확인할 수 있다.
 
 ## List
-하나의 키에 여러 값을 저장할 수 있다. List와 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/command/lists.php)에서 확인할 수 있다.
+`List`를 사용하면 하나의 키에 여러 값을 저장할 수 있다. List와 관련된 모든 명령어는 [이 곳](http://redisgate.kr/redis/command/lists.php)에서 확인할 수 있다.
 
 ### RPUSH
 `RPUSH <key> <element element ..>`형태로 리스트의 오른쪽에 요소를 추가한다.
@@ -653,19 +653,19 @@ CREATE TABLE post (
 databases 16
 ```
 
-`redis-cli`로 Redis에 연결할 때 데이터베이스를 선택할 수 있다. 
-```shellsession
+`redis-cli`로 Redis에 연결할 때 `-n` 옵션으로 데이터베이스를 선택할 수 있다. 
+``` 
 $ redis-cli -n 3
 redis-cli[3] > 
 ```
 옵션을 지정하지 않으면 0번 데이터베이스를 사용하게 된다.
-```shellsession
+``` 
 $ redis-cli
 redis-cli > 
 ```
 
 Redis에 이미 연결된 상태에서는 `SELECT` 명령어로 데이터베이스를 변경할 수 있다.
-``` shellsession
+```  
 redis-cli[3]> SELECT 5
 OK
 
@@ -703,27 +703,21 @@ appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (alw
 ## Redis PUB/SUB
 `Redis PUB/SUB`를 사용하면 Redis를 메시지 브로커로 사용할 수 있다. Redis PUB/SUB은 `채널(Channel)`을 통해 메시지를 전달한다.
 
-메시지 수신 역할을 할 터미널을 오픈하고 다음 명령어를 입력하면 채널을 구독하게 된다.
-```
-> subscribe <CHANNEL_NAME>
-```
+메시지 수신 역할을 할 터미널을 오픈하고 `subscribe <CHANNEL_NAME>` 명령어를 입력하면 채널을 구독하게 된다.
 ```
 > subscribe test_channel
 ```
-메시지 전송 역할을 할 터미널을 오픈하고 다음 명령어를 입력하면 채널로 메시지를 보내게 된다.
+메시지 전송 역할을 할 터미널을 오픈하고 `publish <CHANNEL_NAME> <MESSAGE>` 명령어를 입력하면 채널로 메시지를 보내게 된다.
 ```
-> publish <CHANNEL_NAME> <MESSAGE>
-```
-```
-> publish test_channel 'Hello Redis'
+> publish test_channel 'This is message 1'
+> publish test_channel 'This is message 2'
 ```
 수신 측 터미널에 메시지가 출력된다.
 ```
 > subscribe test_channel
 Reading messages... (press Ctrl-C to quit)
-1) "message"
-2) "test_channel"
-3) "Hello world"
+1) "This is message 1"
+2) "This is message 2"
 ```
 
 `Redis PUB/SUB`은 다음과 같은 특징이 있다.

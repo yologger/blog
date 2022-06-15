@@ -50,9 +50,9 @@ getUserDataFromNetwork(userId, (userData) -> {
 
 
 ## Spring MVC vs. Spring WebFlux
-<b>`Spring MVC`</b>는 동기/블로킹 모델이며, 런타임으로 멀티 스레드로 동작하는 톰캣 같은 서블릿 컨테이너를 사용한다. Spring MVC는 `One request One thread` 모델로 요청이 올 때마다 스레드를 생성하여 전담하게 한다. 이 모델에서는 네트워크나 입출력 등 무거운 작업을 수행하면 스레드가 자원을 점유한 채 대기하게 된다. CPU는 다른 스레드를 실행시키기 위해 Context Switching을 하며, 스레드 수가 많아질 수록 이에 대한 비용이 커지게 된다.
+<b>`Spring MVC`</b>는 동기/블로킹 모델이며, 멀티 스레드로 동작하는 Tomcat 같은 서블릿 컨테이너를 런타임으로 사용한다. Spring MVC는 `One request One thread` 모델로 요청이 올 때마다 스레드를 생성하여 전담하게 한다. 이 모델에서는 네트워크나 입출력 등 무거운 작업을 수행하면 스레드가 자원을 점유한 채 대기하게 된다. CPU는 다른 스레드를 실행시키기 위해 Context Switching을 하며, 스레드 수가 많아질 수록 이에 대한 비용이 커지게 된다.
 
-<b>`Spring WebFlux`</b>는 비동기/논블로킹 모델이며, 보통 네티 같은 비동기/논블로킹 런타임을 사용한다. Spring WebFlux는 <u>이벤트 드리븐 모델</u>인 `Node.js`와 유사하다. 다만 싱글 스레드는 아니며 CPU 코어 수 만큼의 스레드로 병렬처리를 한다. 비동기/논블로킹 모델에서 워커 스레드는 입출력 같이 오랜 시간이 걸리는 작업이 I/O Controller에 의해 처리될 때 이를 기다리지 않고 다른 작업을 수행한다. 다시 말해 스레드를 놀지 않게 하는 것이 핵심이며, 같은 스레드를 사용하기 때문에 Context Switching 비용이 최소화된다.
+<b>`Spring WebFlux`</b>는 비동기/논블로킹 모델이며, 보통 Netty 같은 비동기/논블로킹 런타임을 사용한다. Spring WebFlux는 <u>이벤트 드리븐 모델</u>인 `Node.js`와 유사하다. 다만 싱글 스레드는 아니며 CPU 코어 수 만큼의 스레드로 병렬처리를 한다. 비동기/논블로킹 모델에서 워커 스레드는 입출력 같이 오랜 시간이 걸리는 작업이 I/O Controller에 의해 처리될 때 이를 기다리지 않고 다른 작업을 수행한다. 다시 말해 스레드를 놀지 않게 하는 것이 핵심이며, 같은 스레드를 사용하기 때문에 Context Switching 비용이 최소화된다.
 
 비동기/논블로킹 모델에서는 다른작업이 종료되었을 때 이를 알려줄 수 있는 방법이 필요한데, 보통 다음과 같은 방법으로 구현한다.
 - Callback를 함께 전달하여 작업이 끝났을 때 호출되도록 한다.
@@ -70,7 +70,6 @@ Spring MVC의 경우 Servlet 기반의 Tomcat을 사용한다.
 dependencies {
     // Spring Boot + Spring MVC
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 ```
 따라서 내장 Tomcat에서 애플리케이션이 구동된다. 
@@ -82,9 +81,10 @@ dependencies {
 dependencies {
     // Spring Boot + Spring WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    testImplementation 'io.projectreactor:reactor-test'
 }
 ```
+
+따라서 내장 Netty에서 애플리케이션이 구동된다. 
 
 ![](./211001_start_webflux/2.png)
 
@@ -155,7 +155,7 @@ public class TestController {
     }
 }
 ```
-또한 Spring MVC처럼 바인딩도 사용할 수 있다.
+물론 Spring MVC처럼 바인딩도 사용할 수 있다.
 ``` java
 @RestController
 public class TestController {
@@ -238,7 +238,7 @@ public class TestRouter {
 ```
 
 ## WebClient
-`WebClient`는 Spring 5부터 지원하며 싱글 스레드, 비동기/논블로킹 식으로 HTTP 요청을 보내는 HTTP Client다. 
+`WebClient`는 Spring 5부터 지원하며 비동기/논블로킹 식으로 HTTP 요청을 보내는 HTTP Client다. 
 
 ### 의존성 설정
 `WebClient`는 Spring WebFlux에 포함되어있다.
@@ -246,12 +246,11 @@ public class TestRouter {
 dependencies {
     // Spring Boot + Spring WebFlux
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
-    testImplementation 'io.projectreactor:reactor-test'
 }
 ```
 
 ### 예제
-간단한 예제를 살펴보자. 두 개의 프로젝트가 필요하다.
+간단한 예제를 살펴보기 위해 두 개의 프로젝트를 생성한다.
 - `api`
 - `client`
 
@@ -268,7 +267,7 @@ public class ApiController {
 }
 ```
 
-`client`는 다음 컨트롤러를 구현한 후 `8080` 포트로 실행한다.
+`client` 프로젝트에 다음 컨트롤러를 구현한 후 `8080` 포트로 실행한다.
 ``` java
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;

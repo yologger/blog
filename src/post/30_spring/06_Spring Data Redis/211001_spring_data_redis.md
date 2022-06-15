@@ -55,7 +55,7 @@ public class RedisConfig {
 }
 ```
 
-Redis 서버에 접근하려면 `Redis Client`를 설정해야한다. 가장 많이 사용되는 Redis Client는 `Jedis`, `Lettuce`가 있으며 `Lettuce`를 더 많이 사용하는 추세인 것 같다. 보통 Redis Client는 스프링 설정 파일에 다음과 같이 빈으로 등록하여 사용한다.
+Redis 서버에 접근하려면 `Redis Client`를 설정해야한다. 자주 사용되는 Redis Client는 Jedis, Lettuce가 있으며 `Lettuce`를 더 많이 사용하는 추세인 것 같다. 보통 Redis Client는 스프링 설정 파일에 다음과 같이 빈으로 등록하여 사용한다.
 ``` java {10-13}
 @Configuration
 public class RedisConfig {
@@ -104,7 +104,7 @@ public class RedisConfig {
     }
 }
 ```
-`Redis`는 다음 데이터 타입을 제공하며, RedisTemplate 클래스의 `opsForXXX()` 메소드를 사용하면 Redis 데이터 타입의 데이터를 저장, 변경, 조회, 삭제할 수 있다.
+`RedisTemplate`클래스의 `opsForXXX()` 메소드를 사용하면 Redis 데이터 타입의 데이터를 저장, 변경, 조회, 삭제할 수 있다.
 
 ### opsForValue()
 `opsForValue()`를 사용하면 Redis String 타입의 데이터를 저장, 변경, 조회, 삭제할 수 있다.

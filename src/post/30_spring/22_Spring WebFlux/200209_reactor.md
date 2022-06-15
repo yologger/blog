@@ -27,8 +27,8 @@ public interface Subscription {
     public void cancel();
 }
 ```
-Reactive Stream API는 그저 스펙(Specification)이기 때문에 이를 구현한 구현체(Implementation)이 필요하다. 대표적인 Reactive Stream API 구현체는 두 가지가 있다. 
-- ReactiveX (Rxjava, RxKotlin)
+Reactive Stream API는 그저 스펙(Specification)이기 때문에 이를 구현한 구현체(Implementation)가 필요하다. 대표적인 Reactive Stream API 구현체는 두 가지가 있다. 
+- ReactiveX (RxJava)
 - Reactor
 
 ## Reactor

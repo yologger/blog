@@ -40,11 +40,11 @@ WebSocket 프로토콜은 데이터를 전송하기 전 HTTP 프로토콜을 사
 - 그 외에도 WebSocket 연결 시 보조로 이용할 프로토콜 정보등의 추가적인 정보를 헤더에 담아 보낼 수 있다.
 
 다음은 웹 소켓 연결을 요청하는 예시다.
-``` yml
+``` yml{3,4,5}
 GET /endpoint HTTP/1.1
 Host: socket.api.server.com
-Upgrade: websocket
 Connection: Upgrade
+Upgrade: websocket
 Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==
 Sec-WebSocket-Protocol: chat, superchat
 Sec-WebSocket-Version: 13
@@ -57,7 +57,7 @@ Origin: http://yologger.com
 - 연결 수립에 성공하면 HTTP 연결을 종료한 후 WebSocket 프로토콜로 양방향 통신한다.
 
 다음은 웹 소켓 연결 요청에 성공적으로 응답하는 예시다.
-``` yml
+``` yml  {2,3,4}
 HTTP/1.1 101 Switching Protocols
 Upgrade: websocket
 Connection: Upgrade
@@ -481,6 +481,6 @@ function connect() {
 ```
 
 ## 참고 - socket.io
-웹소켓 서버는 `node.js`로도 구현이 가능하다. 특히 자바스크립트 진영에는 웹소켓 서버 위에서 동작하는 `socket.io` 자바스크립트 라이브러리를 사용하여 웹소켓 서버를 쉽게 구현할 수 있다. `socket.io` 역시 Java 진영의 `STOMP`처럼 브로드캐스팅 기능을 지원하며 사용하기가 상당이 쉽다. 
+웹소켓 서버는 `node.js`로도 구현이 가능하다. 특히 자바스크립트 진영에는 웹소켓 서버 위에서 동작하는 `socket.io` 자바스크립트 라이브러리를 사용하여 웹소켓 서버를 쉽게 구현할 수 있다. `socket.io` 역시 Java 진영의 `STOMP`처럼 브로드캐스팅 기능을 지원하며 사용하기가 상당히 쉽다. 
 
 또한 클라이언트 쪽에도 `socket.io`을 위한 클라이언트 라이브러리가 잘 활성화되어있기 때문에 클라이언트 개발자는 `socket.io`를 선호한다고 들었다. 웹 환경에서는 `socket.io-client`, 안드로이드 앱에서는 `socket.io-client-java`, iOS 앱에서는 `socket.io-client-swift` 라이브러리를 사용하면 된다.
