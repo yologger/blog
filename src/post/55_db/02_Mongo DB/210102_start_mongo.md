@@ -71,7 +71,7 @@ $ mongo -u user1 -p 1234 192.168.0.1/my_db
 ## Mongo DB 사용법
 
 ### 데이터베이스 목록 확인
-`show db`는 모든 데이터베이스를 출력한다. Mongo DB에 처음 접속하면 세 개의 데이터베이스가 자동으로 생성된다.
+`show dbs`는 모든 데이터베이스를 출력한다. Mongo DB에 처음 접속하면 세 개의 데이터베이스가 자동으로 생성된다.
 ```
 > show dbs
 admin   0.000GB
@@ -123,12 +123,11 @@ member
 true
 ```
 
-## Document, Field
+## Document 저장
 <b>`Document`</b>는 RDBMS의 `Row`에 해당하며, <b>`Field`</b>는 `Column`에 해당한다.
 
-### Document 저장
 
-#### insertOne()
+### insertOne()
 `db.<콜렉션이름>.insertOne()` 메소드로 Document 한 개를 생성할 수 있다.
 ```
 > db.member.insertOne({ name: "Paul"})
@@ -153,16 +152,156 @@ Document는 배열을 포함할 수도 있다.
 > db.member.insertOne({ name: "jordan", children: ["ramos", "benzema"] })
 ```
 
-#### insertMany()
+### insertMany()
 `db.<콜렉션이름>.insertMany()` 메소드로 여러 Document를 한꺼번에 생성할 수 있다.
 
 ```
 > db.member.insertMany([{ name: "messi" }, { name: "ronaldo" }])
 ```
 
+## Document 수정
+### updateOne()
+`db.<도큐먼트이름>.updateOne()`은 도큐먼트 하나를 수정하는데 사용한다. 
 
-### Document 조회
-#### find()
+`$set` 옵션으로 도큐먼트 하나의 특정 필드를 수정할 수 있다.
+``` {5,11,18}
+> db.member.find({name : "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 25,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer"
+}
+
+> db.member.updateOne({name: "rachel"}, {$set: {"age": 35}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.member.find({name: "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer"
+}
+```
+특정 필드를 추가할 수도 있다.
+``` {11,22}
+> db.member.find({name: "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer"
+}
+
+> db.member.updateOne({name: "rachel"}, {$set: {"nation": "USA"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+> db.member.find({name: "rachel"}).pretty()
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer",
+	"nation" : "USA"
+}
+```
+
+`$unset` 옵션으로 도큐먼트 하나의 특정 필드를 삭제할 수 있다.
+``` {6,12}
+> db.member.findOne({"name": "rachel"})
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer",
+	"nation" : "USA"
+}
+
+> db.member.updateOne({"name": "rachel"}, {$unset: {"isMarred": "false"}})
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
+
+> db.member.findOne({"name": "rachel"})
+{
+	"_id" : ObjectId("62a294c62ab111058535a22f"),
+	"name" : "rachel",
+	"age" : 35,
+	"isMarried" : false,
+	"weight" : 60.5,
+	"job" : "programmer",
+	"nation" : "USA"
+}
+```
+
+### updateMany()
+`updateMany()`으로 여러 도큐먼트를 수정할 수 있다.
+```
+> db.member.updateMany({}, {$set: {"isMarred": "false"}})
+{ "acknowledged" : true, "matchedCount" : 10, "modifiedCount" : 10 }
+```
+
+### update()
+`update()`으로 기존의 도큐먼트를 다른 도큐먼트로 대체할 수 있다.
+```
+> db.member.find({name: "Paul"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Paul" }
+
+> db.member.update({name: "Paul"}, {name: "Smith"})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.member.find({name: "Paul"})
+
+> db.member.find({name: "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith" }
+```
+
+물론 `update()`에서도 `$set`, `$unset`을 사용할 수 있다.
+```
+> db.member.find({"name": "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false" }
+
+> db.member.update({"name": "Smith"}, {$set: {nation: "England"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.member.find({"name": "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false", "nation" : "England" }
+
+> db.member.update({"name": "Smith"}, {$unset: {nation: "England"}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+> db.member.find({"name": "Smith"})
+{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false" }
+```
+
+## Document 삭제
+### deleteOne()
+`deleteOne()`으로 조건에 맞는 Document 하나를 삭제할 수 있다.
+``` 
+> db.member.deleteOne({name: "messi"});
+```
+
+### deleteMany()
+`deleteMany()`로 조건에 맞는 Document 여러 개를 삭제할 수 있다.
+```
+> db.member.deleteMany({nation: "USA"});
+```
+모든 도큐먼트를 삭제할 수도 있다.
+```
+> db.member.deleteMany({})
+```
+
+## Document 조회
+### find()
 `db.콜렉션.find()` 메소드로 모든 Document를 조회할 수 있다.
 ```
 > db.member.find()
@@ -221,13 +360,6 @@ Document는 배열을 포함할 수도 있다.
 > db.member.find({ name: "Paul" })
 { "_id" : ObjectId("625ad76b8d6dabdee5230bee"), "name" : "paul" }
 ```
-
-#### findOne()
-`findOne()`는 하나의 Document를 조회한다.
-```
-> db.member.findOne({ name: "Paul" }) 
-```
-
 
 #### eq (equal)
 ```
@@ -290,150 +422,17 @@ Document는 배열을 포함할 수도 있다.
 { "_id" : ObjectId("625ad8698d6dabdee5230bf2"), "name" : "monica", "age" : 35, "isMarried" : true, "weight" : 50.5, "createdAt" : "Sat Apr 16 2022 23:53:29 GMT+0900 (KST)" }
 ```
 
-### Document 수정
-#### updateOne()
-`db.<도큐먼트이름>.updateOne()`은 도큐먼트 하나를 수정하는데 사용한다. 
-
-`$set` 옵션으로 도큐먼트 하나의 특정 필드를 수정할 수 있다.
-``` {5,18}
-> db.member.find({name : "rachel"}).pretty()
-{
-	"_id" : ObjectId("62a294c62ab111058535a22f"),
-	"name" : "rachel",
-	"age" : 25,
-	"isMarried" : false,
-	"weight" : 60.5,
-	"job" : "programmer"
-}
-
-> db.member.updateOne({name: "rachel"}, {$set: {"age": 35}})
-{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
-
-> db.member.find({name: "rachel"}).pretty()
-{
-	"_id" : ObjectId("62a294c62ab111058535a22f"),
-	"name" : "rachel",
-	"age" : 35,
-	"isMarried" : false,
-	"weight" : 60.5,
-	"job" : "programmer"
-}
+### findOne()
+`findOne()`는 하나의 Document를 조회한다.
 ```
-특정 필드를 추가할 수도 있다.
-``` {22}
-> db.member.find({name: "rachel"}).pretty()
-{
-	"_id" : ObjectId("62a294c62ab111058535a22f"),
-	"name" : "rachel",
-	"age" : 35,
-	"isMarried" : false,
-	"weight" : 60.5,
-	"job" : "programmer"
-}
-
-> db.member.updateOne({name: "rachel"}, {$set: {"nation": "USA"}})
-{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
-
-> db.member.find({name: "rachel"}).pretty()
-{
-	"_id" : ObjectId("62a294c62ab111058535a22f"),
-	"name" : "rachel",
-	"age" : 35,
-	"isMarried" : false,
-	"weight" : 60.5,
-	"job" : "programmer",
-	"nation" : "USA"
-}
+> db.member.findOne({ name: "Paul" }) 
 ```
 
-`$unset` 옵션으로 도큐먼트 하나의 특정 필드를 삭제할 수 있다.
-``` {6}
-> db.member.findOne({"name": "rachel"})
-{
-	"_id" : ObjectId("62a294c62ab111058535a22f"),
-	"name" : "rachel",
-	"age" : 35,
-	"isMarried" : false,
-	"weight" : 60.5,
-	"job" : "programmer",
-	"nation" : "USA"
-}
-
-> db.member.updateOne({"name": "rachel"}, {$unset: {"isMarred": "false"}})
-{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 0 }
-
-> db.member.findOne({"name": "rachel"})
-{
-	"_id" : ObjectId("62a294c62ab111058535a22f"),
-	"name" : "rachel",
-	"age" : 35,
-	"isMarried" : false,
-	"weight" : 60.5,
-	"job" : "programmer",
-	"nation" : "USA"
-}
-```
-
-#### updateMany()
-`updateMany()`으로 여러 도큐먼트를 수정할 수 있다.
-```
-> db.member.updateMany({}, {$set: {"isMarred": "false"}})
-{ "acknowledged" : true, "matchedCount" : 10, "modifiedCount" : 10 }
-```
-
-#### update()
-`update()`으로 기존의 도큐먼트를 다른 도큐먼트로 대체할 수 있다.
-한 도큐먼트를 다른 도큐먼트로 대체할 수도 있다.
-```
-> db.member.find({name: "Paul"})
-{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Paul" }
-
-> db.member.update({name: "Paul"}, {name: "Smith"})
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
-
-> db.member.find({name: "Paul"})
-
-> db.member.find({name: "Smith"})
-{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith" }
-```
-
-물론 `update()`에서도 `$set`, `$unset`을 사용할 수 있다.
-```
-> db.member.find({"name": "Smith"})
-{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false" }
-
-> db.member.update({"name": "Smith"}, {$set: {nation: "England"}})
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
-
-> db.member.find({"name": "Smith"})
-{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false", "nation" : "England" }
-
-> db.member.update({"name": "Smith"}, {$unset: {nation: "England"}})
-WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
-
-> db.member.find({"name": "Smith"})
-{ "_id" : ObjectId("62a294b22ab111058535a22c"), "name" : "Smith", "isMarred" : "false" }
-```
-
-### Document 삭제
-`deleteOne()`으로 조건에 맞는 Document 하나를 삭제할 수 있다.
-``` 
-> db.member.deleteOne({name: "messi"});
-```
-`deleteMany()`로 조건에 맞는 Document 여러 개를 삭제할 수 있다.
-```
-> db.member.deleteMany({nation: "USA"});
-```
-모든 도큐먼트를 삭제할 수도 있다.
-```
-> db.member.deleteMany({})
-```
-
-## Field 데이터 타입
-Field에는 기본적으로 <u>자바스크립트의 데이터 타입</u>을 저장할 수 있다. 자바스크립트 외에도 몇 개의 특수한 데이터타입을 저장할 수 있는데 그 중 하나가 각 Document를 구분하기 위한 `ObjectId`다. 모든 데이터 타입은 [이 곳](https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm)에서 확인할 수 있다.
+## 데이터 타입
+`필드(Field)`에는 기본적으로 <u>자바스크립트의 데이터 타입</u>을 저장할 수 있다. 자바스크립트 외에도 몇 개의 특수한 데이터타입을 저장할 수 있는데 그 중 하나가 각 Document를 구분하기 위한 `ObjectId`다. 모든 데이터 타입은 [이 곳](https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm)에서 확인할 수 있다.
 
 ## _id 필드
-관계형 데이터베이스에는 `기본 키(primary key)`로 모든 Row를 고유하게 구분한다. `Mongo DB`도 유사한 개념의 `_id` Field로 Document를 고유하게 구분한다. Document를 저장할 때 명시적으로 값을 제공하지 않으면 Mongo DB가 `_id` 값을 자동으로 생성한다.
+관계형 데이터베이스에는 `기본 키(primary key)`로 모든 Row를 고유하게 구분한다. `Mongo DB`도 유사한 개념의 `_id` 필드로 Document를 고유하게 구분한다. Document를 저장할 때 명시적으로 값을 제공하지 않으면 Mongo DB가 `_id` 값을 자동으로 생성한다.
 ```
 > db.member.insert({ name: "paul" })
 > db.member.insert({ name: "john" })
@@ -463,7 +462,7 @@ Field에는 기본적으로 <u>자바스크립트의 데이터 타입</u>을 저
 ```
 `_id` 필드에는 인덱스가 자동으로 생성된다.
 
-### 단일 필드 인덱스 생성
+### 단일 필드 Index 생성
 `db.[테이블명].createIndex({ [필드명]: ±1 })`로 인덱스를 생성할 수 있다. `1`은 오름차순, `-1`은 내림차순으로 인덱스를 생성한다.
 ```
 > db.member.createIndex({ name: 1 })
@@ -476,12 +475,12 @@ Field에는 기본적으로 <u>자바스크립트의 데이터 타입</u>을 저
 ```
 중복된 데이터가 존재하는 필드에는 인덱스를 생성할 수 없다.
 
-### 복합 필드 인덱스 생성
+### 복합 필드 Index 생성
 ```
 > db.member.createIndex({ name: 1, age: 1 })
 ```
 
-### 인덱스 삭제
+### Index 삭제
 `db.monsters.dropIndex(필드명)`으로 인덱스를 삭제할 수 있다.
 
 ## 정렬

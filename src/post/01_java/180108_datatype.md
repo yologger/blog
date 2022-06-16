@@ -24,7 +24,7 @@ String name = "Paul";
 byte age = 24;      // 1 byte
 short age = 24;     // 2 byte
 int age = 24;       // 4 byte
-long age = 24L;      // 16 byte
+long age = 24L;     // 8 byte
 ```
 
 ### 실수형 숫자
@@ -36,14 +36,14 @@ double height = 180.8D;
 
 ### 불리언
 ``` java
-boolean isMarried = true;
+boolean isMarried = true;   // 1 bit
 ```
 
 ### 문자
 문자를 선언하고 초기화할 때는 `따옴표(')`를 사용한다.
 ``` java
-char alphabetA = 'A';
-char alphabetB = 'B';
+char alphabetA = 'A';   // 2 byte
+char alphabetB = 'B';   // 2 byte
 ```
 
 ### 문자열 

@@ -173,5 +173,5 @@ Java 8에서 추가된 `스트림(Stream)`을 사용하면 Collection을 더욱 
 - 또한 하나의 인터페이스에 선언을 몰아넣는 것보다 연관된 작은 단위로 인터페이스에 분리하여 필요한 인터페이스만 구현하는 것이 낫다.
 
 ### DIP
-- 의존관계 역전 원칙(Dependency Inversion Principle)
+- 의존성 역전 원칙(Dependency Inversion Principle)
 - 의존하는 객체를 직접 만들고 관리하는 것이 아니라 외부에서 주입받는 원칙으로 의존성 주입의 기반이 된다.
