@@ -100,6 +100,18 @@ public class MemberService {
 }
 ```
 
+다음과 같이 `flush()`를 호출하여 데이터베이스에 즉시 반영할 수도 있다.
+``` java
+// 엔티티 생성
+MemberEntity member = new MemberEntity("paul@gmail.com", "paul", "1234");
+
+// 데이터 삽입
+entityManager.persist(member);
+
+// 플러시
+entityManager.flush();
+```
+
 참고로 `EntityManagerFactory`를 주입받으려면 `@PersistenceUnit`을 사용하면 된다.
 ``` java
 @PersistenceUnit
