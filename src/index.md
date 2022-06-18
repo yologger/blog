@@ -14,7 +14,7 @@ features:
 - title: Infra/DevOps
   details: 인프라 운영, Docker, Kubernetes, CI/CD 파이프라인 구축 등 DevOps과 관련된 내용을 정리합니다.
 - title: DB
-  details: RDBMS, NoSQL, ERD, Message Broker, Message Queue에 대해 정리합니다.
+  details: RDBMS, NoSQL, ERD, Message Queue, MSA에 대해 정리합니다.
 - title: CS
   details: 자료구조, 알고리즘, 컴퓨터구조, 운영체제, 네트워크, 정보보호, 소프트웨어 공학 등 컴퓨터공학 전반을 정리합니다.
 ---
