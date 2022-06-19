@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 # Docker Compose
-하나의 시스템은 여러 컨테이너로 구성된다. `Docker Compose`를 사용하면 각 컨테이너 실행을 위한 명령어를 하나씩 입력할 필요없이 `docker-compose.yml`이라는 파일에 모든 컨테이너 실행과 실행 순서를 작성할 수 있다.
+일반적으로 하나의 시스템은 여러 컨테이너로 구성된다. `Docker Compose`를 사용하면 각 컨테이너 실행을 위한 명령어를 하나씩 입력할 필요없이 `docker-compose.yml`파일에 모든 컨테이너 실행과 실행 순서를 작성할 수 있다.
 
 ## Docker Compose 설치
 Mac OS의 경우 `Docker Desktop on Mac`에 `Docker Compose`가 내장되어있다.

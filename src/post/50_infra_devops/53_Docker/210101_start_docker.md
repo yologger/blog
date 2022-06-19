@@ -15,14 +15,15 @@ sidebarDepth: 0
 호스트 OS에 가상의 여러 게스트 OS를 가상화하는 기술이다. 제품군에는 `VirtualBox`, `VMWare` 등이 있다.
 
 ## Docker
-`Docker`는 컨테이너 가상화 플랫폼이다. Docker는 호스트 OS에 `Docker Container`라는 격리된 공간을 제공해준다. 
+<b>`Docker`</b>는 호스트 OS에 `Docker Container`라는 격리된 공간을 제공해주는 컨테이너 가상화 기술이다.
 
 ## Docker의 장점
-- `Docker Container`를 생성하고 필요한 소프트웨어를 설치한 후 `Docker Image`로 빌드하면 Docker가 설치된 어떠한 곳에서든 실행할 수 있다. 이 덕분에 개발, 환경구성, 배포가 쉬워진다.
-- `Docker Swarm`이나 `Kubernetes`같은 `컨테이너 오케스트레이션 기술`과 함께 사용하여 `MSA(Microservice Architecuture)`를 쉽게 구성할 수 있다.
+- 호스트 OS에 `Docker container`라는 격리된 공간을 제공해주는 컨테이너 가상화 기술
+- `Docker Container`를 `Docker Image`로 빌드하면 도커 엔진이 설치된 어느 곳에든 쉽게 배포할 수 있다.
+- `Kubernetes`같은 `컨테이너 오케스트레이션 기술`과 함께 사용하여 `MSA(Microservice Architecuture)`를 쉽게 구성할 수 있다.
 
 ## Virtual Machine vs. Docker
-`Virtual Machine`은 게스트 OS와 하이버바이저를 거쳐 호스트 OS의 커널과 자원을 사용하기 때문에 성능 손실이 발생한다. 반면 `Docker`는 하이버파이저와 게스트 OS가 없고 `도커 엔진`만을 거쳐 호스트 OS의 커널과 자원을 사용하며, 호스트 OS에서 프로세스로 동작하기 때문에 속도가 훨씬 빠르다.
+가상머신은 게스트 OS와 하이버바이저를 거쳐 호스트 OS의 커널과 자원을 사용하기 때문에 성능 손실이 발생한다. 반면 Docker는 하이버파이저와 게스트 OS가 없고 도커 엔진만을 거쳐 호스트 OS의 커널과 자원을 사용하며, 호스트 OS에서 프로세스로 동작하기 때문에 속도가 훨씬 빠르다
 
 ![](./210101_start_docker/1.png)
 
@@ -64,14 +65,19 @@ centos              7         eeb6ee3f44bd   3 months ago   204MB
 ```
 
 ## 도커 컨테이너 생성
-`docker create -i -t --name <CONTAINER> <IMAGE>` 명령어로 도커 컨테이너를 생성할 수 있다.
+`docker create --name <CONTAINER> <IMAGE>` 명령어로 도커 컨테이너를 생성할 수 있다.
+```  
+$ docker create --name my_centos centos:7
+```
+`-i -t` 옵션을 추가하여 컨테이너를 생성하면 `docker attach` 명령어로 컨테이너 내부에 진입할 수 있다.
 ```  
 $ docker create -i -t --name my_centos centos:7
 ```
-자주 사용하는 옵션은 다음과 같다.
-- `--name`: 컨테이너 이름을 지정한다.
-- `-i -t`: `docker attach`명령어로 컨테이너 내부에 진입할 수 있다.
-- `-d`: 컨테이너를 백그라운드로 실행한다.
+`-d` 옵션을 추가하면 컨테이너를 생성하면 백그라운드로 실행된다.
+```  
+$ docker create -d --name my_centos centos:7
+```
+백그라운드로 실행되는 컨테이너에 `docker attach`로 접속하면 커맨드는 입력할 수 없고 출력되는 로그만 확인할 수 있다.
 
 자세한 실행 옵션은 [이 곳](https://docs.docker.com/engine/reference/commandline/create/)에서 확인할 수 있다.
 
@@ -85,7 +91,7 @@ CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS         PORTS   
 b5df63051a50   centos:7   "/bin/bash"   28 seconds ago   Up 3 seconds             my_centos
 ```
 
-## 도커 컨테이너 접속하기, 빠져나오기
+## 도커 컨테이너 접속하기
 도커 컨테이너에는 두 가지 명령어로 접속할 수 있다. 
 
 ### docker attach
@@ -94,6 +100,9 @@ b5df63051a50   centos:7   "/bin/bash"   28 seconds ago   Up 3 seconds           
 $ docker attach my_centos
 [root@a9adb823231 /]# 
 ```
+
+백그라운드로 실행되는 컨테이너에 `docker attach`로 접속하면 커맨드는 입력할 수 없고 출력되는 로그만 확인할 수 있다.
+
 `exit`을 입력하여 컨테이너에서 빠져나올 수 있다.
 ```  
 [root@a9adb823231 /]# exit 
@@ -106,15 +115,13 @@ b5df63051a50   centos:7   "/bin/bash"   4 minutes ago   Exited (127) 4 seconds a
 ```
 컨테이너를 종료시키지 않고 빠져나오려면 `Ctrl + P, Q`를 입력한다. 이를 `Detach`라고 한다.
 
-백그라운드로 실행되는 컨테이너에 `docker attach`로 접속하면 커맨드는 입력할 수 없고 출력되는 로그만 확인할 수 있다.
-
 ### docker exec -it
 `docker exec -it <CONTAINER> <SHELL>` 명령어는 별도의 쉘 세션을 생성하여 컨테이너에 접속한다.
 ```  
 $ docker exec -it 75ef6d64fead /bin/bash 
 bash-5.1# ls
 ```
-`docker exec it` 명령어로 컨테이너에 접속한 경우 `exit` 명령어로 빠져나와도 컨테이너가 종료되지 않는다. 따라서 데몬 컨테이너에 접근하는데 사용할 수 있다.
+`docker exec -it` 명령어로 컨테이너에 접속한 경우 `exit` 명령어로 빠져나와도 컨테이너가 종료되지 않는다. 따라서 데몬 컨테이너에 접근하는데 사용할 수 있다.
 
 ### docker run
 `docker run -i -t --name [container_name] [image_name]` 명령어를 사용하면 도커 이미지 다운, 도커 컨테이너 생성, 시작, 접속을 한 번에 할 수 있다.
@@ -122,6 +129,7 @@ bash-5.1# ls
 $ docker run -i -t --name my_centos ubuntu:14.04
 root@bdccae5606a1:/#
 ```
+
 
 ## 도커 컨테이너 정지
 `docker stop <container_name>` 명령어를 사용하면 도커 컨테이너를 정지할 수 있다.
@@ -154,14 +162,14 @@ $ docker container prune
 ```
 
 ## 도커 이미지 만들기
-`docker commit -a <AUTHOR> -m <MESSAGE> <ORIGINAL_CONTAINER> <COPIED_CONTAINER>:<TAG>`명령어를 사용하면 도커 컨테이너를 빌드하여 도커 이미지를 생성할 수 있다.
+`docker commit -a <AUTHOR> -m <MESSAGE> <ORIGINAL_IMAGE> <COPIED_CONTAINER>:<TAG>`명령어를 사용하면 도커 컨테이너를 빌드하여 도커 이미지를 생성할 수 있다.
 ```  
 $ docker images
 REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
 original_image      3.1     0903d3cdd37e   12 months ago   211MB
 ```
 ```
-$ docker commit -a "yologger" -m "This is message" copied_image copied_image:0.0.1
+$ docker commit -a "yologger" -m "This is message" original_image copied_image:0.0.1
 ```
 ```  {4}
 $ docker images
@@ -187,7 +195,7 @@ original_image      3.1     0903d3cdd37e   12 months ago   211MB
 도커 이미지가 도커 컨테이너로 사용 중이라면 컨테이너를 먼저 삭제해야한다.
 
 ## 도커 이미지 이름, 태그 변경하기
-`docker tag [기존이미지명:기존태그명] [새로운이미지명:새로운태그명]`명령어로 이미지 이름과 태그를 변경할 수 있다.
+`docker tag <기존이미지명:기존태그명> <새로운이미지명:새로운태그명>`명령어로 이미지 이름과 태그를 변경할 수 있다.
 ``` 
 $ docker images
 REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
@@ -286,14 +294,14 @@ Hello World
 ```
 
 ### 도커 볼륨
-`도커 볼륨`은 도커가 직접 관리하는 볼륨이다. `docker volume` 명령어로 도커 볼륨을 관리할 수 있다.
+`도커 볼륨`은 도커 엔진이 직접 관리하는 볼륨이다. `docker volume` 명령어로 도커 볼륨을 관리할 수 있다.
 
 `docker volume create <볼륨 이름>` 명령어로 볼륨을 생성할 수 있다.
 ```  
 $ docker volume create my_volume
 ```
 
-`docker volume ls` 명령어로 볼륨 목록을 확인할 수 있다.
+`docker volume ls` 명령어로 볼륨 목록을 조회할 수 있다.
 ```  
 $ docker volume ls
 DRIVER    VOLUME NAME
@@ -353,8 +361,6 @@ $ docker volume rm my_volume
 - `Private registry`: 개인 서버에 구축하는 저장소
 
 저장소에 따라 가격 정책이 다르며, [이 곳](https://hub.docker.com/billing/plan/update)에서 확인할 수 있다.
-
-도커 허브의 대체제로는 `GitHub Registry`, `AWS ECR`가 있다.
 
 ### 도커 허브로 이미지 배포하기
 `Docker Hub`의 `Repository`를 사용하면 도커 이미지를 배포할 수 있다. [이 곳](https://hub.docker.com/)에 접속하여 회원가입 후 `Repository > Create Repository`를 클릭한다. 그리고 `Repository` 이름을 입력하고 Repository를 생성한다. 
@@ -417,7 +423,7 @@ yologger1013/test_image   0.1       0903d3cdd37e   56 minutes ago   211MB
 ## ECR
 `AWS ECR(Elastic Container Registry)`도 도커 이미지를 저장할 수 있는 원격 저장소다. 
 
-### ECR로 이미지 배포하기
+### ECR에 저장소 생성하기
 먼저 AWS ECR에서 프라이빗 리포지토리를 생성한다.
 
 ![](./210101_start_docker/10.png)
@@ -640,7 +646,7 @@ WORKDIR /app
 ```
 
 #### COPY
-- Dockerfile이 위치하는 디렉토리에서 이미지로 파일을 복사한다.
+- Dockerfile이 위치하는 디렉토리에서 이미지 내부로 파일을 복사한다.
 ``` 
 // Dockerfile이 위치하는 디렉토리의 app.jar를 컨테이너 내부에 app.jar 라는 이름으로 복사
 COPY app.jar app.jar
@@ -659,14 +665,14 @@ RUN chmod 774 run.sh
 ```
 
 #### ARG
-Dockerfile 내에서 빌드 시에 사용하는 변수
+- Dockerfile 내에서 빌드 시에 사용하는 변수를 설정한다.
 
 #### ENV
-이미지에서 런타임에 사용할 환경변수를 지정한다.
+- 이미지에서 런타임에 사용할 환경변수를 지정한다.
 ```
 ENV PROFILE=local
 ```
-도커 컨테이너 내부에서 환경변수를 설정하는 것과 동일하다.
+- 도커 컨테이너 내부에서 환경변수를 설정하는 것과 동일하다.
 ```
 $ PROFILE=local
 ```

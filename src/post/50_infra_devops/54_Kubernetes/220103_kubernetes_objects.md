@@ -35,7 +35,7 @@ ingresses                         ing          networking.k8s.io/v1             
 ```
 
 ## YAML Configuration 파일
-쿠버네티스틑 `.yml` 확장자를 갖는 `YAML 파일`에 오브젝트를 선언하고 설정한다. 그리고 `kubectl apply <YAML 파일>` 명령어로 클러스터를 실행한다.
+쿠버네티스틑 `YAML 파일`에 오브젝트를 선언하고 설정한다. 그리고 `kubectl apply <YAML 파일>` 명령어로 클러스터를 실행한다.
 
 
 ## Pod
@@ -70,11 +70,11 @@ pod/nginx-pod created
 하나의 도커 컨테이너가 생성된 것도 확인할 수 있다.
 ```   
 $ docker ps -al
-ONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS     NAMES
-fe068fdc944c   nginx     "/docker-entrypoint.…"   24 seconds ago   Up 24 seconds             k8s_nginx-container_nginx-pod_default_e1574fb9-c59e-4916-8bcc-188a5640f6cd_0
+ONTAINER ID     IMAGE     COMMAND                  CREATED          STATUS          PORTS     NAMES
+fe068fdc944c    nginx     "/docker-entrypoint.…"   24 seconds ago   Up 24 seconds             k8s_nginx-container_nginx-pod_default_e1574fb9-c59e-4916-8bcc-188a5640f6cd_0
 ```
 
-참고로 YAML 파일에 `---`를 명시하여 여러 오브젝트를 선언할 수 있다. 다음 예제는 두 개의 팟을 선언하고 있다.
+YAML 파일에 `---`를 명시하여 여러 오브젝트를 선언할 수 있다. 다음 예제는 두 개의 팟을 선언하고 있다.
 ``` yml
 apiVersion: v1
 kind: Pod
@@ -109,12 +109,15 @@ NAME        READY   STATUS    RESTARTS   AGE
 nginx-pod   1/1     Running   0          3m
 ```
 
-
 `-o wide` 옵션으로 클러스터 내부에서 팟에 할당된 IP도 확인할 수 있다.
 ```   
 $ kubectl get pods -o wide
 NAME        READY   STATUS    RESTARTS   AGE   IP          NODE             NOMINATED NODE   READINESS GATES
 nginx-pod   1/1     Running   0          70m   10.1.0.33   docker-desktop   <none>           <none>
+```
+`kubectl get all`명령어로 모든 오브젝트를 조회할 수 있다.
+```
+$ kubectl get all
 ```
 
 ### 오브젝트 상세정보 확인
@@ -485,7 +488,7 @@ Commercial support is available at
 </html>
 ```
 
-이제 클러스터 외부에서 접근이 안되는지 확인해보자. 쿠버네티스에서는 클러스터를 구성하는 노드 또한 외부로 간주한다. 따라서 노드에서 다음같은 접속들은 모두 허용되지 않는다.
+이제 클러스터 외부에서 접근이 안되는지 확인해보자. 쿠버네티스에서는 클러스터를 구성하는 노드 또한 외부로 간주한다. 따라서 호스트OS에서 다음 접속들은 모두 허용되지 않는다.
 ``` 
 $ curl 10.1.0.54
 $ curl 10.1.0.55
@@ -1232,7 +1235,7 @@ Commercial support is available at
 ```
 
 ## Kustomize
- <b>`Kustomize`</b>을 사용하면 리소스 설정파일을 사용자가 원하는대로 커스터마이징할 수 있다. 예를 들어 기본이 되는 리소스 설정파일 템플릿을 만들고, 개발 환경과 운영 환경에 따라 다른 리소스 설정파일을 구성할 수 있다.
+ <b>`Kustomize`</b>을 사용하면 선언적, 동적으로 쿠버네티스 `yml` 설정파일을 생성할 수 있다. 예를 들어 베이스가 되는 리소스 설정파일 템플릿을 만들고, 개발 환경과 운영 환경에 따라 다른 리소스 설정파일을 구성할 수 있다.
 
 ### Kustomize 설치
 운영체제별로 `Kustomize` 설치 방법이 다르다. `Ubuntu` 환경에서는 다음과 같이 설치할 수 있다.

@@ -61,8 +61,9 @@ sidebarDepth: 0
 
 ## Docker
 - 호스트 OS에 `Docker container`라는 격리된 공간을 제공해주는 컨테이너 가상화 기술
-- `Docker Container`를 `Docker Image`로 빌드하면 도커가 설치된 어느 곳에든 쉽게 배포할 수 있다.
-- 또한 `Kubernetes`같은 컨테이너 오케스트레이션 기술과 함께 사용하여 MSA를 쉽게 구축할 수 있다.
+- `Docker Container`를 `Docker Image`로 빌드하면 도커 엔진이 설치된 어느 곳에든 쉽게 배포할 수 있다.
+- 또한 도커 엔진만 설치되어있으면 개발 환경과 동일한 환경을 쉽게 구성할 수 있다.
+- `Kubernetes`같은 `컨테이너 오케스트레이션 기술`과 함께 사용하여 `MSA(Microservice Architecuture)`를 쉽게 구성할 수 있다.
 - 가상머신은 게스트 OS와 하이버바이저를 거쳐 호스트 OS의 커널과 자원을 사용하기 때문에 성능 손실이 발생한다. 반면 Docker는 하이버파이저와 게스트 OS가 없고 도커 엔진만을 거쳐 호스트 OS의 커널과 자원을 사용하며, 호스트 OS에서 프로세스로 동작하기 때문에 속도가 훨씬 빠르다
 - `Dockerfile`: 도커 이미지를 생성하기 위한 스크립트 파일, `docker build <IMAGE_NAME>/<IMAGE_TAG> .`
 
@@ -106,7 +107,7 @@ sidebarDepth: 0
         - SSL/TLS를 제공하는 오브젝트다.
         - 인그레스 컨트롤러를 설치해야한다.
     - `Kustomize`
-        - 선언적으로 오브젝트를 관리할 수 있다.
+        - 선언적, 동적으로 쿠버네티스 `yml` 설정파일을 생성할 수 있다. 
     - `Argo CD`
         - `GitOps` 환경에서 메니페스트 리포지토리의 `Kustomize` 파일이 변경되면 이를 감지하여 쿠버네티스에 반영하는 역할을 한다.
 
