@@ -604,6 +604,41 @@ players.remove(7);
 System.out.println(players.toString()); // {9=Benzema, 11=Bale}
 ```
 
+`TreeMap`은 기본적으로 키 값을 오름차순으로 정렬한다.
+``` java
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+players.toString(); // {7=Ronaldo, 9=Benzema, 11=Bale}
+```
+다음과 같이 내림차순으로 정렬할 수도 있다.
+``` java
+Map<Integer, String> players = new TreeMap<Integer, String>(Collections.reverseOrder());
+
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+System.out.println(players.toString()); // {11=Bale, 9=Benzema, 7=Ronaldo}
+```
+키가 객체인 경우 `Comparator`나 `Comparable`을 사용할 수 있다.
+``` java
+Map<Person, String> players = new TreeMap<Person, String>(new Comparator<Person>() {
+    @Override
+    public int compare(Person p1, Person p2) {
+        return p1.getAge() - p2.getAge();
+    }
+});
+
+players.put(new Person("paul", 35), "paul");
+players.put(new Person("smith", 25), "smith");
+players.put(new Person("john", 45), "paul");
+
+System.out.println(players.toString()); // {{name: smith, age: 25}=smith, {name: paul, age: 35}=paul, {name: john, age: 45}=paul}
+```
+
+
 ### HashMap
 `HashMap`은 다음과 같이 선언하고 초기화한다.
 ``` java
