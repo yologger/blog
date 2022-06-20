@@ -196,3 +196,16 @@ public class Main {
     }
 }
 ```
+Java 8 부터는 다음과 같이 람다식으로 단축할 수 있다.
+``` java
+Person[] people = {
+        new Person("Paul", 35),
+        new Person("Monica", 23),
+        new Person("Messi", 27),
+        new Person("Jessica", 21),
+        new Person("David", 40),
+        new Person("Martin", 33)
+};
+
+Arrays.sort(people, (o1, o2) -> o1.getAge() - o2.getAge());
+```

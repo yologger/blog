@@ -334,11 +334,11 @@ public interface Set<E> extends Collection<E> {
 ``` java
 Set<Integer> treeSet = new TreeSet<Integer>();
 ```
-다음과 같이 데이터를 추가한다.
+다음과 같이 데이터를 추가할 수 있다.
 ``` java
 treeSet.add(1);
 ```
-`TreeSet` 역시 중복을 허용하지 않는다.
+중복을 허용하지 않는 것을 확인할 수 있다.
 ``` java
 Set<Integer> treeSet = new TreeSet<Integer>();
 
@@ -351,6 +351,19 @@ treeSet.add(2);
 
 System.out.println(treeSet.toString());     // [1, 2, 3]
 ```
+`TreeSet`은 내부적으로 Binary Search Tree를 사용하기 때문에 자동으로 정렬된다.
+``` java
+Set<Integer> treeSet = new TreeSet<>();
+
+treeSet.add(3);
+treeSet.add(8);
+treeSet.add(90);
+treeSet.add(6);
+treeSet.add(65);
+treeSet.add(1);
+
+System.out.println(treeSet.toString());     // [1, 3, 6, 8, 65, 90]
+```
 
 ### HashSet
 `HashSet`은 다음과 같이 생성한다.
@@ -361,7 +374,7 @@ Set<Integer> hashSet = new HashSet<Integer>();
 ``` java
 hashSet.add(1);
 ```
-`Set`은 중복을 허용하지 않는다. 동일한 데이터를 여러 개 추가해도 한 개만 유지된다.
+중복을 허용하지 않는 것을 확인할 수 있다.
 ``` java
 Set<Integer> hashSet = new HashSet<Integer>();
 
@@ -374,6 +387,20 @@ hashSet.add(2);
 
 System.out.println(hashSet.toString());     // [1, 2, 3]
 ```
+`HashSet`은 내부적으로 Hash Table을 사용하기 때문에 데이터가 임의로 저장된다.
+``` java
+Set<Integer> hashSet = new HashSet<Integer>();
+
+hashSet.add(3);
+hashSet.add(8);
+hashSet.add(90);
+hashSet.add(6);
+hashSet.add(65);
+hashSet.add(1);
+
+System.out.println(hashSet.toString());     // [65, 1, 3, 6, 8, 90]
+```
+
 
 ### LinkedHashSet
 `LinkedHashSet`은 다음과 같이 생성한다.
@@ -396,6 +423,20 @@ linkedHashSet.add(2);
 
 System.out.println(linkedHashSet.toString());   // [3, 1, 2]
 ``` 
+`LinkedHashSet`은 데이터의 삽입 순서를 보장한다.
+``` java
+Set<Integer> linkedHashSet = new LinkedHashSet<>();
+
+linkedHashSet.add(3);
+linkedHashSet.add(8);
+linkedHashSet.add(90);
+linkedHashSet.add(6);
+linkedHashSet.add(65);
+linkedHashSet.add(1);
+
+System.out.println(linkedHashSet.toString());     // [3, 8, 90, 6, 65, 1]
+```
+
 
 ### TreeSet vs. HashSet
 `TreeSet`은 내부적으로 Binary Search Tree를 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 Binary Search Tree를 사용하기 때문에 <u>데이터가 정렬된다.</u>  
@@ -475,6 +516,43 @@ System.out.println(copy.toString());    // [1, 2, 3, 4]
 
 System.out.println(set.hashCode());     // 6
 System.out.println(copy.hashCode());    // 10
+```
+
+### HashSet 정렬하기
+`HashSet`은 `List`로 변환한 후 `Collections.sort()`메소드로 정렬할 수 있다.
+``` java
+Set<Integer> hashSet = new HashSet<Integer>();
+
+hashSet.add(3);
+hashSet.add(8);
+hashSet.add(90);
+hashSet.add(6);
+hashSet.add(65);
+hashSet.add(1);
+
+List<Integer> list = new ArrayList<Integer>(hashSet);
+Collections.sort(list);
+
+System.out.println(list);   // [1, 3, 6, 8, 65, 90]
+```
+또는 `TreeSet`을 생성한 후 요소들을 삽입하는 방식으로 정렬할 수 있다.
+``` java
+Set<Integer> hashSet = new HashSet<Integer>();
+
+hashSet.add(3);
+hashSet.add(8);
+hashSet.add(90);
+hashSet.add(6);
+hashSet.add(65);
+hashSet.add(1);
+
+Set<Integer> treeSet = new TreeSet<Integer>();
+
+for (Integer element: hashSet) {
+    treeSet.add(element);
+}
+
+System.out.println(treeSet);   // [1, 3, 6, 8, 65, 90]
 ```
 
 ### Set의 메소드
@@ -792,6 +870,113 @@ System.out.println(map.hashCode());     // -1051088633
 System.out.println(copy.hashCode());    // 974907474
 ```
 
+### HashMap과 TreeMap 사이의 변환
+`HashMap`은 다음과 같은 방법으로 `TreeMap`으로 변환할 수 있다.
+``` java
+HashMap<Person, String> hashMap = new HashMap<Person, String>();
+
+hashMap.put(new Person("paul", 35), "paul");
+hashMap.put(new Person("smith", 25), "smith");
+hashMap.put(new Person("john", 45), "paul");
+
+System.out.println(hashMap.toString());     // {{name: paul, age: 35}=paul, {name: smith, age: 25}=smith, {name: john, age: 45}=paul}
+
+TreeMap<Person, String> treeMap = new TreeMap<Person, String>((p1, p2) -> p1.getAge() - p2.getAge());
+
+for (Map.Entry<Person, String> entry : hashMap.entrySet()) {
+    treeMap.put(entry.getKey(), entry.getValue());
+}
+
+System.out.println(treeMap.toString());     // {{name: smith, age: 25}=smith, {name: paul, age: 35}=paul, {name: john, age: 45}=paul}
+```
+
+`TreeMap`은 다음과 같은 방법으로 `HashMap`으로 변환할 수 있다.
+``` java
+TreeMap<Person, String> treeMap = new TreeMap<Person, String>((p1, p2) -> p1.getAge() - p2.getAge());
+
+treeMap.put(new Person("paul", 35), "paul");
+treeMap.put(new Person("smith", 25), "smith");
+treeMap.put(new Person("john", 45), "paul");
+
+System.out.println(treeMap.toString());     // {{name: smith, age: 25}=smith, {name: paul, age: 35}=paul, {name: john, age: 45}=paul}
+
+HashMap<Person, String> hashMap = new HashMap<Person, String>(treeMap);
+
+System.out.println(hashMap.toString());     // {{name: john, age: 45}=paul, {name: smith, age: 25}=smith, {name: paul, age: 35}=paul}
+```
+
+### HashMap를 Key로 정렬하기
+새로운 `TreeMap`을 생성한 후 요소를 추가하는 방식으로 `HashMap`을 정렬할 수 있다.
+``` java
+HashMap<Person, String> hashMap = new HashMap<Person, String>();
+
+hashMap.put(new Person("paul", 35), "paul");
+hashMap.put(new Person("smith", 25), "smith");
+hashMap.put(new Person("john", 45), "paul");
+
+System.out.println(hashMap.toString());     // {{name: paul, age: 35}=paul, {name: smith, age: 25}=smith, {name: john, age: 45}=paul}
+
+TreeMap<Person, String> treeMap = new TreeMap<Person, String>((p1, p2) -> p1.getAge() - p2.getAge());
+
+for (Map.Entry<Person, String> entry : hashMap.entrySet()) {
+    treeMap.put(entry.getKey(), entry.getValue());
+}
+
+System.out.println(treeMap.toString());     // {{name: smith, age: 25}=smith, {name: paul, age: 35}=paul, {name: john, age: 45}=paul}
+```
+다음과 같이 `keySet()`을 `List`로 변환한 후 `Collections.sort()`메소드로 정렬할 수도 있다.
+``` java
+HashMap<Integer, String> hashMap = new HashMap<>();
+
+hashMap.put(9, "Benzema");
+hashMap.put(11, "Bale");
+hashMap.put(7, "Ronaldo");
+hashMap.put(4, "Ramos");
+hashMap.put(10, "Kane");
+
+List<Integer> list = new ArrayList<>(hashMap.keySet());
+Collections.sort(list);
+
+for (Integer key: list) {
+    System.out.println(hashMap.get(key));
+}
+```
+```
+Ramos
+Ronaldo
+Benzema
+Kane
+Bale
+```
+
+### HashMap를 Value로 정렬하기
+``` java
+HashMap<Integer, String> hashMap = new HashMap<>();
+
+hashMap.put(9, "Benzema");
+hashMap.put(11, "Bale");
+hashMap.put(7, "Ronaldo");
+hashMap.put(4, "Ramos");
+hashMap.put(10, "Kane");
+
+List<Map.Entry<Integer, String>> entryList = new ArrayList<>(hashMap.entrySet());
+
+Collections.sort(entryList, (entry1, entry2) -> {
+    return entry1.getValue().compareTo(entry2.getValue());
+});
+
+for(Map.Entry<Integer, String> entry : entryList) {
+    System.out.println(entry.getKey() + " : " + entry.getValue());
+}
+```
+```
+11 : Bale
+9 : Benzema
+10 : Kane
+4 : Ramos
+7 : Ronaldo
+```
+
 ### Map 메소드 정리
 `Map`인터페이스가 제공하는 메소드는 다음과 같다.
 
@@ -865,6 +1050,26 @@ players.put(11, "Bale");
 for (Integer key: players.keySet()) {
     System.out.println(key);
 }
+```
+
+#### Map.entrySet()
+``` java
+Map<Integer, String> players = new TreeMap<Integer, String>();
+
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+Set<Map.Entry<Integer, String>> entries = players.entrySet();
+
+for (Map.Entry<Integer, String> entry : entries) {
+    System.out.println("[Key] " + entry.getKey() + " [Value] " + entry.getValue());
+}
+```
+```
+[Key] 7 [Value] Ronaldo
+[Key] 9 [Value] Benzema
+[Key] 11 [Value] Bale
 ```
 
 #### Map.clear()

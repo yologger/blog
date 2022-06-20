@@ -112,3 +112,16 @@ int age = Integer.parseInt("34");
 double weight = Double.parseDouble("70.3");
 boolean isMarried = Boolean.parseBoolean("false");
 ```
+
+## Wrapper 클래스와 값 비교
+`Wrapper` 클래스는 값 비교를 위한 `compare()`메소드를 제공한다.
+``` java
+System.out.println(Integer.compare(1, 2));  // -1
+System.out.println(Integer.compare(2, 2));  // 0
+System.out.println(Integer.compare(2, 1));  // 1
+```
+``` java
+System.out.println(Double.compare(1.0, 1.9));  // -1
+System.out.println(Double.compare(1.9, 1.9));  // 0
+System.out.println(Double.compare(1.9, 1.0));  // 1
+```
