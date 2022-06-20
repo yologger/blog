@@ -181,6 +181,64 @@ class Solution {
 ```
 :::
 
+### 주식 가격
+::: details 주식 가격
+- 문제설명
+
+초 단위로 기록된 주식가격이 담긴 배열 prices가 매개변수로 주어질 때, 가격이 떨어지지 않은 기간은 몇 초인지를 return 하도록 solution 함수를 완성하세요.
+
+- 제한사항
+
+prices의 각 가격은 1 이상 10,000 이하인 자연수입니다.
+prices의 길이는 2 이상 100,000 이하입니다.
+
+- 입출력 예
+
+|prices|prices|
+|------|---|
+|[1, 2, 3, 2, 3]|[4, 3, 1, 1, 0]|
+	
+- 입출력 예 설명
+    - 1초 시점의 ₩1은 끝까지 가격이 떨어지지 않았습니다.
+    - 2초 시점의 ₩2은 끝까지 가격이 떨어지지 않았습니다.
+    - 3초 시점의 ₩3은 1초뒤에 가격이 떨어집니다. 따라서 1초간 가격이 떨어지지 않은 것으로 봅니다.
+    - 4초 시점의 ₩2은 1초간 가격이 떨어지지 않았습니다.
+    - 5초 시점의 ₩3은 0초간 가격이 떨어지지 않았습니다.
+
+``` java
+import java.util.*;
+
+class Solution {
+    public int[] solution(int[] prices) {
+        ArrayList<Integer> answerList = new ArrayList<Integer>();
+        ArrayList<Integer> queue = new ArrayList<Integer>();
+        
+        for (int i=0; i<prices.length; i++) {
+            for (int j=i+1; j<prices.length; j++) {
+                if (prices[i] <= prices[j]) {
+                    queue.add(prices[j]);
+                    // System.out.println(queue.toString());
+                }
+                else {
+                    // System.out.println("prices[i] > prices[j]");
+                    queue.add(prices[j]);
+                    break;
+                }
+            }
+            answerList.add(queue.size());
+            queue.clear();
+        }       
+        
+        // System.out.println(answerList.toString());
+        
+        int[] answer = new int[answerList.size()];
+        for (int i=0; i<answerList.size(); i++) answer[i] = answerList.get(i);
+        return answer;
+    }
+}
+```
+:::
+
 ## Deque
 `Deque`는 `Stack`과 `Queue`를 합친 자료구조다. Java에서는 `Deque`인터페이스와 <b>`ArrayDeque`</b>클래스로 구현한다.
 ``` java Deque
