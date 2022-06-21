@@ -269,7 +269,7 @@ public class MemberEntity {
     
     // 생략 ..
 
-    @Column(columnDefinition = "varchar(100) default 'empty'")
+    @Column(columnDefinition = "VARCHAR(100) DEFAULT 'empty'")
     private String name;
 
     // 생략 ...
@@ -428,7 +428,7 @@ Hibernate는 엔티티가 영속, 준영속, 삭제될 때 특정 메소드가 �
 |`@PostUpdate`|엔티티가 변경된 후 호출된다. |
 |`@PreRemove`|엔티티가 삭제되기 전 호출된다. |
 |`@PostRemove`|엔티티가 삭제된 후 호출된다. |
-|`@PostLoad`|엔티티가 데이터베이스에서 영속성 컨텍스트로 로드될 때 호출된다.|
+|`@PostLoad`|조회 연산으로 엔티티가 데이터베이스에서 영속성 컨텍스트로 로드될 때 호출된다.|
 
 ``` java
 import javax.persistence.*;

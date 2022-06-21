@@ -168,7 +168,7 @@ public class MemberEntity {
     }
 }
 ```
-주의할 점이 있다. `Hibernate`는 `리플렉션`으로 엔티티를 생성하기 때문에 반드시 `기본 생성자`를 정의해야한다.
+`Hibernate`는 `리플렉션`으로 엔티티를 생성하기 때문에 반드시 `기본 생성자`를 정의해야한다.
 ``` java{8-10}
 @Entity
 @Table(name= "member")

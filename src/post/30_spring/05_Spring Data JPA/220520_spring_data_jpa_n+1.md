@@ -109,9 +109,9 @@ Hibernate:
         member memberenti1_ 
             on postentity0_.writer_id=memberenti1_.id
 ```
-쿼리를 보면 알 수 있듯이, `PostEntity`에 대한 컬럼은 모두 조회하나 `MemberEntity`에 대한 컬럼은 ID 만을 조회하고 있다. 이는 프록시 객체와 JPA의 지연로딩 때문이다.
+쿼리를 보면 알 수 있듯이, `PostEntity`에 대한 컬럼은 모두 조회하나 `MemberEntity`에 대한 컬럼은 ID 만을 조회하고 있다. 이는 글로벌 패치 전략 때문이다. JPA의 패치 조인을 사용하면 데이터베이스 레벨에서 연관된 테이블을 조인한다. 
 
-JPA의 패치 조인을 사용하면 데이터베이스 레벨에서부터 연관된 테이블의 컬럼을 모두 조회할 수 있다. JPQL에서 패치 조인은 다음과 같이 사용한다.
+JPQL에서 패치 조인은 다음과 같이 사용한다.
 ``` java {24,25}
 @Test
 @Transactional
@@ -159,7 +159,7 @@ Hibernate:
 
 
 ## N+1 문제
-쿼리 1개의 결과가 N개일 때 N번의 쿼리가 더 실행되는 문제다. `N+1 문제`는 두 엔티티 사이에 연관관계가 있을 떄 발생한다.
+쿼리 1개의 결과가 N개일 때 N번의 쿼리가 더 실행되는 문제다. `N+1 문제`는 두 엔티티 사이에 연관관계가 있을 때 발생한다.
 
 ### 예제 구성하기
 `N+1 문제` 예제를 살펴보기 위해 다음과 같이 데이터베이스 스키마를 설계한다. `member` 테이블은 다음과 같다.
@@ -172,8 +172,7 @@ CREATE TABLE member (
 ```
 `post` 테이블은 다음과 같다.
 ```
-CREATE TABLE post
-(
+CREATE TABLE post (
     id          bigint auto_increment primary key,
     content     varchar(255) null,
     writer_id   bigint       null,
@@ -316,7 +315,7 @@ Hibernate:
     where
         posts0_.writer_id=?
 ```
-한 번의 쿼리 메소드를 실행했는데 세 개의 추가적인 JPQL 쿼리가 실행되었다. 이처럼 즉시 로딩에서도 JPQL을 실행할 때 N+1 문제가 발생할 수 있다. 
+한 번의 쿼리 메소드를 실행했는데 세 개의 추가적인 쿼리가 실행되었다. 이처럼 즉시 로딩에서도 N+1 문제가 발생할 수 있다. 
 
 ### 지연 로딩과 N+1 문제
 글로벌 페치 전략이 `FetchType.LAZY`일 때 N+1 문제가 발생하는지 알아보자.
@@ -431,7 +430,7 @@ Content: content9
 ### 해결방법
 JPQL이나 Query DSL의 <b>`페치 조인(Fetch Join)`</b>을 사용하면 N+1 문제를 해결할 수 있다.
 
-JPA에서 `일반 조인`은 연관된 엔티티는 함께 조회하지 않는다. 대상 엔티티를 먼저 조회한 후 글로벌 패치 전략에 따라 연관된 엔티티를 즉시 로딩 또는 지연 로딩하기 때문이다. 반면 JPQL이나 Query DSL의 `패치 조인(Fetch Join)`을 사용하면 연관된 엔티티들도 하나의 쿼리로 한꺼번에 조인하여 가져온다.
+JPA에서 `일반 조인`은 연관된 엔티티는 함께 조회하지 않는다. 대상 엔티티를 먼저 조회한 후 글로벌 패치 전략에 따라 연관된 엔티티를 즉시 로딩 또는 지연 로딩하기 때문이다. 반면 JPQL이나 Query DSL의 `패치 조인(Fetch Join)`을 사용하면 데이터베이스 레벨에서 연관된 테이블을 조인한다. 
 
 다음은 JPQL을 통한 페치 조인 예제다.
 ``` java
@@ -440,4 +439,4 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     public List<MemberEntity> findAllMemberWithFetchJoin()
 }
 ```
-페치 조인을 사용할 때는 `DISTINCT`를 사용하여 중복을 제거하는 것이 좋다. 다만 페치 조인은 페이징 API를 사용할 수 없다는 단점이 있다.
+페치 조인을 사용할 때는 `DISTINCT`를 사용하여 중복을 제거하는 것이 좋다. 또한 페치 조인은 페이징 API를 사용할 수 없다는 단점이 있다.

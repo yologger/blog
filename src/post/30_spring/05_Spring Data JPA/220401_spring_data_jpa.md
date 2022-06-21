@@ -293,7 +293,7 @@ MemberEntity target = memberRepository.getById(1);
 Spring Data JPA는 `쿼리 메소드(Query Method)`라는 기능을 제공한다. 
 
 ### 메소드 이름으로 JPQL 생성하기
-쿼리 메소드를 사용하면 <u>메소드 이름</u>으로 <u>JPQL 쿼리</u>를 생성할 수 있다. 
+쿼리 메소드를 사용하면 <u>메소드 이름</u>으로 <u>JPQL 쿼리</u>를 생성할 수 있다. 즉 쿼리 메소드는 내부적으로 JPQL로 변환되어 실행된다.
 
 예제를 살펴보자. 다음과 같이 MemberEntity 라는 엔티티 클래스가 있다.
 ``` java
@@ -356,7 +356,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
 ```
 
 ### @Query
-`@Query` 어노테이션을 사용하면 `JPQL` 문자열로 쿼리를 정의할 수 있다.
+`@Query` 어노테이션을 사용하면 `JPQL`을 직접 사용할 수 있다.
 ``` java
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -417,29 +417,10 @@ public class MemberEntity extends BaseEntity {
 
 }    
 ```
-이제 엔티티를 추가하면 `@CreatedDate` 어노테이션이 추가된 컬럼에 생성일자가 추가된다. 그리고 `@LastModifiedDate` 어노테이션이 추가된 컬럼에 마지막 변경일자가 추가된다.
+이제 엔티티를 추가하면 `@CreatedDate` 어노테이션이 추가된 컬럼에 생성일자가 자동으로 추가된다. 그리고 `@LastModifiedDate` 어노테이션이 추가된 컬럼에 마지막 변경일자가 자동으로 추가된다.
 
 ## 데이터베이스 초기화 스크립트
 스프링부트 애플리케이션이 시작될 때 데이터베이스 초기화 스크립트를 실행할 수 있다.
-
-### data.sql
-스프링부트 앱을 구동할 때 DML을 실행시킬 수 있다. `src/main/resources`경로 아래에 `data.sql`을 정의하면 된다.
-``` sql
--- data.sql
-INSERT INTO member(email, password) VALUES('paul@gmail.com', '1234'), ('smith@gmail.com', '1234'), ('monica@gmail.com', '1234');
-```
-그리고 `spring.sql.init.mode`을 다음과 같이 설정한다.
-``` yml
-# application.yml
-spring:
-  sql:
-    init:
-      mode: always
-```
-가능한 설정값은 다음과 같다.
-- `none`: SQL 스크립트를 실행하지 않는다.
-- `embedded(default)`: H2를 사용할 때만 SQL 스크립트가 실행된다.
-- `always`: 항상 SQL 스크립트가 실행된다.
 
 ### schema.sql
 스프링부트 앱을 구동할 때 DDL을 실행시킬 수 있다. `src/main/resources`경로 아래에 `schema.sql`을 정의하면 된다.
@@ -472,3 +453,22 @@ spring:
       mode: always
       schema-locations: classpath:schema.sql
 ```
+
+### data.sql
+스프링부트 앱을 구동할 때 DML을 실행시킬 수 있다. `src/main/resources`경로 아래에 `data.sql`을 정의하면 된다.
+``` sql
+-- data.sql
+INSERT INTO member(email, password) VALUES('paul@gmail.com', '1234'), ('smith@gmail.com', '1234'), ('monica@gmail.com', '1234');
+```
+그리고 `spring.sql.init.mode`을 다음과 같이 설정한다.
+``` yml
+# application.yml
+spring:
+  sql:
+    init:
+      mode: always
+```
+가능한 설정값은 다음과 같다.
+- `none`: SQL 스크립트를 실행하지 않는다.
+- `embedded(default)`: H2를 사용할 때만 SQL 스크립트가 실행된다.
+- `always`: 항상 SQL 스크립트가 실행된다.

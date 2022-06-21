@@ -257,8 +257,8 @@ public class QPostEntity extends EntityPathBase<PostEntity> {
 개발 과정에서 `Q 클래스`가 필요하므로 위와 같은 방법으로 생성해준다. 다만 빌드 과정에 `Q 클래스` 생성 작업이 포함되기에 굳이 `git`에 포함시킬 필요는 없다.
 
 ## Query DSL 구성 클래스 작성
-`Query DSL`을 위한 구성 클래스를 다음과 같이 작성한다.
-``` java
+Query DSL을 사용하려면 `JPAQueryFactory`객체를 빈으로 등록해야한다.
+``` java {14-17}
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -678,7 +678,7 @@ for (Tuple tuple: tuples) {
 } 
 ```
 
-쿼리 결과를 특정 객체로도 받을 수 있다.
+쿼리 결과를 특정 객체로 매핑할 수도 있다.
 ``` java
 @NoArgsConstructor
 @Getter
@@ -782,12 +782,6 @@ List<Tuple> tuples = jpaQueryFactory
         .on(memberEntity.id.eq(postEntity.writer.id))
         .fetch();
 ```
-
-## 데이터 수정
-`QueryDSL`도 수정을 위한 배치 쿼리를 지원한다. `QueryDSL`을 통한 수정 작업은 영속성 컨텍스트를 무시하고 데이터베이스에 직접 적용한다는 점에 유의하자.
-
-## 데이터 삭제
-`QueryDSL`도 삭제를 위한 배치 쿼리를 지원한다. `QueryDSL`을 통한 삭제 작업 또한 영속성 컨텍스트를 무시하고 데이터베이스에 직접 적용한다는 점에 유의하자.
 
 ## Repository와 함께 사용하기
 Query DSL은 Spring Data JPA의 `Repository` 인터페이스와 함께 사용할 수 있다. 

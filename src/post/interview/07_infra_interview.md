@@ -58,6 +58,7 @@ sidebarDepth: 0
 - gRPC는 HTTP 2를 사용하고 메시지 포맷으로 프로토콜 버퍼를 사용한다.
 - gRPC는 REST API에 비해 형식이 더욱 엄격하여 불필요한 논쟁을 줄인다.
 - gRPC의 프로토콜 버퍼는 REST API의 JSON 직렬화보다 최대 8배 빼를 수 있다고 한다.
+- 이러한 특성 때문에 MSA 환경에서 서비스 간 통신에 사용된다.
 
 ## Docker
 - 호스트 OS에 `Docker container`라는 격리된 공간을 제공해주는 컨테이너 가상화 기술

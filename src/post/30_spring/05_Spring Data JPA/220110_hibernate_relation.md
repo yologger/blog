@@ -264,10 +264,10 @@ public class PostEntity {
 ``` 
 반면 `mappedBy`속성을 사용하는 경우 관계형 데이터베이스는 `외래 키`로 관계를 표현한다. 
 
-이처럼 두 엔티티를 양방향 관계로 매핑하면 객체의 참조는 둘인데 외래 키는 하나가 된다. 이러한 차이 때문에 <u>Hibernate에서는 두 객체 중 하나를 <b>`연관관계의 주인`</b>으로 설정해서 테이블 외래키를 관리하도록 해야한다</u>.
+이처럼 두 엔티티를 양방향 관계로 매핑하면 객체의 참조는 둘인데 외래 키는 하나가 된다. 이러한 차이 때문에 Hibernate에서는 <u>두 객체 중 하나를 <b>`연관관계의 주인`</b>으로 설정해서 테이블 외래키를 관리하도록 해야한다</u>.
 
 ### 연관관계의 주인과 관련된 주의사항
-양방향 연관관계에서는 `관계의 주인`인 엔티티만이 외래 키를 관리할 수 있다. 다시 말해 <u>관계의 주인인 엔티티를 통해서만 관계를 추가, 변경, 삭제할 수 있다.</u> 
+양방향 연관관계에서는 `연관관계의 주인`인 엔티티만이 외래 키를 관리할 수 있다. 다시 말해 <u>관계의 주인인 엔티티를 통해서만 관계를 추가, 변경, 삭제할 수 있다.</u> 
 
 다음 예제는 관계의 주인인 PostEntity에서 관계를 설정하고 있다.
 ``` java
@@ -509,7 +509,7 @@ Hibernate:
 
 ### 연관관계 제거
 `null`을 사용하여 관계를 제거할 수 있다.
-``` java{6}
+``` java{5}
 transaction.begin();
 
 PostEntity post = entityManager.find(PostEntity.class, id);
@@ -588,7 +588,7 @@ public class ProfileEntity {
     // 생략 ...
 }
 ```
-`@OneToOne` 역시 양방향 일대일 관계를 만들 수 있다.
+`@OneToOne` 역시 양방향 관계를 만들 수 있다.
 ``` java {11}
 // MemberEntity.java
 @Entity
@@ -734,7 +734,7 @@ public class MemberProductEntity {
 }
 ```
 외래키가 `MemberProductEntity`에 생성되므로 `MemberProductEntity`를 관계의 주인으로 지정한다.
-``` java
+``` java {14}
 // MemberEntity.java
 @Entity
 @Table(name= "member")
@@ -754,7 +754,7 @@ public class MemberEntity {
     // 중략..
 }
 ```
-``` java
+``` java {14}
 // ProductEntity.java
 @Entity
 @Table(name = "product")
@@ -1263,7 +1263,7 @@ Hibernate:
 ``` java
 String content = posts.get(0).getContent();
 ```
-관계된 엔티티를 데이터베이스에서 조회한다.
+관계된 엔티티를 데이터베이스에서 추가적으로 조회한다.
 ```
 Hibernate: 
     select

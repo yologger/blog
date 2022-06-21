@@ -1435,6 +1435,7 @@ System.out.println(copied.hashCode());      // 955331
 List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
 Collections.max(list);  // 8
 ```
+요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
 
 ### min()
 최소값을 반환한다.
@@ -1442,6 +1443,7 @@ Collections.max(list);  // 8
 List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
 Collections.min(list);  // 1
 ```
+요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
 
 ### addAll()
 Collection에 요소들을 추가한다.

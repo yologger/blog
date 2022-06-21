@@ -42,7 +42,7 @@ try {
 entityManagerfactory.close();
 ```
 
-Spring Data JPA는 스프링 어플리케이션이 시작될 때 EntityManager객체를 Spring IoC Container에 자동으로 등록해준다. 이렇게 Spring IoC Container에서 관리하는 EntityManager를 `Shared EntityManager` 또는 `Managed EntityManager`라고 한다. `@PersistenceContext` 어노테이션을 사용하면 이 EntityManager를 주입받을 수 있다. 
+Spring Data JPA를 사용하면 스프링이 직접 EntityManager를 생성하고 관리한다. 이렇게 Spring IoC Container에서 관리하는 EntityManager를 `Shared EntityManager` 또는 `Managed EntityManager`라고 한다. `@PersistenceContext` 어노테이션을 사용하면 이 EntityManager를 주입받을 수 있다. 
 ``` java {6,7}
 import javax.persistence.PersistenceContext;
 
@@ -76,7 +76,7 @@ public class MemberService {
     }
 }
 ```
-그러나 위 코드를 실행하면 다음과 같은 에러가 발생한다.
+위 코드를 실행하면 다음과 같은 에러가 발생한다.
 ```
 Not allowed to create transaction on shared EntityManager - use Spring transactions or EJB CMT instead.
 ```
@@ -119,7 +119,7 @@ EntityManagerFactory entityManagerFactory;
 ```
 
 ## @Transactional
-스프링 프레임워크는 서블릿 컨테이너 위에서 동작한다. 사용자가 HTTP 요청을 보낼 때마다 서블릿에 하나의 스레드를 할당한다. 이 스레드는 각 요청을 처리하게 된다. 이 말은 스프링 프레임워크도 멀티 스레드로 동작하며, 각 스레드에서 EntityManager로 메모리에 위치한 영속성 컨텍스트에 동시에 접근할 수 있기 때문에 `Thread Safe`하지 않다는 것을 의미한다.
+스프링 프레임워크는 서블릿 컨테이너 위에서 동작한다. 서블릿 컨테이너는 사용자가 HTTP 요청을 보낼 때마다 서블릿에 하나의 스레드를 할당하며, 이 스레드가 각각의 요청을 처리하게 된다. 이 말은 스프링 프레임워크도 멀티 스레드로 동작하며, 각 스레드에서 EntityManager로 메모리에 위치한 영속성 컨텍스트에 동시에 접근할 수 있기 때문에 `Thread Safe`하지 않다는 것을 의미한다.
 
 따라서 `Shared EntityManager`를 사용할 때는 스레드를 동기화하고 `Thread Safe`를 보장하기 위해 반드시 <b>`@Transactional`</b> 어노테이션을 추가해야한다.
 ``` java {10}
@@ -181,7 +181,7 @@ public interface MemberRepository extends JpaRepository<MemberEntity, Long> {
     // ...
 }
 ```
-JpaRepository는 내부적으로 Shared EntityManager를 사용하여 영속성 컨텍스트를 조작한다. 따라서 JpaRepository의 메소드를 호출하는 곳에도 `@Transaction` 어노테이션을 추가해야한다.
+JpaRepository는 내부적으로 Shared EntityManager를 사용하여 영속성 컨텍스트를 조작한다. 따라서 JpaRepository의 메소드를 호출하는 곳에 `@Transaction` 어노테이션을 추가해야한다.
 ``` java {7}
 @Service
 public class MemberService {
@@ -205,10 +205,11 @@ public class MemberService {
 
 
 ## @Transactional과 테스트
-테스트 클래스나 테스트 메소드에서 `@Transactional` 어노테이션을 추가하면 테스트가 끝난 후 자동으로 롤백된다. 
+테스트 클래스나 테스트 메소드에 `@Transactional` 어노테이션을 추가하면 테스트가 끝난 후 자동으로 롤백된다. 
 ``` java
 @SpringBootTest
 public class Test {
+    
     @Transcational
     public void test() {
         // ...

@@ -172,7 +172,7 @@ List<MemberEntity> members = entityManager.createQuery(jpql, MemberEntity.class)
 
 transaction.commit();
 ```
-`(1)`시점은 memberA와 memberB는 영속성 컨텍스트에서 저장되어있으나 온디스크 데이터베이스에는 반영되지 않는 상태다. 이 상태에서 영속성 컨텍스트가 아닌 온디스크 데이터베이스에서 memberA와 memberB를 조회하면 결과가 조회되지 않는다. 이러한 문제를 해결하기 위해 `JPQL`을 실행할 때 자동으로 플러시된다.
+`(1)`시점에서 memberA와 memberB는 영속성 컨텍스트에서 저장되어있으나 온디스크 데이터베이스에는 반영되지 않는 상태다. 이 상태에서 영속성 컨텍스트가 아닌 온디스크 데이터베이스에서 memberA와 memberB를 조회하면 결과가 조회되지 않는다. 이러한 문제를 해결하기 위해 `JPQL`을 실행할 때 자동으로 플러시된다.
 
 ## 영속성 컨텍스트의 장점
 영속성 컨텍스트는 다음과 같은 장점이 있다.
