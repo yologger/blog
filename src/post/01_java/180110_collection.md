@@ -649,6 +649,12 @@ public interface Map<K, V> {
     void putAll(Map<? extends K, ? extends V> m);
     void clear();
     ... 
+
+    interface Entry<K,V> {
+        K getKey();
+        V getValue();    
+        // ...
+    }
 }
 ``` 
 위에서 보는 것처럼 Map은 Interface이므로 인스턴스를 생성할 수 없다. 따라서 `Map`의 구현체가 필요하다. 다행히 Java API에서는 `HashMap`, `TreeMap`, `LinkedMap`이라는 구현체를 제공한다.
@@ -682,7 +688,7 @@ players.remove(7);
 System.out.println(players.toString()); // {9=Benzema, 11=Bale}
 ```
 
-`TreeMap`은 기본적으로 키 값을 오름차순으로 정렬한다.
+`TreeMap`은 기본적으로 키 값을 기준으로 오름차순으로 정렬한다.
 ``` java
 players.put(7, "Ronaldo");
 players.put(9, "Benzema");
@@ -1379,7 +1385,7 @@ System.out.println(priorityQueue.remove().toString());      // [name='Ross', age
 List list = Collections.nCopies(10, 1);
 System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
-주의할 점은 `Collections.nCopies()`를 불변 리스트를 반환하므로 변경할 수 없다. 가변 리스트는 다음과 같이 생성한다.
+`Collections.nCopies()`은 불변 리스트를 반환하므로 변경할 수 없다. 가변 리스트는 다음과 같이 생성한다.
 ``` java
 List list = new ArrayList(Collections.nCopies(10, 1));
 ```
