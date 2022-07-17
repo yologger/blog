@@ -49,3 +49,8 @@ END | utf8mb4              | utf8mb4_0900_ai_ci   | utf8_general_ci    |
 ```
 > DROP PROCEDURE GetMemberCount;
 ```
+
+파라미터
+변수 선언
+조건문
+반복문
