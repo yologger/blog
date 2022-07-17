@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Kubernetes 명령어 정리 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.407877ec.js" as="script"><link rel="preload" href="/blog/assets/js/3.2c868ac4.js" as="script"><link rel="preload" href="/blog/assets/js/239.d65e33ca.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.214df1fb.js"><link rel="prefetch" href="/blog/assets/js/100.84c42c58.js"><link rel="prefetch" href="/blog/assets/js/101.ef2ab21f.js"><link rel="prefetch" href="/blog/assets/js/102.88861d4b.js"><link rel="prefetch" href="/blog/assets/js/103.a01965ee.js"><link rel="prefetch" href="/blog/assets/js/104.21597723.js"><link rel="prefetch" href="/blog/assets/js/105.73be57d6.js"><link rel="prefetch" href="/blog/assets/js/106.4d2f9945.js"><link rel="prefetch" href="/blog/assets/js/107.ebc7d69c.js"><link rel="prefetch" href="/blog/assets/js/108.8d6e9050.js"><link rel="prefetch" href="/blog/assets/js/109.dbcf9d3f.js"><link rel="prefetch" href="/blog/assets/js/11.ff546d90.js"><link rel="prefetch" href="/blog/assets/js/110.0390f38d.js"><link rel="prefetch" href="/blog/assets/js/111.213596d7.js"><link rel="prefetch" href="/blog/assets/js/112.7e0af3ee.js"><link rel="prefetch" href="/blog/assets/js/113.57c2cc15.js"><link rel="prefetch" href="/blog/assets/js/114.28c2b749.js"><link rel="prefetch" href="/blog/assets/js/115.db63c82b.js"><link rel="prefetch" href="/blog/assets/js/116.5343aa78.js"><link rel="prefetch" href="/blog/assets/js/117.c8701adf.js"><link rel="prefetch" href="/blog/assets/js/118.f0671833.js"><link rel="prefetch" href="/blog/assets/js/119.09db011c.js"><link rel="prefetch" href="/blog/assets/js/12.7608a1db.js"><link rel="prefetch" href="/blog/assets/js/120.725e67ca.js"><link rel="prefetch" href="/blog/assets/js/121.cbbe863f.js"><link rel="prefetch" href="/blog/assets/js/122.0b929da9.js"><link rel="prefetch" href="/blog/assets/js/123.49e34faf.js"><link rel="prefetch" href="/blog/assets/js/124.43d7edbf.js"><link rel="prefetch" href="/blog/assets/js/125.b78fcfc3.js"><link rel="prefetch" href="/blog/assets/js/126.95b41c8b.js"><link rel="prefetch" href="/blog/assets/js/127.c0c12b54.js"><link rel="prefetch" href="/blog/assets/js/128.15d6bca8.js"><link rel="prefetch" href="/blog/assets/js/129.bee5a9f3.js"><link rel="prefetch" href="/blog/assets/js/13.dc871816.js"><link rel="prefetch" href="/blog/assets/js/130.2fe01fb8.js"><link rel="prefetch" href="/blog/assets/js/131.d1f47750.js"><link rel="prefetch" href="/blog/assets/js/132.37d63b61.js"><link rel="prefetch" href="/blog/assets/js/133.267b6829.js"><link rel="prefetch" href="/blog/assets/js/134.818da5b5.js"><link rel="prefetch" href="/blog/assets/js/135.30464616.js"><link rel="prefetch" href="/blog/assets/js/136.73dc1554.js"><link rel="prefetch" href="/blog/assets/js/137.9353e543.js"><link rel="prefetch" href="/blog/assets/js/138.e131cb38.js"><link rel="prefetch" href="/blog/assets/js/139.0443fc29.js"><link rel="prefetch" href="/blog/assets/js/14.414794fb.js"><link rel="prefetch" href="/blog/assets/js/140.0a66e837.js"><link rel="prefetch" href="/blog/assets/js/141.070ca152.js"><link rel="prefetch" href="/blog/assets/js/142.674e95f2.js"><link rel="prefetch" href="/blog/assets/js/143.36a65bcf.js"><link rel="prefetch" href="/blog/assets/js/144.88ab0348.js"><link rel="prefetch" href="/blog/assets/js/145.8108a3e4.js"><link rel="prefetch" href="/blog/assets/js/146.7cc38cdd.js"><link rel="prefetch" href="/blog/assets/js/147.5c67050f.js"><link rel="prefetch" href="/blog/assets/js/148.3ff31f51.js"><link rel="prefetch" href="/blog/assets/js/149.75e65991.js"><link rel="prefetch" href="/blog/assets/js/15.f50507ad.js"><link rel="prefetch" href="/blog/assets/js/150.59d103ef.js"><link rel="prefetch" href="/blog/assets/js/151.2af10e91.js"><link rel="prefetch" href="/blog/assets/js/152.fb23137c.js"><link rel="prefetch" href="/blog/assets/js/153.76d4f705.js"><link rel="prefetch" href="/blog/assets/js/154.cbc2e62f.js"><link rel="prefetch" href="/blog/assets/js/155.f0ebde67.js"><link rel="prefetch" href="/blog/assets/js/156.2def108b.js"><link rel="prefetch" href="/blog/assets/js/157.1c144be8.js"><link rel="prefetch" href="/blog/assets/js/158.ed93ecfb.js"><link rel="prefetch" href="/blog/assets/js/159.9737a613.js"><link rel="prefetch" href="/blog/assets/js/16.8af324c8.js"><link rel="prefetch" href="/blog/assets/js/160.6754badf.js"><link rel="prefetch" href="/blog/assets/js/161.9502f065.js"><link rel="prefetch" href="/blog/assets/js/162.52f0a4bd.js"><link rel="prefetch" href="/blog/assets/js/163.9d733ff6.js"><link rel="prefetch" href="/blog/assets/js/164.07ecd24c.js"><link rel="prefetch" href="/blog/assets/js/165.33c4abc0.js"><link rel="prefetch" href="/blog/assets/js/166.a35efc51.js"><link rel="prefetch" href="/blog/assets/js/167.72bba16c.js"><link rel="prefetch" href="/blog/assets/js/168.58b6b388.js"><link rel="prefetch" href="/blog/assets/js/169.4b56cd76.js"><link rel="prefetch" href="/blog/assets/js/17.e1dee477.js"><link rel="prefetch" href="/blog/assets/js/170.5759f26d.js"><link rel="prefetch" href="/blog/assets/js/171.d8041dc1.js"><link rel="prefetch" href="/blog/assets/js/172.cd032c0b.js"><link rel="prefetch" href="/blog/assets/js/173.27159b98.js"><link rel="prefetch" href="/blog/assets/js/174.e98e427b.js"><link rel="prefetch" href="/blog/assets/js/175.e92d0ae4.js"><link rel="prefetch" href="/blog/assets/js/176.e939a83d.js"><link rel="prefetch" href="/blog/assets/js/177.ef978bde.js"><link rel="prefetch" href="/blog/assets/js/178.7cede950.js"><link rel="prefetch" href="/blog/assets/js/179.20121d4d.js"><link rel="prefetch" href="/blog/assets/js/18.aedcd3b4.js"><link rel="prefetch" href="/blog/assets/js/180.08ab3e0b.js"><link rel="prefetch" href="/blog/assets/js/181.208a47b3.js"><link rel="prefetch" href="/blog/assets/js/182.f9abeb9d.js"><link rel="prefetch" href="/blog/assets/js/183.c6fda8b2.js"><link rel="prefetch" href="/blog/assets/js/184.8888984e.js"><link rel="prefetch" href="/blog/assets/js/185.cbfe8932.js"><link rel="prefetch" href="/blog/assets/js/186.aa14003d.js"><link rel="prefetch" href="/blog/assets/js/187.0b082624.js"><link rel="prefetch" href="/blog/assets/js/188.76387af1.js"><link rel="prefetch" href="/blog/assets/js/189.1207592a.js"><link rel="prefetch" href="/blog/assets/js/19.71a3a956.js"><link rel="prefetch" href="/blog/assets/js/190.20ba5f79.js"><link rel="prefetch" href="/blog/assets/js/191.0f1b99d5.js"><link rel="prefetch" href="/blog/assets/js/192.04922345.js"><link rel="prefetch" href="/blog/assets/js/193.ccee54ae.js"><link rel="prefetch" href="/blog/assets/js/194.88c5b3f8.js"><link rel="prefetch" href="/blog/assets/js/195.3bd9a30b.js"><link rel="prefetch" href="/blog/assets/js/196.3b42ea37.js"><link rel="prefetch" href="/blog/assets/js/197.99ba23e4.js"><link rel="prefetch" href="/blog/assets/js/198.6764a9e3.js"><link rel="prefetch" href="/blog/assets/js/199.98b97aa0.js"><link rel="prefetch" href="/blog/assets/js/2.305d7f18.js"><link rel="prefetch" href="/blog/assets/js/20.ef953170.js"><link rel="prefetch" href="/blog/assets/js/200.3b391275.js"><link rel="prefetch" href="/blog/assets/js/201.c4da0449.js"><link rel="prefetch" href="/blog/assets/js/202.b62d0ce1.js"><link rel="prefetch" href="/blog/assets/js/203.4a2ea447.js"><link rel="prefetch" href="/blog/assets/js/204.ee4ca076.js"><link rel="prefetch" href="/blog/assets/js/205.654be6ea.js"><link rel="prefetch" href="/blog/assets/js/206.036bd179.js"><link rel="prefetch" href="/blog/assets/js/207.03e8b9ff.js"><link rel="prefetch" href="/blog/assets/js/208.d228e908.js"><link rel="prefetch" href="/blog/assets/js/209.253e46e1.js"><link rel="prefetch" href="/blog/assets/js/21.7190cd50.js"><link rel="prefetch" href="/blog/assets/js/210.f1ed996e.js"><link rel="prefetch" href="/blog/assets/js/211.5b47b79f.js"><link rel="prefetch" href="/blog/assets/js/212.044358d5.js"><link rel="prefetch" href="/blog/assets/js/213.47ed3ab7.js"><link rel="prefetch" href="/blog/assets/js/214.c42cbb1f.js"><link rel="prefetch" href="/blog/assets/js/215.ee83627a.js"><link rel="prefetch" href="/blog/assets/js/216.97525cbc.js"><link rel="prefetch" href="/blog/assets/js/217.11ac8523.js"><link rel="prefetch" href="/blog/assets/js/218.c9f4f2b3.js"><link rel="prefetch" href="/blog/assets/js/219.5f74f734.js"><link rel="prefetch" href="/blog/assets/js/22.593ae787.js"><link rel="prefetch" href="/blog/assets/js/220.0a13ba28.js"><link rel="prefetch" href="/blog/assets/js/221.b5503a95.js"><link rel="prefetch" href="/blog/assets/js/222.3b9416c1.js"><link rel="prefetch" href="/blog/assets/js/223.9570a713.js"><link rel="prefetch" href="/blog/assets/js/224.4e8aaf58.js"><link rel="prefetch" href="/blog/assets/js/225.1b12babf.js"><link rel="prefetch" href="/blog/assets/js/226.d8cc7c14.js"><link rel="prefetch" href="/blog/assets/js/227.79b40d6a.js"><link rel="prefetch" href="/blog/assets/js/228.21910d5a.js"><link rel="prefetch" href="/blog/assets/js/229.30b51d12.js"><link rel="prefetch" href="/blog/assets/js/23.2dd50afb.js"><link rel="prefetch" href="/blog/assets/js/230.d42a9a38.js"><link rel="prefetch" href="/blog/assets/js/231.791869c0.js"><link rel="prefetch" href="/blog/assets/js/232.0892177e.js"><link rel="prefetch" href="/blog/assets/js/233.9aaf9bbb.js"><link rel="prefetch" href="/blog/assets/js/234.1002b345.js"><link rel="prefetch" href="/blog/assets/js/235.619d2b1e.js"><link rel="prefetch" href="/blog/assets/js/236.1ad24da3.js"><link rel="prefetch" href="/blog/assets/js/237.c2d1efa6.js"><link rel="prefetch" href="/blog/assets/js/238.2373f349.js"><link rel="prefetch" href="/blog/assets/js/24.6684c857.js"><link rel="prefetch" href="/blog/assets/js/240.36e57681.js"><link rel="prefetch" href="/blog/assets/js/241.4c8cce20.js"><link rel="prefetch" href="/blog/assets/js/242.29a82a61.js"><link rel="prefetch" href="/blog/assets/js/243.42035d3c.js"><link rel="prefetch" href="/blog/assets/js/244.c039e764.js"><link rel="prefetch" href="/blog/assets/js/245.84554679.js"><link rel="prefetch" href="/blog/assets/js/246.f8274aa5.js"><link rel="prefetch" href="/blog/assets/js/247.da5cacf5.js"><link rel="prefetch" href="/blog/assets/js/248.aa8417d2.js"><link rel="prefetch" href="/blog/assets/js/249.a614abb9.js"><link rel="prefetch" href="/blog/assets/js/25.42af72f6.js"><link rel="prefetch" href="/blog/assets/js/250.096af39b.js"><link rel="prefetch" href="/blog/assets/js/251.45b855d5.js"><link rel="prefetch" href="/blog/assets/js/252.ea0a27a2.js"><link rel="prefetch" href="/blog/assets/js/253.12a895af.js"><link rel="prefetch" href="/blog/assets/js/254.7352cd0f.js"><link rel="prefetch" href="/blog/assets/js/255.041c56c2.js"><link rel="prefetch" href="/blog/assets/js/256.fe3aa3d8.js"><link rel="prefetch" href="/blog/assets/js/257.f81a2d94.js"><link rel="prefetch" href="/blog/assets/js/258.ea729895.js"><link rel="prefetch" href="/blog/assets/js/259.ea4d1657.js"><link rel="prefetch" href="/blog/assets/js/26.976f03dd.js"><link rel="prefetch" href="/blog/assets/js/260.040211d7.js"><link rel="prefetch" href="/blog/assets/js/261.3fde685b.js"><link rel="prefetch" href="/blog/assets/js/262.f055e783.js"><link rel="prefetch" href="/blog/assets/js/263.351d8106.js"><link rel="prefetch" href="/blog/assets/js/264.d0d5826a.js"><link rel="prefetch" href="/blog/assets/js/265.ddf08330.js"><link rel="prefetch" href="/blog/assets/js/266.aec7b24b.js"><link rel="prefetch" href="/blog/assets/js/267.0e5716e6.js"><link rel="prefetch" href="/blog/assets/js/268.68074979.js"><link rel="prefetch" href="/blog/assets/js/269.8739b95a.js"><link rel="prefetch" href="/blog/assets/js/27.b02deaf4.js"><link rel="prefetch" href="/blog/assets/js/270.968af81c.js"><link rel="prefetch" href="/blog/assets/js/28.59574d94.js"><link rel="prefetch" href="/blog/assets/js/29.5312c870.js"><link rel="prefetch" href="/blog/assets/js/30.fca86d2c.js"><link rel="prefetch" href="/blog/assets/js/31.40a7e5fc.js"><link rel="prefetch" href="/blog/assets/js/32.31d1fc74.js"><link rel="prefetch" href="/blog/assets/js/33.9e9da730.js"><link rel="prefetch" href="/blog/assets/js/34.92c520e0.js"><link rel="prefetch" href="/blog/assets/js/35.a4ab1f65.js"><link rel="prefetch" href="/blog/assets/js/36.8baa7b2c.js"><link rel="prefetch" href="/blog/assets/js/37.e5823b3b.js"><link rel="prefetch" href="/blog/assets/js/38.6796171b.js"><link rel="prefetch" href="/blog/assets/js/39.a68a9d9f.js"><link rel="prefetch" href="/blog/assets/js/4.81d7a4a5.js"><link rel="prefetch" href="/blog/assets/js/40.7439b92d.js"><link rel="prefetch" href="/blog/assets/js/41.6c07a68d.js"><link rel="prefetch" href="/blog/assets/js/42.26b135bc.js"><link rel="prefetch" href="/blog/assets/js/43.fbfc2c30.js"><link rel="prefetch" href="/blog/assets/js/44.b0cfb782.js"><link rel="prefetch" href="/blog/assets/js/45.de62cb60.js"><link rel="prefetch" href="/blog/assets/js/46.c85ca9e3.js"><link rel="prefetch" href="/blog/assets/js/47.6043b490.js"><link rel="prefetch" href="/blog/assets/js/48.0b84e410.js"><link rel="prefetch" href="/blog/assets/js/49.395652cc.js"><link rel="prefetch" href="/blog/assets/js/5.7ea25842.js"><link rel="prefetch" href="/blog/assets/js/50.5951bc7f.js"><link rel="prefetch" href="/blog/assets/js/51.73163096.js"><link rel="prefetch" href="/blog/assets/js/52.bd6189ec.js"><link rel="prefetch" href="/blog/assets/js/53.02a3a241.js"><link rel="prefetch" href="/blog/assets/js/54.4296219c.js"><link rel="prefetch" href="/blog/assets/js/55.6e10ee88.js"><link rel="prefetch" href="/blog/assets/js/56.37468d50.js"><link rel="prefetch" href="/blog/assets/js/57.4cc896a4.js"><link rel="prefetch" href="/blog/assets/js/58.25b93d02.js"><link rel="prefetch" href="/blog/assets/js/59.2fc70fd3.js"><link rel="prefetch" href="/blog/assets/js/6.5d85bf19.js"><link rel="prefetch" href="/blog/assets/js/60.97d4ab3f.js"><link rel="prefetch" href="/blog/assets/js/61.4e0a9421.js"><link rel="prefetch" href="/blog/assets/js/62.5c8e434a.js"><link rel="prefetch" href="/blog/assets/js/63.9f0ec4bf.js"><link rel="prefetch" href="/blog/assets/js/64.485670d8.js"><link rel="prefetch" href="/blog/assets/js/65.bf839e77.js"><link rel="prefetch" href="/blog/assets/js/66.cfa34a32.js"><link rel="prefetch" href="/blog/assets/js/67.8bf4b24f.js"><link rel="prefetch" href="/blog/assets/js/68.86d68cf9.js"><link rel="prefetch" href="/blog/assets/js/69.3c5fb947.js"><link rel="prefetch" href="/blog/assets/js/7.95a44012.js"><link rel="prefetch" href="/blog/assets/js/70.71c73939.js"><link rel="prefetch" href="/blog/assets/js/71.6f40d6cd.js"><link rel="prefetch" href="/blog/assets/js/72.51c01c8b.js"><link rel="prefetch" href="/blog/assets/js/73.6ce18ec4.js"><link rel="prefetch" href="/blog/assets/js/74.e6e2d5b0.js"><link rel="prefetch" href="/blog/assets/js/75.1fdd9199.js"><link rel="prefetch" href="/blog/assets/js/76.822d0dda.js"><link rel="prefetch" href="/blog/assets/js/77.07fe61e3.js"><link rel="prefetch" href="/blog/assets/js/78.3a503253.js"><link rel="prefetch" href="/blog/assets/js/79.fbbbaab7.js"><link rel="prefetch" href="/blog/assets/js/8.4daec306.js"><link rel="prefetch" href="/blog/assets/js/80.2f3219e7.js"><link rel="prefetch" href="/blog/assets/js/81.d37198bc.js"><link rel="prefetch" href="/blog/assets/js/82.fd445f39.js"><link rel="prefetch" href="/blog/assets/js/83.00be90ec.js"><link rel="prefetch" href="/blog/assets/js/84.40aac1c4.js"><link rel="prefetch" href="/blog/assets/js/85.6ca8b74f.js"><link rel="prefetch" href="/blog/assets/js/86.50779298.js"><link rel="prefetch" href="/blog/assets/js/87.d8d9994b.js"><link rel="prefetch" href="/blog/assets/js/88.97a4de74.js"><link rel="prefetch" href="/blog/assets/js/89.7383449a.js"><link rel="prefetch" href="/blog/assets/js/9.17630656.js"><link rel="prefetch" href="/blog/assets/js/90.61983518.js"><link rel="prefetch" href="/blog/assets/js/91.b31af2bb.js"><link rel="prefetch" href="/blog/assets/js/92.07dbce34.js"><link rel="prefetch" href="/blog/assets/js/93.a1a7ecc6.js"><link rel="prefetch" href="/blog/assets/js/94.082bbed4.js"><link rel="prefetch" href="/blog/assets/js/95.b0e3563d.js"><link rel="prefetch" href="/blog/assets/js/96.b6bebd5f.js"><link rel="prefetch" href="/blog/assets/js/97.6cefa365.js"><link rel="prefetch" href="/blog/assets/js/98.aed6e859.js"><link rel="prefetch" href="/blog/assets/js/99.0e004e38.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link router-link-active">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link router-link-active">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/50_infra_devops/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Git, GitHub</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Docker</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Kubernetes</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220101_start_kubernetes.html" class="sidebar-link">Kubernetes 시작하기</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220103_kubernetes_objects.html" class="sidebar-link">Kubernetes 오브젝트</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220104_kubernetes_command.html" aria-current="page" class="active sidebar-link">Kubernetes 명령어 정리</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220105_spring_with_docker.html" class="sidebar-link">Dockerize Springboot &amp; Deploy to Kubernetes</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220106_kubernetes_argo.html" class="sidebar-link">Github Actions + Argo CD 으로 Kubernetes CI/CD 파이프라인 구축하기</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#노드-관련-명령어">노드 관련 명령어</a><ul><li><a href="#노드-확인하기">노드 확인하기</a></li></ul></li><li><a href="#오브젝트-관련-명령어">오브젝트 관련 명령어</a><ul><li><a href="#오브젝트-상세정보-확인">오브젝트 상세정보 확인</a></li></ul></li><li><a href="#팟-관련-명령어">팟 관련 명령어</a><ul><li><a href="#팟-확인">팟 확인</a></li><li><a href="#모든-네임스페이스의-팟-출력">모든 네임스페이스의 팟 출력</a></li><li><a href="#특정-네임스페이스의-팟-출력">특정 네임스페이스의 팟 출력</a></li><li><a href="#ip-노드-같은-네트워크-정보도-함께-출력하기">IP, 노드 같은 네트워크 정보도 함께 출력하기</a></li><li><a href="#팟을-라벨-함께-출력">팟을 라벨 함께 출력</a></li><li><a href="#팟-내부에-접속하기">팟 내부에 접속하기</a></li></ul></li><li><a href="#kubectl-patch">kubectl patch</a></li></ul></div><p></p> <h2 id="노드-관련-명령어"><a href="#노드-관련-명령어" class="header-anchor">#</a> 노드 관련 명령어</h2> <h3 id="노드-확인하기"><a href="#노드-확인하기" class="header-anchor">#</a> 노드 확인하기</h3> <p><code>kubectl get nodes</code>명령어로 클러스터에 포함된 노드들을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get nodes
+NAME              STATUS   ROLES                  AGE   VERSION
+cluster-master1   Ready    control-plane,master   25m   v1.23.6
+cluster-worker1   Ready    &lt;none&gt;                 23m   v1.23.6
+</code></pre></div><h2 id="오브젝트-관련-명령어"><a href="#오브젝트-관련-명령어" class="header-anchor">#</a> 오브젝트 관련 명령어</h2> <h3 id="오브젝트-상세정보-확인"><a href="#오브젝트-상세정보-확인" class="header-anchor">#</a> 오브젝트 상세정보 확인</h3> <p><code>kubectl describe &lt;오브젝트 종류&gt; &lt;오브젝트 이름&gt;</code>으로 오브젝트의 상세한 정보를 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl describe pods nginx-pod    
+Name:         nginx-pod
+Namespace:    default
+Priority:     0
+Node:         docker-desktop/192.168.65.4
+Start Time:   Tue, 19 Apr 2022 14:23:56 +0900
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+Status:       Running
+IP:           10.1.0.33
+IPs:
+  IP:  10.1.0.33
+Containers:
+  nginx-container:
+    Container ID:   docker://fe068fdc944c8d64e198c6da83eb29d8f97340412679605c6ba15bda710efe31
+    Image:          nginx:latest
+    Image ID:       docker-pullable://nginx@sha256:2275af0f20d71b293916f1958f8497f987b8d8fd8113df54635f2a5915002bf1
+    Port:           80/TCP
+    // 생략 ...
+</code></pre></div><h2 id="팟-관련-명령어"><a href="#팟-관련-명령어" class="header-anchor">#</a> 팟 관련 명령어</h2> <h3 id="팟-확인"><a href="#팟-확인" class="header-anchor">#</a> 팟 확인</h3> <p><code>kubectl get pods</code>명령어로 팟 목록을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods
+NAME                               READY   STATUS    RESTARTS   AGE
+nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          45m
+nginx-deployment-664f4c64c-5r55z   1/1     Running   0          45m
+nginx-pod                          1/1     Running   0          38m
+</code></pre></div><h3 id="모든-네임스페이스의-팟-출력"><a href="#모든-네임스페이스의-팟-출력" class="header-anchor">#</a> 모든 네임스페이스의 팟 출력</h3> <p><code>--all-namespaces</code> 옵션을 사옹하면 모든 네임스페이스의 팟을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY   STATUS    RESTARTS   AGE
+kube-system   calico-kube-controllers-7c845d499-x84g7   1/1     Running   0          27m
+kube-system   calico-node-shffx                         0/1     Running   0          27m
+kube-system   calico-node-tgw54                         0/1     Running   0          27m
+kube-system   coredns-64897985d-7cn8t                   1/1     Running   0          38m
+kube-system   coredns-64897985d-fqxbs                   1/1     Running   0          38m
+kube-system   etcd-cluster-master1                      1/1     Running   0          39m
+kube-system   kube-apiserver-cluster-master1            1/1     Running   0          39m
+kube-system   kube-controller-manager-cluster-master1   1/1     Running   0          39m
+kube-system   kube-proxy-8xft2                          1/1     Running   0          37m
+kube-system   kube-proxy-qkd54                          1/1     Running   0          38m
+kube-system   kube-scheduler-cluster-master1            1/1     Running   0          39m
+</code></pre></div><h3 id="특정-네임스페이스의-팟-출력"><a href="#특정-네임스페이스의-팟-출력" class="header-anchor">#</a> 특정 네임스페이스의 팟 출력</h3> <p><code>-n &lt;네임스페이스 이름&gt;</code> 옵션으로 특정 네임스페이스에 포함된 팟을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods -n kube-system
+NAME                                      READY   STATUS    RESTARTS   AGE
+calico-kube-controllers-7c845d499-x84g7   1/1     Running   0          29m
+calico-node-shffx                         0/1     Running   0          29m
+calico-node-tgw54                         0/1     Running   0          29m
+coredns-64897985d-7cn8t                   1/1     Running   0          40m
+coredns-64897985d-fqxbs                   1/1     Running   0          40m
+etcd-cluster-master1                      1/1     Running   0          40m
+kube-apiserver-cluster-master1            1/1     Running   0          40m
+kube-controller-manager-cluster-master1   1/1     Running   0          40m
+kube-proxy-8xft2                          1/1     Running   0          39m
+kube-proxy-qkd54                          1/1     Running   0          40m
+kube-scheduler-cluster-master1            1/1     Running   0          40m
+</code></pre></div><h3 id="ip-노드-같은-네트워크-정보도-함께-출력하기"><a href="#ip-노드-같은-네트워크-정보도-함께-출력하기" class="header-anchor">#</a> IP, 노드 같은 네트워크 정보도 함께 출력하기</h3> <p><code>-o wide</code> 옵션을 추가하면 IP, 노드 같은 네트워크 정보도 함께 출력할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods -n kube-system -o wide
+NAME                                      READY   STATUS    RESTARTS   AGE   IP                NODE              NOMINATED NODE   READINESS GATES
+calico-kube-controllers-7c845d499-x84g7   1/1     Running   0          31m   192.168.39.1      cluster-worker1   &lt;none&gt;           &lt;none&gt;
+calico-node-shffx                         0/1     Running   0          31m   172.31.42.69      cluster-worker1   &lt;none&gt;           &lt;none&gt;
+calico-node-tgw54                         0/1     Running   0          31m   172.31.36.170     cluster-master1   &lt;none&gt;           &lt;none&gt;
+coredns-64897985d-7cn8t                   1/1     Running   0          42m   192.168.247.130   cluster-master1   &lt;none&gt;           &lt;none&gt;
+coredns-64897985d-fqxbs                   1/1     Running   0          42m   192.168.247.129   cluster-master1   &lt;none&gt;           &lt;none&gt;
+etcd-cluster-master1                      1/1     Running   0          43m   172.31.36.170     cluster-master1   &lt;none&gt;           &lt;none&gt;
+kube-apiserver-cluster-master1            1/1     Running   0          43m   172.31.36.170     cluster-master1   &lt;none&gt;           &lt;none&gt;
+kube-controller-manager-cluster-master1   1/1     Running   0          43m   172.31.36.170     cluster-master1   &lt;none&gt;           &lt;none&gt;
+kube-proxy-8xft2                          1/1     Running   0          41m   172.31.42.69      cluster-worker1   &lt;none&gt;           &lt;none&gt;
+kube-proxy-qkd54                          1/1     Running   0          42m   172.31.36.170     cluster-master1   &lt;none&gt;           &lt;none&gt;
+kube-scheduler-cluster-master1            1/1     Running   0          43m   172.31.36.170     cluster-master1   &lt;none&gt;           &lt;none&gt;
+</code></pre></div><h3 id="팟을-라벨-함께-출력"><a href="#팟을-라벨-함께-출력" class="header-anchor">#</a> 팟을 라벨 함께 출력</h3> <p><code>--show-labels</code>옵션을 추가하면 라벨까지 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods --show-labels
+NAME                               READY   STATUS    RESTARTS   AGE   LABELS
+nginx-deployment-664f4c64c-4sbfd   1/1     Running   0          45m   app=nginx-pod-label,pod-template-hash=664f4c64c
+nginx-deployment-664f4c64c-5r55z   1/1     Running   0          45m   app=nginx-pod-label,pod-template-hash=664f4c64c
+nginx-pod                          1/1     Running   0          38m   &lt;none&gt;
+</code></pre></div><h3 id="팟-내부에-접속하기"><a href="#팟-내부에-접속하기" class="header-anchor">#</a> 팟 내부에 접속하기</h3> <p><code>kubectl exec -it &lt;팟 이름&gt; &lt;사용할 쉘&gt;</code>명령어로 팟 내부 컨테이너에 접속할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl exec -it nginx-pod bash
+root@nginx-pod:/# 
+</code></pre></div><p>팟이 다중 컨테이너로 구성되어있다면 <code>-c &lt;컨테이너 이름&gt;</code> 옵션을 사용하여 특정 컨테이너로 접속할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl exec -it nginx-pod -c nginx-container bash
+root@nginx-pod:/# 
+</code></pre></div><h2 id="kubectl-patch"><a href="#kubectl-patch" class="header-anchor">#</a> kubectl patch</h2> <p><code>kubectl patch</code> 명령어를 사용하면 실행 중인 리소스의 설정을 업데이트할 수 있다.</p> <p>다음과 같은 디플로이먼트 설정파일이 있다고 가정하자.</p> <div class="language-yml extra-class"><pre class="language-yml"><code><span class="token comment"># nginx-deployment.yml</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>deployment
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod<span class="token punctuation">-</span>label
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span> 
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod<span class="token punctuation">-</span>label
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>container
+          <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span><span class="token number">1.10</span>
+          <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl apply -f nginx-deployment.yml 
+deployment.apps/nginx-deployment created
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           10s
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods
+NAME                               READY   STATUS    RESTARTS   AGE
+nginx-deployment-d5f8944b6-6q5b6   1/1     Running   0          5s
+nginx-deployment-d5f8944b6-847z4   1/1     Running   0          5s
+nginx-deployment-d5f8944b6-mprlm   1/1     Running   0          5s
+</code></pre></div><p><code>kubectl patch &lt;오브젝트 타입&gt; &lt;오브젝트 이름&gt; --patch</code> 명령어로 속성을 업데이트할 수 있다. 레플라카셋의 개수를 2개로 변경해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl patch deployment nginx-deployment --patch '{&quot;spec&quot;: {&quot;replicas&quot;: 2}}'
+deployment.apps/nginx-deployment patched
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2/2     2            2           46s
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods
+NAME                               READY   STATUS    RESTARTS   AGE
+nginx-deployment-d5f8944b6-6q5b6   1/1     Running   0          52s
+nginx-deployment-d5f8944b6-mprlm   1/1     Running   0          52s
+</code></pre></div><p>패치 파일을 별도로 생성하여 적용할 수 있다. 패치 파일로 이미지 버전을 변경해보자.</p> <div class="language-yml extra-class"><pre class="language-yml"><code><span class="token comment"># nginx-deployment-patch.yml</span>
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>container
+          <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span><span class="token number">1.11</span>
+</code></pre></div><p><code>kubectl patch &lt;오브젝트 타입&gt; &lt;오브젝트 이름&gt; --patch-file &lt;패치 파일&gt;</code> 명령어로 패치 파일을 적용할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl patch deployment nginx-deployment --patch-file nginx-deployment-patch.yml 
+deployment.apps/nginx-deployment patched
+</code></pre></div><p>기존 팟은 삭제되고 패치파일을 적용한 새로운 팟이 생성되었다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get pods
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-74b7d88d8f-7zxm2   1/1     Running   0          10s
+nginx-deployment-74b7d88d8f-tllrr   1/1     Running   0          12s
+</code></pre></div><p>새로운 버젼의 이미지가 적용된 것을 확인할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>$ kubectl describe pod nginx-deployment-74b7d88d8f-7zxm2
+Name:         nginx-deployment-74b7d88d8f-7zxm2
+...
+Containers:
+  nginx-container:
+    Container ID:   docker://c51...73
+    Image:          nginx:1.11
+    ...
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/50_infra_devops/54_Kubernetes/220103_kubernetes_objects.html" class="prev">
+        Kubernetes 오브젝트
+      </a></span> <span class="next"><a href="/blog/post/50_infra_devops/54_Kubernetes/220105_spring_with_docker.html">
+        Dockerize Springboot &amp; Deploy to Kubernetes
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.407877ec.js" defer></script><script src="/blog/assets/js/3.2c868ac4.js" defer></script><script src="/blog/assets/js/239.d65e33ca.js" defer></script>
+  </body>
+</html>

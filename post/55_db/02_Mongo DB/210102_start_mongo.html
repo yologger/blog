@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mongo DB 정리 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.407877ec.js" as="script"><link rel="preload" href="/blog/assets/js/3.2c868ac4.js" as="script"><link rel="preload" href="/blog/assets/js/146.7cc38cdd.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.214df1fb.js"><link rel="prefetch" href="/blog/assets/js/100.84c42c58.js"><link rel="prefetch" href="/blog/assets/js/101.ef2ab21f.js"><link rel="prefetch" href="/blog/assets/js/102.88861d4b.js"><link rel="prefetch" href="/blog/assets/js/103.a01965ee.js"><link rel="prefetch" href="/blog/assets/js/104.21597723.js"><link rel="prefetch" href="/blog/assets/js/105.73be57d6.js"><link rel="prefetch" href="/blog/assets/js/106.4d2f9945.js"><link rel="prefetch" href="/blog/assets/js/107.ebc7d69c.js"><link rel="prefetch" href="/blog/assets/js/108.8d6e9050.js"><link rel="prefetch" href="/blog/assets/js/109.dbcf9d3f.js"><link rel="prefetch" href="/blog/assets/js/11.ff546d90.js"><link rel="prefetch" href="/blog/assets/js/110.0390f38d.js"><link rel="prefetch" href="/blog/assets/js/111.213596d7.js"><link rel="prefetch" href="/blog/assets/js/112.7e0af3ee.js"><link rel="prefetch" href="/blog/assets/js/113.57c2cc15.js"><link rel="prefetch" href="/blog/assets/js/114.28c2b749.js"><link rel="prefetch" href="/blog/assets/js/115.db63c82b.js"><link rel="prefetch" href="/blog/assets/js/116.5343aa78.js"><link rel="prefetch" href="/blog/assets/js/117.c8701adf.js"><link rel="prefetch" href="/blog/assets/js/118.f0671833.js"><link rel="prefetch" href="/blog/assets/js/119.09db011c.js"><link rel="prefetch" href="/blog/assets/js/12.7608a1db.js"><link rel="prefetch" href="/blog/assets/js/120.725e67ca.js"><link rel="prefetch" href="/blog/assets/js/121.cbbe863f.js"><link rel="prefetch" href="/blog/assets/js/122.0b929da9.js"><link rel="prefetch" href="/blog/assets/js/123.49e34faf.js"><link rel="prefetch" href="/blog/assets/js/124.43d7edbf.js"><link rel="prefetch" href="/blog/assets/js/125.b78fcfc3.js"><link rel="prefetch" href="/blog/assets/js/126.95b41c8b.js"><link rel="prefetch" href="/blog/assets/js/127.c0c12b54.js"><link rel="prefetch" href="/blog/assets/js/128.15d6bca8.js"><link rel="prefetch" href="/blog/assets/js/129.bee5a9f3.js"><link rel="prefetch" href="/blog/assets/js/13.dc871816.js"><link rel="prefetch" href="/blog/assets/js/130.2fe01fb8.js"><link rel="prefetch" href="/blog/assets/js/131.d1f47750.js"><link rel="prefetch" href="/blog/assets/js/132.37d63b61.js"><link rel="prefetch" href="/blog/assets/js/133.267b6829.js"><link rel="prefetch" href="/blog/assets/js/134.818da5b5.js"><link rel="prefetch" href="/blog/assets/js/135.30464616.js"><link rel="prefetch" href="/blog/assets/js/136.73dc1554.js"><link rel="prefetch" href="/blog/assets/js/137.9353e543.js"><link rel="prefetch" href="/blog/assets/js/138.e131cb38.js"><link rel="prefetch" href="/blog/assets/js/139.0443fc29.js"><link rel="prefetch" href="/blog/assets/js/14.414794fb.js"><link rel="prefetch" href="/blog/assets/js/140.0a66e837.js"><link rel="prefetch" href="/blog/assets/js/141.070ca152.js"><link rel="prefetch" href="/blog/assets/js/142.674e95f2.js"><link rel="prefetch" href="/blog/assets/js/143.36a65bcf.js"><link rel="prefetch" href="/blog/assets/js/144.88ab0348.js"><link rel="prefetch" href="/blog/assets/js/145.8108a3e4.js"><link rel="prefetch" href="/blog/assets/js/147.5c67050f.js"><link rel="prefetch" href="/blog/assets/js/148.3ff31f51.js"><link rel="prefetch" href="/blog/assets/js/149.75e65991.js"><link rel="prefetch" href="/blog/assets/js/15.f50507ad.js"><link rel="prefetch" href="/blog/assets/js/150.59d103ef.js"><link rel="prefetch" href="/blog/assets/js/151.2af10e91.js"><link rel="prefetch" href="/blog/assets/js/152.fb23137c.js"><link rel="prefetch" href="/blog/assets/js/153.76d4f705.js"><link rel="prefetch" href="/blog/assets/js/154.cbc2e62f.js"><link rel="prefetch" href="/blog/assets/js/155.f0ebde67.js"><link rel="prefetch" href="/blog/assets/js/156.2def108b.js"><link rel="prefetch" href="/blog/assets/js/157.1c144be8.js"><link rel="prefetch" href="/blog/assets/js/158.ed93ecfb.js"><link rel="prefetch" href="/blog/assets/js/159.9737a613.js"><link rel="prefetch" href="/blog/assets/js/16.8af324c8.js"><link rel="prefetch" href="/blog/assets/js/160.6754badf.js"><link rel="prefetch" href="/blog/assets/js/161.9502f065.js"><link rel="prefetch" href="/blog/assets/js/162.52f0a4bd.js"><link rel="prefetch" href="/blog/assets/js/163.9d733ff6.js"><link rel="prefetch" href="/blog/assets/js/164.07ecd24c.js"><link rel="prefetch" href="/blog/assets/js/165.33c4abc0.js"><link rel="prefetch" href="/blog/assets/js/166.a35efc51.js"><link rel="prefetch" href="/blog/assets/js/167.72bba16c.js"><link rel="prefetch" href="/blog/assets/js/168.58b6b388.js"><link rel="prefetch" href="/blog/assets/js/169.4b56cd76.js"><link rel="prefetch" href="/blog/assets/js/17.e1dee477.js"><link rel="prefetch" href="/blog/assets/js/170.5759f26d.js"><link rel="prefetch" href="/blog/assets/js/171.d8041dc1.js"><link rel="prefetch" href="/blog/assets/js/172.cd032c0b.js"><link rel="prefetch" href="/blog/assets/js/173.27159b98.js"><link rel="prefetch" href="/blog/assets/js/174.e98e427b.js"><link rel="prefetch" href="/blog/assets/js/175.e92d0ae4.js"><link rel="prefetch" href="/blog/assets/js/176.e939a83d.js"><link rel="prefetch" href="/blog/assets/js/177.ef978bde.js"><link rel="prefetch" href="/blog/assets/js/178.7cede950.js"><link rel="prefetch" href="/blog/assets/js/179.20121d4d.js"><link rel="prefetch" href="/blog/assets/js/18.aedcd3b4.js"><link rel="prefetch" href="/blog/assets/js/180.08ab3e0b.js"><link rel="prefetch" href="/blog/assets/js/181.208a47b3.js"><link rel="prefetch" href="/blog/assets/js/182.f9abeb9d.js"><link rel="prefetch" href="/blog/assets/js/183.c6fda8b2.js"><link rel="prefetch" href="/blog/assets/js/184.8888984e.js"><link rel="prefetch" href="/blog/assets/js/185.cbfe8932.js"><link rel="prefetch" href="/blog/assets/js/186.aa14003d.js"><link rel="prefetch" href="/blog/assets/js/187.0b082624.js"><link rel="prefetch" href="/blog/assets/js/188.76387af1.js"><link rel="prefetch" href="/blog/assets/js/189.1207592a.js"><link rel="prefetch" href="/blog/assets/js/19.71a3a956.js"><link rel="prefetch" href="/blog/assets/js/190.20ba5f79.js"><link rel="prefetch" href="/blog/assets/js/191.0f1b99d5.js"><link rel="prefetch" href="/blog/assets/js/192.04922345.js"><link rel="prefetch" href="/blog/assets/js/193.ccee54ae.js"><link rel="prefetch" href="/blog/assets/js/194.88c5b3f8.js"><link rel="prefetch" href="/blog/assets/js/195.3bd9a30b.js"><link rel="prefetch" href="/blog/assets/js/196.3b42ea37.js"><link rel="prefetch" href="/blog/assets/js/197.99ba23e4.js"><link rel="prefetch" href="/blog/assets/js/198.6764a9e3.js"><link rel="prefetch" href="/blog/assets/js/199.98b97aa0.js"><link rel="prefetch" href="/blog/assets/js/2.305d7f18.js"><link rel="prefetch" href="/blog/assets/js/20.ef953170.js"><link rel="prefetch" href="/blog/assets/js/200.3b391275.js"><link rel="prefetch" href="/blog/assets/js/201.c4da0449.js"><link rel="prefetch" href="/blog/assets/js/202.b62d0ce1.js"><link rel="prefetch" href="/blog/assets/js/203.4a2ea447.js"><link rel="prefetch" href="/blog/assets/js/204.ee4ca076.js"><link rel="prefetch" href="/blog/assets/js/205.654be6ea.js"><link rel="prefetch" href="/blog/assets/js/206.036bd179.js"><link rel="prefetch" href="/blog/assets/js/207.03e8b9ff.js"><link rel="prefetch" href="/blog/assets/js/208.d228e908.js"><link rel="prefetch" href="/blog/assets/js/209.253e46e1.js"><link rel="prefetch" href="/blog/assets/js/21.7190cd50.js"><link rel="prefetch" href="/blog/assets/js/210.f1ed996e.js"><link rel="prefetch" href="/blog/assets/js/211.5b47b79f.js"><link rel="prefetch" href="/blog/assets/js/212.044358d5.js"><link rel="prefetch" href="/blog/assets/js/213.47ed3ab7.js"><link rel="prefetch" href="/blog/assets/js/214.c42cbb1f.js"><link rel="prefetch" href="/blog/assets/js/215.ee83627a.js"><link rel="prefetch" href="/blog/assets/js/216.97525cbc.js"><link rel="prefetch" href="/blog/assets/js/217.11ac8523.js"><link rel="prefetch" href="/blog/assets/js/218.c9f4f2b3.js"><link rel="prefetch" href="/blog/assets/js/219.5f74f734.js"><link rel="prefetch" href="/blog/assets/js/22.593ae787.js"><link rel="prefetch" href="/blog/assets/js/220.0a13ba28.js"><link rel="prefetch" href="/blog/assets/js/221.b5503a95.js"><link rel="prefetch" href="/blog/assets/js/222.3b9416c1.js"><link rel="prefetch" href="/blog/assets/js/223.9570a713.js"><link rel="prefetch" href="/blog/assets/js/224.4e8aaf58.js"><link rel="prefetch" href="/blog/assets/js/225.1b12babf.js"><link rel="prefetch" href="/blog/assets/js/226.d8cc7c14.js"><link rel="prefetch" href="/blog/assets/js/227.79b40d6a.js"><link rel="prefetch" href="/blog/assets/js/228.21910d5a.js"><link rel="prefetch" href="/blog/assets/js/229.30b51d12.js"><link rel="prefetch" href="/blog/assets/js/23.2dd50afb.js"><link rel="prefetch" href="/blog/assets/js/230.d42a9a38.js"><link rel="prefetch" href="/blog/assets/js/231.791869c0.js"><link rel="prefetch" href="/blog/assets/js/232.0892177e.js"><link rel="prefetch" href="/blog/assets/js/233.9aaf9bbb.js"><link rel="prefetch" href="/blog/assets/js/234.1002b345.js"><link rel="prefetch" href="/blog/assets/js/235.619d2b1e.js"><link rel="prefetch" href="/blog/assets/js/236.1ad24da3.js"><link rel="prefetch" href="/blog/assets/js/237.c2d1efa6.js"><link rel="prefetch" href="/blog/assets/js/238.2373f349.js"><link rel="prefetch" href="/blog/assets/js/239.d65e33ca.js"><link rel="prefetch" href="/blog/assets/js/24.6684c857.js"><link rel="prefetch" href="/blog/assets/js/240.36e57681.js"><link rel="prefetch" href="/blog/assets/js/241.4c8cce20.js"><link rel="prefetch" href="/blog/assets/js/242.29a82a61.js"><link rel="prefetch" href="/blog/assets/js/243.42035d3c.js"><link rel="prefetch" href="/blog/assets/js/244.c039e764.js"><link rel="prefetch" href="/blog/assets/js/245.84554679.js"><link rel="prefetch" href="/blog/assets/js/246.f8274aa5.js"><link rel="prefetch" href="/blog/assets/js/247.da5cacf5.js"><link rel="prefetch" href="/blog/assets/js/248.aa8417d2.js"><link rel="prefetch" href="/blog/assets/js/249.a614abb9.js"><link rel="prefetch" href="/blog/assets/js/25.42af72f6.js"><link rel="prefetch" href="/blog/assets/js/250.096af39b.js"><link rel="prefetch" href="/blog/assets/js/251.45b855d5.js"><link rel="prefetch" href="/blog/assets/js/252.ea0a27a2.js"><link rel="prefetch" href="/blog/assets/js/253.12a895af.js"><link rel="prefetch" href="/blog/assets/js/254.7352cd0f.js"><link rel="prefetch" href="/blog/assets/js/255.041c56c2.js"><link rel="prefetch" href="/blog/assets/js/256.fe3aa3d8.js"><link rel="prefetch" href="/blog/assets/js/257.f81a2d94.js"><link rel="prefetch" href="/blog/assets/js/258.ea729895.js"><link rel="prefetch" href="/blog/assets/js/259.ea4d1657.js"><link rel="prefetch" href="/blog/assets/js/26.976f03dd.js"><link rel="prefetch" href="/blog/assets/js/260.040211d7.js"><link rel="prefetch" href="/blog/assets/js/261.3fde685b.js"><link rel="prefetch" href="/blog/assets/js/262.f055e783.js"><link rel="prefetch" href="/blog/assets/js/263.351d8106.js"><link rel="prefetch" href="/blog/assets/js/264.d0d5826a.js"><link rel="prefetch" href="/blog/assets/js/265.ddf08330.js"><link rel="prefetch" href="/blog/assets/js/266.aec7b24b.js"><link rel="prefetch" href="/blog/assets/js/267.0e5716e6.js"><link rel="prefetch" href="/blog/assets/js/268.68074979.js"><link rel="prefetch" href="/blog/assets/js/269.8739b95a.js"><link rel="prefetch" href="/blog/assets/js/27.b02deaf4.js"><link rel="prefetch" href="/blog/assets/js/270.968af81c.js"><link rel="prefetch" href="/blog/assets/js/28.59574d94.js"><link rel="prefetch" href="/blog/assets/js/29.5312c870.js"><link rel="prefetch" href="/blog/assets/js/30.fca86d2c.js"><link rel="prefetch" href="/blog/assets/js/31.40a7e5fc.js"><link rel="prefetch" href="/blog/assets/js/32.31d1fc74.js"><link rel="prefetch" href="/blog/assets/js/33.9e9da730.js"><link rel="prefetch" href="/blog/assets/js/34.92c520e0.js"><link rel="prefetch" href="/blog/assets/js/35.a4ab1f65.js"><link rel="prefetch" href="/blog/assets/js/36.8baa7b2c.js"><link rel="prefetch" href="/blog/assets/js/37.e5823b3b.js"><link rel="prefetch" href="/blog/assets/js/38.6796171b.js"><link rel="prefetch" href="/blog/assets/js/39.a68a9d9f.js"><link rel="prefetch" href="/blog/assets/js/4.81d7a4a5.js"><link rel="prefetch" href="/blog/assets/js/40.7439b92d.js"><link rel="prefetch" href="/blog/assets/js/41.6c07a68d.js"><link rel="prefetch" href="/blog/assets/js/42.26b135bc.js"><link rel="prefetch" href="/blog/assets/js/43.fbfc2c30.js"><link rel="prefetch" href="/blog/assets/js/44.b0cfb782.js"><link rel="prefetch" href="/blog/assets/js/45.de62cb60.js"><link rel="prefetch" href="/blog/assets/js/46.c85ca9e3.js"><link rel="prefetch" href="/blog/assets/js/47.6043b490.js"><link rel="prefetch" href="/blog/assets/js/48.0b84e410.js"><link rel="prefetch" href="/blog/assets/js/49.395652cc.js"><link rel="prefetch" href="/blog/assets/js/5.7ea25842.js"><link rel="prefetch" href="/blog/assets/js/50.5951bc7f.js"><link rel="prefetch" href="/blog/assets/js/51.73163096.js"><link rel="prefetch" href="/blog/assets/js/52.bd6189ec.js"><link rel="prefetch" href="/blog/assets/js/53.02a3a241.js"><link rel="prefetch" href="/blog/assets/js/54.4296219c.js"><link rel="prefetch" href="/blog/assets/js/55.6e10ee88.js"><link rel="prefetch" href="/blog/assets/js/56.37468d50.js"><link rel="prefetch" href="/blog/assets/js/57.4cc896a4.js"><link rel="prefetch" href="/blog/assets/js/58.25b93d02.js"><link rel="prefetch" href="/blog/assets/js/59.2fc70fd3.js"><link rel="prefetch" href="/blog/assets/js/6.5d85bf19.js"><link rel="prefetch" href="/blog/assets/js/60.97d4ab3f.js"><link rel="prefetch" href="/blog/assets/js/61.4e0a9421.js"><link rel="prefetch" href="/blog/assets/js/62.5c8e434a.js"><link rel="prefetch" href="/blog/assets/js/63.9f0ec4bf.js"><link rel="prefetch" href="/blog/assets/js/64.485670d8.js"><link rel="prefetch" href="/blog/assets/js/65.bf839e77.js"><link rel="prefetch" href="/blog/assets/js/66.cfa34a32.js"><link rel="prefetch" href="/blog/assets/js/67.8bf4b24f.js"><link rel="prefetch" href="/blog/assets/js/68.86d68cf9.js"><link rel="prefetch" href="/blog/assets/js/69.3c5fb947.js"><link rel="prefetch" href="/blog/assets/js/7.95a44012.js"><link rel="prefetch" href="/blog/assets/js/70.71c73939.js"><link rel="prefetch" href="/blog/assets/js/71.6f40d6cd.js"><link rel="prefetch" href="/blog/assets/js/72.51c01c8b.js"><link rel="prefetch" href="/blog/assets/js/73.6ce18ec4.js"><link rel="prefetch" href="/blog/assets/js/74.e6e2d5b0.js"><link rel="prefetch" href="/blog/assets/js/75.1fdd9199.js"><link rel="prefetch" href="/blog/assets/js/76.822d0dda.js"><link rel="prefetch" href="/blog/assets/js/77.07fe61e3.js"><link rel="prefetch" href="/blog/assets/js/78.3a503253.js"><link rel="prefetch" href="/blog/assets/js/79.fbbbaab7.js"><link rel="prefetch" href="/blog/assets/js/8.4daec306.js"><link rel="prefetch" href="/blog/assets/js/80.2f3219e7.js"><link rel="prefetch" href="/blog/assets/js/81.d37198bc.js"><link rel="prefetch" href="/blog/assets/js/82.fd445f39.js"><link rel="prefetch" href="/blog/assets/js/83.00be90ec.js"><link rel="prefetch" href="/blog/assets/js/84.40aac1c4.js"><link rel="prefetch" href="/blog/assets/js/85.6ca8b74f.js"><link rel="prefetch" href="/blog/assets/js/86.50779298.js"><link rel="prefetch" href="/blog/assets/js/87.d8d9994b.js"><link rel="prefetch" href="/blog/assets/js/88.97a4de74.js"><link rel="prefetch" href="/blog/assets/js/89.7383449a.js"><link rel="prefetch" href="/blog/assets/js/9.17630656.js"><link rel="prefetch" href="/blog/assets/js/90.61983518.js"><link rel="prefetch" href="/blog/assets/js/91.b31af2bb.js"><link rel="prefetch" href="/blog/assets/js/92.07dbce34.js"><link rel="prefetch" href="/blog/assets/js/93.a1a7ecc6.js"><link rel="prefetch" href="/blog/assets/js/94.082bbed4.js"><link rel="prefetch" href="/blog/assets/js/95.b0e3563d.js"><link rel="prefetch" href="/blog/assets/js/96.b6bebd5f.js"><link rel="prefetch" href="/blog/assets/js/97.6cefa365.js"><link rel="prefetch" href="/blog/assets/js/98.aed6e859.js"><link rel="prefetch" href="/blog/assets/js/99.0e004e38.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/55_db/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>MySQL</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Mongo DB</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/55_db/02_Mongo DB/210102_start_mongo.html" class="active sidebar-link">Mongo DB 정리</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Redis</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Elastic Search</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>ERD</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#mongo-db-환경설정">Mongo DB 환경설정</a><ul><li><a href="#설치">설치</a></li><li><a href="#서비스-시작">서비스 시작</a></li><li><a href="#서비스-재시작">서비스 재시작</a></li><li><a href="#서비스-종료">서비스 종료</a></li><li><a href="#mongo-db-접속">Mongo DB 접속</a></li></ul></li><li><a href="#mongo-db-사용법">Mongo DB 사용법</a><ul><li><a href="#데이터베이스-목록-확인">데이터베이스 목록 확인</a></li><li><a href="#데이터베이스-생성-사용할-데이터베이스-선택">데이터베이스 생성, 사용할 데이터베이스 선택</a></li><li><a href="#현재-사용-중인-데이터베이스-출력">현재 사용 중인 데이터베이스 출력</a></li><li><a href="#데이터베이스-삭제">데이터베이스 삭제</a></li></ul></li><li><a href="#collection">Collection</a><ul><li><a href="#collection-생성">Collection 생성</a></li><li><a href="#collection-확인">Collection 확인</a></li><li><a href="#collection-삭제">Collection 삭제</a></li></ul></li><li><a href="#document-저장">Document 저장</a><ul><li><a href="#insertone">insertOne()</a></li><li><a href="#insertmany">insertMany()</a></li></ul></li><li><a href="#document-수정">Document 수정</a><ul><li><a href="#updateone">updateOne()</a></li><li><a href="#updatemany">updateMany()</a></li><li><a href="#update">update()</a></li></ul></li><li><a href="#document-삭제">Document 삭제</a><ul><li><a href="#deleteone">deleteOne()</a></li><li><a href="#deletemany">deleteMany()</a></li></ul></li><li><a href="#document-조회">Document 조회</a><ul><li><a href="#find">find()</a><ul><li><a href="#eq-equal">eq (equal)</a></li><li><a href="#ne-not-equal">ne (not equal)</a></li><li><a href="#gt">gt</a></li><li><a href="#gte">gte</a></li><li><a href="#lt">lt</a></li><li><a href="#lte">lte</a></li><li><a href="#in">in</a></li><li><a href="#nin">nin</a></li><li><a href="#and">and</a></li><li><a href="#or">or</a></li></ul></li><li><a href="#findone">findOne()</a></li></ul></li><li><a href="#데이터-타입">데이터 타입</a></li><li><a href="#id-필드">_id 필드</a></li><li><a href="#index">Index</a><ul><li><a href="#index-조회">Index 조회</a></li><li><a href="#단일-필드-index-생성">단일 필드 Index 생성</a></li><li><a href="#복합-필드-index-생성">복합 필드 Index 생성</a></li><li><a href="#index-삭제">Index 삭제</a></li></ul></li><li><a href="#정렬">정렬</a></li><li><a href="#페이징">페이징</a></li><li><a href="#관계-설정">관계 설정</a><ul><li><a href="#임베디드">임베디드</a></li><li><a href="#참조-reference">참조(Reference)</a></li></ul></li><li><a href="#사용자-관리">사용자 관리</a><ul><li><a href="#사용자-조회">사용자 조회</a></li><li><a href="#사용자-생성">사용자 생성</a></li><li><a href="#인증-활성화">인증 활성화</a></li><li><a href="#사용자-인증">사용자 인증</a></li><li><a href="#사용자-삭제">사용자 삭제</a></li></ul></li><li><a href="#mongo-db-cluster-구축">Mongo DB Cluster 구축</a></li><li><a href="#replication">Replication</a></li><li><a href="#sharding">Sharding</a></li><li><a href="#compass">Compass</a></li></ul></div><p></p> <h1 id="mongo-db"><a href="#mongo-db" class="header-anchor">#</a> Mongo DB</h1> <p>기존의 테이블 기반 관계형 데이터베이스 구조가 아닌 <code>JSON Document</code> 기반의 데이터 모델을 사용하는 NoSQL 데이터베이스다.</p> <p><img src="/blog/assets/img/1.b7fcccab.jpeg" alt=""></p> <p><code>Mongo DB</code>는 다음과 같은 특징을 갖는다.</p> <ul><li><code>JSON document</code> 기반의 NoSQL 데이터베이스</li> <li>스키마가 없어 저장되는 데이터의 구조가 자유롭다.</li> <li>외래키 개념이 없어 <code>Embedded</code>방식 또는 <code>Reference</code> 방식으로 관계를 표현한다.</li> <li>조인 개념이 없어 어플리케이션 레벨에서 처리해야한다.</li></ul> <h2 id="mongo-db-환경설정"><a href="#mongo-db-환경설정" class="header-anchor">#</a> Mongo DB 환경설정</h2> <h3 id="설치"><a href="#설치" class="header-anchor">#</a> 설치</h3> <p><code>Mac OS</code>에서는 <code>Homebrew</code>로 Mongo DB를 설치할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew tap mongodb/brew
+
+$ brew install mongodb-community@4.2
+</code></pre></div><h3 id="서비스-시작"><a href="#서비스-시작" class="header-anchor">#</a> 서비스 시작</h3> <div class="language- extra-class"><pre class="language-text"><code>$ brew services start mongodb-community@4.2 
+</code></pre></div><h3 id="서비스-재시작"><a href="#서비스-재시작" class="header-anchor">#</a> 서비스 재시작</h3> <div class="language- extra-class"><pre class="language-text"><code>$ brew services restart mongodb-community@4.2
+</code></pre></div><h3 id="서비스-종료"><a href="#서비스-종료" class="header-anchor">#</a> 서비스 종료</h3> <div class="language- extra-class"><pre class="language-text"><code>$ brew services stop mongodb-community@4.2
+</code></pre></div><h3 id="mongo-db-접속"><a href="#mongo-db-접속" class="header-anchor">#</a> Mongo DB 접속</h3> <p><code>mongo</code> 명령어로 Mongo DB에 접속할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ mongo
+&gt; 
+</code></pre></div><p>원격 접속도 가능하다.</p> <div class="language- extra-class"><pre class="language-text"><code>// mongo [몽고서버_IP]
+$ mongo 192.168.0.1
+</code></pre></div><p>원격 접속을 하면서 데이터베이스를 선택할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>// mongo [몽고서버 IP]/[데이터베이스 이름]
+$ mongo 192.168.0.1/my_db
+</code></pre></div><p>몽고 서버에 인증을 설정했다면 아이디와 패스워드를 인자로 전달하여 접속할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>// mongo -u [사용자 이름] -p [비밀번호] [몽고서버 IP]/[데이터베이스 이름]
+$ mongo -u user1 -p 1234 192.168.0.1/my_db
+</code></pre></div><h2 id="mongo-db-사용법"><a href="#mongo-db-사용법" class="header-anchor">#</a> Mongo DB 사용법</h2> <h3 id="데이터베이스-목록-확인"><a href="#데이터베이스-목록-확인" class="header-anchor">#</a> 데이터베이스 목록 확인</h3> <p><code>show dbs</code>는 모든 데이터베이스를 출력한다. Mongo DB에 처음 접속하면 세 개의 데이터베이스가 자동으로 생성된다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+</code></pre></div><h3 id="데이터베이스-생성-사용할-데이터베이스-선택"><a href="#데이터베이스-생성-사용할-데이터베이스-선택" class="header-anchor">#</a> 데이터베이스 생성, 사용할 데이터베이스 선택</h3> <p><code>use [데이터베이스 이름]</code> 명령어로 사용할 데이터베이스를 선택할 수 있다. 데이터베이스가 없으면 자동으로 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; use my_db
+switched to db my_db
+</code></pre></div><h3 id="현재-사용-중인-데이터베이스-출력"><a href="#현재-사용-중인-데이터베이스-출력" class="header-anchor">#</a> 현재 사용 중인 데이터베이스 출력</h3> <p><code>db</code>는 현재 사용 중인 데이터베이스를 출력한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db
+my_db
+</code></pre></div><h3 id="데이터베이스-삭제"><a href="#데이터베이스-삭제" class="header-anchor">#</a> 데이터베이스 삭제</h3> <p><code>db.dropDatabase()</code>로 현재 데이터베이스를 삭제한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.dropDatabase()
+{ &quot;dropped&quot; : &quot;my_db&quot;, &quot;ok&quot; : 1 }
+</code></pre></div><h2 id="collection"><a href="#collection" class="header-anchor">#</a> Collection</h2> <p><b><code>Collection</code></b>은 관계형 데이터베이스의 <code>Table</code>에 대응된다.</p> <h3 id="collection-생성"><a href="#collection-생성" class="header-anchor">#</a> Collection 생성</h3> <p><code>db.createCollection(&quot;컬렉션 명&quot;)</code>명령어로 컬렉션을 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.createCollection(&quot;member&quot;);
+</code></pre></div><h3 id="collection-확인"><a href="#collection-확인" class="header-anchor">#</a> Collection 확인</h3> <p>데이터베이스에 생성된 Collection은 <code>show collections</code>로 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; show collections
+member
+</code></pre></div><h3 id="collection-삭제"><a href="#collection-삭제" class="header-anchor">#</a> Collection 삭제</h3> <p><code>db.[Collection 이름].drop()</code>으로 Collection을 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.drop()
+true
+</code></pre></div><h2 id="document-저장"><a href="#document-저장" class="header-anchor">#</a> Document 저장</h2> <p><b><code>Document</code></b>는 RDBMS의 <code>Row</code>에 해당하며, <b><code>Field</code></b>는 <code>Column</code>에 해당한다.</p> <h3 id="insertone"><a href="#insertone" class="header-anchor">#</a> insertOne()</h3> <p><code>db.&lt;콜렉션이름&gt;.insertOne()</code> 메소드로 Document 한 개를 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.insertOne({ name: &quot;Paul&quot;})
+
+&gt; db.member.insertOne({ name: &quot;John&quot;})
+</code></pre></div><p>Mongo DB는 스키마가 정해져있지 않기 때문에 저장되는 데이터 형식이 자유롭다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.insertOne({ name: &quot;monica&quot;, height: 165.5 , createdAt: Date()})
+
+&gt; db.member.insertOne({ name: &quot;rachel&quot;, age: 25, isMarried: false, weight: 60.5 , job: &quot;programmer&quot;})
+</code></pre></div><p>Document는 다른 객체를 포함할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.insertOne({ name: &quot;marry&quot;, phone: { name: &quot;iPhone 10&quot;, manufacturer: &quot;Apple&quot; } })
+</code></pre></div><p>Document는 배열을 포함할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.insertOne({ name: &quot;jordan&quot;, children: [&quot;ramos&quot;, &quot;benzema&quot;] })
+</code></pre></div><h3 id="insertmany"><a href="#insertmany" class="header-anchor">#</a> insertMany()</h3> <p><code>db.&lt;콜렉션이름&gt;.insertMany()</code> 메소드로 여러 Document를 한꺼번에 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.insertMany([{ name: &quot;messi&quot; }, { name: &quot;ronaldo&quot; }])
+</code></pre></div><h2 id="document-수정"><a href="#document-수정" class="header-anchor">#</a> Document 수정</h2> <h3 id="updateone"><a href="#updateone" class="header-anchor">#</a> updateOne()</h3> <p><code>db.&lt;도큐먼트이름&gt;.updateOne()</code>은 도큐먼트 하나를 수정하는데 사용한다.</p> <p><code>$set</code> 옵션으로 도큐먼트 하나의 특정 필드를 수정할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br></div><pre class="language-text"><code>&gt; db.member.find({name : &quot;rachel&quot;}).pretty()
+{
+	&quot;_id&quot; : ObjectId(&quot;62a294c62ab111058535a22f&quot;),
+	&quot;name&quot; : &quot;rachel&quot;,
+	&quot;age&quot; : 25,
+	&quot;isMarried&quot; : false,
+	&quot;weight&quot; : 60.5,
+	&quot;job&quot; : &quot;programmer&quot;
+}
+
+&gt; db.member.updateOne({name: &quot;rachel&quot;}, {$set: {&quot;age&quot;: 35}})
+{ &quot;acknowledged&quot; : true, &quot;matchedCount&quot; : 1, &quot;modifiedCount&quot; : 1 }
+
+&gt; db.member.find({name: &quot;rachel&quot;}).pretty()
+{
+	&quot;_id&quot; : ObjectId(&quot;62a294c62ab111058535a22f&quot;),
+	&quot;name&quot; : &quot;rachel&quot;,
+	&quot;age&quot; : 35,
+	&quot;isMarried&quot; : false,
+	&quot;weight&quot; : 60.5,
+	&quot;job&quot; : &quot;programmer&quot;
+}
+</code></pre></div><p>특정 필드를 추가할 수도 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>&gt; db.member.find({name: &quot;rachel&quot;}).pretty()
+{
+	&quot;_id&quot; : ObjectId(&quot;62a294c62ab111058535a22f&quot;),
+	&quot;name&quot; : &quot;rachel&quot;,
+	&quot;age&quot; : 35,
+	&quot;isMarried&quot; : false,
+	&quot;weight&quot; : 60.5,
+	&quot;job&quot; : &quot;programmer&quot;
+}
+
+&gt; db.member.updateOne({name: &quot;rachel&quot;}, {$set: {&quot;nation&quot;: &quot;USA&quot;}})
+{ &quot;acknowledged&quot; : true, &quot;matchedCount&quot; : 1, &quot;modifiedCount&quot; : 1 }
+
+&gt; db.member.find({name: &quot;rachel&quot;}).pretty()
+{
+	&quot;_id&quot; : ObjectId(&quot;62a294c62ab111058535a22f&quot;),
+	&quot;name&quot; : &quot;rachel&quot;,
+	&quot;age&quot; : 35,
+	&quot;isMarried&quot; : false,
+	&quot;weight&quot; : 60.5,
+	&quot;job&quot; : &quot;programmer&quot;,
+	&quot;nation&quot; : &quot;USA&quot;
+}
+</code></pre></div><p><code>$unset</code> 옵션으로 도큐먼트 하나의 특정 필드를 삭제할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>&gt; db.member.findOne({&quot;name&quot;: &quot;rachel&quot;})
+{
+	&quot;_id&quot; : ObjectId(&quot;62a294c62ab111058535a22f&quot;),
+	&quot;name&quot; : &quot;rachel&quot;,
+	&quot;age&quot; : 35,
+	&quot;isMarried&quot; : false,
+	&quot;weight&quot; : 60.5,
+	&quot;job&quot; : &quot;programmer&quot;,
+	&quot;nation&quot; : &quot;USA&quot;
+}
+
+&gt; db.member.updateOne({&quot;name&quot;: &quot;rachel&quot;}, {$unset: {&quot;isMarred&quot;: &quot;false&quot;}})
+{ &quot;acknowledged&quot; : true, &quot;matchedCount&quot; : 1, &quot;modifiedCount&quot; : 0 }
+
+&gt; db.member.findOne({&quot;name&quot;: &quot;rachel&quot;})
+{
+	&quot;_id&quot; : ObjectId(&quot;62a294c62ab111058535a22f&quot;),
+	&quot;name&quot; : &quot;rachel&quot;,
+	&quot;age&quot; : 35,
+	&quot;isMarried&quot; : false,
+	&quot;weight&quot; : 60.5,
+	&quot;job&quot; : &quot;programmer&quot;,
+	&quot;nation&quot; : &quot;USA&quot;
+}
+</code></pre></div><h3 id="updatemany"><a href="#updatemany" class="header-anchor">#</a> updateMany()</h3> <p><code>updateMany()</code>으로 여러 도큐먼트를 수정할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.updateMany({}, {$set: {&quot;isMarred&quot;: &quot;false&quot;}})
+{ &quot;acknowledged&quot; : true, &quot;matchedCount&quot; : 10, &quot;modifiedCount&quot; : 10 }
+</code></pre></div><h3 id="update"><a href="#update" class="header-anchor">#</a> update()</h3> <p><code>update()</code>으로 기존의 도큐먼트를 다른 도큐먼트로 대체할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({name: &quot;Paul&quot;})
+{ &quot;_id&quot; : ObjectId(&quot;62a294b22ab111058535a22c&quot;), &quot;name&quot; : &quot;Paul&quot; }
+
+&gt; db.member.update({name: &quot;Paul&quot;}, {name: &quot;Smith&quot;})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+
+&gt; db.member.find({name: &quot;Paul&quot;})
+
+&gt; db.member.find({name: &quot;Smith&quot;})
+{ &quot;_id&quot; : ObjectId(&quot;62a294b22ab111058535a22c&quot;), &quot;name&quot; : &quot;Smith&quot; }
+</code></pre></div><p>물론 <code>update()</code>에서도 <code>$set</code>, <code>$unset</code>을 사용할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({&quot;name&quot;: &quot;Smith&quot;})
+{ &quot;_id&quot; : ObjectId(&quot;62a294b22ab111058535a22c&quot;), &quot;name&quot; : &quot;Smith&quot;, &quot;isMarred&quot; : &quot;false&quot; }
+
+&gt; db.member.update({&quot;name&quot;: &quot;Smith&quot;}, {$set: {nation: &quot;England&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+
+&gt; db.member.find({&quot;name&quot;: &quot;Smith&quot;})
+{ &quot;_id&quot; : ObjectId(&quot;62a294b22ab111058535a22c&quot;), &quot;name&quot; : &quot;Smith&quot;, &quot;isMarred&quot; : &quot;false&quot;, &quot;nation&quot; : &quot;England&quot; }
+
+&gt; db.member.update({&quot;name&quot;: &quot;Smith&quot;}, {$unset: {nation: &quot;England&quot;}})
+WriteResult({ &quot;nMatched&quot; : 1, &quot;nUpserted&quot; : 0, &quot;nModified&quot; : 1 })
+
+&gt; db.member.find({&quot;name&quot;: &quot;Smith&quot;})
+{ &quot;_id&quot; : ObjectId(&quot;62a294b22ab111058535a22c&quot;), &quot;name&quot; : &quot;Smith&quot;, &quot;isMarred&quot; : &quot;false&quot; }
+</code></pre></div><h2 id="document-삭제"><a href="#document-삭제" class="header-anchor">#</a> Document 삭제</h2> <h3 id="deleteone"><a href="#deleteone" class="header-anchor">#</a> deleteOne()</h3> <p><code>deleteOne()</code>으로 조건에 맞는 Document 하나를 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.deleteOne({name: &quot;messi&quot;});
+</code></pre></div><h3 id="deletemany"><a href="#deletemany" class="header-anchor">#</a> deleteMany()</h3> <p><code>deleteMany()</code>로 조건에 맞는 Document 여러 개를 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.deleteMany({nation: &quot;USA&quot;});
+</code></pre></div><p>모든 도큐먼트를 삭제할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.deleteMany({})
+</code></pre></div><h2 id="document-조회"><a href="#document-조회" class="header-anchor">#</a> Document 조회</h2> <h3 id="find"><a href="#find" class="header-anchor">#</a> find()</h3> <p><code>db.콜렉션.find()</code> 메소드로 모든 Document를 조회할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find()
+{ &quot;_id&quot; : ObjectId(&quot;625ad76b8d6dabdee5230bee&quot;), &quot;name&quot; : &quot;paul&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad77b8d6dabdee5230bef&quot;), &quot;name&quot; : &quot;john&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625adc3d8d6dabdee5230bf6&quot;), &quot;name&quot; : &quot;john&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad79e8d6dabdee5230bf0&quot;), &quot;name&quot; : &quot;messi&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad79e8d6dabdee5230bf1&quot;), &quot;name&quot; : &quot;ronaldo&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad8698d6dabdee5230bf2&quot;), &quot;name&quot; : &quot;monica&quot;, &quot;age&quot; : 35, &quot;isMarried&quot; : true, &quot;weight&quot; : 50.5, &quot;createdAt&quot; : &quot;Sat Apr 16 2022 23:53:29 GMT+0900 (KST)&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad8ab8d6dabdee5230bf3&quot;), &quot;name&quot; : &quot;rachel&quot;, &quot;age&quot; : 25, &quot;isMarried&quot; : false, &quot;weight&quot; : 60.5, &quot;job&quot; : &quot;programmer&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ada168d6dabdee5230bf4&quot;), &quot;name&quot; : &quot;marry&quot;, &quot;phone&quot; : { &quot;name&quot; : &quot;iPhone 10&quot;, &quot;manufacturer&quot; : &quot;Apple&quot; } }
+{ &quot;_id&quot; : ObjectId(&quot;625ada838d6dabdee5230bf5&quot;), &quot;name&quot; : &quot;jordan&quot;, &quot;children&quot; : [ &quot;ramos&quot;, &quot;benzema&quot; ] }
+</code></pre></div><p><code>pretty()</code>로 데이터를 보기 좋게 출력할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().pretty()
+{ &quot;_id&quot; : ObjectId(&quot;625ad76b8d6dabdee5230bee&quot;), &quot;name&quot; : &quot;paul&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad77b8d6dabdee5230bef&quot;), &quot;name&quot; : &quot;john&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad79e8d6dabdee5230bf0&quot;), &quot;name&quot; : &quot;messi&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad79e8d6dabdee5230bf1&quot;), &quot;name&quot; : &quot;ronaldo&quot; }
+{
+	&quot;_id&quot; : ObjectId(&quot;625ad8698d6dabdee5230bf2&quot;),
+	&quot;name&quot; : &quot;monica&quot;,
+	&quot;age&quot; : 35,
+	&quot;isMarried&quot; : true,
+	&quot;weight&quot; : 50.5,
+	&quot;createdAt&quot; : &quot;Sat Apr 16 2022 23:53:29 GMT+0900 (KST)&quot;
+}
+{
+	&quot;_id&quot; : ObjectId(&quot;625ad8ab8d6dabdee5230bf3&quot;),
+	&quot;name&quot; : &quot;rachel&quot;,
+	&quot;age&quot; : 25,
+	&quot;isMarried&quot; : false,
+	&quot;weight&quot; : 60.5,
+	&quot;job&quot; : &quot;programmer&quot;
+}
+{
+	&quot;_id&quot; : ObjectId(&quot;625ada168d6dabdee5230bf4&quot;),
+	&quot;name&quot; : &quot;marry&quot;,
+	&quot;phone&quot; : {
+		&quot;name&quot; : &quot;iPhone 10&quot;,
+		&quot;manufacturer&quot; : &quot;Apple&quot;
+	}
+}
+{
+	&quot;_id&quot; : ObjectId(&quot;625ada838d6dabdee5230bf5&quot;),
+	&quot;name&quot; : &quot;jordan&quot;,
+	&quot;children&quot; : [
+		&quot;ramos&quot;,
+		&quot;benzema&quot;
+	]
+}
+</code></pre></div><p>다음과 같이 조건을 추가할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({ name: &quot;Paul&quot; })
+{ &quot;_id&quot; : ObjectId(&quot;625ad76b8d6dabdee5230bee&quot;), &quot;name&quot; : &quot;paul&quot; }
+</code></pre></div><h4 id="eq-equal"><a href="#eq-equal" class="header-anchor">#</a> eq (equal)</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({name: {$eq: &quot;john&quot;}})
+{ &quot;_id&quot; : ObjectId(&quot;625ad77b8d6dabdee5230bef&quot;), &quot;name&quot; : &quot;john&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625adc3d8d6dabdee5230bf6&quot;), &quot;name&quot; : &quot;john&quot; }
+</code></pre></div><h4 id="ne-not-equal"><a href="#ne-not-equal" class="header-anchor">#</a> ne (not equal)</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({name: {$ne: &quot;john&quot;}})
+{ &quot;_id&quot; : ObjectId(&quot;625ad76b8d6dabdee5230bee&quot;), &quot;name&quot; : &quot;paul&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad79e8d6dabdee5230bf0&quot;), &quot;name&quot; : &quot;messi&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad79e8d6dabdee5230bf1&quot;), &quot;name&quot; : &quot;ronaldo&quot; }
+// ...
+</code></pre></div><h4 id="gt"><a href="#gt" class="header-anchor">#</a> gt</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({age: {$gt: 30}})
+{ &quot;_id&quot; : ObjectId(&quot;625ad8698d6dabdee5230bf2&quot;), &quot;name&quot; : &quot;monica&quot;, &quot;age&quot; : 35, &quot;isMarried&quot; : true, &quot;weight&quot; : 50.5, &quot;createdAt&quot; : &quot;Sat Apr 16 2022 23:53:29 GMT+0900 (KST)&quot; }
+</code></pre></div><h4 id="gte"><a href="#gte" class="header-anchor">#</a> gte</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({age: {$gte: 30}})
+</code></pre></div><h4 id="lt"><a href="#lt" class="header-anchor">#</a> lt</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({age: {$lt: 30}})
+</code></pre></div><h4 id="lte"><a href="#lte" class="header-anchor">#</a> lte</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({age: {$lte: 30}})
+</code></pre></div><h4 id="in"><a href="#in" class="header-anchor">#</a> in</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({name: {$in: [&quot;monica&quot;, &quot;paul&quot;]}})
+{ &quot;_id&quot; : ObjectId(&quot;625ad76b8d6dabdee5230bee&quot;), &quot;name&quot; : &quot;paul&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad8698d6dabdee5230bf2&quot;), &quot;name&quot; : &quot;monica&quot;, &quot;age&quot; : 35, &quot;isMarried&quot; : true, &quot;weight&quot; : 50.5, &quot;createdAt&quot; : &quot;Sat Apr 16 2022 23:53:29 GMT+0900 (KST)&quot; }
+</code></pre></div><h4 id="nin"><a href="#nin" class="header-anchor">#</a> nin</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({name: {$nin: [&quot;monica&quot;, &quot;paul&quot;]}})
+</code></pre></div><h4 id="and"><a href="#and" class="header-anchor">#</a> and</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({$and: [{name: &quot;monica&quot;}, {isMarried: true}]})
+{ &quot;_id&quot; : ObjectId(&quot;625ad8698d6dabdee5230bf2&quot;), &quot;name&quot; : &quot;monica&quot;, &quot;age&quot; : 35, &quot;isMarried&quot; : true, &quot;weight&quot; : 50.5, &quot;createdAt&quot; : &quot;Sat Apr 16 2022 23:53:29 GMT+0900 (KST)&quot; }
+</code></pre></div><h4 id="or"><a href="#or" class="header-anchor">#</a> or</h4> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find({$or: [{name: &quot;paul&quot;}, {isMarried: true}]})
+{ &quot;_id&quot; : ObjectId(&quot;625ad76b8d6dabdee5230bee&quot;), &quot;name&quot; : &quot;paul&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad8698d6dabdee5230bf2&quot;), &quot;name&quot; : &quot;monica&quot;, &quot;age&quot; : 35, &quot;isMarried&quot; : true, &quot;weight&quot; : 50.5, &quot;createdAt&quot; : &quot;Sat Apr 16 2022 23:53:29 GMT+0900 (KST)&quot; }
+</code></pre></div><h3 id="findone"><a href="#findone" class="header-anchor">#</a> findOne()</h3> <p><code>findOne()</code>는 하나의 Document를 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.findOne({ name: &quot;Paul&quot; }) 
+</code></pre></div><h2 id="데이터-타입"><a href="#데이터-타입" class="header-anchor">#</a> 데이터 타입</h2> <p><code>필드(Field)</code>에는 기본적으로 <u>자바스크립트의 데이터 타입</u>을 저장할 수 있다. 자바스크립트 외에도 몇 개의 특수한 데이터타입을 저장할 수 있는데 그 중 하나가 각 Document를 구분하기 위한 <code>ObjectId</code>다. 모든 데이터 타입은 <a href="https://www.tutorialspoint.com/mongodb/mongodb_datatype.htm" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 확인할 수 있다.</p> <h2 id="id-필드"><a href="#id-필드" class="header-anchor">#</a> _id 필드</h2> <p>관계형 데이터베이스에는 <code>기본 키(primary key)</code>로 모든 Row를 고유하게 구분한다. <code>Mongo DB</code>도 유사한 개념의 <code>_id</code> 필드로 Document를 고유하게 구분한다. Document를 저장할 때 명시적으로 값을 제공하지 않으면 Mongo DB가 <code>_id</code> 값을 자동으로 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.insert({ name: &quot;paul&quot; })
+&gt; db.member.insert({ name: &quot;john&quot; })
+
+&gt; db.member.find({name: {$ne: &quot;john&quot;}})
+{ &quot;_id&quot; : ObjectId(&quot;625ad76b8d6dabdee5230bee&quot;), &quot;name&quot; : &quot;paul&quot; }
+{ &quot;_id&quot; : ObjectId(&quot;625ad79e8d6dabdee5230bf0&quot;), &quot;name&quot; : &quot;messi&quot; }
+</code></pre></div><h2 id="index"><a href="#index" class="header-anchor">#</a> Index</h2> <p>관계형 데이터베이스의 <code>인덱스(Index)</code>를 사용하면 데이터를 빠르게 탐색할 수 있다. Mongo DB도 인덱스를 제공한다.</p> <h3 id="index-조회"><a href="#index-조회" class="header-anchor">#</a> Index 조회</h3> <p><code>db.&lt;콜렉션 이름&gt;.getIndexes()</code> 명령어로 인덱스를 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.getIndexes()
+[
+	{
+		&quot;v&quot; : 2,
+		&quot;key&quot; : {
+			&quot;_id&quot; : 1
+		},
+		&quot;name&quot; : &quot;_id_&quot;,
+		&quot;ns&quot; : &quot;my_db.member&quot;
+	}
+]
+</code></pre></div><p><code>_id</code> 필드에는 인덱스가 자동으로 생성된다.</p> <h3 id="단일-필드-index-생성"><a href="#단일-필드-index-생성" class="header-anchor">#</a> 단일 필드 Index 생성</h3> <p><code>db.[테이블명].createIndex({ [필드명]: ±1 })</code>로 인덱스를 생성할 수 있다. <code>1</code>은 오름차순, <code>-1</code>은 내림차순으로 인덱스를 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.createIndex({ name: 1 })
+{
+	&quot;createdCollectionAutomatically&quot; : false,
+	&quot;numIndexesBefore&quot; : 1,
+	&quot;numIndexesAfter&quot; : 2,
+	&quot;ok&quot; : 1
+}
+</code></pre></div><p>중복된 데이터가 존재하는 필드에는 인덱스를 생성할 수 없다.</p> <h3 id="복합-필드-index-생성"><a href="#복합-필드-index-생성" class="header-anchor">#</a> 복합 필드 Index 생성</h3> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.createIndex({ name: 1, age: 1 })
+</code></pre></div><h3 id="index-삭제"><a href="#index-삭제" class="header-anchor">#</a> Index 삭제</h3> <p><code>db.monsters.dropIndex(필드명)</code>으로 인덱스를 삭제할 수 있다.</p> <h2 id="정렬"><a href="#정렬" class="header-anchor">#</a> 정렬</h2> <p><code>sort()</code>를 사용하여 조회한 도큐먼트를 정렬할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().sort({ name: 1 })	// 오름차순 정렬
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().sort({ name: -1 })	// 내림차순 정렬
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().sort({ name: 1, nation: 1 })
+</code></pre></div><h2 id="페이징"><a href="#페이징" class="header-anchor">#</a> 페이징</h2> <p><code>limit(n)</code>은 조회할 도큐먼트 개수를 제한할 때 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().limit(10)
+</code></pre></div><p><code>skip(n)</code>은 n개를 건너뛰고 그 다음부터 도큐먼트를 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().skip(10)
+</code></pre></div><p>페이징은 <code>skip(n)</code>과 <code>limit(n)</code>  메소드를 조합하여 사용할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().skip(10).limit(10)
+</code></pre></div><h2 id="관계-설정"><a href="#관계-설정" class="header-anchor">#</a> 관계 설정</h2> <p>Mongo DB는 관계형 데이터베이스의 외래키 개념이 없다. 따라서 두 가지 방법으로 <code>관계(Relation)</code>를 설정할 수 있다.</p> <h3 id="임베디드"><a href="#임베디드" class="header-anchor">#</a> 임베디드</h3> <p><code>임베디드(Embedded)</code>은 도큐먼트에 다른 도큐먼트를 객체 형태로 가지고 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br></div><pre class="language-text"><code>&gt; db.member.insert({ 
+    name: &quot;paul&quot;, 
+    posts: [
+        { title: &quot;Java&quot;, content: &quot;I love Java.&quot; }, 
+        { title: &quot;Kotlin&quot;, content: &quot;Kotlin is fun.&quot; }
+    ]
+})
+WriteResult({ &quot;nInserted&quot; : 1 })
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>&gt; db.member.findOne({ name: &quot;paul&quot; })
+{
+	&quot;_id&quot; : ObjectId(&quot;625afb558d6dabdee5230bf7&quot;),
+	&quot;name&quot; : &quot;paul&quot;,
+	&quot;posts&quot; : [
+		{ &quot;title&quot; : &quot;Java&quot;, &quot;content&quot; : &quot;I love Java.&quot; },
+		{ &quot;title&quot; : &quot;Kotlin&quot;, &quot;content&quot; : &quot;Kotlin is fun.&quot; }
+	]
+}
+</code></pre></div><h3 id="참조-reference"><a href="#참조-reference" class="header-anchor">#</a> 참조(Reference)</h3> <p><code>참조(Reference)</code>은 다른 도큐먼트의 참조를 가지고 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>&gt; db.post.insert({
+    title: &quot;Swift&quot;,
+    content: &quot;Swift for iOS&quot;
+})
+
+&gt; db.post.insert({
+    title: &quot;DevOps&quot;,
+    content: &quot;DevOps is useful.&quot;
+})
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br><br><br><div class="highlighted"> </div><br><br><br><br></div><pre class="language-text"><code>&gt; db.post.find().pretty()
+{
+	&quot;_id&quot; : ObjectId(&quot;625afcaf8d6dabdee5230bf9&quot;),
+	&quot;title&quot; : &quot;Swift&quot;,
+	&quot;content&quot; : &quot;Swift for iOS&quot;
+}
+{
+	&quot;_id&quot; : ObjectId(&quot;625afcb48d6dabdee5230bfa&quot;),
+	&quot;title&quot; : &quot;DevOps&quot;,
+	&quot;content&quot; : &quot;DevOps is useful.&quot;
+}
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br></div><pre class="language-text"><code>&gt; db.member.insert({
+    name: &quot;James&quot;,
+    posts: [
+        ObjectId(&quot;625afcaf8d6dabdee5230bf9&quot;),
+        ObjectId(&quot;625afcb48d6dabdee5230bfa&quot;)
+    ]
+})
+</code></pre></div><h2 id="사용자-관리"><a href="#사용자-관리" class="header-anchor">#</a> 사용자 관리</h2> <p>Mongo DB에 처음 접속하면 인증이 비활성화 되어있기 때문에 누구나 인증없이 데이터베이스 접근할 수 있다. 심지어 원격 접속도 인증이 필요없다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ mongo		// 인증 없이 접속
+&gt;
+</code></pre></div><p>따라서 관리자와 사용자 계정을 생성하고, 사용자에게 역할을 부여한 후, 인증을 거치도록 구성해야한다.</p> <h3 id="사용자-조회"><a href="#사용자-조회" class="header-anchor">#</a> 사용자 조회</h3> <p><code>show users</code> 명령어를 사용하면 모든 사용자를 조회할 수 있다. Mongo DB에 처음 접속했다면 생성한 계정이 없기 때문에 아무 결과도 출력되지 않는다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; show users 
+
+</code></pre></div><p><code>db.getUsers()</code>를 실행하면 현재 데이터베이스의 모든 사용자를 출력한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.getUsers()
+[ ]
+</code></pre></div><h3 id="사용자-생성"><a href="#사용자-생성" class="header-anchor">#</a> 사용자 생성</h3> <p><code>db.createUser()</code>로 사용자를 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.createUser({ 
+	user: &quot;&lt;name&gt;&quot;, 
+	pwd: &quot;&lt;cleartext password&gt;&quot;, 
+	roles: [ 
+		{ role: &quot;&lt;role&gt;&quot;, db: &quot;&lt;database&gt;&quot; } | &quot;&lt;role&gt;&quot;, 
+		... 
+	] 
+}
+</code></pre></div><p>우선 모든 데이터베이스에 대해 모든 권한을 갖는 <code>root</code> 계정을 생성하자.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; use admin
+
+&gt; db.createUser(
+  { 
+     user: &quot;root&quot;, 
+     pwd: &quot;root&quot;, 
+     roles: [ &quot;root&quot; ] 
+  }
+)
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>&gt; show users
+{
+	&quot;_id&quot; : &quot;admin.root&quot;,
+	&quot;userId&quot; : UUID(&quot;999a9d45-85f3-4ad8-abe6-01b6184fa90a&quot;),
+	&quot;user&quot; : &quot;root&quot;,
+	&quot;db&quot; : &quot;admin&quot;,
+	&quot;roles&quot; : [
+		{
+			&quot;role&quot; : &quot;root&quot;,
+			&quot;db&quot; : &quot;admin&quot;
+		}
+	],
+	&quot;mechanisms&quot; : [
+		&quot;SCRAM-SHA-1&quot;,
+		&quot;SCRAM-SHA-256&quot;
+	]
+}
+</code></pre></div><p>일반 사용자 계정도 생성해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; use my_db
+
+&gt; db.createUser(
+  {
+    user: &quot;user&quot;,
+    pwd: &quot;user&quot;,
+    roles: [ { role: &quot;readWrite&quot;, db: &quot;my_db&quot; } ]
+  }
+)
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>&gt; show users
+{
+	&quot;_id&quot; : &quot;my_db.user&quot;,
+	&quot;userId&quot; : UUID(&quot;f4aab7bc-413b-4dd3-b1cf-08a65fbb428d&quot;),
+	&quot;user&quot; : &quot;user&quot;,
+	&quot;db&quot; : &quot;my_db&quot;,
+	&quot;roles&quot; : [
+		{
+			&quot;role&quot; : &quot;readWrite&quot;,
+			&quot;db&quot; : &quot;my_db&quot;
+		}
+	],
+	&quot;mechanisms&quot; : [
+		&quot;SCRAM-SHA-1&quot;,
+		&quot;SCRAM-SHA-256&quot;
+	]
+}
+</code></pre></div><h3 id="인증-활성화"><a href="#인증-활성화" class="header-anchor">#</a> 인증 활성화</h3> <p>Mongo DB는 기본적으로 인증없이 접근할 수 있다. 인증을 활성화하려면 설정 파일을 수정해야한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ vim /usr/local/etc/mongod.conf
+</code></pre></div><p><code>mongod.conf</code>에 다음 코드를 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>security:
+  authorization: enabled
+</code></pre></div><p>설정파일을 수정한 후 MongoDB를 재시작한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew services restart mongodb-community@4.2
+</code></pre></div><h3 id="사용자-인증"><a href="#사용자-인증" class="header-anchor">#</a> 사용자 인증</h3> <p>먼저 인증없이 Mongo DB에 접속해보자.</p> <div class="language-shellsession extra-class"><pre class="language-shellsession"><code><span class="token command"><span class="token shell-symbol important">$</span> <span class="token bash language-bash">mongo  </span></span>
+<span class="token output">MongoDB shell version v4.2.19
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb
+Implicit session: session { &quot;id&quot; : UUID(&quot;5cd65398-d599-465d-a384-2f9a51e002a3&quot;) }
+MongoDB server version: 4.2.1
+</span></code></pre></div><p>Mongo DB와의 세션은 연결되었으나 인증은 진행되지 않았다. 따라서 데이터베이스나 테이블 조회도 불가능하다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; show databases;
+// 결과 없음
+</code></pre></div><p><code>db.auth()</code>를 사용하면 인증을 할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.auth(&quot;user&quot;, &quot;user&quot;)
+1
+
+&gt; show databases;
+my_db  0.000GB
+</code></pre></div><p>다음과 같이 Mongo DB와의 세션을 연결할 때 사용자, 비밀번호 정보를 전달할 수도 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>$ mongo -u &quot;user&quot; -authenticationDatabase &quot;my_db&quot;
+MongoDB shell version v4.2.19
+Enter password: &lt;USER_PASSWORD&gt;
+connecting to: mongodb://127.0.0.1:27017/?authSource=my_db&amp;compressors=disabled&amp;gssapiServiceName=mongodb
+Implicit session: session { &quot;id&quot; : UUID(&quot;6cfc239f-8b86-48a2-89b6-8fe9dbb62353&quot;) }
+MongoDB server version: 4.2.19
+
+&gt; show databases;
+my_db  0.000GB
+</code></pre></div><p>루트 계정은 <code>db.auth()</code>로 접속할 수 없으며 위와 같은 방법으로 접속해야한다.</p> <div class="language-shellsession extra-class"><div class="highlight-lines"><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-shellsession"><code><span class="token command"><span class="token shell-symbol important">$</span> <span class="token bash language-bash">mongo -u <span class="token string">&quot;root&quot;</span></span></span>
+<span class="token output">MongoDB shell version v4.2.19
+Enter password: &lt;ROOT_PASSWORD&gt;
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&amp;gssapiServiceName=mongodb
+Implicit session: session { &quot;id&quot; : UUID(&quot;47d48100-9172-4187-8d5b-6a7944a2e055&quot;) }
+MongoDB server version: 4.2.19
+---
+Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+and anyone you share the URL with. MongoDB may use this information to make product
+improvements and to suggest MongoDB products and deployment options to you.
+
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+
+&gt; show databases;
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+my_db   0.000GB
+mydb    0.000GB
+</span></code></pre></div><h3 id="사용자-삭제"><a href="#사용자-삭제" class="header-anchor">#</a> 사용자 삭제</h3> <p><code>db.dropUser()</code>는 특정 사용자를 삭제하며, <code>db.dropAllUsers()</code>로 모든 사용자를 삭제할 수 있다.</p> <h2 id="mongo-db-cluster-구축"><a href="#mongo-db-cluster-구축" class="header-anchor">#</a> Mongo DB Cluster 구축</h2> <div class="custom-block warning"><p class="custom-block-title">Notification</p> <p>준비 중인 컨텐츠입니다.</p></div> <h2 id="replication"><a href="#replication" class="header-anchor">#</a> Replication</h2> <div class="custom-block warning"><p class="custom-block-title">Notification</p> <p>준비 중인 컨텐츠입니다.</p></div> <h2 id="sharding"><a href="#sharding" class="header-anchor">#</a> Sharding</h2> <div class="custom-block warning"><p class="custom-block-title">Notification</p> <p>준비 중인 컨텐츠입니다.</p></div> <h2 id="compass"><a href="#compass" class="header-anchor">#</a> Compass</h2> <p><code>Compass</code>는 Mongo DB를 위한 GUI database clinet다. <a href="https://www.mongodb.com/try/download/compass" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 다운받을 수 있다.</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/55_db/01_MySQL/210113_recovery.html" class="prev">
+        MYSQL - Recovery
+      </a></span> <span class="next"><a href="/blog/post/55_db/03_Redis/220410_start_redis.html">
+        Redis 정리
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.407877ec.js" defer></script><script src="/blog/assets/js/3.2c868ac4.js" defer></script><script src="/blog/assets/js/146.7cc38cdd.js" defer></script>
+  </body>
+</html>

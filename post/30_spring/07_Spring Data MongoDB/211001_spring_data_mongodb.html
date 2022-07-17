@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Spring Data MongoDB 시작하기 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.407877ec.js" as="script"><link rel="preload" href="/blog/assets/js/3.2c868ac4.js" as="script"><link rel="preload" href="/blog/assets/js/145.8108a3e4.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.214df1fb.js"><link rel="prefetch" href="/blog/assets/js/100.84c42c58.js"><link rel="prefetch" href="/blog/assets/js/101.ef2ab21f.js"><link rel="prefetch" href="/blog/assets/js/102.88861d4b.js"><link rel="prefetch" href="/blog/assets/js/103.a01965ee.js"><link rel="prefetch" href="/blog/assets/js/104.21597723.js"><link rel="prefetch" href="/blog/assets/js/105.73be57d6.js"><link rel="prefetch" href="/blog/assets/js/106.4d2f9945.js"><link rel="prefetch" href="/blog/assets/js/107.ebc7d69c.js"><link rel="prefetch" href="/blog/assets/js/108.8d6e9050.js"><link rel="prefetch" href="/blog/assets/js/109.dbcf9d3f.js"><link rel="prefetch" href="/blog/assets/js/11.ff546d90.js"><link rel="prefetch" href="/blog/assets/js/110.0390f38d.js"><link rel="prefetch" href="/blog/assets/js/111.213596d7.js"><link rel="prefetch" href="/blog/assets/js/112.7e0af3ee.js"><link rel="prefetch" href="/blog/assets/js/113.57c2cc15.js"><link rel="prefetch" href="/blog/assets/js/114.28c2b749.js"><link rel="prefetch" href="/blog/assets/js/115.db63c82b.js"><link rel="prefetch" href="/blog/assets/js/116.5343aa78.js"><link rel="prefetch" href="/blog/assets/js/117.c8701adf.js"><link rel="prefetch" href="/blog/assets/js/118.f0671833.js"><link rel="prefetch" href="/blog/assets/js/119.09db011c.js"><link rel="prefetch" href="/blog/assets/js/12.7608a1db.js"><link rel="prefetch" href="/blog/assets/js/120.725e67ca.js"><link rel="prefetch" href="/blog/assets/js/121.cbbe863f.js"><link rel="prefetch" href="/blog/assets/js/122.0b929da9.js"><link rel="prefetch" href="/blog/assets/js/123.49e34faf.js"><link rel="prefetch" href="/blog/assets/js/124.43d7edbf.js"><link rel="prefetch" href="/blog/assets/js/125.b78fcfc3.js"><link rel="prefetch" href="/blog/assets/js/126.95b41c8b.js"><link rel="prefetch" href="/blog/assets/js/127.c0c12b54.js"><link rel="prefetch" href="/blog/assets/js/128.15d6bca8.js"><link rel="prefetch" href="/blog/assets/js/129.bee5a9f3.js"><link rel="prefetch" href="/blog/assets/js/13.dc871816.js"><link rel="prefetch" href="/blog/assets/js/130.2fe01fb8.js"><link rel="prefetch" href="/blog/assets/js/131.d1f47750.js"><link rel="prefetch" href="/blog/assets/js/132.37d63b61.js"><link rel="prefetch" href="/blog/assets/js/133.267b6829.js"><link rel="prefetch" href="/blog/assets/js/134.818da5b5.js"><link rel="prefetch" href="/blog/assets/js/135.30464616.js"><link rel="prefetch" href="/blog/assets/js/136.73dc1554.js"><link rel="prefetch" href="/blog/assets/js/137.9353e543.js"><link rel="prefetch" href="/blog/assets/js/138.e131cb38.js"><link rel="prefetch" href="/blog/assets/js/139.0443fc29.js"><link rel="prefetch" href="/blog/assets/js/14.414794fb.js"><link rel="prefetch" href="/blog/assets/js/140.0a66e837.js"><link rel="prefetch" href="/blog/assets/js/141.070ca152.js"><link rel="prefetch" href="/blog/assets/js/142.674e95f2.js"><link rel="prefetch" href="/blog/assets/js/143.36a65bcf.js"><link rel="prefetch" href="/blog/assets/js/144.88ab0348.js"><link rel="prefetch" href="/blog/assets/js/146.7cc38cdd.js"><link rel="prefetch" href="/blog/assets/js/147.5c67050f.js"><link rel="prefetch" href="/blog/assets/js/148.3ff31f51.js"><link rel="prefetch" href="/blog/assets/js/149.75e65991.js"><link rel="prefetch" href="/blog/assets/js/15.f50507ad.js"><link rel="prefetch" href="/blog/assets/js/150.59d103ef.js"><link rel="prefetch" href="/blog/assets/js/151.2af10e91.js"><link rel="prefetch" href="/blog/assets/js/152.fb23137c.js"><link rel="prefetch" href="/blog/assets/js/153.76d4f705.js"><link rel="prefetch" href="/blog/assets/js/154.cbc2e62f.js"><link rel="prefetch" href="/blog/assets/js/155.f0ebde67.js"><link rel="prefetch" href="/blog/assets/js/156.2def108b.js"><link rel="prefetch" href="/blog/assets/js/157.1c144be8.js"><link rel="prefetch" href="/blog/assets/js/158.ed93ecfb.js"><link rel="prefetch" href="/blog/assets/js/159.9737a613.js"><link rel="prefetch" href="/blog/assets/js/16.8af324c8.js"><link rel="prefetch" href="/blog/assets/js/160.6754badf.js"><link rel="prefetch" href="/blog/assets/js/161.9502f065.js"><link rel="prefetch" href="/blog/assets/js/162.52f0a4bd.js"><link rel="prefetch" href="/blog/assets/js/163.9d733ff6.js"><link rel="prefetch" href="/blog/assets/js/164.07ecd24c.js"><link rel="prefetch" href="/blog/assets/js/165.33c4abc0.js"><link rel="prefetch" href="/blog/assets/js/166.a35efc51.js"><link rel="prefetch" href="/blog/assets/js/167.72bba16c.js"><link rel="prefetch" href="/blog/assets/js/168.58b6b388.js"><link rel="prefetch" href="/blog/assets/js/169.4b56cd76.js"><link rel="prefetch" href="/blog/assets/js/17.e1dee477.js"><link rel="prefetch" href="/blog/assets/js/170.5759f26d.js"><link rel="prefetch" href="/blog/assets/js/171.d8041dc1.js"><link rel="prefetch" href="/blog/assets/js/172.cd032c0b.js"><link rel="prefetch" href="/blog/assets/js/173.27159b98.js"><link rel="prefetch" href="/blog/assets/js/174.e98e427b.js"><link rel="prefetch" href="/blog/assets/js/175.e92d0ae4.js"><link rel="prefetch" href="/blog/assets/js/176.e939a83d.js"><link rel="prefetch" href="/blog/assets/js/177.ef978bde.js"><link rel="prefetch" href="/blog/assets/js/178.7cede950.js"><link rel="prefetch" href="/blog/assets/js/179.20121d4d.js"><link rel="prefetch" href="/blog/assets/js/18.aedcd3b4.js"><link rel="prefetch" href="/blog/assets/js/180.08ab3e0b.js"><link rel="prefetch" href="/blog/assets/js/181.208a47b3.js"><link rel="prefetch" href="/blog/assets/js/182.f9abeb9d.js"><link rel="prefetch" href="/blog/assets/js/183.c6fda8b2.js"><link rel="prefetch" href="/blog/assets/js/184.8888984e.js"><link rel="prefetch" href="/blog/assets/js/185.cbfe8932.js"><link rel="prefetch" href="/blog/assets/js/186.aa14003d.js"><link rel="prefetch" href="/blog/assets/js/187.0b082624.js"><link rel="prefetch" href="/blog/assets/js/188.76387af1.js"><link rel="prefetch" href="/blog/assets/js/189.1207592a.js"><link rel="prefetch" href="/blog/assets/js/19.71a3a956.js"><link rel="prefetch" href="/blog/assets/js/190.20ba5f79.js"><link rel="prefetch" href="/blog/assets/js/191.0f1b99d5.js"><link rel="prefetch" href="/blog/assets/js/192.04922345.js"><link rel="prefetch" href="/blog/assets/js/193.ccee54ae.js"><link rel="prefetch" href="/blog/assets/js/194.88c5b3f8.js"><link rel="prefetch" href="/blog/assets/js/195.3bd9a30b.js"><link rel="prefetch" href="/blog/assets/js/196.3b42ea37.js"><link rel="prefetch" href="/blog/assets/js/197.99ba23e4.js"><link rel="prefetch" href="/blog/assets/js/198.6764a9e3.js"><link rel="prefetch" href="/blog/assets/js/199.98b97aa0.js"><link rel="prefetch" href="/blog/assets/js/2.305d7f18.js"><link rel="prefetch" href="/blog/assets/js/20.ef953170.js"><link rel="prefetch" href="/blog/assets/js/200.3b391275.js"><link rel="prefetch" href="/blog/assets/js/201.c4da0449.js"><link rel="prefetch" href="/blog/assets/js/202.b62d0ce1.js"><link rel="prefetch" href="/blog/assets/js/203.4a2ea447.js"><link rel="prefetch" href="/blog/assets/js/204.ee4ca076.js"><link rel="prefetch" href="/blog/assets/js/205.654be6ea.js"><link rel="prefetch" href="/blog/assets/js/206.036bd179.js"><link rel="prefetch" href="/blog/assets/js/207.03e8b9ff.js"><link rel="prefetch" href="/blog/assets/js/208.d228e908.js"><link rel="prefetch" href="/blog/assets/js/209.253e46e1.js"><link rel="prefetch" href="/blog/assets/js/21.7190cd50.js"><link rel="prefetch" href="/blog/assets/js/210.f1ed996e.js"><link rel="prefetch" href="/blog/assets/js/211.5b47b79f.js"><link rel="prefetch" href="/blog/assets/js/212.044358d5.js"><link rel="prefetch" href="/blog/assets/js/213.47ed3ab7.js"><link rel="prefetch" href="/blog/assets/js/214.c42cbb1f.js"><link rel="prefetch" href="/blog/assets/js/215.ee83627a.js"><link rel="prefetch" href="/blog/assets/js/216.97525cbc.js"><link rel="prefetch" href="/blog/assets/js/217.11ac8523.js"><link rel="prefetch" href="/blog/assets/js/218.c9f4f2b3.js"><link rel="prefetch" href="/blog/assets/js/219.5f74f734.js"><link rel="prefetch" href="/blog/assets/js/22.593ae787.js"><link rel="prefetch" href="/blog/assets/js/220.0a13ba28.js"><link rel="prefetch" href="/blog/assets/js/221.b5503a95.js"><link rel="prefetch" href="/blog/assets/js/222.3b9416c1.js"><link rel="prefetch" href="/blog/assets/js/223.9570a713.js"><link rel="prefetch" href="/blog/assets/js/224.4e8aaf58.js"><link rel="prefetch" href="/blog/assets/js/225.1b12babf.js"><link rel="prefetch" href="/blog/assets/js/226.d8cc7c14.js"><link rel="prefetch" href="/blog/assets/js/227.79b40d6a.js"><link rel="prefetch" href="/blog/assets/js/228.21910d5a.js"><link rel="prefetch" href="/blog/assets/js/229.30b51d12.js"><link rel="prefetch" href="/blog/assets/js/23.2dd50afb.js"><link rel="prefetch" href="/blog/assets/js/230.d42a9a38.js"><link rel="prefetch" href="/blog/assets/js/231.791869c0.js"><link rel="prefetch" href="/blog/assets/js/232.0892177e.js"><link rel="prefetch" href="/blog/assets/js/233.9aaf9bbb.js"><link rel="prefetch" href="/blog/assets/js/234.1002b345.js"><link rel="prefetch" href="/blog/assets/js/235.619d2b1e.js"><link rel="prefetch" href="/blog/assets/js/236.1ad24da3.js"><link rel="prefetch" href="/blog/assets/js/237.c2d1efa6.js"><link rel="prefetch" href="/blog/assets/js/238.2373f349.js"><link rel="prefetch" href="/blog/assets/js/239.d65e33ca.js"><link rel="prefetch" href="/blog/assets/js/24.6684c857.js"><link rel="prefetch" href="/blog/assets/js/240.36e57681.js"><link rel="prefetch" href="/blog/assets/js/241.4c8cce20.js"><link rel="prefetch" href="/blog/assets/js/242.29a82a61.js"><link rel="prefetch" href="/blog/assets/js/243.42035d3c.js"><link rel="prefetch" href="/blog/assets/js/244.c039e764.js"><link rel="prefetch" href="/blog/assets/js/245.84554679.js"><link rel="prefetch" href="/blog/assets/js/246.f8274aa5.js"><link rel="prefetch" href="/blog/assets/js/247.da5cacf5.js"><link rel="prefetch" href="/blog/assets/js/248.aa8417d2.js"><link rel="prefetch" href="/blog/assets/js/249.a614abb9.js"><link rel="prefetch" href="/blog/assets/js/25.42af72f6.js"><link rel="prefetch" href="/blog/assets/js/250.096af39b.js"><link rel="prefetch" href="/blog/assets/js/251.45b855d5.js"><link rel="prefetch" href="/blog/assets/js/252.ea0a27a2.js"><link rel="prefetch" href="/blog/assets/js/253.12a895af.js"><link rel="prefetch" href="/blog/assets/js/254.7352cd0f.js"><link rel="prefetch" href="/blog/assets/js/255.041c56c2.js"><link rel="prefetch" href="/blog/assets/js/256.fe3aa3d8.js"><link rel="prefetch" href="/blog/assets/js/257.f81a2d94.js"><link rel="prefetch" href="/blog/assets/js/258.ea729895.js"><link rel="prefetch" href="/blog/assets/js/259.ea4d1657.js"><link rel="prefetch" href="/blog/assets/js/26.976f03dd.js"><link rel="prefetch" href="/blog/assets/js/260.040211d7.js"><link rel="prefetch" href="/blog/assets/js/261.3fde685b.js"><link rel="prefetch" href="/blog/assets/js/262.f055e783.js"><link rel="prefetch" href="/blog/assets/js/263.351d8106.js"><link rel="prefetch" href="/blog/assets/js/264.d0d5826a.js"><link rel="prefetch" href="/blog/assets/js/265.ddf08330.js"><link rel="prefetch" href="/blog/assets/js/266.aec7b24b.js"><link rel="prefetch" href="/blog/assets/js/267.0e5716e6.js"><link rel="prefetch" href="/blog/assets/js/268.68074979.js"><link rel="prefetch" href="/blog/assets/js/269.8739b95a.js"><link rel="prefetch" href="/blog/assets/js/27.b02deaf4.js"><link rel="prefetch" href="/blog/assets/js/270.968af81c.js"><link rel="prefetch" href="/blog/assets/js/28.59574d94.js"><link rel="prefetch" href="/blog/assets/js/29.5312c870.js"><link rel="prefetch" href="/blog/assets/js/30.fca86d2c.js"><link rel="prefetch" href="/blog/assets/js/31.40a7e5fc.js"><link rel="prefetch" href="/blog/assets/js/32.31d1fc74.js"><link rel="prefetch" href="/blog/assets/js/33.9e9da730.js"><link rel="prefetch" href="/blog/assets/js/34.92c520e0.js"><link rel="prefetch" href="/blog/assets/js/35.a4ab1f65.js"><link rel="prefetch" href="/blog/assets/js/36.8baa7b2c.js"><link rel="prefetch" href="/blog/assets/js/37.e5823b3b.js"><link rel="prefetch" href="/blog/assets/js/38.6796171b.js"><link rel="prefetch" href="/blog/assets/js/39.a68a9d9f.js"><link rel="prefetch" href="/blog/assets/js/4.81d7a4a5.js"><link rel="prefetch" href="/blog/assets/js/40.7439b92d.js"><link rel="prefetch" href="/blog/assets/js/41.6c07a68d.js"><link rel="prefetch" href="/blog/assets/js/42.26b135bc.js"><link rel="prefetch" href="/blog/assets/js/43.fbfc2c30.js"><link rel="prefetch" href="/blog/assets/js/44.b0cfb782.js"><link rel="prefetch" href="/blog/assets/js/45.de62cb60.js"><link rel="prefetch" href="/blog/assets/js/46.c85ca9e3.js"><link rel="prefetch" href="/blog/assets/js/47.6043b490.js"><link rel="prefetch" href="/blog/assets/js/48.0b84e410.js"><link rel="prefetch" href="/blog/assets/js/49.395652cc.js"><link rel="prefetch" href="/blog/assets/js/5.7ea25842.js"><link rel="prefetch" href="/blog/assets/js/50.5951bc7f.js"><link rel="prefetch" href="/blog/assets/js/51.73163096.js"><link rel="prefetch" href="/blog/assets/js/52.bd6189ec.js"><link rel="prefetch" href="/blog/assets/js/53.02a3a241.js"><link rel="prefetch" href="/blog/assets/js/54.4296219c.js"><link rel="prefetch" href="/blog/assets/js/55.6e10ee88.js"><link rel="prefetch" href="/blog/assets/js/56.37468d50.js"><link rel="prefetch" href="/blog/assets/js/57.4cc896a4.js"><link rel="prefetch" href="/blog/assets/js/58.25b93d02.js"><link rel="prefetch" href="/blog/assets/js/59.2fc70fd3.js"><link rel="prefetch" href="/blog/assets/js/6.5d85bf19.js"><link rel="prefetch" href="/blog/assets/js/60.97d4ab3f.js"><link rel="prefetch" href="/blog/assets/js/61.4e0a9421.js"><link rel="prefetch" href="/blog/assets/js/62.5c8e434a.js"><link rel="prefetch" href="/blog/assets/js/63.9f0ec4bf.js"><link rel="prefetch" href="/blog/assets/js/64.485670d8.js"><link rel="prefetch" href="/blog/assets/js/65.bf839e77.js"><link rel="prefetch" href="/blog/assets/js/66.cfa34a32.js"><link rel="prefetch" href="/blog/assets/js/67.8bf4b24f.js"><link rel="prefetch" href="/blog/assets/js/68.86d68cf9.js"><link rel="prefetch" href="/blog/assets/js/69.3c5fb947.js"><link rel="prefetch" href="/blog/assets/js/7.95a44012.js"><link rel="prefetch" href="/blog/assets/js/70.71c73939.js"><link rel="prefetch" href="/blog/assets/js/71.6f40d6cd.js"><link rel="prefetch" href="/blog/assets/js/72.51c01c8b.js"><link rel="prefetch" href="/blog/assets/js/73.6ce18ec4.js"><link rel="prefetch" href="/blog/assets/js/74.e6e2d5b0.js"><link rel="prefetch" href="/blog/assets/js/75.1fdd9199.js"><link rel="prefetch" href="/blog/assets/js/76.822d0dda.js"><link rel="prefetch" href="/blog/assets/js/77.07fe61e3.js"><link rel="prefetch" href="/blog/assets/js/78.3a503253.js"><link rel="prefetch" href="/blog/assets/js/79.fbbbaab7.js"><link rel="prefetch" href="/blog/assets/js/8.4daec306.js"><link rel="prefetch" href="/blog/assets/js/80.2f3219e7.js"><link rel="prefetch" href="/blog/assets/js/81.d37198bc.js"><link rel="prefetch" href="/blog/assets/js/82.fd445f39.js"><link rel="prefetch" href="/blog/assets/js/83.00be90ec.js"><link rel="prefetch" href="/blog/assets/js/84.40aac1c4.js"><link rel="prefetch" href="/blog/assets/js/85.6ca8b74f.js"><link rel="prefetch" href="/blog/assets/js/86.50779298.js"><link rel="prefetch" href="/blog/assets/js/87.d8d9994b.js"><link rel="prefetch" href="/blog/assets/js/88.97a4de74.js"><link rel="prefetch" href="/blog/assets/js/89.7383449a.js"><link rel="prefetch" href="/blog/assets/js/9.17630656.js"><link rel="prefetch" href="/blog/assets/js/90.61983518.js"><link rel="prefetch" href="/blog/assets/js/91.b31af2bb.js"><link rel="prefetch" href="/blog/assets/js/92.07dbce34.js"><link rel="prefetch" href="/blog/assets/js/93.a1a7ecc6.js"><link rel="prefetch" href="/blog/assets/js/94.082bbed4.js"><link rel="prefetch" href="/blog/assets/js/95.b0e3563d.js"><link rel="prefetch" href="/blog/assets/js/96.b6bebd5f.js"><link rel="prefetch" href="/blog/assets/js/97.6cefa365.js"><link rel="prefetch" href="/blog/assets/js/98.aed6e859.js"><link rel="prefetch" href="/blog/assets/js/99.0e004e38.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link router-link-active">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link router-link-active">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/30_spring/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Servlet, JSP</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Core</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring WebMVC, Spring Boot</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Data JPA</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Data Redis</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Spring Data MongoDB</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/30_spring/07_Spring Data MongoDB/211001_spring_data_mongodb.html" class="active sidebar-link">Spring Data MongoDB 시작하기</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Data ElasticSearch</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Security</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring gRPC</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Apache Kafka</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring WebFlux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring WebSocket</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Batch</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>TDD</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Swagger2</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>IntelliJ</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Eclipse</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#의존성-추가">의존성 추가</a></li><li><a href="#환경-설정">환경 설정</a></li><li><a href="#document-정의">Document 정의</a><ul><li><a href="#document">@Document</a></li><li><a href="#id">@id</a></li><li><a href="#field">@Field</a></li><li><a href="#createddate-lastmodifieddate">@CreatedDate, @LastModifiedDate</a></li></ul></li><li><a href="#crud-작업-실행하기">CRUD 작업 실행하기</a><ul><li><a href="#mongotemplate">MongoTemplate</a></li><li><a href="#mongorepository">MongoRepository</a></li></ul></li><li><a href="#단위-테스트">단위 테스트</a></li></ul></div><p></p> <h2 id="의존성-추가"><a href="#의존성-추가" class="header-anchor">#</a> 의존성 추가</h2> <p><code>Spring Data MongoDB</code>를 사용하려면 다음 의존성을 추가해야한다.</p> <div class="language-groovy extra-class"><pre class="language-groovy"><code><span class="token comment">// build.gradle</span>
+dependencies <span class="token punctuation">{</span>
+    implementation <span class="token string">'org.springframework.boot:spring-boot-starter-data-mongodb'</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="환경-설정"><a href="#환경-설정" class="header-anchor">#</a> 환경 설정</h2> <p><code>application.properties</code> 파일에 설정 값을 추가한다.</p> <div class="language-properties extra-class"><pre class="language-properties"><code><span class="token attr-name">spring.data.mongodb.host</span><span class="token punctuation">=</span><span class="token attr-value">localhost </span>
+<span class="token attr-name">spring.data.mongodb.port</span><span class="token punctuation">=</span><span class="token attr-value">27017</span>
+<span class="token attr-name">spring.data.mongodb.username</span><span class="token punctuation">=</span>
+<span class="token attr-name">spring.date.mongodb.password</span><span class="token punctuation">=</span>
+</code></pre></div><h2 id="document-정의"><a href="#document-정의" class="header-anchor">#</a> Document 정의</h2> <h3 id="document"><a href="#document" class="header-anchor">#</a> @Document</h3> <p>객체에 <code>@Document</code>를 추가하여 클래스를 도큐먼트에 매핑할 수 있다.</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Document</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberDocument</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ... </span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><code>@Document</code>의 <code>collection</code> 속성으로 콜렉션 이름을 지정할 수 있다.</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberDocument</span> <span class="token punctuation">{</span>
+    <span class="token comment">// ... </span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="id"><a href="#id" class="header-anchor">#</a> @id</h3> <p><code>@id</code> 어노테이션으로 <code>_id</code> 필드를 지정하지 않으면 데이터를 삽입할 때 자동으로 <code>ObjectId</code>가 할당된다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberEntity</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// @Id</span>
+    <span class="token comment">// private Long id;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> email<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isMarried<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> age<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Double</span> weight<span class="token punctuation">;</span>
+
+    <span class="token comment">// ..</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>이 경우 <code>_id</code> 필드에 <code>ObjectId</code> 타입의 데이터가 자동으로 생성된다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>&gt; db.member.find().pretty()
+{
+	&quot;_id&quot; : ObjectId(&quot;625beebf086eef0b837f3a57&quot;),
+	&quot;email&quot; : &quot;Paul@gmai.com&quot;,
+	&quot;name&quot; : &quot;Paul&quot;,
+	&quot;isMarried&quot; : true,
+	&quot;age&quot; : 25,
+	&quot;weight&quot; : 170.3,
+	&quot;_class&quot; : &quot;com.yologger.spring_mongodb.data.MemberEntity&quot;
+}
+</code></pre></div><p>물론 명시적으로 <code>_id</code> 필드를 지정할 수 있다. 이 경우도 <code>_id</code> 필드에 <code>ObjectId</code> 타입의 데이터가 자동으로 생성된다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberEntity</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token annotation punctuation">@Field</span><span class="token punctuation">(</span><span class="token string">&quot;_id&quot;</span><span class="token punctuation">,</span> targetType <span class="token operator">=</span> <span class="token class-name">FieldType</span><span class="token punctuation">.</span>OBJECT_ID<span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">ObjectId</span> id<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> email<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isMarried<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> age<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Double</span> weight<span class="token punctuation">;</span>
+
+    <span class="token comment">// ...                                 </span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>다른 데이터 타입을 <code>id</code> 필드로 사용할 수 있다. 이 경우 <code>_id</code>필드가 자동으로 생성되지 않으므로 직접 구현해야한다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br></div><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberEntity</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> id<span class="token punctuation">;</span>
+
+    <span class="token comment">// ...                                 </span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="field"><a href="#field" class="header-anchor">#</a> @Field</h3> <p><code>@Field</code>를 사용하여 필드를 지정할 수 있다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><br><br><br><br><br></div><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberDocument</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> email<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isMarried<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> age<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Double</span> weight<span class="token punctuation">;</span>
+
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>필드 이름을 직접 지정할 수 있다.</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberDocument</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Field</span><span class="token punctuation">(</span><span class="token string">&quot;is_married&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isMarried<span class="token punctuation">;</span>
+
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="createddate-lastmodifieddate"><a href="#createddate-lastmodifieddate" class="header-anchor">#</a> @CreatedDate, @LastModifiedDate</h3> <p><code>@CreatedDate</code>를 추가하면 도큐먼트가 생성된 날짜와 시간을 추가할 수 있다. <code>@LastModifiedDate</code>를 추가하면 마지막으로 도큐먼트가 변경된 날짜와 시간을 추가할 수 있다.</p> <p>이를 위해 먼저 구성 클래스에 <code>@EnableMongoAuditing</code> 어노테이션을 추가해야한다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><div class="highlighted"> </div><br><br><br></div><pre class="language-java"><code><span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@EnableMongoAuditing</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MongoConfig</span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>그 다음 도큐먼트 클래스를 다음과 같이 정의하면 된다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberDocument</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Id</span>
+    <span class="token keyword">private</span> <span class="token class-name">ObjectId</span> id<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> email<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span><span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">&quot;is_married&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> isMarried<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Integer</span> age<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">Double</span> weight<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@CreatedDate</span>
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">LocalDateTime</span> createdAt<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@LastModifiedDate</span>
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">LocalDateTime</span> updatedAt<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Builder</span>
+    <span class="token keyword">public</span> <span class="token class-name">MemberDocument</span><span class="token punctuation">(</span><span class="token class-name">String</span> email<span class="token punctuation">,</span> <span class="token class-name">String</span> name<span class="token punctuation">,</span> <span class="token class-name">Boolean</span> isMarried<span class="token punctuation">,</span> <span class="token class-name">Integer</span> age<span class="token punctuation">,</span> <span class="token class-name">Double</span> weight<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>email <span class="token operator">=</span> email<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>isMarried <span class="token operator">=</span> isMarried<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>age <span class="token operator">=</span> age<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>weight <span class="token operator">=</span> weight<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>보통 베이스 클래스를 정의하고 이를 상속하는 형태로 구현한다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br></div><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BaseDocument</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@CreatedDate</span>
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">LocalDateTime</span> createdAt<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@LastModifiedDate</span>
+    <span class="token annotation punctuation">@Field</span>
+    <span class="token keyword">private</span> <span class="token class-name">LocalDateTime</span> updatedAt<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language-java extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br><br><br></div><pre class="language-java"><code><span class="token annotation punctuation">@Document</span><span class="token punctuation">(</span>collection <span class="token operator">=</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Getter</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MemberDocument</span> <span class="token keyword">extends</span> <span class="token class-name">BaseDocument</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="crud-작업-실행하기"><a href="#crud-작업-실행하기" class="header-anchor">#</a> CRUD 작업 실행하기</h2> <p><code>Spring Data MongoDB</code>는 <code>MongoDB</code>에 접근하기 위한 두 가지 방법을 제공한다.</p> <ul><li><code>MongoTemplate</code></li> <li><code>MongoRepository</code></li></ul> <h3 id="mongotemplate"><a href="#mongotemplate" class="header-anchor">#</a> MongoTemplate</h3> <p><code>MongoTemplate</code>는 Mongo DB CRUD 작업을 위한 메소드를 제공하는 클래스다.</p> <div class="language-java extra-class"><div class="highlight-lines"><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-java"><code><span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>mongodb<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">MongoTemplate</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@DataMongoTest</span>
+<span class="token keyword">class</span> <span class="token class-name">MemberRepositoryTest</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">MongoTemplate</span> mongoTemplate<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+        <span class="token class-name">MemberDocument</span> member1 <span class="token operator">=</span> <span class="token class-name">MemberDocument</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">email</span><span class="token punctuation">(</span><span class="token string">&quot;Son@gmai.com&quot;</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">&quot;Son&quot;</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">age</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">isMarried</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">170.3</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">MemberDocument</span> member2 <span class="token operator">=</span> <span class="token class-name">MemberDocument</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">email</span><span class="token punctuation">(</span><span class="token string">&quot;Kane@gmai.com&quot;</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">&quot;Kane&quot;</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">age</span><span class="token punctuation">(</span><span class="token number">33</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">isMarried</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">150.8</span><span class="token punctuation">)</span>
+            <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        mongoTemplate<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>member1<span class="token punctuation">,</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        mongoTemplate<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>member2<span class="token punctuation">,</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">assertThat</span><span class="token punctuation">(</span>mongoTemplate<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token class-name">MemberDocument</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> <span class="token string">&quot;member&quot;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isEqualTo</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>데이터베이스에 저장된 Document는 다음과 같다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; db.member.find().pretty()
+{
+	&quot;_id&quot; : ObjectId(&quot;62786ada2e2278137ac8b3bd&quot;),
+	&quot;email&quot; : &quot;Paul@gmai.com&quot;,
+	&quot;name&quot; : &quot;Paul&quot;,
+	&quot;is_married&quot; : true,
+	&quot;age&quot; : 25,
+	&quot;weight&quot; : 170.3,
+	&quot;createdAt&quot; : ISODate(&quot;2022-05-09T01:14:02.368Z&quot;),
+	&quot;updatedAt&quot; : ISODate(&quot;2022-05-09T01:14:02.368Z&quot;),
+	&quot;_class&quot; : &quot;com.yologger.spring_mongodb.data.MemberDocument&quot;
+}
+{
+	&quot;_id&quot; : ObjectId(&quot;62786ada2e2278137ac8b3be&quot;),
+	&quot;email&quot; : &quot;Monica@gmai.com&quot;,
+	&quot;name&quot; : &quot;Monica&quot;,
+	&quot;is_married&quot; : false,
+	&quot;age&quot; : 33,
+	&quot;weight&quot; : 150.8,
+	&quot;createdAt&quot; : ISODate(&quot;2022-05-09T01:14:02.487Z&quot;),
+	&quot;updatedAt&quot; : ISODate(&quot;2022-05-09T01:14:02.487Z&quot;),
+	&quot;_class&quot; : &quot;com.yologger.spring_mongodb.data.MemberDocument&quot;
+} 
+</code></pre></div><p><code>MongoTemplate</code>는 정말 많은 메소드를 제공한다. <a href="https://docs.spring.io/spring-data/mongodb/docs/current/api/org/springframework/data/mongodb/core/MongoTemplate.html" target="_blank" rel="noopener noreferrer">공식 문서<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 다양한 기능을 확인할 수 있다.</p> <h3 id="mongorepository"><a href="#mongorepository" class="header-anchor">#</a> MongoRepository</h3> <p><code>MongoRepository</code>은 더욱 추상화된 방법을 제공한다.</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">MemberRepository</span> <span class="token keyword">extends</span> <span class="token class-name">MongoRepository</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">MemberDocument</span><span class="token punctuation">,</span> <span class="token class-name">ObjectId</span><span class="token punctuation">&gt;</span></span> <span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p><code>MongoRepository</code>는 다음과 같은 상속 관계를 갖는다.</p> <p><img src="/blog/assets/img/1.1e523900.png" alt=""></p> <p>따라서 <code>CrudRepository</code>, <code>PagingAndSortingRepository</code>가 제공하는 메소드를 모두 사용할 수 있다.</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token annotation punctuation">@DataMongoTest</span>
+<span class="token keyword">class</span> <span class="token class-name">MemberRepositoryTest</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">MemberRepository</span> memberRepository<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">MemberDocument</span> member1 <span class="token operator">=</span> <span class="token class-name">MemberDocument</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">email</span><span class="token punctuation">(</span><span class="token string">&quot;Paul@gmai.com&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">&quot;Paul&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">age</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">isMarried</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">170.3</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">MemberDocument</span> member2 <span class="token operator">=</span> <span class="token class-name">MemberDocument</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">email</span><span class="token punctuation">(</span><span class="token string">&quot;Monica@gmai.com&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">&quot;Monica&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">age</span><span class="token punctuation">(</span><span class="token number">33</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">isMarried</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">150.8</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        memberRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>member1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        memberRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>member2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">MemberDocument</span><span class="token punctuation">&gt;</span></span> members <span class="token operator">=</span> memberRepository<span class="token punctuation">.</span><span class="token function">findAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">assertThat</span><span class="token punctuation">(</span>members<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isEqualTo</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="단위-테스트"><a href="#단위-테스트" class="header-anchor">#</a> 단위 테스트</h2> <p>Spring Data MongoDB는 <code>@DataMongoTest</code> 어노테이션을 제공한다. 이 어노테이션을 추가하면 Mongo DB와 관련된 컴포넌트만 Spring IoC Container에 등록한다.</p> <div class="language-java extra-class"><pre class="language-java"><code><span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>test<span class="token punctuation">.</span>autoconfigure<span class="token punctuation">.</span>data<span class="token punctuation">.</span>mongo<span class="token punctuation">.</span></span><span class="token class-name">DataMongoTest</span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@DataMongoTest</span>
+<span class="token keyword">class</span> <span class="token class-name">MemberRepositoryTest</span> <span class="token punctuation">{</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token keyword">private</span> <span class="token class-name">MemberRepository</span> memberRepository<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">MemberDocument</span> member1 <span class="token operator">=</span> <span class="token class-name">MemberDocument</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">email</span><span class="token punctuation">(</span><span class="token string">&quot;Paul@gmai.com&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">&quot;Paul&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">age</span><span class="token punctuation">(</span><span class="token number">25</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">isMarried</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">170.3</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token class-name">MemberDocument</span> member2 <span class="token operator">=</span> <span class="token class-name">MemberDocument</span><span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">email</span><span class="token punctuation">(</span><span class="token string">&quot;Monica@gmai.com&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string">&quot;Monica&quot;</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">age</span><span class="token punctuation">(</span><span class="token number">33</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">isMarried</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">150.8</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">build</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        memberRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>member1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        memberRepository<span class="token punctuation">.</span><span class="token function">save</span><span class="token punctuation">(</span>member2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token function">assertThat</span><span class="token punctuation">(</span>memberRepository<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">isEqualTo</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/30_spring/06_Spring Data Redis/211002_redis_session_store.html" class="prev">
+        Redis를 Session Store로 사용하기
+      </a></span> <span class="next"><a href="/blog/post/30_spring/08_Spring Data ElasticSearch/220607_spring_elastic_search.html">
+        Spring Data ElasticSearch 시작하기
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.407877ec.js" defer></script><script src="/blog/assets/js/3.2c868ac4.js" defer></script><script src="/blog/assets/js/145.8108a3e4.js" defer></script>
+  </body>
+</html>

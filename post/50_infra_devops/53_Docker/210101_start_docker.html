@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Docker 시작하기 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.407877ec.js" as="script"><link rel="preload" href="/blog/assets/js/3.2c868ac4.js" as="script"><link rel="preload" href="/blog/assets/js/24.6684c857.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.214df1fb.js"><link rel="prefetch" href="/blog/assets/js/100.84c42c58.js"><link rel="prefetch" href="/blog/assets/js/101.ef2ab21f.js"><link rel="prefetch" href="/blog/assets/js/102.88861d4b.js"><link rel="prefetch" href="/blog/assets/js/103.a01965ee.js"><link rel="prefetch" href="/blog/assets/js/104.21597723.js"><link rel="prefetch" href="/blog/assets/js/105.73be57d6.js"><link rel="prefetch" href="/blog/assets/js/106.4d2f9945.js"><link rel="prefetch" href="/blog/assets/js/107.ebc7d69c.js"><link rel="prefetch" href="/blog/assets/js/108.8d6e9050.js"><link rel="prefetch" href="/blog/assets/js/109.dbcf9d3f.js"><link rel="prefetch" href="/blog/assets/js/11.ff546d90.js"><link rel="prefetch" href="/blog/assets/js/110.0390f38d.js"><link rel="prefetch" href="/blog/assets/js/111.213596d7.js"><link rel="prefetch" href="/blog/assets/js/112.7e0af3ee.js"><link rel="prefetch" href="/blog/assets/js/113.57c2cc15.js"><link rel="prefetch" href="/blog/assets/js/114.28c2b749.js"><link rel="prefetch" href="/blog/assets/js/115.db63c82b.js"><link rel="prefetch" href="/blog/assets/js/116.5343aa78.js"><link rel="prefetch" href="/blog/assets/js/117.c8701adf.js"><link rel="prefetch" href="/blog/assets/js/118.f0671833.js"><link rel="prefetch" href="/blog/assets/js/119.09db011c.js"><link rel="prefetch" href="/blog/assets/js/12.7608a1db.js"><link rel="prefetch" href="/blog/assets/js/120.725e67ca.js"><link rel="prefetch" href="/blog/assets/js/121.cbbe863f.js"><link rel="prefetch" href="/blog/assets/js/122.0b929da9.js"><link rel="prefetch" href="/blog/assets/js/123.49e34faf.js"><link rel="prefetch" href="/blog/assets/js/124.43d7edbf.js"><link rel="prefetch" href="/blog/assets/js/125.b78fcfc3.js"><link rel="prefetch" href="/blog/assets/js/126.95b41c8b.js"><link rel="prefetch" href="/blog/assets/js/127.c0c12b54.js"><link rel="prefetch" href="/blog/assets/js/128.15d6bca8.js"><link rel="prefetch" href="/blog/assets/js/129.bee5a9f3.js"><link rel="prefetch" href="/blog/assets/js/13.dc871816.js"><link rel="prefetch" href="/blog/assets/js/130.2fe01fb8.js"><link rel="prefetch" href="/blog/assets/js/131.d1f47750.js"><link rel="prefetch" href="/blog/assets/js/132.37d63b61.js"><link rel="prefetch" href="/blog/assets/js/133.267b6829.js"><link rel="prefetch" href="/blog/assets/js/134.818da5b5.js"><link rel="prefetch" href="/blog/assets/js/135.30464616.js"><link rel="prefetch" href="/blog/assets/js/136.73dc1554.js"><link rel="prefetch" href="/blog/assets/js/137.9353e543.js"><link rel="prefetch" href="/blog/assets/js/138.e131cb38.js"><link rel="prefetch" href="/blog/assets/js/139.0443fc29.js"><link rel="prefetch" href="/blog/assets/js/14.414794fb.js"><link rel="prefetch" href="/blog/assets/js/140.0a66e837.js"><link rel="prefetch" href="/blog/assets/js/141.070ca152.js"><link rel="prefetch" href="/blog/assets/js/142.674e95f2.js"><link rel="prefetch" href="/blog/assets/js/143.36a65bcf.js"><link rel="prefetch" href="/blog/assets/js/144.88ab0348.js"><link rel="prefetch" href="/blog/assets/js/145.8108a3e4.js"><link rel="prefetch" href="/blog/assets/js/146.7cc38cdd.js"><link rel="prefetch" href="/blog/assets/js/147.5c67050f.js"><link rel="prefetch" href="/blog/assets/js/148.3ff31f51.js"><link rel="prefetch" href="/blog/assets/js/149.75e65991.js"><link rel="prefetch" href="/blog/assets/js/15.f50507ad.js"><link rel="prefetch" href="/blog/assets/js/150.59d103ef.js"><link rel="prefetch" href="/blog/assets/js/151.2af10e91.js"><link rel="prefetch" href="/blog/assets/js/152.fb23137c.js"><link rel="prefetch" href="/blog/assets/js/153.76d4f705.js"><link rel="prefetch" href="/blog/assets/js/154.cbc2e62f.js"><link rel="prefetch" href="/blog/assets/js/155.f0ebde67.js"><link rel="prefetch" href="/blog/assets/js/156.2def108b.js"><link rel="prefetch" href="/blog/assets/js/157.1c144be8.js"><link rel="prefetch" href="/blog/assets/js/158.ed93ecfb.js"><link rel="prefetch" href="/blog/assets/js/159.9737a613.js"><link rel="prefetch" href="/blog/assets/js/16.8af324c8.js"><link rel="prefetch" href="/blog/assets/js/160.6754badf.js"><link rel="prefetch" href="/blog/assets/js/161.9502f065.js"><link rel="prefetch" href="/blog/assets/js/162.52f0a4bd.js"><link rel="prefetch" href="/blog/assets/js/163.9d733ff6.js"><link rel="prefetch" href="/blog/assets/js/164.07ecd24c.js"><link rel="prefetch" href="/blog/assets/js/165.33c4abc0.js"><link rel="prefetch" href="/blog/assets/js/166.a35efc51.js"><link rel="prefetch" href="/blog/assets/js/167.72bba16c.js"><link rel="prefetch" href="/blog/assets/js/168.58b6b388.js"><link rel="prefetch" href="/blog/assets/js/169.4b56cd76.js"><link rel="prefetch" href="/blog/assets/js/17.e1dee477.js"><link rel="prefetch" href="/blog/assets/js/170.5759f26d.js"><link rel="prefetch" href="/blog/assets/js/171.d8041dc1.js"><link rel="prefetch" href="/blog/assets/js/172.cd032c0b.js"><link rel="prefetch" href="/blog/assets/js/173.27159b98.js"><link rel="prefetch" href="/blog/assets/js/174.e98e427b.js"><link rel="prefetch" href="/blog/assets/js/175.e92d0ae4.js"><link rel="prefetch" href="/blog/assets/js/176.e939a83d.js"><link rel="prefetch" href="/blog/assets/js/177.ef978bde.js"><link rel="prefetch" href="/blog/assets/js/178.7cede950.js"><link rel="prefetch" href="/blog/assets/js/179.20121d4d.js"><link rel="prefetch" href="/blog/assets/js/18.aedcd3b4.js"><link rel="prefetch" href="/blog/assets/js/180.08ab3e0b.js"><link rel="prefetch" href="/blog/assets/js/181.208a47b3.js"><link rel="prefetch" href="/blog/assets/js/182.f9abeb9d.js"><link rel="prefetch" href="/blog/assets/js/183.c6fda8b2.js"><link rel="prefetch" href="/blog/assets/js/184.8888984e.js"><link rel="prefetch" href="/blog/assets/js/185.cbfe8932.js"><link rel="prefetch" href="/blog/assets/js/186.aa14003d.js"><link rel="prefetch" href="/blog/assets/js/187.0b082624.js"><link rel="prefetch" href="/blog/assets/js/188.76387af1.js"><link rel="prefetch" href="/blog/assets/js/189.1207592a.js"><link rel="prefetch" href="/blog/assets/js/19.71a3a956.js"><link rel="prefetch" href="/blog/assets/js/190.20ba5f79.js"><link rel="prefetch" href="/blog/assets/js/191.0f1b99d5.js"><link rel="prefetch" href="/blog/assets/js/192.04922345.js"><link rel="prefetch" href="/blog/assets/js/193.ccee54ae.js"><link rel="prefetch" href="/blog/assets/js/194.88c5b3f8.js"><link rel="prefetch" href="/blog/assets/js/195.3bd9a30b.js"><link rel="prefetch" href="/blog/assets/js/196.3b42ea37.js"><link rel="prefetch" href="/blog/assets/js/197.99ba23e4.js"><link rel="prefetch" href="/blog/assets/js/198.6764a9e3.js"><link rel="prefetch" href="/blog/assets/js/199.98b97aa0.js"><link rel="prefetch" href="/blog/assets/js/2.305d7f18.js"><link rel="prefetch" href="/blog/assets/js/20.ef953170.js"><link rel="prefetch" href="/blog/assets/js/200.3b391275.js"><link rel="prefetch" href="/blog/assets/js/201.c4da0449.js"><link rel="prefetch" href="/blog/assets/js/202.b62d0ce1.js"><link rel="prefetch" href="/blog/assets/js/203.4a2ea447.js"><link rel="prefetch" href="/blog/assets/js/204.ee4ca076.js"><link rel="prefetch" href="/blog/assets/js/205.654be6ea.js"><link rel="prefetch" href="/blog/assets/js/206.036bd179.js"><link rel="prefetch" href="/blog/assets/js/207.03e8b9ff.js"><link rel="prefetch" href="/blog/assets/js/208.d228e908.js"><link rel="prefetch" href="/blog/assets/js/209.253e46e1.js"><link rel="prefetch" href="/blog/assets/js/21.7190cd50.js"><link rel="prefetch" href="/blog/assets/js/210.f1ed996e.js"><link rel="prefetch" href="/blog/assets/js/211.5b47b79f.js"><link rel="prefetch" href="/blog/assets/js/212.044358d5.js"><link rel="prefetch" href="/blog/assets/js/213.47ed3ab7.js"><link rel="prefetch" href="/blog/assets/js/214.c42cbb1f.js"><link rel="prefetch" href="/blog/assets/js/215.ee83627a.js"><link rel="prefetch" href="/blog/assets/js/216.97525cbc.js"><link rel="prefetch" href="/blog/assets/js/217.11ac8523.js"><link rel="prefetch" href="/blog/assets/js/218.c9f4f2b3.js"><link rel="prefetch" href="/blog/assets/js/219.5f74f734.js"><link rel="prefetch" href="/blog/assets/js/22.593ae787.js"><link rel="prefetch" href="/blog/assets/js/220.0a13ba28.js"><link rel="prefetch" href="/blog/assets/js/221.b5503a95.js"><link rel="prefetch" href="/blog/assets/js/222.3b9416c1.js"><link rel="prefetch" href="/blog/assets/js/223.9570a713.js"><link rel="prefetch" href="/blog/assets/js/224.4e8aaf58.js"><link rel="prefetch" href="/blog/assets/js/225.1b12babf.js"><link rel="prefetch" href="/blog/assets/js/226.d8cc7c14.js"><link rel="prefetch" href="/blog/assets/js/227.79b40d6a.js"><link rel="prefetch" href="/blog/assets/js/228.21910d5a.js"><link rel="prefetch" href="/blog/assets/js/229.30b51d12.js"><link rel="prefetch" href="/blog/assets/js/23.2dd50afb.js"><link rel="prefetch" href="/blog/assets/js/230.d42a9a38.js"><link rel="prefetch" href="/blog/assets/js/231.791869c0.js"><link rel="prefetch" href="/blog/assets/js/232.0892177e.js"><link rel="prefetch" href="/blog/assets/js/233.9aaf9bbb.js"><link rel="prefetch" href="/blog/assets/js/234.1002b345.js"><link rel="prefetch" href="/blog/assets/js/235.619d2b1e.js"><link rel="prefetch" href="/blog/assets/js/236.1ad24da3.js"><link rel="prefetch" href="/blog/assets/js/237.c2d1efa6.js"><link rel="prefetch" href="/blog/assets/js/238.2373f349.js"><link rel="prefetch" href="/blog/assets/js/239.d65e33ca.js"><link rel="prefetch" href="/blog/assets/js/240.36e57681.js"><link rel="prefetch" href="/blog/assets/js/241.4c8cce20.js"><link rel="prefetch" href="/blog/assets/js/242.29a82a61.js"><link rel="prefetch" href="/blog/assets/js/243.42035d3c.js"><link rel="prefetch" href="/blog/assets/js/244.c039e764.js"><link rel="prefetch" href="/blog/assets/js/245.84554679.js"><link rel="prefetch" href="/blog/assets/js/246.f8274aa5.js"><link rel="prefetch" href="/blog/assets/js/247.da5cacf5.js"><link rel="prefetch" href="/blog/assets/js/248.aa8417d2.js"><link rel="prefetch" href="/blog/assets/js/249.a614abb9.js"><link rel="prefetch" href="/blog/assets/js/25.42af72f6.js"><link rel="prefetch" href="/blog/assets/js/250.096af39b.js"><link rel="prefetch" href="/blog/assets/js/251.45b855d5.js"><link rel="prefetch" href="/blog/assets/js/252.ea0a27a2.js"><link rel="prefetch" href="/blog/assets/js/253.12a895af.js"><link rel="prefetch" href="/blog/assets/js/254.7352cd0f.js"><link rel="prefetch" href="/blog/assets/js/255.041c56c2.js"><link rel="prefetch" href="/blog/assets/js/256.fe3aa3d8.js"><link rel="prefetch" href="/blog/assets/js/257.f81a2d94.js"><link rel="prefetch" href="/blog/assets/js/258.ea729895.js"><link rel="prefetch" href="/blog/assets/js/259.ea4d1657.js"><link rel="prefetch" href="/blog/assets/js/26.976f03dd.js"><link rel="prefetch" href="/blog/assets/js/260.040211d7.js"><link rel="prefetch" href="/blog/assets/js/261.3fde685b.js"><link rel="prefetch" href="/blog/assets/js/262.f055e783.js"><link rel="prefetch" href="/blog/assets/js/263.351d8106.js"><link rel="prefetch" href="/blog/assets/js/264.d0d5826a.js"><link rel="prefetch" href="/blog/assets/js/265.ddf08330.js"><link rel="prefetch" href="/blog/assets/js/266.aec7b24b.js"><link rel="prefetch" href="/blog/assets/js/267.0e5716e6.js"><link rel="prefetch" href="/blog/assets/js/268.68074979.js"><link rel="prefetch" href="/blog/assets/js/269.8739b95a.js"><link rel="prefetch" href="/blog/assets/js/27.b02deaf4.js"><link rel="prefetch" href="/blog/assets/js/270.968af81c.js"><link rel="prefetch" href="/blog/assets/js/28.59574d94.js"><link rel="prefetch" href="/blog/assets/js/29.5312c870.js"><link rel="prefetch" href="/blog/assets/js/30.fca86d2c.js"><link rel="prefetch" href="/blog/assets/js/31.40a7e5fc.js"><link rel="prefetch" href="/blog/assets/js/32.31d1fc74.js"><link rel="prefetch" href="/blog/assets/js/33.9e9da730.js"><link rel="prefetch" href="/blog/assets/js/34.92c520e0.js"><link rel="prefetch" href="/blog/assets/js/35.a4ab1f65.js"><link rel="prefetch" href="/blog/assets/js/36.8baa7b2c.js"><link rel="prefetch" href="/blog/assets/js/37.e5823b3b.js"><link rel="prefetch" href="/blog/assets/js/38.6796171b.js"><link rel="prefetch" href="/blog/assets/js/39.a68a9d9f.js"><link rel="prefetch" href="/blog/assets/js/4.81d7a4a5.js"><link rel="prefetch" href="/blog/assets/js/40.7439b92d.js"><link rel="prefetch" href="/blog/assets/js/41.6c07a68d.js"><link rel="prefetch" href="/blog/assets/js/42.26b135bc.js"><link rel="prefetch" href="/blog/assets/js/43.fbfc2c30.js"><link rel="prefetch" href="/blog/assets/js/44.b0cfb782.js"><link rel="prefetch" href="/blog/assets/js/45.de62cb60.js"><link rel="prefetch" href="/blog/assets/js/46.c85ca9e3.js"><link rel="prefetch" href="/blog/assets/js/47.6043b490.js"><link rel="prefetch" href="/blog/assets/js/48.0b84e410.js"><link rel="prefetch" href="/blog/assets/js/49.395652cc.js"><link rel="prefetch" href="/blog/assets/js/5.7ea25842.js"><link rel="prefetch" href="/blog/assets/js/50.5951bc7f.js"><link rel="prefetch" href="/blog/assets/js/51.73163096.js"><link rel="prefetch" href="/blog/assets/js/52.bd6189ec.js"><link rel="prefetch" href="/blog/assets/js/53.02a3a241.js"><link rel="prefetch" href="/blog/assets/js/54.4296219c.js"><link rel="prefetch" href="/blog/assets/js/55.6e10ee88.js"><link rel="prefetch" href="/blog/assets/js/56.37468d50.js"><link rel="prefetch" href="/blog/assets/js/57.4cc896a4.js"><link rel="prefetch" href="/blog/assets/js/58.25b93d02.js"><link rel="prefetch" href="/blog/assets/js/59.2fc70fd3.js"><link rel="prefetch" href="/blog/assets/js/6.5d85bf19.js"><link rel="prefetch" href="/blog/assets/js/60.97d4ab3f.js"><link rel="prefetch" href="/blog/assets/js/61.4e0a9421.js"><link rel="prefetch" href="/blog/assets/js/62.5c8e434a.js"><link rel="prefetch" href="/blog/assets/js/63.9f0ec4bf.js"><link rel="prefetch" href="/blog/assets/js/64.485670d8.js"><link rel="prefetch" href="/blog/assets/js/65.bf839e77.js"><link rel="prefetch" href="/blog/assets/js/66.cfa34a32.js"><link rel="prefetch" href="/blog/assets/js/67.8bf4b24f.js"><link rel="prefetch" href="/blog/assets/js/68.86d68cf9.js"><link rel="prefetch" href="/blog/assets/js/69.3c5fb947.js"><link rel="prefetch" href="/blog/assets/js/7.95a44012.js"><link rel="prefetch" href="/blog/assets/js/70.71c73939.js"><link rel="prefetch" href="/blog/assets/js/71.6f40d6cd.js"><link rel="prefetch" href="/blog/assets/js/72.51c01c8b.js"><link rel="prefetch" href="/blog/assets/js/73.6ce18ec4.js"><link rel="prefetch" href="/blog/assets/js/74.e6e2d5b0.js"><link rel="prefetch" href="/blog/assets/js/75.1fdd9199.js"><link rel="prefetch" href="/blog/assets/js/76.822d0dda.js"><link rel="prefetch" href="/blog/assets/js/77.07fe61e3.js"><link rel="prefetch" href="/blog/assets/js/78.3a503253.js"><link rel="prefetch" href="/blog/assets/js/79.fbbbaab7.js"><link rel="prefetch" href="/blog/assets/js/8.4daec306.js"><link rel="prefetch" href="/blog/assets/js/80.2f3219e7.js"><link rel="prefetch" href="/blog/assets/js/81.d37198bc.js"><link rel="prefetch" href="/blog/assets/js/82.fd445f39.js"><link rel="prefetch" href="/blog/assets/js/83.00be90ec.js"><link rel="prefetch" href="/blog/assets/js/84.40aac1c4.js"><link rel="prefetch" href="/blog/assets/js/85.6ca8b74f.js"><link rel="prefetch" href="/blog/assets/js/86.50779298.js"><link rel="prefetch" href="/blog/assets/js/87.d8d9994b.js"><link rel="prefetch" href="/blog/assets/js/88.97a4de74.js"><link rel="prefetch" href="/blog/assets/js/89.7383449a.js"><link rel="prefetch" href="/blog/assets/js/9.17630656.js"><link rel="prefetch" href="/blog/assets/js/90.61983518.js"><link rel="prefetch" href="/blog/assets/js/91.b31af2bb.js"><link rel="prefetch" href="/blog/assets/js/92.07dbce34.js"><link rel="prefetch" href="/blog/assets/js/93.a1a7ecc6.js"><link rel="prefetch" href="/blog/assets/js/94.082bbed4.js"><link rel="prefetch" href="/blog/assets/js/95.b0e3563d.js"><link rel="prefetch" href="/blog/assets/js/96.b6bebd5f.js"><link rel="prefetch" href="/blog/assets/js/97.6cefa365.js"><link rel="prefetch" href="/blog/assets/js/98.aed6e859.js"><link rel="prefetch" href="/blog/assets/js/99.0e004e38.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link router-link-active">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link router-link-active">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/50_infra_devops/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Git, GitHub</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Docker</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/50_infra_devops/53_Docker/210101_start_docker.html" aria-current="page" class="active sidebar-link">Docker 시작하기</a></li><li><a href="/blog/post/50_infra_devops/53_Docker/210103_docker_compose.html" class="sidebar-link">Docker Compose</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Kubernetes</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#virtual-machine">Virtual Machine</a></li><li><a href="#docker">Docker</a></li><li><a href="#docker의-장점">Docker의 장점</a></li><li><a href="#virtual-machine-vs-docker">Virtual Machine vs. Docker</a></li><li><a href="#설치">설치</a><ul><li><a href="#mac-os에-docker-설치">Mac OS에 Docker 설치</a></li></ul></li><li><a href="#도커-이미지-검색">도커 이미지 검색</a></li><li><a href="#도커-이미지-다운로드">도커 이미지 다운로드</a></li><li><a href="#다운받은-도커-이미지-확인">다운받은 도커 이미지 확인</a></li><li><a href="#도커-컨테이너-생성">도커 컨테이너 생성</a></li><li><a href="#도커-컨테이너-실행">도커 컨테이너 실행</a></li><li><a href="#도커-컨테이너-접속하기">도커 컨테이너 접속하기</a><ul><li><a href="#docker-attach">docker attach</a></li><li><a href="#docker-exec-it">docker exec -it</a></li><li><a href="#docker-run">docker run</a></li></ul></li><li><a href="#도커-컨테이너-정지">도커 컨테이너 정지</a></li><li><a href="#도커-컨테이너-목록-상태-확인">도커 컨테이너 목록, 상태 확인</a></li><li><a href="#도커-컨테이너-삭제">도커 컨테이너 삭제</a></li><li><a href="#도커-이미지-만들기">도커 이미지 만들기</a></li><li><a href="#도커-이미지-삭제">도커 이미지 삭제</a></li><li><a href="#도커-이미지-이름-태그-변경하기">도커 이미지 이름, 태그 변경하기</a></li><li><a href="#docker-volume">Docker Volume</a><ul><li><a href="#호스트-볼륨-공유">호스트 볼륨 공유</a></li><li><a href="#컨테이너-볼륨-공유">컨테이너 볼륨 공유</a></li><li><a href="#도커-볼륨">도커 볼륨</a></li></ul></li><li><a href="#container-registry">Container Registry</a></li><li><a href="#도커-허브">도커 허브</a><ul><li><a href="#도커-허브로-이미지-배포하기">도커 허브로 이미지 배포하기</a></li><li><a href="#도커-허브에서-이미지-다운받기">도커 허브에서 이미지 다운받기</a></li></ul></li><li><a href="#ecr">ECR</a><ul><li><a href="#ecr에-저장소-생성하기">ECR에 저장소 생성하기</a></li><li><a href="#iam-사용자-생성하기">IAM 사용자 생성하기</a></li><li><a href="#aws-cli-설치">AWS CLI 설치</a></li><li><a href="#이미지-push">이미지 Push</a></li><li><a href="#이미지-pull">이미지 Pull</a></li></ul></li><li><a href="#dockerfile-파일">Dockerfile 파일</a><ul><li><a href="#docker-build-명령어">docker build 명령어</a></li><li><a href="#dockerfile-명령어">Dockerfile 명령어</a><ul><li><a href="#from">FROM</a></li><li><a href="#workdir">WORKDIR</a></li><li><a href="#copy">COPY</a></li><li><a href="#add">ADD</a></li><li><a href="#run">RUN</a></li><li><a href="#arg">ARG</a></li><li><a href="#env">ENV</a></li><li><a href="#arg">ARG</a></li><li><a href="#entrypoint">ENTRYPOINT</a></li><li><a href="#expose">EXPOSE</a></li></ul></li></ul></li></ul></div><p></p> <h1 id="docker"><a href="#docker" class="header-anchor">#</a> Docker</h1> <p><code>Docker</code> 사용법에 대해 정리한다.</p> <h2 id="virtual-machine"><a href="#virtual-machine" class="header-anchor">#</a> Virtual Machine</h2> <p>호스트 OS에 가상의 여러 게스트 OS를 가상화하는 기술이다. 제품군에는 <code>VirtualBox</code>, <code>VMWare</code> 등이 있다.</p> <h2 id="docker-2"><a href="#docker-2" class="header-anchor">#</a> Docker</h2> <p><b><code>Docker</code></b>는 호스트 OS에 <code>Docker Container</code>라는 격리된 공간을 제공해주는 컨테이너 가상화 기술이다.</p> <h2 id="docker의-장점"><a href="#docker의-장점" class="header-anchor">#</a> Docker의 장점</h2> <ul><li>호스트 OS에 <code>Docker container</code>라는 격리된 공간을 제공해주는 컨테이너 가상화 기술</li> <li><code>Docker Container</code>를 <code>Docker Image</code>로 빌드하면 도커 엔진이 설치된 어느 곳에든 쉽게 배포할 수 있다.</li> <li><code>Kubernetes</code>같은 <code>컨테이너 오케스트레이션 기술</code>과 함께 사용하여 <code>MSA(Microservice Architecuture)</code>를 쉽게 구성할 수 있다.</li></ul> <h2 id="virtual-machine-vs-docker"><a href="#virtual-machine-vs-docker" class="header-anchor">#</a> Virtual Machine vs. Docker</h2> <p>가상머신은 게스트 OS와 하이버바이저를 거쳐 호스트 OS의 커널과 자원을 사용하기 때문에 성능 손실이 발생한다. 반면 Docker는 하이버파이저와 게스트 OS가 없고 도커 엔진만을 거쳐 호스트 OS의 커널과 자원을 사용하며, 호스트 OS에서 프로세스로 동작하기 때문에 속도가 훨씬 빠르다</p> <p><img src="/blog/assets/img/1.7d307718.png" alt=""></p> <h2 id="설치"><a href="#설치" class="header-anchor">#</a> 설치</h2> <p>운영체제에 따라 <code>Docker</code>를 설치하는 방법이 다르다.</p> <h3 id="mac-os에-docker-설치"><a href="#mac-os에-docker-설치" class="header-anchor">#</a> Mac OS에 Docker 설치</h3> <p>Mac OS 환경에서는 <a href="https://brew.sh/" target="_blank" rel="noopener noreferrer">Homebrew<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>로 <code>Docker Desktop on Mac</code>을 쉽게 설치할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew install --cask docker 
+</code></pre></div><p>도커 버전을 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker -v
+Docker version 20.10.11, build dea9396
+</code></pre></div><p><code>LaunchPad</code>에서도 <code>Docker Desktop on Mac</code>을 확인할 수 있다.</p> <p><img src="/blog/assets/img/2.3df7f139.png" alt=""></p> <h2 id="도커-이미지-검색"><a href="#도커-이미지-검색" class="header-anchor">#</a> 도커 이미지 검색</h2> <p><code>docker search &lt;IMAGE_NAME&gt;</code> 명령어로 도커 이미지를 검색할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker search centos
+</code></pre></div><h2 id="도커-이미지-다운로드"><a href="#도커-이미지-다운로드" class="header-anchor">#</a> 도커 이미지 다운로드</h2> <p><code>docker pull &lt;IMAGE_NAME&gt;</code>명령어로 도커 이미지를 다운받을 수 있다. <code>centos:7</code> 이미지를 다운받아보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker pull centos:7
+</code></pre></div><h2 id="다운받은-도커-이미지-확인"><a href="#다운받은-도커-이미지-확인" class="header-anchor">#</a> 다운받은 도커 이미지 확인</h2> <p><code>docker images</code> 명령어로 다운받은 도커 이미지 목록을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker images
+REPOSITORY          TAG       IMAGE ID       CREATED        SIZE
+centos              7         eeb6ee3f44bd   3 months ago   204MB
+</code></pre></div><h2 id="도커-컨테이너-생성"><a href="#도커-컨테이너-생성" class="header-anchor">#</a> 도커 컨테이너 생성</h2> <p><code>docker create --name &lt;CONTAINER&gt; &lt;IMAGE&gt;</code> 명령어로 도커 컨테이너를 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker create --name my_centos centos:7
+</code></pre></div><p><code>-i -t</code> 옵션을 추가하여 컨테이너를 생성하면 <code>docker attach</code> 명령어로 컨테이너 내부에 진입할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker create -i -t --name my_centos centos:7
+</code></pre></div><p><code>-d</code> 옵션을 추가하면 컨테이너를 생성하면 백그라운드로 실행된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker create -d --name my_centos centos:7
+</code></pre></div><p>백그라운드로 실행되는 컨테이너에 <code>docker attach</code>로 접속하면 커맨드는 입력할 수 없고 출력되는 로그만 확인할 수 있다.</p> <p>자세한 실행 옵션은 <a href="https://docs.docker.com/engine/reference/commandline/create/" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 확인할 수 있다.</p> <h2 id="도커-컨테이너-실행"><a href="#도커-컨테이너-실행" class="header-anchor">#</a> 도커 컨테이너 실행</h2> <p><code>docker start &lt;CONTAINER&gt;</code> 명령어로 도커 컨테이너를 시작한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker start my_centos
+
+$ docker ps -al          
+CONTAINER ID   IMAGE      COMMAND       CREATED          STATUS         PORTS     NAMES
+b5df63051a50   centos:7   &quot;/bin/bash&quot;   28 seconds ago   Up 3 seconds             my_centos
+</code></pre></div><h2 id="도커-컨테이너-접속하기"><a href="#도커-컨테이너-접속하기" class="header-anchor">#</a> 도커 컨테이너 접속하기</h2> <p>도커 컨테이너에는 두 가지 명령어로 접속할 수 있다.</p> <h3 id="docker-attach"><a href="#docker-attach" class="header-anchor">#</a> docker attach</h3> <p><code>docker attach &lt;CONTAINER_NAME&gt;</code> 또는 <code>docker attach &lt;CONTAINER_ID&gt;</code>명령어로 컨테이너 내부로 접속할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker attach my_centos
+[root@a9adb823231 /]# 
+</code></pre></div><p>백그라운드로 실행되는 컨테이너에 <code>docker attach</code>로 접속하면 커맨드는 입력할 수 없고 출력되는 로그만 확인할 수 있다.</p> <p><code>exit</code>을 입력하여 컨테이너에서 빠져나올 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>[root@a9adb823231 /]# exit 
+</code></pre></div><p>참고로 <code>exit</code>을 사용하여 컨테이너에서 빠져나오면 컨테이너도 종료된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker ps -a
+CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS                       PORTS     NAMES
+b5df63051a50   centos:7   &quot;/bin/bash&quot;   4 minutes ago   Exited (127) 4 seconds ago             my_centos
+</code></pre></div><p>컨테이너를 종료시키지 않고 빠져나오려면 <code>Ctrl + P, Q</code>를 입력한다. 이를 <code>Detach</code>라고 한다.</p> <h3 id="docker-exec-it"><a href="#docker-exec-it" class="header-anchor">#</a> docker exec -it</h3> <p><code>docker exec -it &lt;CONTAINER&gt; &lt;SHELL&gt;</code> 명령어는 별도의 쉘 세션을 생성하여 컨테이너에 접속한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker exec -it 75ef6d64fead /bin/bash 
+bash-5.1# ls
+</code></pre></div><p><code>docker exec -it</code> 명령어로 컨테이너에 접속한 경우 <code>exit</code> 명령어로 빠져나와도 컨테이너가 종료되지 않는다. 따라서 데몬 컨테이너에 접근하는데 사용할 수 있다.</p> <h3 id="docker-run"><a href="#docker-run" class="header-anchor">#</a> docker run</h3> <p><code>docker run -i -t --name [container_name] [image_name]</code> 명령어를 사용하면 도커 이미지 다운, 도커 컨테이너 생성, 시작, 접속을 한 번에 할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker run -i -t --name my_centos ubuntu:14.04
+root@bdccae5606a1:/#
+</code></pre></div><h2 id="도커-컨테이너-정지"><a href="#도커-컨테이너-정지" class="header-anchor">#</a> 도커 컨테이너 정지</h2> <p><code>docker stop &lt;container_name&gt;</code> 명령어를 사용하면 도커 컨테이너를 정지할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker stop my_centos
+</code></pre></div><h2 id="도커-컨테이너-목록-상태-확인"><a href="#도커-컨테이너-목록-상태-확인" class="header-anchor">#</a> 도커 컨테이너 목록, 상태 확인</h2> <p><code>docker ps</code>명령어로 도커 컨테이너 목록을 확인할 수 있다. 어떤 옵션도 추가하지 않으면 실행 중인 컨테이너 목록만 출력된다. 정지된 컨테이너 목록까지 확인하려면 <code>-a</code> 옵션을 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker ps -a
+CONTAINER ID   IMAGE      COMMAND       CREATED         STATUS    PORTS     NAMES
+b5df63051a50   centos:7   &quot;/bin/bash&quot;   7 seconds ago   Created             my_centos
+</code></pre></div><p><code>STATUS</code>는 컨테이너의 상태를 나타내며 다음 값들을 가질 수 있다.</p> <ul><li><code>Created</code>: 컨테이너가 생성되었으나 한번도 실행된 적이 없는 상태</li> <li><code>Up</code>: 실행 중</li> <li><code>Exited</code>: 종료된 상태</li> <li><code>Pause</code>: 일시 중지된 상태</li></ul> <h2 id="도커-컨테이너-삭제"><a href="#도커-컨테이너-삭제" class="header-anchor">#</a> 도커 컨테이너 삭제</h2> <p><code>docker rm &lt;container_name&gt;</code> 명령어를 사용하면 도커 컨테이너를 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker rm my_centos
+</code></pre></div><p><code>docker container prune</code> 명령어는 모든 도커 컨테이너를 삭제한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker container prune
+</code></pre></div><h2 id="도커-이미지-만들기"><a href="#도커-이미지-만들기" class="header-anchor">#</a> 도커 이미지 만들기</h2> <p><code>docker commit -a &lt;AUTHOR&gt; -m &lt;MESSAGE&gt; &lt;ORIGINAL_IMAGE&gt; &lt;COPIED_CONTAINER&gt;:&lt;TAG&gt;</code>명령어를 사용하면 도커 컨테이너를 빌드하여 도커 이미지를 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker images
+REPOSITORY          TAG       IMAGE ID       CREATED         SIZE
+original_image      3.1     0903d3cdd37e   12 months ago   211MB
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ docker commit -a &quot;yologger&quot; -m &quot;This is message&quot; original_image copied_image:0.0.1
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>$ docker images
+REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
+original_image      3.1     0903d3cdd37e   12 months ago   211MB
+copied_image        0.1     0903d3cdd37e   4 seconds ago   211MB
+</code></pre></div><h2 id="도커-이미지-삭제"><a href="#도커-이미지-삭제" class="header-anchor">#</a> 도커 이미지 삭제</h2> <p><code>docker image rmi</code> 명령어로 이미지를 삭제할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br></div><pre class="language-text"><code>$ docker images
+REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
+original_image      3.1     0903d3cdd37e   12 months ago   211MB
+copied_image        0.1     0903d3cdd37e   4 seconds ago   211MB
+
+$ docker rmi copied_image:0.1
+
+$ docker images
+REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
+original_image      3.1     0903d3cdd37e   12 months ago   211MB
+</code></pre></div><p>도커 이미지가 도커 컨테이너로 사용 중이라면 컨테이너를 먼저 삭제해야한다.</p> <h2 id="도커-이미지-이름-태그-변경하기"><a href="#도커-이미지-이름-태그-변경하기" class="header-anchor">#</a> 도커 이미지 이름, 태그 변경하기</h2> <p><code>docker tag &lt;기존이미지명:기존태그명&gt; &lt;새로운이미지명:새로운태그명&gt;</code>명령어로 이미지 이름과 태그를 변경할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker images
+REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
+original_image      3.1     0903d3cdd37e   12 months ago   211MB
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ docker tag copied_image:0.1 new_image:0.1
+</code></pre></div><p>기존 이미지가 사라지는 것은 아니며, 새로운 이미지가 생성된다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>$ docker images
+REPOSITORY          TAG     IMAGE ID       CREATED         SIZE
+original_image      3.1     0903d3cdd37e   12 months ago   211MB
+new_image           0.1     eeb6ee3f44bd   4 seconds ago   211MB
+</code></pre></div><h2 id="docker-volume"><a href="#docker-volume" class="header-anchor">#</a> Docker Volume</h2> <p>도커 컨테이너는 내부 파일시스템에 데이터를 저장할 수 있다. 그러나 이 파일시스템은 컨테이너가 삭제되었을 때 함께 사라진다. <code>도커 볼륨(Docker Volume)</code>은 컨테이너에 종속되지 않는 저장소를 제공한다.</p> <p>도커 볼륨은 세 가지 종류가 있다.</p> <ul><li>호스트 볼륨 공유</li> <li>컨테이너 볼륨 공유</li> <li>도커 볼륨</li></ul> <h3 id="호스트-볼륨-공유"><a href="#호스트-볼륨-공유" class="header-anchor">#</a> 호스트 볼륨 공유</h3> <p>도커 컨테이너는 호스트의 볼륨을 공유할 수 있다. 도커 컨테이너를 생성할 때 <code>-v</code> 또는 <code>--volume</code> 옵션으로 호스트의 볼륨과 컨테이너의 볼륨을 바인딩할 수 있다.</p> <p>우선 호스트 OS에 <code>mydata</code> 디렉토리를 생성하자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ mkdir mydata
+
+$ cd mydata
+
+$ pwd
+/Users/yologger/mydata
+</code></pre></div><p>이제 호스트 OS의 디렉토리를 공유하는 Ubuntu 컨테이너를 생성해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker create -i -t \
+--name my_container \
+-v /Users/yologger/mydata:/mydata \
+ubuntu:14.04
+</code></pre></div><p>위 명령어는 호스트 파일시스템의 <code>/Users/yologger/mydata</code>를 도커 컨테이너 파일시스템 <code>/mydata</code>과 바인딩한다. 도커 컨테이너에 <code>/mydata</code> 디렉토리가 없다면 자동으로 생성된다.</p> <p>이제 도커 컨테이너 내부에 접속하여 <code>/mydata</code> 디렉토리가 존재하는지 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker start my_container
+
+$ docker attach my_container
+
+root@308220530da1:/# ls
+mydata 
+...
+</code></pre></div><p>도커 컨테이너에도 <code>mydata</code> 디렉토리가 생성된 것을 확인할 수 있다. 이제 이 디렉토리 안에 파일을 생성해본다.</p> <div class="language- extra-class"><pre class="language-text"><code>root@308220530da1:/# cd mydata
+
+root@308220530da1:/mydata# echo &quot;Hello world&quot; &gt; hello.txt
+</code></pre></div><p>도커 컨테이너에서 빠져나와 호스트 OS의 <code>/Users/yologger/mydata</code>를 확인해본다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ ls
+hello.txt
+</code></pre></div><h3 id="컨테이너-볼륨-공유"><a href="#컨테이너-볼륨-공유" class="header-anchor">#</a> 컨테이너 볼륨 공유</h3> <p>지금까지 <code>-v</code> 옵션으로 볼륨을 사용하는 컨테이너를 생성했다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker create -i -t \
+--name my_container \
+-v /Users/yologger/mydata:/mydata \
+ubuntu:14.04
+</code></pre></div><p><code>--volumes-from</code> 옵션을 사용하면 이미 볼륨을 사용하는 다른 컨테이너의 볼륨을 공유할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>$ docker create -i -t \
+--name your_container \
+--volumes-from my_container \
+ubuntu:14.04
+</code></pre></div><p>이제 <code>my_container</code>와 <code>your_container</code>는 호스트의 <code>/Users/yologger/mydata:/mydata</code> 디렉토리를 공유하게 된다. <code>your_container</code>에서도 <code>/mydata</code> 디렉토리를 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker start your_container
+
+$ docker attach your_container
+
+root@6c256b3cb679:/# ls
+mydata
+...
+
+root@6c256b3cb679:/# cat /mydata/hello.txt
+Hello World
+</code></pre></div><h3 id="도커-볼륨"><a href="#도커-볼륨" class="header-anchor">#</a> 도커 볼륨</h3> <p><code>도커 볼륨</code>은 도커 엔진이 직접 관리하는 볼륨이다. <code>docker volume</code> 명령어로 도커 볼륨을 관리할 수 있다.</p> <p><code>docker volume create &lt;볼륨 이름&gt;</code> 명령어로 볼륨을 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker volume create my_volume
+</code></pre></div><p><code>docker volume ls</code> 명령어로 볼륨 목록을 조회할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker volume ls
+DRIVER    VOLUME NAME
+local     my_volume
+...
+</code></pre></div><p><code>docker inspect volume &lt;볼륨 이름&gt;</code> 명령어로 호스트 OS에서 볼륨이 실제로 저장되는 위치를 확인할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br></div><pre class="language-text"><code>$ docker inspect --type volume my_volume
+[
+    {
+        &quot;CreatedAt&quot;: &quot;2022-05-05T04:08:30Z&quot;,
+        &quot;Driver&quot;: &quot;local&quot;,
+        &quot;Labels&quot;: {},
+        &quot;Mountpoint&quot;: &quot;/var/lib/docker/volumes/my_volume/_data&quot;,
+        &quot;Name&quot;: &quot;my_volume&quot;,
+        &quot;Options&quot;: {},
+        &quot;Scope&quot;: &quot;local&quot;
+    }
+]
+</code></pre></div><p>이제 볼륨을 사용하는 컨테이너를 생성해보자.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>$ docker create -i -t \
+--name my_container \
+-v my_volume:/mydata \
+ubuntu:14.04
+</code></pre></div><p>도커 볼륨과 바인딩 되었는지 확인해보자.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>$ docker start my_container
+my_container
+
+$ docker attach my_container
+
+root@248ff308623a:/# ls 
+mydata
+...
+</code></pre></div><p><code>docker volume rm &lt;볼륨 이름&gt;</code> 명령어로 볼륨을 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker volume rm my_volume
+</code></pre></div><h2 id="container-registry"><a href="#container-registry" class="header-anchor">#</a> Container Registry</h2> <p><code>컨테이너 레지스트리(Container Registery)</code>는 도커 이미지를 저장할 수 있는 저장소다. 저장소를 원격 서버에 구축할 수도 있고 온프레미스 서버에 구축할 수도 있다. 대표적인 컨테이너 레지스트리는 다음과 같다.</p> <ul><li>Docker Hub</li> <li>AWS ECR (Elastic Container Registry)</li> <li>GCR (Google Container Registry)</li> <li>GHCR (GitHub Container Registry)</li></ul> <h2 id="도커-허브"><a href="#도커-허브" class="header-anchor">#</a> 도커 허브</h2> <p><a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">도커 허브(Docker Hub)<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>는 도커 이미지를 저장할 수 있는 원격 저장소다. 도커 허브는 크게 세 가지의 저장소를 제공한다.</p> <ul><li><code>Public repository</code>: 공개 원격 저장소, 무료 플랜 시 무제한 사용 가능하다.</li> <li><code>Private repository</code>: 비공개 원격 저장소, 무료 플랜 시 1개를 무료로 사용할 수 있다.</li> <li><code>Private registry</code>: 개인 서버에 구축하는 저장소</li></ul> <p>저장소에 따라 가격 정책이 다르며, <a href="https://hub.docker.com/billing/plan/update" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 확인할 수 있다.</p> <h3 id="도커-허브로-이미지-배포하기"><a href="#도커-허브로-이미지-배포하기" class="header-anchor">#</a> 도커 허브로 이미지 배포하기</h3> <p><code>Docker Hub</code>의 <code>Repository</code>를 사용하면 도커 이미지를 배포할 수 있다. <a href="https://hub.docker.com/" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에 접속하여 회원가입 후 <code>Repository &gt; Create Repository</code>를 클릭한다. 그리고 <code>Repository</code> 이름을 입력하고 Repository를 생성한다.</p> <div class="custom-block warning"><p class="custom-block-title">WARNING</p> <p>Repository의 이름은 이미지의 이름과 동일해야한다.</p></div> <p><img src="/blog/assets/img/3.d7f1e95a.png" alt=""></p> <p>생성에 성공하면 Repository 정보를 확인할 수 있다.</p> <p><img src="/blog/assets/img/4.b73e0c4d.png" alt=""></p> <p>이제 업로드할 이미지 이름 앞에 <b><u>사용자 이름</u></b>을 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker tag test_image:0.1 yologger1013/test_image:0.1
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+test_image                  0.1       0903d3cdd37e   41 minutes ago   211MB
+yologger1013/test_image     0.1       0903d3cdd37e   41 minutes ago   211MB
+</code></pre></div><p>그리고 <code>docker login</code> 명령어로 도커 허브에 로그인한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: yologger1013
+Password: 
+Login Succeeded
+
+Logging in with your password grants your terminal complete access to your account. 
+For better security, log in with a limited-privilege personal access token. Learn more at https://docs.docker.com/go/access-tokens/
+</code></pre></div><p>마지막으로 <code>docker push</code> 명령어로 이미지를 업로드한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker push yologger1013/test_image:0.1
+The push refers to repository [docker.io/yologger1013/test_image]
+d4b7a766cea6: Pushed 
+83109fa660b2: Mounted from library/ubuntu 
+30d3c4334a23: Mounted from library/ubuntu 
+f2fa9f4cf8fd: Mounted from library/ubuntu 
+0.1: digest: sha256:a7770184b5c0020cf9832e68509957bbca4498a4916c92a453047f184729e7f2 size: 1157
+</code></pre></div><p>도커 허브에서 푸시한 이미지를 확인할 수 있다.</p> <p><img src="/blog/assets/img/6.fe253fa2.png" alt=""></p> <h3 id="도커-허브에서-이미지-다운받기"><a href="#도커-허브에서-이미지-다운받기" class="header-anchor">#</a> 도커 허브에서 이미지 다운받기</h3> <p><code>docker pull</code> 명령어로 도커 허브에서 이미지를 다운받을 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker pull yologger1013/test_image:0.1 
+
+$ docker images
+REPOSITORY                TAG       IMAGE ID       CREATED          SIZE
+yologger1013/test_image   0.1       0903d3cdd37e   56 minutes ago   211MB
+</code></pre></div><h2 id="ecr"><a href="#ecr" class="header-anchor">#</a> ECR</h2> <p><code>AWS ECR(Elastic Container Registry)</code>도 도커 이미지를 저장할 수 있는 원격 저장소다.</p> <h3 id="ecr에-저장소-생성하기"><a href="#ecr에-저장소-생성하기" class="header-anchor">#</a> ECR에 저장소 생성하기</h3> <p>먼저 AWS ECR에서 프라이빗 리포지토리를 생성한다.</p> <p><img src="/blog/assets/img/10.f8e1aa30.png" alt=""></p> <p>저장소 이름은 업로드할 이미지와 동일하도록 설정한다.</p> <p><img src="/blog/assets/img/11.315b35f1.png" alt=""></p> <h3 id="iam-사용자-생성하기"><a href="#iam-사용자-생성하기" class="header-anchor">#</a> IAM 사용자 생성하기</h3> <p><code>기존 정책 직접 연결</code>을 선택한 후</p> <p><img src="/blog/assets/img/12.dc380f8d.png" alt=""></p> <p><code>사용자 이름</code>을 입력하고 <code>프로그래밍 방식 액세스</code>를 선택한다.</p> <p><img src="/blog/assets/img/13.76163702.png" alt=""></p> <p><code>기존 정책 직접 연결</code>을 선택하고 <code>AmazonEC2ContainerRegistryFullAccess</code>를 선택한다.</p> <p><img src="/blog/assets/img/14.db2b7ea4.png" alt=""></p> <p><code>액세스 키</code>와 <code>비밀 키</code>를 기억해둔다.</p> <p><img src="/blog/assets/img/15.6450216f.png" alt=""></p> <h3 id="aws-cli-설치"><a href="#aws-cli-설치" class="header-anchor">#</a> AWS CLI 설치</h3> <p>먼저 Homebrew를 사용하여 <code>AWS CLI</code>를 설치한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew install awscli
+
+$ aws --version
+aws-cli/2.5.8 Python/3.9.12 Darwin/21.4.0 source/x86_64 prompt/off
+</code></pre></div><p><code>aws configure</code> 명령어를 입력한 후 발급 받은 <code>액세스 키</code>와 <code>비밀 키</code>를 입력한다. 네 번째 항목은 입력하지 않아도 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ aws configure
+AWS Access Key ID [None]: &lt;ACCESS_KEY&gt;
+AWS Secret Access Key [None]: &lt;SECRET_KEY&gt;
+Default region name [None]: &lt;REGION&gt;
+Default output format [None]: 
+</code></pre></div><p>이제 다음 명령어로 로그인한다. <code>Login Succeeded</code>가 출력되면 로그인에 성공한 것이다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ aws ecr get-login-password --region &lt;REGION&gt; | docker login --username AWS --password-stdin &lt;AWS_ACCOUNT_ID&gt;.dkr.ecr.&lt;REGION&gt;.amazonaws.com
+Login Succeeded
+</code></pre></div><p><code>AWS_ACCOUNT_ID</code>는 IAM 콘솔에서 확인할 수 있다.</p> <p><img src="/blog/assets/img/16.faac307a.png" alt=""></p> <h3 id="이미지-push"><a href="#이미지-push" class="header-anchor">#</a> 이미지 Push</h3> <p>이제 이미지를 푸시해보자. 우선 이미지 이름을 다음 형식으로 변경해야한다. <u>이미지 이름과 저장소 이름이 동일해야한다.</u></p> <div class="language- extra-class"><pre class="language-text"><code>$ docker tag &lt;IMAGE&gt;:&lt;TAG&gt; &lt;AWS_ACCOUNT_ID&gt;.dkr.ecr.&lt;REGION&gt;.amazonaws.com/&lt;IMAGE&gt;:&lt;TAG&gt;
+</code></pre></div><p>이제 <code>docker push</code> 명령어로 이미지를 푸시할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker push &lt;AWS_ACCOUNT_ID&gt;.dkr.ecr.&lt;REGION&gt;.amazonaws.com/&lt;IMAGE&gt;:&lt;TAG&gt;
+</code></pre></div><p>저장소에 이미지가 푸시되었다.</p> <p><img src="/blog/assets/img/19.ffc6ba0b.png" alt=""></p> <h3 id="이미지-pull"><a href="#이미지-pull" class="header-anchor">#</a> 이미지 Pull</h3> <p>다음 명령어로 이미지를 풀 할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker pull &lt;AWS_ACCOUNT_ID&gt;.dkr.ecr.&lt;REGION&gt;.amazonaws.com/&lt;IMAGE&gt;:&lt;TAG&gt;
+</code></pre></div><p>쿠버네티스 클러스터가 구축된 노드(Ubuntu Server 20.04 LTS)에서 도커 이미지를 Pull해보자.</p> <p>가장 먼저 <code>aws cli</code>를 설치한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl &quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot; -o &quot;awscliv2.zip&quot;
+$ sudo apt install unzip
+$ unzip awscliv2.zip
+$ sudo ./aws/install
+</code></pre></div><p><code>aws configure</code> 명령어로 <code>AmazonEC2ContainerRegistryFullAccess</code> 권한을 가진 사용자의 액세스 키, 비밀 키, 리전을 입력한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ aws configure
+AWS Access Key ID [None]: &lt;YOUR_ACCESS_ID&gt;
+AWS Secret Access Key [None]: &lt;YOUR_SECRET_ID&gt;
+Default region name [None]: &lt;YOUR_REGION&gt;
+Default output format [None]: 
+</code></pre></div><p>인증 정보를 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ aws configure list
+      Name                    Value             Type    Location
+      ----                    -----             ----    --------
+   profile                &lt;not set&gt;             None    None
+access_key     ****************KS4Y shared-credentials-file    
+secret_key     ****************SNC4 shared-credentials-file    
+    region           ap-northeast-2      config-file    ~/.aws/config
+</code></pre></div><p>다음 명령어로 키를 확인할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ aws configure get aws_access_key_id
+
+$ aws configure get aws_secret_access_key
+</code></pre></div><p>그 다음 명령어로 로그인한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ aws ecr get-login-password --region &lt;REGION&gt; | docker login --username AWS --password-stdin &lt;AWS_ACCOUNT_ID&gt;.dkr.ecr.&lt;REGION&gt;.amazonaws.com
+</code></pre></div><p>로그인 과정에서 다음 에러가 발생할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
+</code></pre></div><p><code>Docker</code>는 <code>/var/run/docker.sock</code>를 사용하여 ECR과 통신한다. 그런데 현재 리눅스 사용자가 이 파일이 접근할 권한이 없어 발생하는 문제다. 따라서 현재 사용자를 <code>docker</code> 그룹에 포함시켜준다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo usermod -a -G docker $USER
+</code></pre></div><p>세션을 다시 연결하고 로그인을 시도해보자. <code>Login Succeeded</code>가 출력되면 로그인에 성공한 것이다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ aws ecr get-login-password --region &lt;REGION&gt; | docker login --username AWS --password-stdin &lt;AWS_ACCOUNT_ID&gt;.dkr.ecr.&lt;REGION&gt;.amazonaws.com
+Login Succeeded
+</code></pre></div><p>이제 다음 명령어로 이미지를 다운받을 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker pull &lt;AWS_ACCOUNT_ID&gt;.dkr.ecr.&lt;REGION&gt;.amazonaws.com/&lt;IMAGE&gt;:&lt;TAG&gt;
+</code></pre></div><h2 id="dockerfile-파일"><a href="#dockerfile-파일" class="header-anchor">#</a> Dockerfile 파일</h2> <p>지금까지 다음과 같은 순서로 도커 이미지를 생성했다.</p> <ol><li>Docker image로 Docker container 생성</li> <li>Docker container에 접속하여 필요한 어플리케이션 설치</li> <li><code>docker commit</code> 명령어로 이미지 생성</li></ol> <p>이러한 과정들을 <b><code>Dockerfile</code></b>라는 스크립트 파일에 나열한 후 쉽게 도커 이미지를 생성할 수 있다.</p> <p>예제를 살펴보자. 베이스가 되는 <code>ubuntu:18.04</code> 이미지에 <code>git</code>이 설치된 새로운 이미지를 생성할 것이다. 우선 디렉토리를 생성하자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ mkdir my_project
+
+$ cd my_project 
+</code></pre></div><p>그 다음 <code>Dockerfile</code>을 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code># 베이스가 될 이미지 지정
+FROM ubuntu:18.04
+
+# 패키지 매니저 업데이트
+RUN apt update
+
+# 패키지 매니저로 git 설치
+RUN apt install -y git
+</code></pre></div><h3 id="docker-build-명령어"><a href="#docker-build-명령어" class="header-anchor">#</a> docker build 명령어</h3> <p>이제 <code>docker build -t &lt;IMAGE_NAME&gt;:&lt;TAG&gt; .</code> 명령어로 이미지를 생성하자. 마지막 인자로 <code>Dockerfile</code>이 위치하는 현재 디렉토리 <code>.</code>를 전달한다.</p> <div class="language- extra-class"><div class="highlight-lines"><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>$ docker build -t my_ubuntu_image:0.1 .
+[+] Building 2.2s (8/8) FINISHED                                                                                              
+ =&gt; [internal] load build definition from Dockerfile                                                                     0.0s
+ =&gt; =&gt; transferring dockerfile: 36B                                                                                      0.0s
+ =&gt; [internal] load .dockerignore                                                                                        0.0s
+ =&gt; =&gt; transferring context: 2B                                                                                          0.0s
+ =&gt; [internal] load metadata for docker.io/library/ubuntu:18.04                                                          2.1s
+ =&gt; [auth] library/ubuntu:pull token for registry-1.docker.io                                                            0.0s
+ =&gt; [1/3] FROM docker.io/library/ubuntu:18.04@sha256:982d72c16416b09ffd2f71aa381f761422085eda1379dc66b668653607969e38    0.0s
+ =&gt; CACHED [2/3] RUN apt update                                                                                          0.0s
+ =&gt; CACHED [3/3] RUN apt install -y git                                                                                  0.0s
+ =&gt; exporting to image                                                                                                   0.0s
+ =&gt; =&gt; exporting layers                                                                                                  0.0s
+ =&gt; =&gt; writing image sha256:abf23e9807b83b21b052ec8ad3c569c3131b0b73acf49c133fa6b08ffa6d272b                             0.0s
+ =&gt; =&gt; naming to docker.io/library/my_ubuntu_image:0.1        
+</code></pre></div><p>생성된 이미지를 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker images
+REPOSITORY        TAG       IMAGE ID       CREATED          SIZE
+my_ubuntu_image   0.1       abf23e9807b8   24 minutes ago   197MB
+</code></pre></div><p>마지막으로 생성한 이미지로 컨테이너를 생성해서 <code>git</code>이 설치되어있는지 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker create -i -t --name my_ubuntu_container my_ubuntu_image:0.1
+
+$ docker ps -a
+CONTAINER ID   IMAGE                 COMMAND   CREATED          STATUS    PORTS     NAMES
+92102fed06dd   my_ubuntu_image:0.1   &quot;bash&quot;    14 seconds ago   Created             my_ubuntu_container
+
+$ docker start my_ubuntu_container
+
+$ docker attach my_ubuntu_container
+</code></pre></div><p><code>git</code>이 설치된 것을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>root@1143426a0e96:/# git --version
+git version 2.17.1
+</code></pre></div><h3 id="dockerfile-명령어"><a href="#dockerfile-명령어" class="header-anchor">#</a> Dockerfile 명령어</h3> <h4 id="from"><a href="#from" class="header-anchor">#</a> FROM</h4> <ul><li>베이스가 될 이미지.</li> <li>Dockerfile에 반드시 한번 이상 입력해야한다.</li> <li>사용하려는 이미지가 없으면 자동으로 Pull한다.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>FROM openjdk:8-jdk-alpine   // openjdk 8이 설치된 alpine linux 이미지
+</code></pre></div><h4 id="workdir"><a href="#workdir" class="header-anchor">#</a> WORKDIR</h4> <ul><li><code>cd</code>명령어와 동일하다.</li> <li>디렉토리가 없으면 새로 생성한다.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>WORKDIR /app
+</code></pre></div><h4 id="copy"><a href="#copy" class="header-anchor">#</a> COPY</h4> <ul><li>Dockerfile이 위치하는 디렉토리에서 이미지 내부로 파일을 복사한다.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>// Dockerfile이 위치하는 디렉토리의 app.jar를 컨테이너 내부에 app.jar 라는 이름으로 복사
+COPY app.jar app.jar
+
+// Dockerfile이 위치하는 디렉토리의 run.sh를 컨테이너 내부에 run.sh 라는 이름으로 복사
+COPY run.sh run.sh
+</code></pre></div><h4 id="add"><a href="#add" class="header-anchor">#</a> ADD</h4> <ul><li>Dockerfile이 위치하는 디렉토리의 파일을 이미지에 추가</li></ul> <h4 id="run"><a href="#run" class="header-anchor">#</a> RUN</h4> <ul><li>컨테이너 내부에서 명령어를 실행한다.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>RUN chmod 774 run.sh
+</code></pre></div><h4 id="arg"><a href="#arg" class="header-anchor">#</a> ARG</h4> <ul><li>Dockerfile 내에서 빌드 시에 사용하는 변수를 설정한다.</li></ul> <h4 id="env"><a href="#env" class="header-anchor">#</a> ENV</h4> <ul><li>이미지에서 런타임에 사용할 환경변수를 지정한다.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>ENV PROFILE=local
+</code></pre></div><ul><li>도커 컨테이너 내부에서 환경변수를 설정하는 것과 동일하다.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>$ PROFILE=local
+</code></pre></div><h4 id="arg-2"><a href="#arg-2" class="header-anchor">#</a> ARG</h4> <ul><li>빌드 시 환경변수를 선언</li></ul> <h4 id="entrypoint"><a href="#entrypoint" class="header-anchor">#</a> ENTRYPOINT</h4> <ul><li>컨테이너가 실행될 때마다 실행할 명령어.</li> <li>Dockerfile에서 한번만 사용할 수 있다.</li></ul> <div class="language- extra-class"><pre class="language-text"><code>// ENTRYPOINT [&quot;명령어&quot;, &quot;인자1&quot;, &quot;인자2&quot;, ...]
+ENTRYPOINT [&quot;echo&quot;, &quot;Launching App.&quot;]
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>ENTRYPOINT [&quot;./run.sh&quot;]
+</code></pre></div><h4 id="expose"><a href="#expose" class="header-anchor">#</a> EXPOSE</h4> <ul><li>이미지에서 노출할 포트 지정</li></ul></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/50_infra_devops/02_Linux/200707_linux_shell_script.html" class="prev">
+        리눅스 쉘 스크립트
+      </a></span> <span class="next"><a href="/blog/post/50_infra_devops/53_Docker/210103_docker_compose.html">
+        Docker Compose
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.407877ec.js" defer></script><script src="/blog/assets/js/3.2c868ac4.js" defer></script><script src="/blog/assets/js/24.6684c857.js" defer></script>
+  </body>
+</html>

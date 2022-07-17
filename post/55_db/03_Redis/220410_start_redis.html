@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Redis 정리 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.407877ec.js" as="script"><link rel="preload" href="/blog/assets/js/3.2c868ac4.js" as="script"><link rel="preload" href="/blog/assets/js/75.1fdd9199.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.214df1fb.js"><link rel="prefetch" href="/blog/assets/js/100.84c42c58.js"><link rel="prefetch" href="/blog/assets/js/101.ef2ab21f.js"><link rel="prefetch" href="/blog/assets/js/102.88861d4b.js"><link rel="prefetch" href="/blog/assets/js/103.a01965ee.js"><link rel="prefetch" href="/blog/assets/js/104.21597723.js"><link rel="prefetch" href="/blog/assets/js/105.73be57d6.js"><link rel="prefetch" href="/blog/assets/js/106.4d2f9945.js"><link rel="prefetch" href="/blog/assets/js/107.ebc7d69c.js"><link rel="prefetch" href="/blog/assets/js/108.8d6e9050.js"><link rel="prefetch" href="/blog/assets/js/109.dbcf9d3f.js"><link rel="prefetch" href="/blog/assets/js/11.ff546d90.js"><link rel="prefetch" href="/blog/assets/js/110.0390f38d.js"><link rel="prefetch" href="/blog/assets/js/111.213596d7.js"><link rel="prefetch" href="/blog/assets/js/112.7e0af3ee.js"><link rel="prefetch" href="/blog/assets/js/113.57c2cc15.js"><link rel="prefetch" href="/blog/assets/js/114.28c2b749.js"><link rel="prefetch" href="/blog/assets/js/115.db63c82b.js"><link rel="prefetch" href="/blog/assets/js/116.5343aa78.js"><link rel="prefetch" href="/blog/assets/js/117.c8701adf.js"><link rel="prefetch" href="/blog/assets/js/118.f0671833.js"><link rel="prefetch" href="/blog/assets/js/119.09db011c.js"><link rel="prefetch" href="/blog/assets/js/12.7608a1db.js"><link rel="prefetch" href="/blog/assets/js/120.725e67ca.js"><link rel="prefetch" href="/blog/assets/js/121.cbbe863f.js"><link rel="prefetch" href="/blog/assets/js/122.0b929da9.js"><link rel="prefetch" href="/blog/assets/js/123.49e34faf.js"><link rel="prefetch" href="/blog/assets/js/124.43d7edbf.js"><link rel="prefetch" href="/blog/assets/js/125.b78fcfc3.js"><link rel="prefetch" href="/blog/assets/js/126.95b41c8b.js"><link rel="prefetch" href="/blog/assets/js/127.c0c12b54.js"><link rel="prefetch" href="/blog/assets/js/128.15d6bca8.js"><link rel="prefetch" href="/blog/assets/js/129.bee5a9f3.js"><link rel="prefetch" href="/blog/assets/js/13.dc871816.js"><link rel="prefetch" href="/blog/assets/js/130.2fe01fb8.js"><link rel="prefetch" href="/blog/assets/js/131.d1f47750.js"><link rel="prefetch" href="/blog/assets/js/132.37d63b61.js"><link rel="prefetch" href="/blog/assets/js/133.267b6829.js"><link rel="prefetch" href="/blog/assets/js/134.818da5b5.js"><link rel="prefetch" href="/blog/assets/js/135.30464616.js"><link rel="prefetch" href="/blog/assets/js/136.73dc1554.js"><link rel="prefetch" href="/blog/assets/js/137.9353e543.js"><link rel="prefetch" href="/blog/assets/js/138.e131cb38.js"><link rel="prefetch" href="/blog/assets/js/139.0443fc29.js"><link rel="prefetch" href="/blog/assets/js/14.414794fb.js"><link rel="prefetch" href="/blog/assets/js/140.0a66e837.js"><link rel="prefetch" href="/blog/assets/js/141.070ca152.js"><link rel="prefetch" href="/blog/assets/js/142.674e95f2.js"><link rel="prefetch" href="/blog/assets/js/143.36a65bcf.js"><link rel="prefetch" href="/blog/assets/js/144.88ab0348.js"><link rel="prefetch" href="/blog/assets/js/145.8108a3e4.js"><link rel="prefetch" href="/blog/assets/js/146.7cc38cdd.js"><link rel="prefetch" href="/blog/assets/js/147.5c67050f.js"><link rel="prefetch" href="/blog/assets/js/148.3ff31f51.js"><link rel="prefetch" href="/blog/assets/js/149.75e65991.js"><link rel="prefetch" href="/blog/assets/js/15.f50507ad.js"><link rel="prefetch" href="/blog/assets/js/150.59d103ef.js"><link rel="prefetch" href="/blog/assets/js/151.2af10e91.js"><link rel="prefetch" href="/blog/assets/js/152.fb23137c.js"><link rel="prefetch" href="/blog/assets/js/153.76d4f705.js"><link rel="prefetch" href="/blog/assets/js/154.cbc2e62f.js"><link rel="prefetch" href="/blog/assets/js/155.f0ebde67.js"><link rel="prefetch" href="/blog/assets/js/156.2def108b.js"><link rel="prefetch" href="/blog/assets/js/157.1c144be8.js"><link rel="prefetch" href="/blog/assets/js/158.ed93ecfb.js"><link rel="prefetch" href="/blog/assets/js/159.9737a613.js"><link rel="prefetch" href="/blog/assets/js/16.8af324c8.js"><link rel="prefetch" href="/blog/assets/js/160.6754badf.js"><link rel="prefetch" href="/blog/assets/js/161.9502f065.js"><link rel="prefetch" href="/blog/assets/js/162.52f0a4bd.js"><link rel="prefetch" href="/blog/assets/js/163.9d733ff6.js"><link rel="prefetch" href="/blog/assets/js/164.07ecd24c.js"><link rel="prefetch" href="/blog/assets/js/165.33c4abc0.js"><link rel="prefetch" href="/blog/assets/js/166.a35efc51.js"><link rel="prefetch" href="/blog/assets/js/167.72bba16c.js"><link rel="prefetch" href="/blog/assets/js/168.58b6b388.js"><link rel="prefetch" href="/blog/assets/js/169.4b56cd76.js"><link rel="prefetch" href="/blog/assets/js/17.e1dee477.js"><link rel="prefetch" href="/blog/assets/js/170.5759f26d.js"><link rel="prefetch" href="/blog/assets/js/171.d8041dc1.js"><link rel="prefetch" href="/blog/assets/js/172.cd032c0b.js"><link rel="prefetch" href="/blog/assets/js/173.27159b98.js"><link rel="prefetch" href="/blog/assets/js/174.e98e427b.js"><link rel="prefetch" href="/blog/assets/js/175.e92d0ae4.js"><link rel="prefetch" href="/blog/assets/js/176.e939a83d.js"><link rel="prefetch" href="/blog/assets/js/177.ef978bde.js"><link rel="prefetch" href="/blog/assets/js/178.7cede950.js"><link rel="prefetch" href="/blog/assets/js/179.20121d4d.js"><link rel="prefetch" href="/blog/assets/js/18.aedcd3b4.js"><link rel="prefetch" href="/blog/assets/js/180.08ab3e0b.js"><link rel="prefetch" href="/blog/assets/js/181.208a47b3.js"><link rel="prefetch" href="/blog/assets/js/182.f9abeb9d.js"><link rel="prefetch" href="/blog/assets/js/183.c6fda8b2.js"><link rel="prefetch" href="/blog/assets/js/184.8888984e.js"><link rel="prefetch" href="/blog/assets/js/185.cbfe8932.js"><link rel="prefetch" href="/blog/assets/js/186.aa14003d.js"><link rel="prefetch" href="/blog/assets/js/187.0b082624.js"><link rel="prefetch" href="/blog/assets/js/188.76387af1.js"><link rel="prefetch" href="/blog/assets/js/189.1207592a.js"><link rel="prefetch" href="/blog/assets/js/19.71a3a956.js"><link rel="prefetch" href="/blog/assets/js/190.20ba5f79.js"><link rel="prefetch" href="/blog/assets/js/191.0f1b99d5.js"><link rel="prefetch" href="/blog/assets/js/192.04922345.js"><link rel="prefetch" href="/blog/assets/js/193.ccee54ae.js"><link rel="prefetch" href="/blog/assets/js/194.88c5b3f8.js"><link rel="prefetch" href="/blog/assets/js/195.3bd9a30b.js"><link rel="prefetch" href="/blog/assets/js/196.3b42ea37.js"><link rel="prefetch" href="/blog/assets/js/197.99ba23e4.js"><link rel="prefetch" href="/blog/assets/js/198.6764a9e3.js"><link rel="prefetch" href="/blog/assets/js/199.98b97aa0.js"><link rel="prefetch" href="/blog/assets/js/2.305d7f18.js"><link rel="prefetch" href="/blog/assets/js/20.ef953170.js"><link rel="prefetch" href="/blog/assets/js/200.3b391275.js"><link rel="prefetch" href="/blog/assets/js/201.c4da0449.js"><link rel="prefetch" href="/blog/assets/js/202.b62d0ce1.js"><link rel="prefetch" href="/blog/assets/js/203.4a2ea447.js"><link rel="prefetch" href="/blog/assets/js/204.ee4ca076.js"><link rel="prefetch" href="/blog/assets/js/205.654be6ea.js"><link rel="prefetch" href="/blog/assets/js/206.036bd179.js"><link rel="prefetch" href="/blog/assets/js/207.03e8b9ff.js"><link rel="prefetch" href="/blog/assets/js/208.d228e908.js"><link rel="prefetch" href="/blog/assets/js/209.253e46e1.js"><link rel="prefetch" href="/blog/assets/js/21.7190cd50.js"><link rel="prefetch" href="/blog/assets/js/210.f1ed996e.js"><link rel="prefetch" href="/blog/assets/js/211.5b47b79f.js"><link rel="prefetch" href="/blog/assets/js/212.044358d5.js"><link rel="prefetch" href="/blog/assets/js/213.47ed3ab7.js"><link rel="prefetch" href="/blog/assets/js/214.c42cbb1f.js"><link rel="prefetch" href="/blog/assets/js/215.ee83627a.js"><link rel="prefetch" href="/blog/assets/js/216.97525cbc.js"><link rel="prefetch" href="/blog/assets/js/217.11ac8523.js"><link rel="prefetch" href="/blog/assets/js/218.c9f4f2b3.js"><link rel="prefetch" href="/blog/assets/js/219.5f74f734.js"><link rel="prefetch" href="/blog/assets/js/22.593ae787.js"><link rel="prefetch" href="/blog/assets/js/220.0a13ba28.js"><link rel="prefetch" href="/blog/assets/js/221.b5503a95.js"><link rel="prefetch" href="/blog/assets/js/222.3b9416c1.js"><link rel="prefetch" href="/blog/assets/js/223.9570a713.js"><link rel="prefetch" href="/blog/assets/js/224.4e8aaf58.js"><link rel="prefetch" href="/blog/assets/js/225.1b12babf.js"><link rel="prefetch" href="/blog/assets/js/226.d8cc7c14.js"><link rel="prefetch" href="/blog/assets/js/227.79b40d6a.js"><link rel="prefetch" href="/blog/assets/js/228.21910d5a.js"><link rel="prefetch" href="/blog/assets/js/229.30b51d12.js"><link rel="prefetch" href="/blog/assets/js/23.2dd50afb.js"><link rel="prefetch" href="/blog/assets/js/230.d42a9a38.js"><link rel="prefetch" href="/blog/assets/js/231.791869c0.js"><link rel="prefetch" href="/blog/assets/js/232.0892177e.js"><link rel="prefetch" href="/blog/assets/js/233.9aaf9bbb.js"><link rel="prefetch" href="/blog/assets/js/234.1002b345.js"><link rel="prefetch" href="/blog/assets/js/235.619d2b1e.js"><link rel="prefetch" href="/blog/assets/js/236.1ad24da3.js"><link rel="prefetch" href="/blog/assets/js/237.c2d1efa6.js"><link rel="prefetch" href="/blog/assets/js/238.2373f349.js"><link rel="prefetch" href="/blog/assets/js/239.d65e33ca.js"><link rel="prefetch" href="/blog/assets/js/24.6684c857.js"><link rel="prefetch" href="/blog/assets/js/240.36e57681.js"><link rel="prefetch" href="/blog/assets/js/241.4c8cce20.js"><link rel="prefetch" href="/blog/assets/js/242.29a82a61.js"><link rel="prefetch" href="/blog/assets/js/243.42035d3c.js"><link rel="prefetch" href="/blog/assets/js/244.c039e764.js"><link rel="prefetch" href="/blog/assets/js/245.84554679.js"><link rel="prefetch" href="/blog/assets/js/246.f8274aa5.js"><link rel="prefetch" href="/blog/assets/js/247.da5cacf5.js"><link rel="prefetch" href="/blog/assets/js/248.aa8417d2.js"><link rel="prefetch" href="/blog/assets/js/249.a614abb9.js"><link rel="prefetch" href="/blog/assets/js/25.42af72f6.js"><link rel="prefetch" href="/blog/assets/js/250.096af39b.js"><link rel="prefetch" href="/blog/assets/js/251.45b855d5.js"><link rel="prefetch" href="/blog/assets/js/252.ea0a27a2.js"><link rel="prefetch" href="/blog/assets/js/253.12a895af.js"><link rel="prefetch" href="/blog/assets/js/254.7352cd0f.js"><link rel="prefetch" href="/blog/assets/js/255.041c56c2.js"><link rel="prefetch" href="/blog/assets/js/256.fe3aa3d8.js"><link rel="prefetch" href="/blog/assets/js/257.f81a2d94.js"><link rel="prefetch" href="/blog/assets/js/258.ea729895.js"><link rel="prefetch" href="/blog/assets/js/259.ea4d1657.js"><link rel="prefetch" href="/blog/assets/js/26.976f03dd.js"><link rel="prefetch" href="/blog/assets/js/260.040211d7.js"><link rel="prefetch" href="/blog/assets/js/261.3fde685b.js"><link rel="prefetch" href="/blog/assets/js/262.f055e783.js"><link rel="prefetch" href="/blog/assets/js/263.351d8106.js"><link rel="prefetch" href="/blog/assets/js/264.d0d5826a.js"><link rel="prefetch" href="/blog/assets/js/265.ddf08330.js"><link rel="prefetch" href="/blog/assets/js/266.aec7b24b.js"><link rel="prefetch" href="/blog/assets/js/267.0e5716e6.js"><link rel="prefetch" href="/blog/assets/js/268.68074979.js"><link rel="prefetch" href="/blog/assets/js/269.8739b95a.js"><link rel="prefetch" href="/blog/assets/js/27.b02deaf4.js"><link rel="prefetch" href="/blog/assets/js/270.968af81c.js"><link rel="prefetch" href="/blog/assets/js/28.59574d94.js"><link rel="prefetch" href="/blog/assets/js/29.5312c870.js"><link rel="prefetch" href="/blog/assets/js/30.fca86d2c.js"><link rel="prefetch" href="/blog/assets/js/31.40a7e5fc.js"><link rel="prefetch" href="/blog/assets/js/32.31d1fc74.js"><link rel="prefetch" href="/blog/assets/js/33.9e9da730.js"><link rel="prefetch" href="/blog/assets/js/34.92c520e0.js"><link rel="prefetch" href="/blog/assets/js/35.a4ab1f65.js"><link rel="prefetch" href="/blog/assets/js/36.8baa7b2c.js"><link rel="prefetch" href="/blog/assets/js/37.e5823b3b.js"><link rel="prefetch" href="/blog/assets/js/38.6796171b.js"><link rel="prefetch" href="/blog/assets/js/39.a68a9d9f.js"><link rel="prefetch" href="/blog/assets/js/4.81d7a4a5.js"><link rel="prefetch" href="/blog/assets/js/40.7439b92d.js"><link rel="prefetch" href="/blog/assets/js/41.6c07a68d.js"><link rel="prefetch" href="/blog/assets/js/42.26b135bc.js"><link rel="prefetch" href="/blog/assets/js/43.fbfc2c30.js"><link rel="prefetch" href="/blog/assets/js/44.b0cfb782.js"><link rel="prefetch" href="/blog/assets/js/45.de62cb60.js"><link rel="prefetch" href="/blog/assets/js/46.c85ca9e3.js"><link rel="prefetch" href="/blog/assets/js/47.6043b490.js"><link rel="prefetch" href="/blog/assets/js/48.0b84e410.js"><link rel="prefetch" href="/blog/assets/js/49.395652cc.js"><link rel="prefetch" href="/blog/assets/js/5.7ea25842.js"><link rel="prefetch" href="/blog/assets/js/50.5951bc7f.js"><link rel="prefetch" href="/blog/assets/js/51.73163096.js"><link rel="prefetch" href="/blog/assets/js/52.bd6189ec.js"><link rel="prefetch" href="/blog/assets/js/53.02a3a241.js"><link rel="prefetch" href="/blog/assets/js/54.4296219c.js"><link rel="prefetch" href="/blog/assets/js/55.6e10ee88.js"><link rel="prefetch" href="/blog/assets/js/56.37468d50.js"><link rel="prefetch" href="/blog/assets/js/57.4cc896a4.js"><link rel="prefetch" href="/blog/assets/js/58.25b93d02.js"><link rel="prefetch" href="/blog/assets/js/59.2fc70fd3.js"><link rel="prefetch" href="/blog/assets/js/6.5d85bf19.js"><link rel="prefetch" href="/blog/assets/js/60.97d4ab3f.js"><link rel="prefetch" href="/blog/assets/js/61.4e0a9421.js"><link rel="prefetch" href="/blog/assets/js/62.5c8e434a.js"><link rel="prefetch" href="/blog/assets/js/63.9f0ec4bf.js"><link rel="prefetch" href="/blog/assets/js/64.485670d8.js"><link rel="prefetch" href="/blog/assets/js/65.bf839e77.js"><link rel="prefetch" href="/blog/assets/js/66.cfa34a32.js"><link rel="prefetch" href="/blog/assets/js/67.8bf4b24f.js"><link rel="prefetch" href="/blog/assets/js/68.86d68cf9.js"><link rel="prefetch" href="/blog/assets/js/69.3c5fb947.js"><link rel="prefetch" href="/blog/assets/js/7.95a44012.js"><link rel="prefetch" href="/blog/assets/js/70.71c73939.js"><link rel="prefetch" href="/blog/assets/js/71.6f40d6cd.js"><link rel="prefetch" href="/blog/assets/js/72.51c01c8b.js"><link rel="prefetch" href="/blog/assets/js/73.6ce18ec4.js"><link rel="prefetch" href="/blog/assets/js/74.e6e2d5b0.js"><link rel="prefetch" href="/blog/assets/js/76.822d0dda.js"><link rel="prefetch" href="/blog/assets/js/77.07fe61e3.js"><link rel="prefetch" href="/blog/assets/js/78.3a503253.js"><link rel="prefetch" href="/blog/assets/js/79.fbbbaab7.js"><link rel="prefetch" href="/blog/assets/js/8.4daec306.js"><link rel="prefetch" href="/blog/assets/js/80.2f3219e7.js"><link rel="prefetch" href="/blog/assets/js/81.d37198bc.js"><link rel="prefetch" href="/blog/assets/js/82.fd445f39.js"><link rel="prefetch" href="/blog/assets/js/83.00be90ec.js"><link rel="prefetch" href="/blog/assets/js/84.40aac1c4.js"><link rel="prefetch" href="/blog/assets/js/85.6ca8b74f.js"><link rel="prefetch" href="/blog/assets/js/86.50779298.js"><link rel="prefetch" href="/blog/assets/js/87.d8d9994b.js"><link rel="prefetch" href="/blog/assets/js/88.97a4de74.js"><link rel="prefetch" href="/blog/assets/js/89.7383449a.js"><link rel="prefetch" href="/blog/assets/js/9.17630656.js"><link rel="prefetch" href="/blog/assets/js/90.61983518.js"><link rel="prefetch" href="/blog/assets/js/91.b31af2bb.js"><link rel="prefetch" href="/blog/assets/js/92.07dbce34.js"><link rel="prefetch" href="/blog/assets/js/93.a1a7ecc6.js"><link rel="prefetch" href="/blog/assets/js/94.082bbed4.js"><link rel="prefetch" href="/blog/assets/js/95.b0e3563d.js"><link rel="prefetch" href="/blog/assets/js/96.b6bebd5f.js"><link rel="prefetch" href="/blog/assets/js/97.6cefa365.js"><link rel="prefetch" href="/blog/assets/js/98.aed6e859.js"><link rel="prefetch" href="/blog/assets/js/99.0e004e38.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/55_db/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>MySQL</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Mongo DB</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Redis</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/55_db/03_Redis/220410_start_redis.html" aria-current="page" class="active sidebar-link">Redis 정리</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Elastic Search</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>ERD</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#redis-설정">Redis 설정</a><ul><li><a href="#redis-설치">Redis 설치</a></li><li><a href="#redis-설치-위치">Redis 설치 위치</a></li><li><a href="#redis-서버-설정-파일">Redis 서버 설정 파일</a></li><li><a href="#redis-시작">Redis 시작</a></li><li><a href="#redis-상태-확인">Redis 상태 확인</a></li><li><a href="#redis-재시작">Redis 재시작</a></li><li><a href="#redis-종료">Redis 종료</a></li></ul></li><li><a href="#redis-cli">redis-cli</a></li><li><a href="#redis의-데이터-타입">Redis의 데이터 타입</a></li><li><a href="#string">String</a><ul><li><a href="#string-저장">String 저장</a></li><li><a href="#string-조회">String 조회</a></li><li><a href="#키-이름-변경">키 이름 변경</a></li><li><a href="#키-개수-조회">키 개수 조회</a></li><li><a href="#키-조회">키 조회</a></li><li><a href="#string-삭제">String 삭제</a></li></ul></li><li><a href="#list">List</a><ul><li><a href="#rpush">RPUSH</a></li><li><a href="#lpush">LPUSH</a></li><li><a href="#lrange">LRANGE</a></li><li><a href="#lpop">LPOP</a></li><li><a href="#rpop">RPOP</a></li><li><a href="#lindex">LINDEX</a></li></ul></li><li><a href="#set">Set</a><ul><li><a href="#sadd">SADD</a></li><li><a href="#smembers">SMEMBERS</a></li><li><a href="#srem">SREM</a></li><li><a href="#sunion">SUNION</a></li><li><a href="#sinter">SINTER</a></li><li><a href="#sdiff">SDIFF</a></li></ul></li><li><a href="#hash">Hash</a><ul><li><a href="#hset">HSET</a></li><li><a href="#hget">HGET</a></li><li><a href="#hmset">HMSET</a></li><li><a href="#hmget">HMGET</a></li><li><a href="#hgetall">HGETALL</a></li><li><a href="#hdel">HDEL</a></li></ul></li><li><a href="#type-명령어">TYPE 명령어</a></li><li><a href="#flushall-명령어">FLUSHALL 명령어</a></li><li><a href="#redis-expire">Redis Expire</a></li><li><a href="#redis-namespace">Redis Namespace</a><ul><li><a href="#namespace를-redis-데이터베이스-설계에-활용하기">Namespace를 Redis 데이터베이스 설계에 활용하기</a></li></ul></li><li><a href="#redis-multi-database">Redis Multi Database</a></li><li><a href="#redis-persistent">Redis Persistent</a><ul><li><a href="#rdb">RDB</a></li><li><a href="#aof">AOF</a></li></ul></li><li><a href="#ha와-redis-replication">HA와 Redis Replication</a></li><li><a href="#redis-pub-sub">Redis PUB/SUB</a></li><li><a href="#redis-stream">Redis Stream</a></li><li><a href="#medis-2">Medis 2</a></li><li><a href="#redis-labs">Redis Labs</a></li></ul></div><p></p> <h1 id="redis-정리"><a href="#redis-정리" class="header-anchor">#</a> Redis 정리</h1> <ul><li><code>Key-Value</code> 구조의 NoSQL 데이터베이스</li> <li>관계형 데이터베이스처럼 테이블을 설계하거나 외래키 설정이 불가능하다.</li> <li>디스크 기반이 아니라 인메모리 방식을 사용하기 때문에 입출력 적어 속도가 빠르다.</li> <li>인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업한다.
+<ul><li>디스크에 데이터를 저장</li> <li>다른 노드에 복사본 저장</li></ul></li> <li>세션 스토어, 데이터베이스 캐시, 공유 저장소 등에 사용된다.</li> <li>Publish/Subscribe 모델을 지원하기 때문에 메시지 큐로도 사용할 수 있다.</li></ul> <h2 id="redis-설정"><a href="#redis-설정" class="header-anchor">#</a> Redis 설정</h2> <p><code>Redis</code>의 설치, 사용 방법에 대해 정리한다.</p> <h3 id="redis-설치"><a href="#redis-설치" class="header-anchor">#</a> Redis 설치</h3> <p><code>Mac OS</code>에서는 <code>Homebrew</code>로 Redis를 설치할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew install redis
+</code></pre></div><p>설치 정보를 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew info redis
+redis: stable 7.0.0 (bottled), HEAD
+Persistent key-value database, with built-in net interface
+https://redis.io/
+/usr/local/Cellar/redis/7.0.0 (14 files, 2.6MB) *
+  Poured from bottle on 2022-05-04 at 12:55:03
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/redis.rb
+License: BSD-3-Clause
+==&gt; Dependencies
+Required: openssl@1.1 ✔
+==&gt; Options
+--HEAD
+	Install HEAD version
+==&gt; Caveats
+To restart redis after an upgrade:
+  brew services restart redis
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/redis/bin/redis-server /usr/local/etc/redis.conf
+==&gt; Analytics
+install: 77,367 (30 days), 155,724 (90 days), 648,001 (365 days)
+install-on-request: 76,894 (30 days), 154,909 (90 days), 643,952 (365 days)
+build-error: 14 (30 days)
+</code></pre></div><p>버전을 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ redis-server --version
+Redis server v=6.2.6 sha=00000000:0 malloc=libc bits=64 build=c6f3693d1aced7d9
+</code></pre></div><h3 id="redis-설치-위치"><a href="#redis-설치-위치" class="header-anchor">#</a> Redis 설치 위치</h3> <p>Homebrew로 Redis를 설치한 경우 <code>/usr/local/opt/redis</code> 경로에 Redis가 설치된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ cd /usr/local/opt
+
+$ ls | grep redis
+redis
+redis@6.2
+redis@7.0
+</code></pre></div><h3 id="redis-서버-설정-파일"><a href="#redis-서버-설정-파일" class="header-anchor">#</a> Redis 서버 설정 파일</h3> <p>Redis 서버는 <code>redis.confg</code>로 환경설정을 할 수 있다. Homebrew로 Redis를 설치한 경우 <code>/usr/local/etc</code>에 위치한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ cd /usr/local/etc  
+
+$ ls | grep redis.conf
+redis.conf
+redis.conf.default
+</code></pre></div><h3 id="redis-시작"><a href="#redis-시작" class="header-anchor">#</a> Redis 시작</h3> <p><code>redis-server</code> 명령어로 Redis를 시작할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ redis-server
+52712:C 15 Apr 2022 11:06:15.382 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+52712:C 15 Apr 2022 11:06:15.382 # Redis version=6.2.6, bits=64, commit=00000000, modified=0, pid=52712, just started
+52712:C 15 Apr 2022 11:06:15.382 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+52712:M 15 Apr 2022 11:06:15.383 * Increased maximum number of open files to 10032 (it was originally set to 256).
+52712:M 15 Apr 2022 11:06:15.383 * monotonic clock: POSIX clock_gettime
+                _._                                                  
+           _.-``__ ''-._                                             
+      _.-``    `.  `_.  ''-._           Redis 6.2.6 (00000000/0) 64 bit
+  .-`` .-```.  ```\/    _.,_ ''-._                                  
+ (    '      ,       .-`  | `,    )     Running in standalone mode
+ |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
+ |    `-._   `._    /     _.-'    |     PID: 52712
+  `-._    `-._  `-./  _.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |           https://redis.io       
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+ |`-._`-._    `-.__.-'    _.-'_.-'|                                  
+ |    `-._`-._        _.-'_.-'    |                                  
+  `-._    `-._`-.__.-'_.-'    _.-'                                   
+      `-._    `-.__.-'    _.-'                                       
+          `-._        _.-'                                           
+              `-.__.-'                                               
+
+52712:M 15 Apr 2022 11:06:15.385 # Server initialized
+52712:M 15 Apr 2022 11:06:15.385 * Ready to accept connections
+</code></pre></div><p><code>brew services start redis</code>로 redis를 백그라운드로 실행할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew services start redis
+</code></pre></div><h3 id="redis-상태-확인"><a href="#redis-상태-확인" class="header-anchor">#</a> Redis 상태 확인</h3> <div class="language- extra-class"><pre class="language-text"><code>$ brew services list
+Name    Status  User     File             
+redis   started yologger ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+</code></pre></div><h3 id="redis-재시작"><a href="#redis-재시작" class="header-anchor">#</a> Redis 재시작</h3> <div class="language- extra-class"><pre class="language-text"><code>$ brew services restart redis
+</code></pre></div><h3 id="redis-종료"><a href="#redis-종료" class="header-anchor">#</a> Redis 종료</h3> <div class="language- extra-class"><pre class="language-text"><code>$ brew services stop redis
+</code></pre></div><h2 id="redis-cli"><a href="#redis-cli" class="header-anchor">#</a> redis-cli</h2> <p><code>redis-cli</code>는 커맨드라인 기반 데이터베이스 클라이언트다. redis-cli로 redis에 접속해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ redis-cli
+&gt; 
+</code></pre></div><h2 id="redis의-데이터-타입"><a href="#redis의-데이터-타입" class="header-anchor">#</a> Redis의 데이터 타입</h2> <p><code>Redis</code>는 관계형 데이터베이스가 아니기 때문에 관계형 데이터베이스의 일반적인 데이터 타입을 지원하지 않는다. Redis가 지원하는 데이터 타입은 다음과 같다.</p> <ul><li>String</li> <li>List</li> <li>Set</li> <li>Hash</li></ul> <h2 id="string"><a href="#string" class="header-anchor">#</a> String</h2> <p>Redis는 대부분의 데이터를 문자열로 표현한다. <u>숫자, 날짜, 시간 등도 <b>문자열</b>로 저장된다.</u></p> <div class="language- extra-class"><pre class="language-text"><code>&gt; set name &quot;Paul&quot;
+&gt; set age 35
+&gt; set createdAt &quot;2022-04-03 21:51:13.742000&quot;
+</code></pre></div><h3 id="string-저장"><a href="#string-저장" class="header-anchor">#</a> String 저장</h3> <p><code>SET &lt;KEY&gt; &lt;VALUE&gt;</code>로 문자열을 저장한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SET name &quot;paul&quot;
+OK
+
+&gt; SET email &quot;yologger1013@gmail.com&quot;
+OK
+
+&gt; SET password &quot;1234&quot;
+OK
+
+&gt; SET nation &quot;Korea&quot;
+OK
+
+&gt; SET age 30
+OK
+</code></pre></div><h3 id="string-조회"><a href="#string-조회" class="header-anchor">#</a> String 조회</h3> <p><code>GET &lt;KEY&gt;</code>로 문자열을 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; GET name
+&quot;paul&quot;
+
+&gt; GET email
+&quot;Korea&quot;
+</code></pre></div><h3 id="키-이름-변경"><a href="#키-이름-변경" class="header-anchor">#</a> 키 이름 변경</h3> <p><code>RENAME &lt;OLD KEY&gt; &lt;NEY KEY&gt;</code>로 키 이름을 변경한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; RENAME name nickname
+OK
+</code></pre></div><h3 id="키-개수-조회"><a href="#키-개수-조회" class="header-anchor">#</a> 키 개수 조회</h3> <p><code>DBSIZE</code>로 데이터 개수를 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; DBSIZE
+(integer) 3
+</code></pre></div><h3 id="키-조회"><a href="#키-조회" class="header-anchor">#</a> 키 조회</h3> <p><code>KEYS &lt;PATTERN&gt;</code> 형태로 키를 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; KEYS *
+1) &quot;name&quot;
+2) &quot;password&quot;
+3) &quot;age&quot;
+4) &quot;email&quot;
+5) &quot;nation&quot;
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>&gt; KEYS n*
+1) &quot;name&quot;
+2) &quot;nation&quot;
+</code></pre></div><h3 id="string-삭제"><a href="#string-삭제" class="header-anchor">#</a> String 삭제</h3> <p><code>DEL &lt;KEY&gt;</code>로 문자열을 삭제한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; DEL name
+(integer) 1
+</code></pre></div><p>여러 데이터를 동시에 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; DEL email password
+(integer) 2
+</code></pre></div><p><code>FLUSHALL</code>로 모든 데이터를 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; DBSIZE
+(integer) 3
+
+&gt; FLUSHALL
+OK
+
+&gt; DBSIZE
+(integer) 0
+</code></pre></div><p>String과 관련된 모든 명령어는 <a href="http://redisgate.kr/redis/command/strings.php" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 확인할 수 있다.</p> <h2 id="list"><a href="#list" class="header-anchor">#</a> List</h2> <p><code>List</code>를 사용하면 하나의 키에 여러 값을 저장할 수 있다. List와 관련된 모든 명령어는 <a href="http://redisgate.kr/redis/command/lists.php" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 확인할 수 있다.</p> <h3 id="rpush"><a href="#rpush" class="header-anchor">#</a> RPUSH</h3> <p><code>RPUSH &lt;key&gt; &lt;element element ..&gt;</code>형태로 리스트의 오른쪽에 요소를 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; RPUSH score 1 2 3 4 5
+(integer) 5
+
+&gt; RPUSH score 6 7
+(integer) 7
+
+&gt; LRANGE score 0 -1
+1) &quot;1&quot;
+2) &quot;2&quot;
+3) &quot;3&quot;
+4) &quot;4&quot;
+5) &quot;5&quot;
+6) &quot;6&quot;
+7) &quot;7&quot;
+</code></pre></div><h3 id="lpush"><a href="#lpush" class="header-anchor">#</a> LPUSH</h3> <p>리스트의 왼쪽에 값을 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; RPUSH score 1 2 3 4 5
+(integer) 5
+
+&gt; LPUSH score 6 7
+(integer) 7
+
+&gt; LRANGE score 0 -1
+1) &quot;7&quot;
+2) &quot;6&quot;
+3) &quot;1&quot;
+4) &quot;2&quot;
+5) &quot;3&quot;
+6) &quot;4&quot;
+7) &quot;5&quot;
+</code></pre></div><h3 id="lrange"><a href="#lrange" class="header-anchor">#</a> LRANGE</h3> <p><code>LRANGE &lt;START&gt; &lt;STOP&gt;</code>형태로 사용하며 범위에 해당하는 요소들을 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; RPUSH score 1 2 3 4 5
+(integer) 5
+
+&gt; LRANGE score 0 2
+1) &quot;1&quot;
+2) &quot;2&quot;
+3) &quot;3&quot;
+</code></pre></div><p><code>-1</code>은 List의 끝을 가리킨다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; LRANGE score 0 -1
+1) &quot;1&quot;
+2) &quot;2&quot;
+3) &quot;3&quot;
+4) &quot;4&quot;
+5) &quot;5&quot;
+</code></pre></div><h3 id="lpop"><a href="#lpop" class="header-anchor">#</a> LPOP</h3> <p><code>LPOP &lt;KEY&gt; &lt;COUNT&gt;</code> 형태로 사용하며, 리스트의 첫 번째 요소를 제거한 후 반환한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; LRANGE score 0 -1
+1) &quot;1&quot;
+2) &quot;2&quot;
+3) &quot;3&quot;
+4) &quot;4&quot;
+5) &quot;5&quot;
+
+&gt; LPOP score
+&quot;1&quot;
+
+&gt; LPOP score 2
+1) &quot;2&quot;
+2) &quot;3&quot;
+
+&gt; LRANGE score 0 -1
+1) &quot;4&quot;
+2) &quot;5&quot;
+</code></pre></div><h3 id="rpop"><a href="#rpop" class="header-anchor">#</a> RPOP</h3> <p><code>RPOP &lt;KEY&gt; &lt;COUNT&gt;</code> 형태로 사용하며, 리스트의 마지막 요소를 제거한 후 반환한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; LRANGE score 0 -1
+1) &quot;1&quot;
+2) &quot;2&quot;
+3) &quot;3&quot;
+4) &quot;4&quot;
+5) &quot;5&quot;
+
+&gt; RPOP score
+&quot;5&quot;
+
+&gt; RPOP score 2
+1) &quot;4&quot;
+2) &quot;3&quot;
+
+&gt; LRANGE score 0 -1
+1) &quot;1&quot;
+2) &quot;2&quot;
+</code></pre></div><h3 id="lindex"><a href="#lindex" class="header-anchor">#</a> LINDEX</h3> <p><code>LINDEX [KEY] [INDEX]</code>형태로 사용하며 해당 인덱스의 요소를 반환한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; LRANGE players 0 -1
+1) &quot;paul&quot;
+2) &quot;john&quot;
+3) &quot;kane&quot;
+4) &quot;monica&quot;
+
+&gt; LINDEX players 0
+&quot;paul&quot;
+
+&gt; LINDEX players 1
+&quot;john&quot;
+</code></pre></div><h2 id="set"><a href="#set" class="header-anchor">#</a> Set</h2> <p><code>List</code>와 유사하지만 중복을 허용하지 않으며, 순서가 없다. 모든 명령어는 <a href="http://redisgate.kr/redis/command/sets.php" target="_blank" rel="noopener noreferrer">이 곳<span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a>에서 확인할 수 있다.</p> <h3 id="sadd"><a href="#sadd" class="header-anchor">#</a> SADD</h3> <p><code>SADD [KEY] [ELEMENT] [ELEMENT]..</code> 형태로 데이터를 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SADD players &quot;paul&quot; &quot;smith&quot;
+(integer) 2
+
+&gt; SMEMBERS players
+1) &quot;paul&quot;
+2) &quot;smith&quot;
+
+&gt; SADD players &quot;paul&quot; &quot;john&quot;
+(integer) 1
+
+&gt; SMEMBERS players
+1) &quot;john&quot;
+2) &quot;smith&quot;
+3) &quot;paul&quot;
+</code></pre></div><h3 id="smembers"><a href="#smembers" class="header-anchor">#</a> SMEMBERS</h3> <p><code>SMEMBERS [KEY]</code> 형태로 사용하며 모든 요소를 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SMEMBERS players
+1) &quot;john&quot;
+2) &quot;smith&quot;
+3) &quot;paul&quot;
+</code></pre></div><h3 id="srem"><a href="#srem" class="header-anchor">#</a> SREM</h3> <p><code>SREM [KEY] [ELEMENT]</code>형태로 사용하며 요소를 삭제한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SMEMBERS players
+1) &quot;john&quot;
+2) &quot;smtih&quot;
+3) &quot;paul&quot;
+
+&gt; SREM players &quot;paul&quot;
+(integer) 1
+
+&gt; SMEMBERS players
+1) &quot;john&quot;
+2) &quot;smtih&quot;
+</code></pre></div><h3 id="sunion"><a href="#sunion" class="header-anchor">#</a> SUNION</h3> <p><code>SUNION [KEY 1] [KEY 2]</code>형태로 사용하며 합집합을 반환한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SMEMBERS players
+1) &quot;john&quot;
+2) &quot;smtih&quot;
+3) &quot;lampard&quot;
+
+&gt; SMEMBERS managers
+1) &quot;gerrard&quot;
+2) &quot;lampard&quot;
+3) &quot;ferguson&quot;
+
+&gt; SUNION players managers
+1) &quot;gerrard&quot;
+2) &quot;lampard&quot;
+3) &quot;john&quot;
+4) &quot;smtih&quot;
+5) &quot;ferguson&quot;
+</code></pre></div><h3 id="sinter"><a href="#sinter" class="header-anchor">#</a> SINTER</h3> <p><code>SINTER [KEY 1] [KEY 2]</code>형태로 사용하며 교집합을 반환한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SMEMBERS players
+1) &quot;john&quot;
+2) &quot;smtih&quot;
+3) &quot;lampard&quot;
+
+&gt; SMEMBERS managers
+1) &quot;gerrard&quot;
+2) &quot;lampard&quot;
+3) &quot;ferguson&quot;
+
+&gt; SINTER players managers
+1) &quot;lampard&quot;
+</code></pre></div><h3 id="sdiff"><a href="#sdiff" class="header-anchor">#</a> SDIFF</h3> <p><code>SDIFF [KEY 1] [KEY 2]</code>형태로 사용하며 차집합을 반환한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SMEMBERS players
+1) &quot;john&quot;
+2) &quot;smtih&quot;
+3) &quot;lampard&quot;
+
+&gt; SMEMBERS managers
+1) &quot;gerrard&quot;
+2) &quot;lampard&quot;
+3) &quot;ferguson&quot;
+
+&gt; SDIFF players managers
+1) &quot;smtih&quot;
+2) &quot;john&quot;
+</code></pre></div><h2 id="hash"><a href="#hash" class="header-anchor">#</a> Hash</h2> <p><b><code>Hash</code></b>는 하나의 <code>Key</code>에 여러 <code>Field:Value</code>를 저장할 수 있다.</p> <h3 id="hset"><a href="#hset" class="header-anchor">#</a> HSET</h3> <p><code>HSET &lt;KEY&gt; &lt;FIELD VALUE&gt;</code> 형태로 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; HSET paul email &quot;paul@gmail.com&quot;
+(integer) 1
+</code></pre></div><h3 id="hget"><a href="#hget" class="header-anchor">#</a> HGET</h3> <p><code>HGET &lt;KEY&gt; &lt;FIELD&gt;</code>형태로 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>HGET paul email
+&quot;paul@gmail.com&quot;
+</code></pre></div><h3 id="hmset"><a href="#hmset" class="header-anchor">#</a> HMSET</h3> <p><code>hmset &lt;KEY&gt; &lt;FIELD VALUE&gt; &lt;FIELD VALUE&gt; &lt;FIELD VALUE&gt; ...</code> 형태로 사용한다</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; HMSET paul email &quot;paul@gmail.com&quot; nation &quot;Korea&quot; age 30
+OK
+</code></pre></div><h3 id="hmget"><a href="#hmget" class="header-anchor">#</a> HMGET</h3> <p><code>HMGET &lt;KEY&gt; &lt;FIELD&gt; &lt;FIELD&gt; ...</code> 형태로 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; HMGET paul email nation age
+1) &quot;paul@gmail.com&quot;
+2) &quot;Korea&quot;
+3) &quot;30&quot;
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>&gt; HMGET paul email nation
+1) &quot;paul@gmail.com&quot;
+2) &quot;Korea&quot;
+</code></pre></div><h3 id="hgetall"><a href="#hgetall" class="header-anchor">#</a> HGETALL</h3> <p><code>HGETALL [KEY]</code>형태로 사용하며 모든 field와 value를 조회한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; HMSET paul email &quot;paul@gmail.com&quot; nation &quot;Korea&quot; age 30
+OK
+
+&gt; HGETALL paul
+1) &quot;email&quot;
+2) &quot;paul@gmail.com&quot;
+3) &quot;nation&quot;
+4) &quot;Korea&quot;
+5) &quot;age&quot;
+6) &quot;30&quot;
+</code></pre></div><h3 id="hdel"><a href="#hdel" class="header-anchor">#</a> HDEL</h3> <p><code>HDEL [KEY] [FIELD] [FIELD] ...</code>형태로 사용하며 지정한 Field와 Value를 삭제한다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; HMSET paul email &quot;paul@gmail.com&quot; nation &quot;Korea&quot; age 30
+OK
+
+&gt; HGETALL paul
+1) &quot;email&quot;
+2) &quot;paul@gmail.com&quot;
+3) &quot;nation&quot;
+4) &quot;Korea&quot;
+5) &quot;age&quot;
+6) &quot;30&quot;
+
+&gt; HDEL paul nation age
+(integer) 2
+
+&gt; HGETALL paul
+1) &quot;email&quot;
+2) &quot;paul@gmail.com&quot;
+</code></pre></div><h2 id="type-명령어"><a href="#type-명령어" class="header-anchor">#</a> TYPE 명령어</h2> <p><code>TYPE &lt;KEY&gt;</code> 명령어로 타입을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; TYPE person
+set
+
+&gt; TYPE person:a4be06b1-b445-42fe-a70f-0fdee111cf55
+hash
+</code></pre></div><h2 id="flushall-명령어"><a href="#flushall-명령어" class="header-anchor">#</a> FLUSHALL 명령어</h2> <p><code>FLUSHALL</code> 명령어로 모든 키를 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; FLUSHALL
+OK
+
+&gt; KEYS *
+(empty array)
+</code></pre></div><h2 id="redis-expire"><a href="#redis-expire" class="header-anchor">#</a> Redis Expire</h2> <p><code>Redis</code>는 저장한 데이터에 expire를 설정할 수 있다. <code>EXPIRE [KEY] [SECOND]</code> 명령어를 사용하면 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>// 데이터 저장
+&gt; SET name &quot;Paul&quot;
+
+// 만료 시간 설정 
+&gt; EXPIRE name 10
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>// 10초가 지나기 전
+&gt; GET name
+&quot;Paul&quot;
+
+// 10초가 지난 후
+&gt; GET name
+(nil)
+</code></pre></div><p><code>TTL</code> 명령어로 남은 시간 또는 만료 후 지나간 시간을 조회할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; TTL name  
+5   // 만료되기 5초 전
+
+&gt; TTL name
+-5  // 만료된 후 5초
+</code></pre></div><p><code>PERSIST</code> 명령어로 expire를 해제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; PERSIST name
+</code></pre></div><h2 id="redis-namespace"><a href="#redis-namespace" class="header-anchor">#</a> Redis Namespace</h2> <p><code>Namespace</code>를 활용하면 데이터를 체계적으로 데이터베이스에 저장할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; SET programmer:android:name &quot;Paul&quot;
+&gt; SET programmer:spring:name &quot;John&quot;
+&gt; SET designer:name &quot;Monica&quot;
+&gt; SET marketer:name &quot;Rachel&quot;
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>GET programmer:android:name
+GET programmer:spring:name
+GET designer:name
+GET marketer:name
+</code></pre></div><p>위 예제에서는 Namespace로 <code>콜론(:)</code>을 사용했다. 하지만 스택 오버플로우를 검색해보니 <code>슬래시(/)</code>를 사용하기도 한다. 구분자의 제한이 없는 것 같다.</p> <h3 id="namespace를-redis-데이터베이스-설계에-활용하기"><a href="#namespace를-redis-데이터베이스-설계에-활용하기" class="header-anchor">#</a> Namespace를 Redis 데이터베이스 설계에 활용하기</h3> <p><code>관계형 데이터베이스</code>와 <code>Redis</code>는 구조적으로 다르기 때문에 데이터베이스 설계방식도 다르다.</p> <p>우선 관계형 데이터베이스를 살펴보자. 애플리케이션의 회원 정보를 담는 <code>member</code>테이블과 회원의 게시글 정보를 담는 <code>post</code>테이블이 있다.
+회원은 여러 게시글을 가질 수 있으므로 <code>member</code> 테이블과 <code>post</code> 테이블은 <code>일대다(One to Many)</code>관계이며, 이를 다이어그램으로 표현하면 다음과 같다.</p> <p><img src="/blog/assets/img/4.1b731303.png" alt=""></p> <p>테이블을 생성하는 DDL은 다음과 같을 것이다.</p> <div class="language- extra-class"><pre class="language-text"><code>CREATE TABLE member (
+    member_id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) 
+);
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>CREATE TABLE post (
+    post_id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    member_id BIGINT,
+    title VARCHAR(255),
+    content TEXT,
+    FOREIGN KEY member_id REFERENCES member(member_id)
+);
+</code></pre></div><p>반면 Redis는 테이블이라는 개념 자체가 없다. 또한 외래키라는 개념도 없으므로 테이블 간 연관관계를 표현할 수도 없다. 따라서 마치 리눅스의 디렉토리 구조처럼 <code>Namespace</code>를 활용하여 데이터를 저장해야한다.</p> <p><img src="/blog/assets/img/5.c32ec067.png" alt=""></p> <div class="language- extra-class"><pre class="language-text"><code>&gt; HMSET post:1:1 title &quot;programming&quot; content &quot;I love programming&quot;
+&gt; HMGET post:1:1 title content
+1) &quot;programming&quot;
+2) &quot;I love programming&quot;
+</code></pre></div><h2 id="redis-multi-database"><a href="#redis-multi-database" class="header-anchor">#</a> Redis Multi Database</h2> <p><code>Redis</code>는 여러 데이터베이스를 가질 수 있으며 기본적으로 16개의 데이터베이스가 제공된다. 설정파일에서 개수를 변경할 수 있으며, Homebrew로 Redis를 설치한 경우 <code>/usr/local/etc/redis.conf</code>에 위치한다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code># Set the number of databases. The default database is DB 0, you can select
+# a different one on a per-connection basis using SELECT &lt;dbid&gt; where
+# dbid is a number between 0 and 'databases'-1
+databases 16
+</code></pre></div><p><code>redis-cli</code>로 Redis에 연결할 때 <code>-n</code> 옵션으로 데이터베이스를 선택할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ redis-cli -n 3
+redis-cli[3] &gt; 
+</code></pre></div><p>옵션을 지정하지 않으면 0번 데이터베이스를 사용하게 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ redis-cli
+redis-cli &gt; 
+</code></pre></div><p>Redis에 이미 연결된 상태에서는 <code>SELECT</code> 명령어로 데이터베이스를 변경할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>redis-cli[3]&gt; SELECT 5
+OK
+
+redis-cli[5]&gt; 
+</code></pre></div><p><code>Medis 2</code>를 사용하는 경우 화면 하단에서 데이터베이스를 선택할 수 있다.</p> <p><img src="/blog/assets/img/3.3fe8a1a1.png" alt=""></p> <h2 id="redis-persistent"><a href="#redis-persistent" class="header-anchor">#</a> Redis Persistent</h2> <p>인메모리 방식이기 때문에 애플리케이션이 다운되거나 재시작되면 데이터가 사라진다. 이 때문에 다음과 같은 방법으로 데이터를 백업할 수 있다.</p> <h3 id="rdb"><a href="#rdb" class="header-anchor">#</a> RDB</h3> <p>현재 메모리 상태에 대한 스냅샷을 디스크에 저장한다.</p> <div class="language- extra-class"><pre class="language-text"><code># redis.conf
+dbfilename dump.rdb
+</code></pre></div><h3 id="aof"><a href="#aof" class="header-anchor">#</a> AOF</h3> <p><code>AOF(Append Only File)</code>은 추가, 수정, 삭제 명령이 실행될 때 마다 파일에 기록한다.</p> <div class="language- extra-class"><pre class="language-text"><code># redis.conf
+appendonly yes # default no
+appendfilename appendonly.aof # 파일이름 설정
+appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (always, everysec, no)
+</code></pre></div><h2 id="ha와-redis-replication"><a href="#ha와-redis-replication" class="header-anchor">#</a> HA와 Redis Replication</h2> <p><code>Redis Replication</code>을 사용하면 데이터를 이중화하여 <code>HA(High Availability, 고가용성)</code>을 확보할 수 있다. 쉽게 설명하면 다른 레디스 노드에 데이터를 복사하는 것이다.</p> <p>레디스는 Master/Slave 모델의 Replication을 제공한다. 여러 레디스 노드 중 하나를 Master로 선정하여 사용하고, 데이터를 다른 노드에 저장한다. Master 노드에 장애가 발생하면 다른 Slave 노드를 Master로 승격하며, 특정 Slave 노드를 Master 노드로 변경할 수도 있다.</p> <h2 id="redis-pub-sub"><a href="#redis-pub-sub" class="header-anchor">#</a> Redis PUB/SUB</h2> <p><code>Redis PUB/SUB</code>를 사용하면 Redis를 메시지 브로커로 사용할 수 있다. Redis PUB/SUB은 <code>채널(Channel)</code>을 통해 메시지를 전달한다.</p> <p>메시지 수신 역할을 할 터미널을 오픈하고 <code>subscribe &lt;CHANNEL_NAME&gt;</code> 명령어를 입력하면 채널을 구독하게 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; subscribe test_channel
+</code></pre></div><p>메시지 전송 역할을 할 터미널을 오픈하고 <code>publish &lt;CHANNEL_NAME&gt; &lt;MESSAGE&gt;</code> 명령어를 입력하면 채널로 메시지를 보내게 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; publish test_channel 'This is message 1'
+&gt; publish test_channel 'This is message 2'
+</code></pre></div><p>수신 측 터미널에 메시지가 출력된다.</p> <div class="language- extra-class"><pre class="language-text"><code>&gt; subscribe test_channel
+Reading messages... (press Ctrl-C to quit)
+1) &quot;This is message 1&quot;
+2) &quot;This is message 2&quot;
+</code></pre></div><p><code>Redis PUB/SUB</code>은 다음과 같은 특징이 있다.</p> <ul><li>한 채널을 여러 구독자가 구독할 수 있다.</li> <li>Kakfa 처럼 메시지를 저장(Queuing)하지 않기 때문에 구독 전 전송된 메시지는 읽을 수 없고, 메시지가 유실될 수도 있다.</li></ul> <h2 id="redis-stream"><a href="#redis-stream" class="header-anchor">#</a> Redis Stream</h2> <p>레디스 5.0부터 도입된 <code>Redis Stream</code>은 Redis Channel과 다르게 메시지를 저장(Queing)한다. 이 때문에 메시지 브로커보단 메시지 큐에 가깝다.</p> <div class="custom-block tip"><p class="custom-block-title">information</p> <p>정리 중인 컨텐츠 입니다.</p></div> <h2 id="medis-2"><a href="#medis-2" class="header-anchor">#</a> Medis 2</h2> <p><code>Medis 2</code>는 Redis를 위한 GUI Database Client다. Medis는 애플 앱 스토어에서 설치할 수 있다.</p> <p><img src="/blog/assets/img/1.294ec7d9.png" alt=""></p> <p><img src="/blog/assets/img/2.39af5934.png" alt=""></p> <h2 id="redis-labs"><a href="#redis-labs" class="header-anchor">#</a> Redis Labs</h2> <p><code>Redis</code> 클라우드 서비스를 제공한다.</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/55_db/02_Mongo DB/210102_start_mongo.html" class="prev">
+        Mongo DB 정리
+      </a></span> <span class="next"><a href="/blog/post/55_db/05_Elastic Search/220410_elastic_search.html">
+        ElasticSearch, ELK 스택 시작하기
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.407877ec.js" defer></script><script src="/blog/assets/js/3.2c868ac4.js" defer></script><script src="/blog/assets/js/75.1fdd9199.js" defer></script>
+  </body>
+</html>
