@@ -10,9 +10,9 @@ features:
 - title: Spring
   details: Spring Framework에 정리합니다.
 - title: Android
-  details: Android Framework, Rx, Coroutine, Android Architecture Component, Jetpack, 모던 안드로이드 등 안드로이드 전반에 대해 정리합니다.
+  details: Android Framework, RxJava, Coroutine, ACC, Jetpack 등 안드로이드 전반에 대해 정리합니다.
 - title: Infra/DevOps
-  details: Linux, Docker, Kubernetes, CI/CD, MSA 등 인프라와 DevOps 전반에 대해 정리합니다.
+  details: Linux, Docker, Kubernetes, CI/CD, MSA 등에 대해 정리합니다.
 - title: DB
   details: RDBMS, NoSQL 등 데이터베이스에 대해 정리합니다.
 - title: CS
