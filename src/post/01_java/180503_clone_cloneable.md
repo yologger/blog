@@ -1,5 +1,5 @@
 ---
-title: "얕은 복사와 깊은 복사, Cloneable, clone()"
+title: "얕은 복사와 깊은 복사, Cloneable"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0

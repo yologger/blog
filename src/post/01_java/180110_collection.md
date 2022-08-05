@@ -9,13 +9,13 @@ sidebarDepth: 0
 [[toc]]
 
 # 컬렉션 프레임워크
-Java API는 같은 타입의 여러 데이터를 한꺼번에 효율적으로 관리하기 위해 `컬렉션 프레임워크(Collection Framework)`를 지원한다. 
+Java API는 같은 타입의 여러 데이터를 한꺼번에 효율적으로 관리하기 위해 `컬렉션 프레임워크(Collection Framework)`를 제공한다. 
 ![](./180110_collection/1.png)
 
 컬렉션 프레임워크는 `java.util` 패키지에 포함되어있으며, 가장 중요한 요소는 `List`, `Set`, `Map`이다.
 
 ## List
-배열은 생성할 때 크기가 결정된다. 따라서 배열이 생성되면 동적으로 데이터를 추가하거나 삭제할 수 없다. 데이터를 동적으로 추가, 삭제하려면 <b>`List`</b>를 사용해야한다.
+배열은 생성할 때 크기가 결정된다. 따라서 배열이 생성되면 동적으로 데이터를 추가하거나 삭제할 수 없다. 데이터를 동적으로 추가, 삭제하려면 `List`를 사용해야한다.
 
 `List`의 특징은 다음과 같다.
 - 순서가 있다.
@@ -34,12 +34,12 @@ public interface List<E> extends Collection<E> {
     ...
 }
 ``` 
-<b>`List`</b>는 `Interface`이므로 인스턴스를 생성할 수 없다. 따라서 List의 구현체가 필요하다. 다행히 자바 API에서는 `Vector`, `ArrayList`, `LinkedList` 등 다양한 구현체를 제공한다.
+`List`는 인터페이스이므로 인스턴스를 생성할 수 없으며, 구현체가 필요하다. 자바 API에서는 `Vector`, `ArrayList`, `LinkedList` 등 다양한 구현체를 제공한다.
 
 ### Vector
-<b>`Vector`</b>는 다음과 같이 선언하고 초기화한다.
+`Vector`는 다음과 같이 선언하고 초기화한다.
 ``` java
-List<String> vector = new Vector<String>();
+Vector<String> vector = new Vector<String>();
 ```
 다음과 같이 요소를 추가한다.
 ``` java
@@ -51,7 +51,7 @@ System.out.println(vector.toString());   // [Joey, Chandler, Ross]
 ```
 요소 값에 접근할 수 있다.
 ``` java
-System.out.println(vector.get(0));   // Joey
+vector.get(0);   // Joey
 ```
 요소 값을 변경할 수 있다.
 ``` java
@@ -67,7 +67,7 @@ vector.remove("Ross");
 ```
 
 ### ArrayList
-<b>`ArrayList`</b>는 가장 많이 사용되는 List의 구현체다. `ArrayList`는 다음과 같이 선언하고 초기화한다.
+`ArrayList`는 가장 많이 사용되는 `List`의 구현체다. `ArrayList`는 다음과 같이 선언하고 초기화한다.
 ``` java
 List<String> list = new ArrayList<String>();
 ```
@@ -97,7 +97,7 @@ list.remove("Ronaldo");
 ```
 
 ### LinkedList
-<b>`LinkedList`</b>는 다음과 같이 선언하고 초기화한다.
+`LinkedList`는 다음과 같이 선언하고 초기화한다.
 ``` java
 List<String> linkedList = new LinkedList<String>();
 ```
@@ -119,15 +119,15 @@ linkedList.set(0, "Monica");
 ```
 요소를 삭제할 수 있다.
 ``` java
+// 요소로 삭제
 linkedList.remove("Ross");
 
+// 인덱스로 삭제
 linkedList.remove(0);
 ```
 
 ### Vector vs. ArrayList
-`Vector`는 동기화가 되어있다. 다시 말해 한 순간에 하나의 스레드만 접근할 수 있기 때문에 <u>스레드 안전(Thread Safe)</u>이라고 한다. 반면 `ArrayList`는 동기화되지 않았기 때문에 동시에 여러 스레드가 접근할 수 있다.
-
-`Vector`는 동기화가 되어있는 대신 속도가 느리다. 반면 `ArrayList`는 동기화가 되지 않았기 때문에 속도가 빠르다.
+`Vector`는 동기화가 되어있다. 다시 말해 한 순간에 하나의 스레드만 접근할 수 있기 때문에 <u>스레드에 안전(Thread Safe)</u>하다. 대신 속도가 느리다. 반면 `ArrayList`는 동기화되지 않았기 때문에 동시에 여러 스레드가 접근할 수 있으며 속도가 빠르다.
 
 따라서 싱글 스레드 환경에서는 `ArrayList`를 사용하고 멀티 스레드 환경에서는 `Vector`를 사용하는 것이 바람직하다.
 
@@ -154,13 +154,14 @@ public class LinkedList<E> {
 
 보통 데이터를 순차적으로 추가, 삭제하는 경우 `ArrayList`가 더 빠르다. 반면 데이터를 중간에 추가, 삭제하는 경우 `LinkedList`가 더 빠르다. 따라서 상황에 따라 적절한 것을 선택하자.
 
-### List를 Array로 초기화하기
+### Array로 List 생성하기
+`Arrays.asList()`를 사용하면 `Array`로 `List`를 생성할 수 있다.
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 ```
 
 ### List를 특정 크기의 값으로 초기화하기
-`Collections`클래스의 `nCopies()`메소드를 사용하면 `List`를 특정 크기의 값으로 쉽게 초기화할 수 있다.
+`Collections.nCopies()`메소드를 사용하면 `List`를 특정 크기의 값으로 쉽게 초기화할 수 있다.
 ``` java{1}
 List<Integer> list = new ArrayList<Integer>(Collections.nCopies(10, 1));
 
@@ -168,7 +169,7 @@ System.out.println(list.toString());    // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ```
 
 ### List 깊은 복사
-다음과 같이 `List`를 깊은 복사할 수 있다.
+`ArrayList` 생성자에 기존 `List`를 전달하는 방식으로 깊은 복사르르 할 수 있다.
 ``` java{7}
 List<Integer> list = new ArrayList<Integer>();
 list.add(1);
@@ -189,6 +190,7 @@ System.out.println(copy.hashCode());    // 955331
 `List`인터페이스가 제공하는 메소드는 다음과 같다. 
 
 #### List.add()
+`List.add()`를 사용하면 `List`의 맨 끝에 요소를 추가할 수 있다.
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 
@@ -196,6 +198,7 @@ list.add(6);
 
 System.out.println(list);  // [1, 2, 3, 4, 5, 6]
 ```
+첫 번째 인자로 인덱스를 지정할 수 있다.
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 
@@ -205,6 +208,7 @@ System.out.println(list);  // [20, 1, 2, 3, 4, 5]
 ```
 
 #### List.addAll()
+`List.addAll()`를 사용하면 `List`를 `List`에 추가할 수 있다.
 ``` java
 List<Integer> list1 = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 List<Integer> list2 = new ArrayList(Arrays.asList(6, 7, 8, 9, 10));
@@ -214,6 +218,7 @@ System.out.println(list1);  // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
 #### List.get()
+특정 인덱스의 요소를 가져올 수 있다.
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 
@@ -221,6 +226,7 @@ System.out.println(list.get(0));    // 1
 ```
 
 #### List.set()
+특정 인덱스의 요소를 변경할 수 있다.
 ``` java
 List<Integer> list = new ArrayList(Arrays.asList(1, 2, 3, 4, 5));
 list.set(0, 10);
@@ -229,20 +235,28 @@ System.out.println(list);   // [10, 2, 3, 4, 5]
 ```
 
 #### List.remove()
+특정 요소를 삭제할 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Kane"));
+
+// 인덱스로 삭제
 list.remove(0);
+
+// 요소로 삭제
 list.remove("Kane");
+
 System.out.println(list);    // [John, Smith]
 ```
 
 #### List.indexOf()
+특정 요소의 첫 번째 인덱스를 가져올 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
 
 System.out.println(list.indexOf("Paul"));       // 0
 ```
 #### List.lastIndexOf()
+특정 요소의 마지막 인덱스를 가져올 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
 
@@ -250,6 +264,7 @@ System.out.println(list.lastIndexOf("Paul"));   // 3
 ```
 
 #### List.size()
+`List`의 크기를 가져올 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
 
@@ -257,6 +272,7 @@ System.out.println(list.size());           // 4
 ```
 
 #### List.forEach()
+`List`를 순회할 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
 
@@ -266,6 +282,7 @@ list.forEach((String item) -> {
 ```
 
 #### List.contains()
+요소 포함 여부를 확인할 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
 
@@ -275,6 +292,7 @@ if (list.contains("Paul")) {
 ```
 
 #### List.isEmpty()
+`List`가 비어있는지 확인할 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
 
@@ -284,12 +302,14 @@ if (list.isEmpty()) {
 ```
 
 #### List.subList()
+`List`의 일부분으로 새로운 `List`를 생성할 수 있다.
 ``` java
 List<String> list = Arrays.asList("Paul", "John", "Smith", "Monica", "Chandler", "Ross");
 List<String> subList = list.subList(1, 4);      // [John, Smith, Monica]
 ```
 
 #### List.clear()
+`List`를 클리어할 수 있다.
 ``` java
 List<String> list = new ArrayList<>();
 list.add("john");
@@ -302,10 +322,11 @@ System.out.println(list);   // []
 ```
 
 #### List.toArray()
+`List`를 배열로 변환할 수 있다.
 ``` java
 List<String> list = new ArrayList(Arrays.asList("Paul", "John", "Smith", "Paul"));
-String[] arr = list.toArray(new String[list.size()]);
-System.out.println(Arrays.toString(arr));   // [Paul, John, Smith, Paul]
+
+String[] arr = list.toArray(new String[list.size()]);   // [Paul, John, Smith, Paul]
 ```
 
 ## Set
@@ -327,7 +348,7 @@ public interface Set<E> extends Collection<E> {
     void clear();
 }
 ``` 
-<b>`Set`</b>은 `Interface`이므로 인스턴스를 생성할 수 없다. 따라서 `Set`의 구현체가 필요하다. 다행히 자바 API에서는 `HashSet`, `TreeSet`, `LinkedHashSet`이라는 구현체를 제공한다. 
+`Set`은 인터페이스이므로 인스턴스를 생성할 수 없으며 구현체가 필요하다. 자바 API에서는 `HashSet`, `TreeSet`, `LinkedHashSet`이라는 구현체를 제공한다. 
 
 ### TreeSet
 `TreeSet`은 다음과 같이 생성한다.
@@ -454,7 +475,7 @@ treeSet.add(1);
 System.out.println(treeSet);    // [1, 6, 7, 10, 15, 60, 90]
 ```
 
-`HashSet`은 내부적으로 Hash Table을 통해 구현되어있다. 따라서 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 <u>데이터가 임의의 순서로 배치된다.</u>
+`HashSet`은 내부적으로 Hash Table을 통해 구현되어있다. 해시 함수를 통한 직접 접근을 하기 때문에 데이터를 삽입, 삭제, 탐색에 `O(1)`의 시간복잡도를 가진다. 물론 충돌로 인한 오버헤드가 발생할 수 있다. 그리고 <u>데이터가 임의의 순서로 배치된다.</u>
 ``` java
 Set<Integer> hashSet = new HashSet<Integer>();
 
@@ -469,7 +490,25 @@ hashSet.add(1);
 System.out.println(hashSet);    // [1, 6, 7, 90, 10, 60, 15]
 ```
 
-데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashSet`을 사용한다. 반면 정렬이 필요하면 `LinkedHashSet`이나 `TreeSet`을 사용한다.
+데이터의 삽입, 삭제, 탐색이 빈번할 때는 `HashSet`을 사용한다. 반면 정렬이 필요하면 `LinkedHashSet`이나 `TreeSet`을 사용한다.
+
+### Set 순회
+`Set`은 다음과 같은 방법으로 순회할 수 있다.
+``` java{11-13}
+Set<Integer> hashSet = new HashSet<Integer>();
+
+hashSet.add(7);
+hashSet.add(90);
+hashSet.add(15);
+hashSet.add(10);
+hashSet.add(6);
+hashSet.add(60);
+hashSet.add(1);
+
+for (Integer e: hashSet) {
+    System.out.println(e);
+}
+```
 
 ### HashSet vs. LinkedHashSet
 `HashSet`은 <u>데이터 삽입 순서</u>를 보장하지 않는다.
@@ -496,7 +535,7 @@ linkedHashSet.add(4);
 
 System.out.println(linkedHashSet.toString());   // [5, 3, 1, 2, 4]
 ```
-<u>데이터 삽입 순서</u>를 보장하려면 `LinkedHashSet`을 사용한다.
+데이터 삽입 순서를 보장하려면 `LinkedHashSet`을 사용한다.
 
 ### Set 깊은 복사
 `Set`의 깊은 복사는 다음과 같이 할 수 있다.
@@ -519,23 +558,7 @@ System.out.println(copy.hashCode());    // 10
 ```
 
 ### HashSet 정렬하기
-`HashSet`은 `List`로 변환한 후 `Collections.sort()`메소드로 정렬할 수 있다.
-``` java
-Set<Integer> hashSet = new HashSet<Integer>();
-
-hashSet.add(3);
-hashSet.add(8);
-hashSet.add(90);
-hashSet.add(6);
-hashSet.add(65);
-hashSet.add(1);
-
-List<Integer> list = new ArrayList<Integer>(hashSet);
-Collections.sort(list);
-
-System.out.println(list);   // [1, 3, 6, 8, 65, 90]
-```
-또는 `TreeSet`을 생성한 후 요소들을 삽입하는 방식으로 정렬할 수 있다.
+`TreeSet`을 생성한 후 요소들을 삽입하는 방식으로 정렬할 수 있다.
 ``` java
 Set<Integer> hashSet = new HashSet<Integer>();
 
@@ -554,8 +577,26 @@ for (Integer element: hashSet) {
 
 System.out.println(treeSet);   // [1, 3, 6, 8, 65, 90]
 ```
+또는 `HashSet`은 `List`로 변환한 후 `Collections.sort()`메소드로 정렬할 수 있다.
+``` java
+Set<Integer> hashSet = new HashSet<Integer>();
+
+hashSet.add(3);
+hashSet.add(8);
+hashSet.add(90);
+hashSet.add(6);
+hashSet.add(65);
+hashSet.add(1);
+
+List<Integer> list = new ArrayList<Integer>(hashSet);
+Collections.sort(list);
+
+System.out.println(list);   // [1, 3, 6, 8, 65, 90]
+```
 
 ### Set의 메소드
+`Set`이 제공하는 주요 메소드는 다음과 같다. 
+
 #### Set.add()
 `Set.add()`는 데이터를 추가할 때 사용한다.
 ``` java
@@ -568,7 +609,7 @@ set.add(3);
 System.out.println(set);    // [1, 2, 3]
 ```
 
-`Set.add()`는 boolean 타입의 데이터를 반환한다. 이를 통해 데이터 삽입 여부를 확인할 수 있다.
+`Set.add()`는 불리언 타입의 데이터를 반환한다. 이를 통해 데이터 삽입 여부를 확인할 수 있다.
 ``` java
 Set set = new HashSet();
 System.out.println(set.add(1)); // true
@@ -580,11 +621,13 @@ System.out.println(set.add(3)); // true
 ```
 
 #### Set.remove()
+특정 요소를 삭제할 수 있다.
 ``` java
 set.remove(3);
 ```
 
 #### Set.contains()
+특정 요소의 포함 여부를 확인할 수 있다.
 ``` java
 if (set.contains(3)) {
     // ...
@@ -592,6 +635,7 @@ if (set.contains(3)) {
 ```
 
 #### Set.isEmpty()
+`Set`이 비어있는지 확인할 수 있다.
 ``` java
 if (set.isEmpty()) {
     // ...
@@ -599,6 +643,7 @@ if (set.isEmpty()) {
 ```
 
 #### Set.size()
+요소의 개수를 반환한다.
 ``` java
 if (set.size() > 10) {
     // ...
@@ -618,6 +663,7 @@ for (Integer element: set) {
 ```
 
 #### Set.clear()
+`Set`을 클리어할 수 있다.
 ``` java
 Set<Integer> set = new HashSet<>();
 set.add(1);
@@ -638,7 +684,7 @@ System.out.println(set);  // []
 - `키(Key)`에는 중복된 값이 입력될 수 없다.
 - `값(Value)`는 중복된 값이 입력될 수 있다.
 
-자바 API에서 제공하는 Map의 정의는 다음과 같다.
+자바 API에서 제공하는 `Map`의 정의는 다음과 같다.
 ``` java
 public interface Map<K, V> {
     int size();
@@ -657,7 +703,7 @@ public interface Map<K, V> {
     }
 }
 ``` 
-위에서 보는 것처럼 Map은 Interface이므로 인스턴스를 생성할 수 없다. 따라서 `Map`의 구현체가 필요하다. 다행히 Java API에서는 `HashMap`, `TreeMap`, `LinkedMap`이라는 구현체를 제공한다.
+`Map`은 인터페이스이므로 인스턴스를 생성할 수 없으며 구현체가 필요하다. Java API에서는 `HashMap`, `TreeMap`, `LinkedMap`이라는 구현체를 제공한다.
 
 ### TreeMap
 `TreeMap`은 다음과 같이 선언하고 초기화한다.
@@ -688,7 +734,7 @@ players.remove(7);
 System.out.println(players.toString()); // {9=Benzema, 11=Bale}
 ```
 
-`TreeMap`은 기본적으로 키 값을 기준으로 오름차순으로 정렬한다.
+`TreeMap`은 기본적으로 <u>키 값을 기준으로 오름차순으로 정렬한다.</u>
 ``` java
 players.put(7, "Ronaldo");
 players.put(9, "Benzema");
@@ -784,7 +830,7 @@ System.out.println(players.toString()); // {9=Benzema, 11=Bale}
 ```
 
 ### TreeMap vs. HashMap
-`TreeMap`은 내부적으로 `Binary Search Tree`를 통해 구현되어있다. 
+`TreeMap`은 내부적으로 Binary Search Tree를 통해 구현되어있다. 
 ``` java
 public class TreeMap<K,V> {
 
@@ -803,9 +849,9 @@ public class TreeMap<K,V> {
 }
 ```
 
-따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 `Binary Search Tree`를 사용하기 때문에 <u>데이터가 정렬된다.</u> 
+따라서 데이터를 삽입, 삭제하거나 포함 여부를 확인할 때 `O(log n)`의 시간복잡도를 가진다. 또한 Binary Search Tree를 사용하기 때문에 <u>데이터가 정렬된다.</u> 
 
-반면 `HashMap`은 내부적으로 `Hash Table`을 통해 구현되어있다. 또한 충돌 해결 알고리즘으로 `Chaining(LinkedList)`를 사용한다.
+반면 `HashMap`은 내부적으로 Hash Table을 통해 구현되어있다. 또한 충돌 해결 알고리즘으로 `Chaining(LinkedList)`를 사용한다.
 ``` java
 public class HashMap<K,V> {
 
@@ -826,6 +872,31 @@ public class HashMap<K,V> {
 `HashMap`은 데이터를 삽입, 삭제하거나 포함여부를 확인할 때 `O(1)`의 시간복잡도를 가진다. 또한 데이터가 <u>임의의 순서로 배치된다.</u> 
 
 요약하자면 데이터의 삽입, 삭제, 포함여부 확인이 빈번할 때는 `HashMap`을 사용한다. 반면 정렬이 필요하면 `TreeMap`을 사용한다.
+
+### Map 순회
+`Map.keySet()`을 사용하여 `Map`을 순회할 수 있다.
+``` java {6-8}
+Map<Integer, String> players = new HashMap<Integer, String>();
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+for (Integer key: players.keySet()) {
+    System.out.println(players.get(key));
+}
+```
+
+`Map.entrySet()`을 사용할 수도 있다.
+``` java {6-8}
+Map<Integer, String> players = new HashMap<Integer, String>();
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+for (Map.Entry<Integer, String> player: players.entrySet()) {
+    System.out.println(player.getKey() + " : " + player.getValue());
+}
+```
 
 ### HashMap vs. LinkedHashMap
 `HashMap`은 <u>데이터 삽입 순서</u>를 보장하지 않는다.
@@ -876,9 +947,9 @@ System.out.println(map.hashCode());     // -1051088633
 System.out.println(copy.hashCode());    // 974907474
 ```
 
-### HashMap과 TreeMap 사이의 변환
+### HashMap을 TreeMap으로 변환
 `HashMap`은 다음과 같은 방법으로 `TreeMap`으로 변환할 수 있다.
-``` java
+``` java{10,13-15}
 HashMap<Person, String> hashMap = new HashMap<Person, String>();
 
 hashMap.put(new Person("paul", 35), "paul");
@@ -887,17 +958,19 @@ hashMap.put(new Person("john", 45), "paul");
 
 System.out.println(hashMap.toString());     // {{name: paul, age: 35}=paul, {name: smith, age: 25}=smith, {name: john, age: 45}=paul}
 
+// TreeMap 생성
 TreeMap<Person, String> treeMap = new TreeMap<Person, String>((p1, p2) -> p1.getAge() - p2.getAge());
 
+// HashMap의 요소를 TreeMap에 삽입
 for (Map.Entry<Person, String> entry : hashMap.entrySet()) {
     treeMap.put(entry.getKey(), entry.getValue());
 }
 
 System.out.println(treeMap.toString());     // {{name: smith, age: 25}=smith, {name: paul, age: 35}=paul, {name: john, age: 45}=paul}
 ```
-
+### TreeMap을 HashMap으로 변환
 `TreeMap`은 다음과 같은 방법으로 `HashMap`으로 변환할 수 있다.
-``` java
+``` java {9}
 TreeMap<Person, String> treeMap = new TreeMap<Person, String>((p1, p2) -> p1.getAge() - p2.getAge());
 
 treeMap.put(new Person("paul", 35), "paul");
@@ -913,7 +986,7 @@ System.out.println(hashMap.toString());     // {{name: john, age: 45}=paul, {nam
 
 ### HashMap를 Key로 정렬하기
 새로운 `TreeMap`을 생성한 후 요소를 추가하는 방식으로 `HashMap`을 정렬할 수 있다.
-``` java
+``` java{10,13-15}
 HashMap<Person, String> hashMap = new HashMap<Person, String>();
 
 hashMap.put(new Person("paul", 35), "paul");
@@ -922,8 +995,10 @@ hashMap.put(new Person("john", 45), "paul");
 
 System.out.println(hashMap.toString());     // {{name: paul, age: 35}=paul, {name: smith, age: 25}=smith, {name: john, age: 45}=paul}
 
+// TreeMap 생성
 TreeMap<Person, String> treeMap = new TreeMap<Person, String>((p1, p2) -> p1.getAge() - p2.getAge());
 
+// HashMap의 요소를 TreeMap에 삽입
 for (Map.Entry<Person, String> entry : hashMap.entrySet()) {
     treeMap.put(entry.getKey(), entry.getValue());
 }
@@ -931,7 +1006,7 @@ for (Map.Entry<Person, String> entry : hashMap.entrySet()) {
 System.out.println(treeMap.toString());     // {{name: smith, age: 25}=smith, {name: paul, age: 35}=paul, {name: john, age: 45}=paul}
 ```
 다음과 같이 `keySet()`을 `List`로 변환한 후 `Collections.sort()`메소드로 정렬할 수도 있다.
-``` java
+``` java {9,10}
 HashMap<Integer, String> hashMap = new HashMap<>();
 
 hashMap.put(9, "Benzema");
@@ -956,7 +1031,7 @@ Bale
 ```
 
 ### HashMap를 Value로 정렬하기
-``` java
+``` java {10,13-15}
 HashMap<Integer, String> hashMap = new HashMap<>();
 
 hashMap.put(9, "Benzema");
@@ -965,8 +1040,10 @@ hashMap.put(7, "Ronaldo");
 hashMap.put(4, "Ramos");
 hashMap.put(10, "Kane");
 
+// KeySet을 List로 변환
 List<Map.Entry<Integer, String>> entryList = new ArrayList<>(hashMap.entrySet());
 
+// List 정렬
 Collections.sort(entryList, (entry1, entry2) -> {
     return entry1.getValue().compareTo(entry2.getValue());
 });
@@ -987,6 +1064,7 @@ for(Map.Entry<Integer, String> entry : entryList) {
 `Map`인터페이스가 제공하는 메소드는 다음과 같다.
 
 #### Map.put()
+`put()`은 값이 없으면 새로운 값을 삽입한다.
 ``` java
 Map<Integer, String> players = new TreeMap<Integer, String>();
 
@@ -996,8 +1074,17 @@ players.put(11, "Bale");
 
 System.out.println(players);    // {7=Ronaldo, 9=Benzema, 11=Bale}
 ```
+값이 있으면 새로운 값으로 대치한다.
+``` java
+System.out.println(players);    // {7=Ronaldo, 9=Benzema, 11=Bale}
+
+players.put(11, "Neymar");
+
+System.out.println(players);    // {7=Ronaldo, 9=Benzema, 11=Neymar}
+```
 
 #### Map.get()
+키로 값을 조회한다.
 ``` java
 Map<Integer, String> players = new TreeMap<Integer, String>();
 
@@ -1006,25 +1093,44 @@ players.put(9, "Benzema");
 players.put(11, "Bale");
 
 String player1 = players.get(7);    // "Ronaldo"
-String player2 = players.get(8);    // null
+```
+키가 없으면 `null`을 반환한다.
+``` java
+String player2 = players.get(4);    // null
 ```
 
 #### Map.getOrDefault()
+키가 없을 때 반환할 기본값을 지정할 수 있다.
 ``` java
-String player3 = players.getOrDefault(8, "Ramos");  // "Ramos"
+String player3 = players.getOrDefault(4, "Ramos");  // "Ramos"
 ```
 
 #### Map.replace()
+값을 대치하고 이전 값을 반환한다.
+``` java {7}
+Map<Integer, String> players = new TreeMap<Integer, String>();
+
+players.put(7, "Ronaldo");
+players.put(9, "Benzema");
+players.put(11, "Bale");
+
+System.out.println(players.replace(7, "Son"));      // Ronaldo
+
+System.out.println(players);    // {7=Son, 9=Benzema, 11=Bale}
+```
+키가 없으면 `null`을 반환한다.
 ``` java
-players.replace(7, "Mbappe");
+System.out.println(players.replace(4, "ramos"));    // null
 ```
 
 #### Map.remove()
+키와 값을 삭제한다.
 ``` java
 players.remove(7);
 ```
 
 #### Map.isEmpty()
+`Map`이 비어있는지 확인한다.
 ``` java
 if (players.isEmpty()) {
     // ...
@@ -1032,6 +1138,7 @@ if (players.isEmpty()) {
 ```
 
 #### Map.containsKey()
+특정 키를 포함하는지 확인한다.
 ``` java
 if (players.containsKey(7)) {
     // ...
@@ -1039,6 +1146,7 @@ if (players.containsKey(7)) {
 ```
 
 #### Map.containsValue()
+특정 값을 포함하는지 확인한다.
 ``` java
 if (players.containsValue("Ronaldo")) {
     // ...
@@ -1046,20 +1154,26 @@ if (players.containsValue("Ronaldo")) {
 ```
 
 #### Map.keySet()
-``` java
+키의 집합을 반환한다.
+``` java {7}
 Map<Integer, String> players = new TreeMap<Integer, String>();
 
 players.put(7, "Ronaldo");
 players.put(9, "Benzema");
 players.put(11, "Bale");
 
-for (Integer key: players.keySet()) {
+Set<Integer> keySet = players.keySet();
+```
+키의 집합을 통해 `Map`을 순회할 수 있다.
+``` java
+for (Integer key: keySet) {
     System.out.println(key);
 }
 ```
 
 #### Map.entrySet()
-``` java
+키와 값의 쌍인 `Entry`의 집합을 반환한다.
+``` java {7}
 Map<Integer, String> players = new TreeMap<Integer, String>();
 
 players.put(7, "Ronaldo");
@@ -1067,7 +1181,9 @@ players.put(9, "Benzema");
 players.put(11, "Bale");
 
 Set<Map.Entry<Integer, String>> entries = players.entrySet();
-
+```
+`Entry`의 집합은 다음과 같이 순회할 수 있다. 또한 `Entry.getKey()`를 통해서 키를, `Entry.getValue()`를 통해서 값을 가져올 수 있다.
+``` java
 for (Map.Entry<Integer, String> entry : entries) {
     System.out.println("[Key] " + entry.getKey() + " [Value] " + entry.getValue());
 }
@@ -1079,6 +1195,7 @@ for (Map.Entry<Integer, String> entry : entries) {
 ```
 
 #### Map.clear()
+`Map`을 클리어할 수 있다.
 ``` java
 Map<Integer, String> players = new TreeMap<Integer, String>();
 players.put(7, "Ronaldo");
@@ -1091,7 +1208,7 @@ System.out.println(players);    // {}
 ```
 
 ## Stack
-`Stack`을 사용할 때는 <b>`Stack`</b>클래스를 사용한다.
+`Stack`은 다음과 같이 생성한다.
 ``` java
 Stack<Integer> stack = new Stack<Integer>();
 ```
@@ -1101,7 +1218,7 @@ stack.push(1);
 stack.push(2);
 stack.push(3);
 ```
-`top`에 있는 요소는 `peek()`로 접근할 수 있다.
+`peek()`로 맨위 요소에 접근할 수 있다.
 ``` java
 stack.peek();
 ```
@@ -1118,7 +1235,7 @@ System.out.println(stack);  // []
 
 
 ## Queue
-`Queue`를 사용할 때는 <b>`Queue`</b>인터페이스와 <b>`LinkedList`</b>클래스로 구현한다.
+`Queue`인터페이스와 `LinkedList`클래스로 큐를 사용할 수 있다.
 ``` java
 public interface Queue<E> extends Collection<E> {
     boolean add(E e);
@@ -1127,11 +1244,11 @@ public interface Queue<E> extends Collection<E> {
     // ...
 }
 ```
-`Queue`는 다음과 같이 생성한다.
+큐는 다음과 같이 생성한다.
 ``` java
 Queue<Integer> queue = new LinkedList<Integer>();
 ```
-데이터 삽입은 `add()`를 사용한다.
+`add()`로 데이터를 삽입할 수 있다.
 ``` java
 Queue<Integer> queue = new LinkedList<Integer>();
 queue.add(1);
@@ -1139,13 +1256,13 @@ queue.add(2);
 
 System.out.println(queue.toString());   // [1, 2]
 ```
-`peek()`을 사용하면 가장 처음 들어온 요소에 접근할 수 있다.
+`peek()`로 가장 먼저 들어온 요소에 접근할 수 있다.
 ``` java
 System.out.println(queue.toString());   // [1, 2, 3]
 
 Integer result = queue.peek();          // 1
 ```
-데이터 삭제는 `remove()`를 사용한다.
+`remove()`로 데이터를 삭제할 수 있다.
 ``` java
 System.out.println(queue.toString());   // [1, 2, 3, 4]
 
@@ -1164,7 +1281,7 @@ queue.clear();
 ```
 
 ## Deque
-`Deque`는 <b>`Deque`</b>인터페이스와 <b>`ArrayDeque`</b>로 구현한다.
+`Deque` 인터페이스와 `ArrayDeque`로 데크를 구현할 수 있다.
 ``` java Deque.java
 public interface Deque<E> extends Queue<E> {
     void addFirst(E e);
@@ -1177,7 +1294,7 @@ public interface Deque<E> extends Queue<E> {
     // ...
 }
 ```
-데이터 삽입은 다음과 같이 한다.
+`addFirst()`, `addLast()`로 데이터를 삽입한다.
 ``` java
 Deque<Integer> deque = new ArrayDeque<>();
 
@@ -1189,14 +1306,14 @@ deque.addFirst(5);
 deque.addFirst(6);
 System.out.println(deque.toString());   // [6, 5, 1, 2]
 ``` 
-데이터 접근은 다음과 같이 한다.
+`peekFirst()`, `peekLast()`로 데이터에 접근한다.
 ``` java
 System.out.println(deque.toString());   // [6, 5, 1, 2]
 
 System.out.println(deque.peekFirst());  // 6
 System.out.println(deque.peekLast());   // 2
 ```
-데이터 삭제는 다음과 같이 한다.
+`removeFirst()`, `removeLast()`로 데이터를 삭제한다.
 ``` java
 System.out.println(deque.toString());       // [6, 5, 1, 2]
 
@@ -1206,16 +1323,12 @@ System.out.println(deque.removeLast());     // 2
 System.out.println(deque.toString());       // [5, 1]
 ```
 
-## Heap, Priority Queue
-`Heap`과 `Priority Queue`는 데이터를 삽입한 순서에 상관없이 우선순위가 높은 데이터가 먼저 제거되는 자료구조다. <b>`PriorityQueue`</b>클래스로 `Heap`과 `Priority Queue`를 구현할 수 있다.
-
-### 사용법
-
-<b>`PriorityQueue`</b>클래스를 사용하여 생성한다.
+## PriorityQueue
+`PriorityQueue` 클래스로 힙을 구현할 수 있다.
 ``` java
 PriorityQueue<Integer> priorityQueue = new PriorityQueue<Integer>();
 ```
-`add()`를 사용하여 Enqueue를 한다.
+`add()`로 데이터를 삽입한다.
 ``` java
 priorityQueue.add(3);
 priorityQueue.add(1);
@@ -1229,21 +1342,25 @@ priorityQueue.add(5);
 System.out.println(priorityQueue.toString());   // [1, 3, 5, 4, 9, 7]
 ```
 
-`peek()`를 사용하여 우선순위가 가장 높은 데이터에 접근한다.
+`peek()`으로 우선순위가 가장 높은 데이터에 접근한다.
 ``` java
 System.out.println(priorityQueue.peek());       // 1
 ```
-`remove()`을 사용하여 우선순위가 가장 높은 데이터를 Dequeue한다.
+`remove()`으로 우선순위가 가장 높은 데이터를 삭제한다.
 ``` java
 System.out.println(priorityQueue.toString());   // [1, 3, 5, 4, 9, 7]
 
 System.out.println(priorityQueue.remove());     // 1
-System.out.println(priorityQueue.remove());       // 3
+System.out.println(priorityQueue.remove());     // 3
 System.out.println(priorityQueue.toString());   // [4, 7, 5, 9]
+```
+`clear()`로 `PriorityQueue`를 클리어할 수 있다.
+``` java
+priorityQueue.clear();
 ```
 
 ### 내림차순 정렬
-높은 값에 높은 우선순위를 부여할 수도 있다. `PriorityQueue` 객체를 생성할 때 `Collections.reverseOrder()`를 인자로 전달한다.
+`PriorityQueue` 객체를 생성할 때 `Collections.reverseOrder()`를 인자로 전달하여 큰 값에 높은 우선순위를 부여할 수 있다.
 ``` java
 PriorityQueue<Integer> priorityQueue = new PriorityQueue<Integer>(Collections.reverseOrder());
 priorityQueue.add(3);
@@ -1297,12 +1414,7 @@ class Person {
 }
 ```
 ``` java Main.java
-PriorityQueue<Person> priorityQueue = new PriorityQueue<Person>(new Comparator<Person>() {
-    @Override
-    public int compare(Person p1, Person p2) {
-        return p1.getAge() - p2.getAge();
-    }
-});
+PriorityQueue<Person> priorityQueue = new PriorityQueue<Person>((p1, p2) -> p1.getAge() - p2.getAge());
 
 priorityQueue.add(new Person("Monica", 23));
 priorityQueue.add(new Person("Phoebe", 25));
@@ -1377,10 +1489,10 @@ System.out.println(priorityQueue.remove().toString());      // [name='Ross', age
 ```
 
 ## Collections 클래스
-<b>`Collections`</b>클래스는 `List`, `Set`, `Map`처럼 `Collection`인터페이스를 상속한 객체를 조작하기 위한 유용한 메소드들을 제공한다.
+`Collections`클래스는 `List`, `Set`, `Map`를 조작하기 위한 유용한 메소드들을 제공한다.
 
 ### nCopies()
-첫 번째 인자로 전달된 크기의 List를 두 번째 인자로 전달된 객체로 초기화하여 반환한다.
+첫 번째 인자로 전달된 크기의 `List`를 생성한 후 두 번째 인자로 전달된 객체들로 초기화하여 반환한다.
 ``` java {1}
 List list = Collections.nCopies(10, 1);
 System.out.println(list);   // [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
@@ -1413,7 +1525,7 @@ System.out.println(list);   // [4, 2, 3, 1]
 ```
 
 ### copy()
-List를 복사한다. 목적지 List는 출발지 List보다 크거나 같아야한다. 그렇지 않으면 `IndexOutOfBoundsException`가 발생한다.
+`List`를 복사한다. 목적지 `List`는 출발지 `List`보다 크거나 같아야한다. 그렇지 않으면 `IndexOutOfBoundsException`가 발생한다.
 ``` java {3}
 List src = new ArrayList(Arrays.asList(1, 1, 1));
 List dest = new ArrayList(Arrays.asList(2, 2, 2, 2, 2));
@@ -1439,6 +1551,7 @@ System.out.println(copied.hashCode());      // 955331
 최대값을 반환한다.
 ``` java
 List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
+
 Collections.max(list);  // 8
 ```
 요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
@@ -1447,12 +1560,13 @@ Collections.max(list);  // 8
 최소값을 반환한다.
 ``` java
 List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
+
 Collections.min(list);  // 1
 ```
 요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
 
 ### addAll()
-Collection에 요소들을 추가한다.
+여러 요소들을 추가한다.
 ``` java
 List list = new ArrayList(Arrays.asList(1, 2, 3, 4));
 Collections.addAll(list, 5, 6, 7);

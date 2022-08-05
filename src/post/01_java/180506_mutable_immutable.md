@@ -23,7 +23,7 @@ Person p = new Person("Paul", 34);
 ```
 메모리 상에서 객체의 상태는 다음과 같다.
 
-![](./180504_mutable_immutable/1.png)
+![](./180506_mutable_immutable/1.png)
 
 객체의 상태를 변경하면
 ``` java
@@ -33,7 +33,7 @@ p.setAge(29);
 ```
 메모리 상에서 객체의 상태는 다음과 같이 변한다.
 
-![](./180504_mutable_immutable/2.png)
+![](./180506_mutable_immutable/2.png)
 
 이처럼 `Mutable Object`은 객체를 생성한 후 상태를 바꿀 수 있는 객체를 의미한다. List, Set, Map 같은 `Collection`객체도 Mutable Object에 포함된다.
 ``` java
@@ -60,6 +60,6 @@ name = "Monica";
 ```
 위 예제를 보고 객체를 변경하고 있다고 생각할 수 있다. 하지만 위 코드는 객체를 변경하는 것이 아니라 새로운 객체를 생성한 후 참조값을 변경하는 것이다.
 
-![](./180504_mutable_immutable/3.png)
+![](./180506_mutable_immutable/3.png)
 
 이러한 점에서 `문자열 리터럴`은 Immutable Object라 할 수 있다. 
