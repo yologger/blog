@@ -14,7 +14,7 @@ sidebarDepth: 0
 var age: Int = 30
 var name: String = "Paul"
 ``` 
-그럼 코틀린에서 제공하는 여러 자료형에 알아보자.
+Kotlin에서 제공하는 데이터 타입은 다음과 같다.
 
 ### 정수형 숫자
 `10진수 정수형 숫자`는 다음과 같이 사용한다.
@@ -56,7 +56,7 @@ var letter: Char = 'a'
 // 문자열 선언 및 초기화
 var name: String = "Paul"
 ```
-문자열 안에 변수를 삽입하는 것을 `문자열 템플릿`이라고 한다. 문자열 템플릿은 다음과 같이 사용한다.
+문자열 안에 변수를 삽입하는 것을 `문자열 템플릿`이라고 한다.
 ``` kotlin
 var description: String = "My name is ${name}"
 ```
@@ -145,7 +145,7 @@ name = "Son"        // Error
 `val`은 <u>런타임에 값이 결정되는 상수</u>다. 상수는 한 번 값이 할당되면 변경할 수 없다. 
 ``` kotlin
 // 기본타입의 상수 선언
-var age: Int = 30
+val age: Int = 30
 
 // 에러, 값 변경 불가능
 age = 31
@@ -166,7 +166,7 @@ val person = Person("Paul", 35)
 person = Person("John", 25)
 ```
 
-반면 `const val`는 <u>컴파일 타임에 값이 결정되는 상수</u>다. 인스턴스를 할당할 수 없으며, 기본 자료형과 문자열만 할당할 수 있다. 상수의 이름은 통상 <u>대문자</u>와 <u>언더바</u>를 통해 선언한다.
+반면 `const val`는 <u>컴파일 타임에 값이 결정되는 상수</u>다. 인스턴스를 할당할 수 없으며, 기본 자료형과 문자열만 할당할 수 있다. 이름은 통상 <u>대문자</u>와 <u>언더바</u>를 통해 선언한다.
 ``` kotlin
 const val DEVICE_WIDTH: Int = 1400                  // 성공
 const val URL: String = "http://www.naver.com"      // 성공
@@ -186,41 +186,41 @@ println(MediaQueryManager.DEVICE_WIDTH)
 ```
 
 ## 늦은 초기화
-Kotlin에서 변수나 상수는 원칙적으로 선언과 동시에 초기화해야합니다. Kotlin에서의 변수는 초기화하지 않으면 컴파일 자체가 안됩니다.
+Kotlin에서 변수나 상수는 원칙적으로 선언과 동시에 초기화해야 한다. 변수는 초기화하지 않으면 컴파일 자체가 안되기 때문이다.
 ``` kotlin
 // 기본 데이터타입 Int
 var age: Int        // Property must be initialized or be abstract
 var person: Person  // Property must be initialized or be abstract
 ``` 
 
-값이 없다면 데이터 타입을 `Nullable`로 선언하고 `null`이라도 할당해주어야 합니다.
+값이 없다면 데이터 타입을 `Nullable`로 선언하고 `null`이라도 할당해야 한다.
 ``` kotlin
 var age: Int? = null
 var person: Person? = null
 ``` 
 
-그러나 Kotlin은 선언만 먼저 하고 초기화는 나중에 하는 방법을 제공합니다. 이를 `늦은 초기화(Late Initialization)`라고 합니다. 
+그러나 Kotlin은 선언만 먼저 하고 초기화는 나중에 하는 방법을 제공한다. 이를 `늦은 초기화(Late Initialization)`라고 한다.
 
-늦은 초기화에는 두 가지 방법이 있습니다.
+늦은 초기화에는 두 가지 방법이 있다.
 
 1. `lateinit var`
 1. `by lazy`
 
 ### lateinit var
-`lateinit var`는 값의 생성 및 초기화를 나중에 할 수 있도록 합니다. 기본 자료형에는 사용할 수 없으며 클래스의 인스턴스에만 사용 가능합니다.
+`lateinit var`을 사용하면 변수만 먼저 선언하고 초기화는 특정 시점으로 미룰 수 있다. 기본 자료형은 사용할 수 없으며 클래스의 인스턴스만 가능하다.
 ``` kotlin
 class Person(name: String, age: Int)
 
-lateinit var person: Person     // 컴파일 에러가 발생하지 않습니다.
+lateinit var person: Person     // 컴파일 에러가 발생하지 않는다.
 
 person = Person("Paul", 35)
 ```
-문자열 `String`도 클래스이므로 사용할 수 있습니다.
+문자열 `String`도 클래스이므로 사용할 수 있다.
 ``` kotlin
 lateinit var name: String
 name = "Ronaldo"
 ```
-보통 안드로이드 앱을 개발할 때 다음과 같이 사용합니다.
+보통 안드로이드 앱을 개발할 때 다음과 같이 사용한다.
 ``` kotlin
 class MainActivity : AppCompatActivity() {
 
@@ -240,7 +240,7 @@ class MainActivity : AppCompatActivity() {
 ``` 
 
 ### by lazy
-키워드 `by lazy`를 상수 앞에 붙이면 상수에 접근할 때 값이 초기화됩니다. 접근하기 전에는 값이 초기화되지 않으므로 메모리를 절약할 수 있습니다.
+키워드 `by lazy`를 상수 앞에 붙이면 상수에 접근할 때 값이 초기화된다. 접근하기 전에는 값이 초기화되지 않으므로 메모리를 절약할 수 있다.
 ``` kotlin
 val name: String by lazy {
     println("Initializing....")
@@ -250,7 +250,7 @@ val name: String by lazy {
 print(name) // 상수에 접근하는 이 시점에 상수 name이 초기화됩니다.
 ``` 
 
-보통 안드로이드 앱을 개발할 때 다음과 같이 사용합니다.
+보통 안드로이드 앱을 개발할 때 다음과 같이 사용한다.
 ``` kotlin
 class MainActivity : AppCompatActivity() {
 
@@ -265,24 +265,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-``` 
-
-## 비구조화 분해
-`Destructuring Assignment`는 한국말로 `비구조화 할당` 또는 `구조분해`로 번역됩니다. 용어는 어렵지만 개념은 매우 쉽습니다. 어떤 객체의 데이터를 변수들에 대입하는 기술입니다.
-
-아래 예제를 살펴봅시다. `Person`클래스의 멤버변수 name, age를 새로운 변수에 할당하고 있습니다.
-``` kotlin
-data class Person(val name: String, val age: Int)
-
-val person = Person("Paul", 24)
-
-var name = person.name
-var age = person.age
-``` 
-이를 `Destructuring Declaration`을 사용하면 다음과 같이 단축할 수 있습니다.
-``` kotlin
-data class Person(val name: String, val age: Int)
-
-val person = Person("Paul", 24)
-val (name, age) = person   // 비구조화 할당
 ``` 

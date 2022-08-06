@@ -51,7 +51,7 @@ class MyClass {
 ```
 어노테이션은 메소드 앞에도 사용할 수 있습니다.
 ``` kotlin
-MyClass {
+class MyClass {
     @MyAnnotation fun myMethod(myProperty: Int): Int {
         ...
     }

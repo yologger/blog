@@ -130,7 +130,7 @@ printSomething("Hello World!")
 
 ## Unit vs. Nothing
 ### Unit
-`Unit`은 Java의 Void와 유사하며 <u>함수의 반환값이 없음</u>을 의미합니다.
+`Unit`은 Java의 Void와 유사하며 <u>함수의 반환값이 없음</u>을 의미한다.
 ``` kotlin
 fun printSomething(something: String): Unit {
     println(something)
@@ -139,7 +139,7 @@ fun printSomething(something: String): Unit {
 
 printSomething("Hello")
 ```
-반환값이 없는 함수에서는 `Unit`은 생략할 수 있습니다.
+반환값이 없는 함수에서는 `Unit`은 생략할 수 있다.
 ``` kotlin
 fun printSomething(something: String) {
     println(something)
@@ -148,7 +148,7 @@ fun printSomething(something: String) {
 
 printSomething("Hello")
 ```
-반환값이 없는 함수에서는 `return`도 생략할 수 있습니다.
+반환값이 없는 함수에서는 `return`도 생략할 수 있다.
 ``` kotlin
 fun printSomething(something: String) {
     println(something)
@@ -157,37 +157,37 @@ fun printSomething(something: String) {
 printSomething("Hello")
 ```
 
-`Unit`은 싱글톤이기도 합니다. 인스턴스를 생성하지 않고도 접근할 수 있으며, 인스턴스 또한 생성할 수 있습니다.
+`Unit`은 싱글톤이다. 따라서 인스턴스를 생성하지 않고도 접근할 수 있다. 물론 인스턴스 또한 생성할 수 있다.
 ``` Kotlin
 var unit: Unit = Unit
 ```
-`Unit`은 `RxKotlin`에서 데이터가 없는 이벤트에 사용합니다.
+`Unit`은 `RxJava`에서 데이터가 없는 이벤트에 사용할 수 있다.
 ``` Kotlin
 var didLogOut = PublishSubject.create<Unit>()
 didLogOut.onNext(Unit)
 ``` 
 
 ### Nothing
-`Nothing`은 <u>함수가 정상적으로 끝나지 않는다는 것을 명시적으로 표현</u>하는데 사용합니다.
+`Nothing`은 <u>함수가 정상적으로 끝나지 않는다는 것을 명시적으로 표현</u>하는데 사용한다.
 
-예를 들어 예외를 발생시키는 함수는 정상적으로 끝나지 않습니다. 이를 표현할 때 `Nothing`을 사용할 수 있습니다.
+예를 들어 예외를 발생시키는 함수는 정상적으로 끝나지 않는다. 이를 표현할 때 `Nothing`을 사용할 수 있다.
 ``` kotlin
 fun doSomething(): Nothing {
     throw Exception("Unknown exception.")
 }
 ```
-`Nothing` 타입을 반환하는 대표적인 함수가 `TODO()`입니다. `TODO()`는 `NotImplementedError`이라는 예외를 발생시킵니다.
+`Nothing` 타입을 반환하는 대표적인 함수가 `TODO()`다. `TODO()`는 `NotImplementedError`이라는 예외를 발생시킨다.
 ``` kotlin
 public inline fun TODO(): Nothing = throw NotImplementedError()
 ```
-이번에는 `TODO()`를 호출하는 예제를 살펴봅시다. 인터페이스 `Person`이 있습니다.
+이번에는 `TODO()`를 호출하는 예제를 살펴보자. 인터페이스 `Person`이 있다.
 ``` kotlin
 interface Person {
     fun printName()
     fun printAge()
 }
 ```
-안드로이드 스튜디오에서 이 인터페이스의 구현체 `Programmer`를 정의하면 다음과 같이 `TODO()`함수가 추가됩니다.
+안드로이드 스튜디오에서 이 인터페이스의 구현체 `Programmer`를 정의하면 다음과 같이 `TODO()`함수가 추가된다.
 ``` kotlin
 class Programmer: Person {
 
@@ -201,7 +201,7 @@ class Programmer: Person {
 
 }
 ```
-이 코드는 `TODO()`를 삭제하고 `printName()`과 `printAge()`를 구현하기 전까지 빌드되지 않습니다. 이처럼 `TODO()`는 코드가 아직 구현되지 않았으며, 나중에 코드를 구현해야한다는 것을 표시하는데 사용합니다.
+이 코드는 `TODO()`를 삭제하고 `printName()`과 `printAge()`를 구현하기 전까지 빌드되지 않는다. 이처럼 `TODO()`는 코드가 아직 구현되지 않았으며, 나중에 코드를 구현해야한다는 것을 표시하는데 사용한다.
 
 ## 가변인자
 함수의 파라미터가 몇 개일지 모를 수도 있다. 이때 키워드`vararg`를 사용할 수 있다.
@@ -210,7 +210,7 @@ fun sum(vararg numbers: Int): Int {
     // ...
 }
 ```
-`vararg`가 붙은 매개변수는 함수 내부에서 Array처럼 사용할 수 있다.
+`vararg`가 붙은 매개변수는 함수 내부에서 배열처럼 사용할 수 있다.
 ``` kotlin
 fun sum(vararg numbers: Int): Int {
     // numbers는 array
@@ -228,7 +228,7 @@ var result2 = sum(1, 2, 3, 4, 5, 6)  // 21
 ```
 
 ## 확장 함수
-`확장 함수(Extension Function)`는 기존에 정의된 클래스에 함수를 추가하는 것입니다. 
+`확장 함수(Extension Function)`를 사용하면 기존에 정의된 클래스를 수정하지 않고 메소드를 추가할 수 있다. 
 ``` kotlin
 class Person constructor(val name: String, val age: Int) {
 
@@ -248,7 +248,7 @@ fun Person.printInformation() {
 val person: Person = Person("Paul", 35)
 person.printInformation()
 ``` 
-보통 Java API나 다른 사람이 만든 라이브러리처럼 코드를 직접 변경하기 어려운 경우 `확장 함수`을 사용합니다. 다음은 `Int`클래스에 홀수인지 짝수인지 판단해주는 함수를 추가하는 예제입니다.
+보통 Java API나 다른 사람이 만든 라이브러리처럼 코드를 직접 변경하기 어려운 경우 `확장 함수`을 사용한다. 다음은 `Int`클래스에 홀수인지 짝수인지 판단해주는 함수를 추가하는 예제다.
 ``` kotlin
 fun Int.isEven() = this % 2 == 0
 
@@ -263,29 +263,29 @@ println(a.isOdd())    // true
 ```
 
 ## 중위 함수
-일반적으로 메소드를 호출할 땐 `객체.함수이름()`형태로 호출합니다. 중위 함수를 사용하면 콤마와 소괄호를 생략하고 `함수이름`으로 호출할 수 있습니다. 
+일반적으로 메소드를 호출할 땐 `객체.함수이름()`형태로 호출한다. 중위 함수를 사용하면 콤마와 소괄호를 생략하고 `함수이름`으로 호출할 수 있다.
 
-중위 함수는 다음과 같이 선언합니다.
+중위 함수는 다음과 같이 선언한다.
 ``` kotlin
 infix fun Int.multiply(x: Int): Int {
     return this * x
 }
 ```
-중위 함수는 다음과 같이 호출합니다.
+중위 함수는 다음과 같이 호출한다.
 ``` kotlin
 var three = 3
 // 점과 괄호를 생략하여 호출
 var result = three multiply 5
 ``` 
-중위 함수를 사용하려면 세 가지 조건을 충족해야합니다.
-1. 중위함수는 클래스의 메소드 또는 확장 함수의 형태여야 합니다.
-1. 오직 하나의 인자만 가져야합니다.
-1. 키워드 `infix`를 붙여줍니다.
+중위 함수를 사용하려면 세 가지 조건을 충족해야한다.
+1. 중위함수는 클래스의 메소드 또는 확장 함수의 형태여야 한다.
+1. 오직 하나의 인자만 가져야한다.
+1. 키워드 `infix`를 붙인다.
 
 ## 인라인 함수
-인라인 함수를 사용하면 람다를 사용했을 때 무의미한 객체 생성을 막고 성능을 향상시킬 수 있습니다.
+인라인 함수를 사용하면 람다를 사용했을 때 무의미한 객체 생성을 막고 성능을 향상시킬 수 있다.
 
-우선 Kotlin 파일을 컴파일하면 Java이 되는데, 함수 앞에 키워드 `inline`을 붙이면 함수를 호출하는 곳에 함수의 몸체를 그대로 복사합니다. 우선 `inline`을 사용하지 않은 일반 함수 예문을 보겠습니다.
+우선 Kotlin 파일을 컴파일하면 Java이 되는데, 함수 앞에 키워드 `inline`을 붙이면 함수를 호출하는 곳에 함수의 몸체를 그대로 복사한다. 우선 `inline`을 사용하지 않은 일반 함수 예문을 살펴보자.
 ``` kotlin
 fun doSomething() {
     println("doSomething start")
@@ -297,7 +297,7 @@ fun doSomethingElse() {
     println("doSomethingElse")
 }
 ```
-위 코드를 Java로 변환하면 아래와 같은 코드가 나옵니다. 
+위 코드를 Java로 변환하면 아래와 같은 코드가 생성된다.
 ``` java
 public void doSomething() {
    System.out.print("doSomething start");
@@ -310,7 +310,7 @@ public void doSomethingElse() {
    System.out.print("doSomethingElse");
 }
 ```
-그럼 키워드 `inline`를 붙이면 어떤 일이 발생할까요? 
+그럼 키워드 `inline`를 붙이면 어떤 일이 발생할까?
 ``` kotlin
 fun doSomething() {
     println("doSomething start")
@@ -322,7 +322,7 @@ inline fun doSomethingElse() {
     println("doSomethingElse")
 }
 ```
-아래 코드처럼 `doSomething()`메소드의 몸체를 그대로 복사하고 있습니다. 
+아래 코드처럼 `doSomething()`메소드의 몸체를 그대로 복사하고 있다. 
 ``` java
 public void doSomething() {
    System.out.print("doSomething start");
@@ -335,13 +335,13 @@ public void doSomethingElse() {
    System.out.print("doSomethingElse");
 }
 ```
-그렇다면 `inline 함수`는 왜 쓰는걸까요?
+그렇다면 `inline 함수`는 왜 쓰는걸까?
 
 
 ### Runtime Penalties
-Kotlin에서는 함수를 함수의 인자로 전달할 때 문제가 발생합니다. 함수를 함수의 인자로 전달하면 추가적인 메모리 할당이 발생하기 때문입니다. 
+Kotlin에서는 함수를 함수의 인자로 전달할 때 문제가 발생한다. 함수를 함수의 인자로 전달하면 추가적인 메모리 할당이 발생하기 때문이다. 
 
-우선 아래 Kotlin 코드를 살펴봅시다. 
+우선 아래 Kotlin 코드를 살펴보자. 
 ``` kotlin
 fun someMethod(a: Int, func: () -> Unit):Int {
     func()
@@ -355,7 +355,7 @@ fun main(args: Array<String>) {
     println(result)
 }
 ``` 
-위 코드를 아래와 같이 Java로 변환하면 `someMethod()`메소드를 호출하기 위해 객체를 생성합니다. 
+위 코드를 아래와 같이 Java로 변환하면 `someMethod()`메소드를 호출하기 위해 객체를 생성한다. 
 ``` java
 public final class InlineFunctions {
 
@@ -380,16 +380,16 @@ public final class InlineFunctions {
    }
 }
 ```
-객체를 생성한다는 것은 메모리를 그만큼 사용한다는 것입니다. 만약 이 함수를 열 번 호출하면 열 개의 객체가 생성되며, 이러한 부분이 성능을 떨어뜨릴 수 있습니다. 
+객체를 생성한다는 것은 메모리를 그만큼 사용함을 의미한다. 만약 이 함수를 열 번 호출하면 열 개의 객체가 생성되며, 이러한 부분이 성능을 저하시킬 수 있다.
 
-이제 함수 앞에 키워드`inline`을 붙여보겠습니다. 
+이제 함수 앞에 키워드`inline`을 붙여보자.
 ``` kotlin
 inline fun someMethod(a: Int, func: () -> Unit):Int {
     func()
     return 2*a
 }
 ```
-위 코드를 컴파일하면 객체를 생성하지 않고 코드 자체를 호출하는 부분으로 복사합니다.
+위 코드를 컴파일하면 객체를 생성하지 않고 코드 자체를 호출하는 부분으로 복사한다.
 ``` java
 public final class InlineFunctions {
 
@@ -406,11 +406,11 @@ public final class InlineFunctions {
 
 }
 ```
-이처럼 `inline 함수`를 사용하면 메모리 성능을 향상시킬 수 있습니다. 하지만 코드 양이 많은 함수를 `inline 함수`로 사용하면, 컴파일된 코드의 양도 많아질 수 있습니다. 따라서 `inline 함수`는 1~3줄 정도의 함수에 사용하는 것을 권장합니다.
+이처럼 `inline 함수`를 사용하면 메모리 성능을 향상시킬 수 있다. 하지만 코드 양이 많은 함수를 `inline 함수`로 사용하면, 컴파일된 코드의 양도 많아질 수 있다. 따라서 `inline 함수`는 1~3줄 정도의 함수에 사용하는 것이 권장된다.
 
 
 ### 주의할 점
-`inline 함수`는 내부적으로 코드를 복사하기 때문에, 인자로 전달받은 함수를 다른 함수의 인자로 전달하거나 다시 참조할 수 없습니다. 
+`inline 함수`는 내부적으로 코드를 복사하기 때문에, 인자로 전달받은 함수를 다른 함수의 인자로 전달하거나 다시 참조할 수 없다. 
 ``` kotlin
 inline fun newMethod(a: Int, func1: () -> Unit, func2: () -> Unit) {
     // 인자로 전달받은 func1() 함수를 다시 호출
@@ -428,12 +428,12 @@ fun main(args: Array<String>) {
     )
 }
 ```
-위 코드는 다음과 같은 컴파일 에러를 발생시킵니다.
+위 코드는 다음과 같은 컴파일 에러를 발생시킨다.
 ``` 
 Error:(9, 24) Kotlin: Illegal usage of inline-parameter 'func2' in 'public final inline fun newMethod(a: Int, func: () -> Unit, func2: () -> Unit): Unit defined in example.InlineFunctions'. Add 'noinline' modifier to the parameter declaration
 ```
 ### noinline
-그럼 위 예제에서 `func2()`만 접근이 가능하고 `func2()`함수만 다른 함수의 인자로 전달되도록 할 수는 없을까요? 바로 이러한 경우 키워드 `noinline`를 사용합니다. 키워드 `noinline`붙은 키워드는 컴파일 시 일반 함수와 동일하게 동작합니다. 따라서 다시 함수에 접근하거나 다른 함수의 인자로 전달할 수 있습니다.
+그럼 위 예제에서 `func2()`만 접근이 가능하고 `func2()`함수만 다른 함수의 인자로 전달되도록 할 수는 없을까? 바로 이러한 경우 키워드 `noinline`를 사용한다. 키워드 `noinline`붙은 키워드는 컴파일 시 일반 함수와 동일하게 동작한다. 따라서 다시 함수에 접근하거나 다른 함수의 인자로 전달할 수 있다.
 ``` kotlin
 inline fun newMethod(a: Int, func1: () -> Unit, noinline func2: () -> Unit) {
     func1()
@@ -449,14 +449,14 @@ fun main(args: Array<String>) {
 
 
 ### crossline
-키워드 `crossline`을 이해하려면 우선 `non-local returns`에 대해 알아야 합니다. 아래 Kotlin 코드를 살펴봅시다.
+키워드 `crossline`을 이해하려면 우선 `non-local returns`에 대해 알아야 한다. 아래 Kotlin 코드를 살펴보자.
 ``` kotlin
 fun doSomething() {
     print("doSomething start")
     doSomethingElse {
         print("doSomethingElse")
 
-        // 함수의 인자로 전달된 함수 내부에서 return문을 호출하고 있습니다. 
+        // 함수의 인자로 전달된 함수 내부에서 return문을 호출하고 있다.
         return 
     }
     print("doSomething end")
@@ -466,16 +466,16 @@ inline fun doSomethingElse(abc: () -> Unit) {
     abc()
 }
 ```
-이제 위 코드를 디컴파일하면 다음과 같은 Java 코드를 확인할 수 있습니다.
+이제 위 코드를 디컴파일하면 다음과 같은 Java 코드를 확인할 수 있다.
 ``` java
 public void doSomething() {
     System.out.print("doSomething start");
     System.out.print("doSomethingElse");
 }
 ```
-디컴파일된 코드에 `System.out.print("doSomething end")`가  포함되지 않았다는 것을 확인할 수 있습니다. 함수의 인자로 전달된 함수 내부에서 `return`을 호출했으므로 `doSomething()`함수 자체가 종료된 것입니다. 이러한 현상을 `non-local returns`라고 합니다.
+디컴파일된 코드에 `System.out.print("doSomething end")`가 포함되지 않았다는 것을 확인할 수 있다. 함수의 인자로 전달된 함수 내부에서 `return`을 호출했으므로 `doSomething()`함수 자체가 종료된 것이다. 이러한 현상을 `non-local returns`라고 한다.
 
-`crossline`은 이러한 문제를 해결할 때 사용합니다. 
+`crossline`은 이러한 문제를 해결할 때 사용한다. 
 ``` kotlin
 fun doSomething() {
     print("doSomething start")

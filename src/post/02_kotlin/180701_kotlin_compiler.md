@@ -8,9 +8,6 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-## Java Compiler
-`Java Compiler`는 `.java`확장자가 붙은 소스코드를 `.class`확장자가 붙은 바이트코드로 변환한다. 이 바이트코드는 `JVM` 위에서 실행할 수 있다.
-
 ## Kotlin Compiler
 `Kotlin Compiler`는 `.kt`확장자가 붙은 소스코드를 `.class`확장자가 붙은 바이트코드로 변환한다. 이 바이트코드 역시 JVM에서 실행할 수 있다.
 

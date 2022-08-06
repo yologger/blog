@@ -55,7 +55,7 @@ Person person = person()
 class Person constructor(name: String) {	
     // ...
 }
-
+```
 주의할 점은 기본 생성자는 별도의 초기화 구문이 존재하지 않는다. 이 때는 `init`구문을 사용할 수 있다.
 ``` kotlin
 class Person constructor(name: String) {	
