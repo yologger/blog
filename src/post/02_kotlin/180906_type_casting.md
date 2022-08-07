@@ -9,10 +9,10 @@ sidebarDepth: 0
 [[toc]]
 
 ## 형 변환
-`형 변환`은 자료형을 다른 자료형으로 변환하는 것을 의미합니다.
+`형 변환`은 자료형을 다른 자료형으로 변환하는 것을 의미한다.
 
 ### 기본자료형의 형변환
-기본 자료형을 형변환할 때는 내장된 `형변환 함수`를 사용합니다.
+기본 자료형을 형변환할 때는 내장된 `형변환 함수`를 사용한다.
 ``` kotlin
 // 실수형 숫자를 정수형 숫자로 형변환
 var height: Double = 179.3
@@ -30,7 +30,7 @@ var number: Int? = string.toIntOrNull()  // null
 
 
 ### 클래스 인스턴스의 형변환
-클래스 인스턴스를 형변환할 때는 키워드 `as`를 사용합니다. 
+클래스 인스턴스를 형변환할 때는 키워드 `as`를 사용한다.
 ``` kotlin
 // 부모클래스
 open class Person(var name: String) {
@@ -53,7 +53,7 @@ var person: Person = player as Person
 
 person.printName()
 ``` 
-부모클래스가 `Nullable`타입이면 키워드 `as?`를 사용합니다. 
+부모클래스가 `Nullable`타입이면 키워드 `as?`를 사용한다.
 ``` kotlin
 open class Person(var name: String) {
     fun printName() {

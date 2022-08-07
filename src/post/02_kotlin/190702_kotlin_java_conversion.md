@@ -14,8 +14,8 @@ sidebarDepth: 0
 IntelliJ에서 `Tools > Kotlin > Show Bytecode`를 클릭한다.
 ![](./190702_kotlin_java_conversion/1.png)
 
-`Kotlin Bytecode`탭에서 Bytecode를 확인할 수 있다.
+`Kotlin Bytecode`탭에서 Java 바이트 코드를 확인할 수 있다.
 ![](./190702_kotlin_java_conversion/2.png)
 
-`Decompile`버튼을 누르면 Java 파일을 확인할 수 있다.
+`Decompile`버튼을 누르면 Java 파일로 변환된다.
 ![](./190702_kotlin_java_conversion/3.png)

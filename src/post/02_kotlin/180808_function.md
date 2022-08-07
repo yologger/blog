@@ -481,7 +481,7 @@ fun doSomething() {
     print("doSomething start")
     doSomethingElse {
         print("doSomethingElse")
-        // 이 곳에서 return을 호출할 수 없게 합니다.
+        // 이 곳에서 return을 호출할 수 없게 한다.
     }
     print("doSomething end")
 }

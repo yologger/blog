@@ -722,23 +722,23 @@ person2 = Person.fromJSON("{name:'kim'}")
 ```
 
 ## 접근 제한자
-`접근 제한자(Access Modifiers)`는 <u>외부에서 클래스 내부의 메소드나 멤버변수에 접근하는 것을 제한하는 것</u>입니다. Kotlin은 네 개의 접근 제한자를 지원합니다.
+`접근 제한자(Access Modifiers)`는 <u>외부에서 클래스 내부의 메소드나 멤버변수에 접근하는 것을 제한하는 것</u>이다. Kotlin은 네 개의 접근 제한자를 지원한다.
 
 ### private
-`private`이 붙은 멤버변수, 메소드, 생성자는 클래스 내부에서만 접근할 수 있습니다. 클래스에는 붙일 수 없습니다.
+`private`이 붙은 멤버변수, 메소드, 생성자는 클래스 내부에서만 접근할 수 있다. 클래스에는 붙일 수 없다.
 ``` kotlin
 class Person(private val name: String) {
     
     fun printName() {
-        // 해당 클래스 내부에서 private 변수 name에 접근할 수 있습니다.
+        // 해당 클래스 내부에서 private 변수 name에 접근할 수 있다.
         println("Name: ${name}.")
     }
 }
 
 var person = Person("Paul")
-var name = person.name      // (에러) 클래스 내부가 아니므로 접근 불가능합니다.
+var name = person.name      // (에러) 클래스 내부가 아니므로 접근 불가능하다.
 ```
-`private`으로 선언된 변수는 상속받는 자식 클래스에서도 접근이 불가능합니다.
+`private`으로 선언된 변수는 상속받는 자식 클래스에서도 접근이 불가능하다.
 ``` kotlin
 open class Person(private val name: String) {
 
@@ -755,12 +755,12 @@ class Player(name: String, private var team: String): Person(name) {
 
     fun printInformation() {
         println("${name} works in ${team}")
-        // (에러) 부모클래스에 선언된 private 변수 name에 접근할 수 없고 컴파일되지 않습니다.
+        // (에러) 부모클래스에 선언된 private 변수 name에 접근할 수 없고 컴파일되지 않는다.
     }
 }
 ```
 ### protected
-`protected`가 붙은 멤버변수, 메소드, 생성자는 해당 클래스와 자식 클래스에서만 접근할 수 있습니다. 클래스에는 붙일 수 없습니다.
+`protected`가 붙은 멤버변수, 메소드, 생성자는 해당 클래스와 자식 클래스에서만 접근할 수 있다. 클래스에는 붙일 수 없다.
 ``` kotlin
 open class Person(protected val name: String) {
 
@@ -777,27 +777,27 @@ class Player(name: String, private var team: String): Person(name) {
 
     fun printInformation() {
         println("${name} works in ${team}")
-        // 부모클래스에 선언된 protected 변수 name에 접근할 수 있습니다.
+        // 부모클래스에 선언된 protected 변수 name에 접근할 수 있다.
     }
 }
 ```
 ### internal
-`internal`이 붙은 멤버변수, 메소드, 생성자는 같은 모듈 안 어디에서든 접근할 수 있습니다. 이 접근 제한자는 클래스 앞에도 붙일 수 있습니다. Kotlin 공식 문서에서 말하는 같은 `모듈`은 아래 상황을 뜻합니다.
+`internal`이 붙은 멤버변수, 메소드, 생성자는 같은 모듈 안 어디에서든 접근할 수 있다. 이 접근 제한자는 클래스 앞에도 붙일 수 있다. Kotlin 공식 문서에서 말하는 같은 `모듈`은 아래 상황을 의미한다.
 1. Android Studio Module
 1. IntelliJ IDEA Module
 1. Maven Project
 
-쉽게 말하면 안드로이드 스튜디오 프로젝트의 같은 모듈에서는 접근이 가능하다고 보면 되겠습니다.
+쉽게 말하면 안드로이드 스튜디오 프로젝트의 같은 모듈에서는 접근이 가능하다고 보면 된다.
 
 ### public (default)
-접근 제한자를 따로 붙이지 않으면 이 접근 제한자가 적용됩니다. `public`이 붙은 멤버변수, 메소드, 생성자는 다른 모듈에서도 접근할 수 있으며, 클래스에도 붙일 수 있습니다. 
+접근 제한자를 따로 붙이지 않으면 이 접근 제한자가 적용된다. `public`이 붙은 멤버변수, 메소드, 생성자는 다른 모듈에서도 접근할 수 있으며, 클래스에도 붙일 수 있다. 
 
 
 ## Custom Getter, Setter
-Getter, Setter의 정의 방법은 Java와 Kotlin에서 차이가 있습니다.
+Getter, Setter의 정의 방법은 Java와 Kotlin에서 차이가 있다.
 
 ### Java의 Getter, Setter
-Java에서는 클래스의 속성에 접근하기 위해 `Getter`와 `Setter`를 정의합니다. 
+Java에서는 클래스의 속성에 접근하기 위해 `Getter`와 `Setter`를 정의한다. 
 ``` java
 class Person {
 
@@ -830,7 +830,7 @@ class Person {
     }
 }
 ```
-이제 Person클래스의 name과 age 속성은 `Getter`와 `Setter`를 사용해야만 접근할 수 있습니다. 
+이제 Person클래스의 name과 age 속성은 `Getter`와 `Setter`를 사용해야만 접근할 수 있다. 
 ``` java
 Person person = new Person("Paul", 35);
 
@@ -841,7 +841,7 @@ String hisAge = person.getAge();
 ```
 
 ### Kotlin의 Getter, Setter
-Kotlin에서는 `Getter`와 `Setter`를 자동으로 만들어줍니다. 따라서 직접 정의할 필요가 없습니다.
+Kotlin에서는 `Getter`와 `Setter`를 자동으로 만들어준다. 따라서 직접 정의할 필요가 없다.
 ``` kotlin
 class Person {
     var name: String
@@ -853,11 +853,11 @@ class Person {
     }
 }
 ```
-위 구문은 다음과 같이 단축할 수 있습니다.
+위 구문은 다음과 같이 단축할 수 있다.
 ``` kotlin
 class Person(var name: String, var age: String) 
 ```
-이제 클래스의 속성에 직접 접근하면 `Getter`와 `Setter`가 호출됩니다.
+이제 클래스의 속성에 직접 접근하면 `Getter`와 `Setter`가 호출된다.
 ``` kotlin
 val person = Person("Paul", 35)
 
@@ -866,7 +866,7 @@ person.age = 35
 var hisName = person.name
 var hisAge = person.age
 ```
-이처럼 Kotlin에서는 `Getter`와 `Setter`가 자동으로 생성됩니다. 하지만 직접 `Getter`와 `Setter`를 구현할 수 있습니다. 
+이처럼 Kotlin에서는 `Getter`와 `Setter`가 자동으로 생성된다. 하지만 직접 `Getter`와 `Setter`를 구현할 수 있다. 
 
 ### Kotlin의 Custom Getter
 
@@ -887,7 +887,7 @@ class Person {
 Person person = new Person("Paul", 35);
 String information = person.getInformation();   // Paul is 35
 ```
-Kotlin에서는 위 코드를 `Custom Getter`로 쉽게 구현할 수 있습니다.
+Kotlin에서는 위 코드를 `Custom Getter`로 쉽게 구현할 수 있다.
 ``` kotlin
 class Person(val name: String, val age: Int) {
 
@@ -900,7 +900,7 @@ class Person(val name: String, val age: Int) {
 val person = Person("Paul", 35);
 val information = person.information
 ```
-`get()`의 실행 구문이 한줄일 때는 다음과 같이 단축할 수 있습니다.
+`get()`의 실행 구문이 한줄일 때는 다음과 같이 단축할 수 있다.
 ``` kotlin
 class Person(val name: String, val age: Int) {
 
@@ -908,7 +908,7 @@ class Person(val name: String, val age: Int) {
         get() = "${this.name} is ${this.age}"
 }
 ```
-`Custom Getter`는 값 검증 같은 추가적인 작업에 활용할 수 있습니다.
+`Custom Getter`는 값 검증 같은 추가적인 작업에 활용할 수 있다.
 ``` kotlin
 class Rectangle(val width: Int, val height: Int) {
     val isSquare: Boolean 
@@ -923,7 +923,7 @@ println(rectangle.isSquare)     // false
 var square = Rectangle(10, 10) 
 println(square.isSquare)        // true
 ```
-`Custom Setter`의 실행 구문은 속성에 접근할 때 마다 매번 다시 계산됩니다.
+`Custom Setter`의 실행 구문은 속성에 접근할 때 마다 매번 다시 계산된다.
 ``` kotlin
 class Rectangle(val width: Int, val height: Int) {
     val isSquare: Boolean 
@@ -939,7 +939,7 @@ rectangle.width = 10
 println(rectangle.isSquare)     // true
 ```
 ### Kotlin의 Custom Setter
-`Custom Setter` 역시 값 검증 같은 추가적인 작업에 활용할 수 있습니다.
+`Custom Setter` 역시 값 검증 같은 추가적인 작업에 활용할 수 있다.
 ``` kotlin
 class Person(var name: String) {
     
