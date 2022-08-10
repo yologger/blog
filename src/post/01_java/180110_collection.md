@@ -10,6 +10,7 @@ sidebarDepth: 0
 
 # 컬렉션 프레임워크
 Java API는 같은 타입의 여러 데이터를 한꺼번에 효율적으로 관리하기 위해 `컬렉션 프레임워크(Collection Framework)`를 제공한다. 
+
 ![](./180110_collection/1.png)
 
 컬렉션 프레임워크는 `java.util` 패키지에 포함되어있으며, 가장 중요한 요소는 `List`, `Set`, `Map`이다.
@@ -1555,6 +1556,17 @@ List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
 Collections.max(list);  // 8
 ```
 요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
+``` java
+List list = new ArrayList(Arrays.asList(
+    new Person("Paul", 35),
+    new Person("Smith", 24),
+    new Person("Kane", 18)
+));
+
+Person old = Collections.max(list, (Person p1, Person p2) -> p1.getAge() - p2.getAge());
+
+System.out.println(old.getName() + " " + old.getAge()); // Paul 35
+```
 
 ### min()
 최소값을 반환한다.

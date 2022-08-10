@@ -12,11 +12,11 @@ sidebarDepth: 0
 자료 구조는 크게 `선형 구조`와 `비선형 구조`로 나뉜다.
 - 선형 구조
     - `Array`
-    - `Dynamic Array`
+    - `Dynamic Array (ArrayList)`
+    - `LinkedList`
     - `Stack`
     - `Queue`
     - `Deque`
-    - `Linked List`
 - 비선형 구조
     - `Tree`
     - `Graph`
@@ -51,7 +51,7 @@ int[][] numbers = {
 - 배열의 크기를 변경할 수 있다.
 - 일반적으로 `Array` 크기가 꽉 차면, 두 배 크기의 새로운 `Array`를 생성한 후 데이터를 복사한다.
 
-`Java`에서는 `ArrayList`가 `Dynamic Array`의 역할을 한다.
+Java에서는 `ArrayList`가 `Dynamic Array`의 역할을 한다.
 
 ``` java ArrayList
 import java.util.ArrayList;
@@ -775,7 +775,7 @@ class Solution {
 - Level 0 ~ Level N
 - Depth N
 
-### Binary Tree
+### 이진 트리
 - 자식이 0, 1, 2개
 
 ### 완전 이진 트리
@@ -784,9 +784,7 @@ class Solution {
 - 레벨 N이 다 채워지지 않았는데 레벨 N+1에 노드를 추가할 수 있다.
 
 ### 이진 검색 트리
-`BST(Binary Serach Tree, 이진 검색 트리)`는 다음과 같은 특성을 갖는다.
-- 빠른 검색(`O(logn)`)에 사용된다. 
-- Left < Root < Right
+`BST(Binary Serach Tree, 이진 검색 트리)`는 `Left < Root < Right`라는 특성을 갖는 이진 트리이며, 빠른 검색(`O(logn)`)에 사용된다.
 
 ![](./01_data_structure/1.png)
 
@@ -1216,8 +1214,8 @@ graph.put(5, new ArrayList<Integer>(Arrays.asList(2)));
 
 ### 그래프 탐색
 시작점으로부터 모든 정점을 한번씩 방문하는 방법을 `그래프 탐색`이라고 한다.
-- BFS
 - DFS
+- BFS
         
 ### DFS(깊이 우선 탐색)
 `DFS`는 `Stack` 또는 `재귀(Recursion)`을 통해 구현할 수 있다.

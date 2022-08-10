@@ -61,17 +61,6 @@ var name: String = "Paul"
 var description: String = "My name is ${name}"
 ```
 
-문자열 타입의 변수에는 유용한 속성과 메소드가 내장되어있다.
-``` kotlin
-var name = "Paul"
-name.length             // 4
-name.toLowerCase()      // paul
-name.toUpperCase()      // PAUL
-
-var str = "Hello.Nice.To.Meet.You"
-var words = str.spilt('.')      // ["Hello", "Nice", "To", "Meet", "You"]
-```
-
 ## Java와 Kotlin의 데이터 타입 차이
 Java에서는 자료형을 원시 타입과 참조 타입으로 나누어지며, 원시 타입은 클래스가 아니다.
 ``` java

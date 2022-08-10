@@ -42,7 +42,7 @@ class Person {
 ```
 
 `Comparator`를 사용하면 정렬의 기준을 정의할 수도 있다.
-``` java Main.java
+``` java {13-18}
 public class Main {
 
     public static void main(String[] args) {
@@ -65,7 +65,7 @@ public class Main {
 }
 ```
 Java 8 부터는 다음과 같이 람다식으로 단축할 수 있다.
-``` java
+``` java {10}
 Person[] people = {
         new Person("Paul", 35),
         new Person("Monica", 23),

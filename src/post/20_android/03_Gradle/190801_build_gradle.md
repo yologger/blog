@@ -11,13 +11,16 @@ sidebarDepth: 0
 
 
 # build.gradle 파일
-`build.gradle`은 <u>Gradle 설정 파일</u>입니다. 이 파일에 어떤 식으로 앱을 빌드할 지를 명시합니다. Gradle은 이 파일을 참조하여 프로젝트를 빌드합니다.
+`build.gradle`은 Gradle 설정 파일이다. 이 파일에 앱을 어떤 식으로 빌드할 지를 명시하면 `Gradle`이 이 파일을 참조하여 프로젝트를 빌드한다.
 
-안드로이드 프로젝트를 생성하면 기본적으로 두 개의 `build.gradle`가 생성됩니다.
+안드로이드 프로젝트를 생성하면 기본적으로 두 개의 `build.gradle`가 생성된다.
+
 ![](./190801_build_gradle/1.png)
 
 ## 프로젝트 수준의 build.gradle
-하나의 프로젝트는 여러 개의 `모듈(Module)`로 구성될 수 있습니다. 프로젝트 수준의 `build.gradle`은 프로젝트 전체에, 다시 말해 모든 모듈에 적용되는 설정 파일입니다. 프로젝트를 생성하면 자동으로 생성되는 프로젝트 수준의 `build.gradle`파일은 다음과 같습니다.
+하나의 프로젝트는 여러 `모듈(Module)`로 구성될 수 있다. 프로젝트 수준의 `build.gradle`은 프로젝트 전체에 적용된다. 프로젝트를 생성하면 자동으로 생성되는 프로젝트 수준의 `build.gradle`파일은 다음과 같다.
+
+
 ``` groovy 
 // 프로젝트 수준의 build.gradle
 
@@ -162,6 +165,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }
 ```
+
 
 ## CoC
 그래들은 `설정보다는 관례(CoC, Convention over Configuration)`라는 개념을 구현하고 있습니다. 즉, 그래들은 사전에 정의된 합리적인 기본 설정값을 가지고 있습니다. 따라서 모든 설정을 설정하지 않아도 기본 설정값이 적용됩니다. 이 덕분에 개발자는 모든 설정을 모두 설정할 필요가 없어집니다. 자신의 요구 사항에 맞지 않는 설정만 빌드 설정 파일에서 변경하면 됩니다.

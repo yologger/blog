@@ -168,18 +168,6 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 - 또한 쿼리 결과를 엔티티가 아닌 사용자 정의 객체로 받을 수 있다.
 - Query DSL은 내부적으로 JPA의 EntityManager를 사용한다. 따라서 Query DSL로 조회한 엔티티도 JPA의 영속성 컨텍스트에서 관리된다.
 
-## Spring Data JPA
-- <b>`Spring Data JPA`</b>는 스프링 프레임워크에서 JPA를 더 추상화하여 사용하기 쉽게 만든 프로젝트다.
-- 내부적으로 Hibernate을 사용하며, `EntityManager`를 직접 관리하지 않고 `JpaRepository`인터페이스를 사용할 수 있다. 
-- 또한 Query Method, JPQL, 페이징, 정렬 기능을 추가적으로 제공한다
-- 쿼리 메소드를 사용하면 <u>메소드 이름</u>으로 <u>JPQL 쿼리</u>를 생성할 수 있다.
-- `CrudRepository` 인터페이스는 CRUD 작업을 위한 다양한 메소드를 자동으로 생성한다.
-- `PagingAndSortingRepository`인터페이스는 `CrudRepository`를 상속하며 정렬 및 페이징 관련된 메소드가 추가적으로 생성된다.
-- `JpaRepository`인터페이스는 `PagingAndSortingRepository`를 상속하며 <u>영속성 컨텍스트 관리</u>, <u>Flush</u>, <u>Batch Delete</u> 같이 JPA와 관련된 메소드를 추가적으로 제공한다.
-
-## JPA Auditing
-데이터베이스의 중요한 테이블은 새로운 행이 추가되거나, 행이 변경되거나, 삭제되면 이 기록을 별도의 컬럼에 기록해야한다. Spring Data JPA는 이러한 기능을 제공하며, 이를 `JPA Auditing` 이라고 한다.
-
 ### N+1 쿼리 문제
 - 쿼리 1개의 결과가 N개일 때 N개의 쿼리가 추가적으로 실행되는 문제.
 - 두 엔티티 사이에 연관관계가 있을 떄 발생한다.
@@ -188,14 +176,26 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 - JPQL의 일반적인 조인은 연관된 엔티티는 함께 조회하지 않는다. 대상 엔티티만 먼저 조회한 후 패치 전략에 따라 연관된 엔티티를 즉시 로딩 또는 지연로딩하기 때문이다. 반면 `페치 조인(Fetch Join)`을 사용하면 연관된 엔티티들도 하나의 쿼리로 한꺼번에 조인하여 가져온다.
 - 다만 페치 조인은 페이징 API를 사용할 수 없다는 단점이 있다.
 
-## Spring vs. Spring Boot
+## Spring Data JPA
+- <b>`Spring Data JPA`</b>는 스프링 프레임워크에서 JPA를 더 추상화하여 사용하기 쉽게 만든 프로젝트다.
+- 내부적으로 Hibernate을 사용하며, `EntityManager`를 직접 관리하지 않고 `JpaRepository`인터페이스를 사용할 수 있다. 
+- 또한 Query Method, JPQL, 페이징, 정렬 기능을 추가적으로 제공한다
+- 쿼리 메소드를 사용하면 <u>메소드 이름</u>으로 <u>JPQL 쿼리</u>를 생성할 수 있다.
+- `CrudRepository` 인터페이스는 CRUD 작업을 위한 다양한 메소드를 자동으로 생성한다.
+- `PagingAndSortingRepository`인터페이스는 `CrudRepository`를 상속하며 정렬 및 페이징 관련된 메소드가 추가적으로 생성된다.
+- `JpaRepository`인터페이스는 `PagingAndSortingRepository`를 상속하며 <u>영속성 컨텍스트 관리</u>, <u>Flush</u>, <u>벌크 연산</u> 같은 추가적인 메소드를 제공한다.
+
+## JPA Auditing
+데이터베이스의 중요한 테이블은 새로운 행이 추가되거나, 행이 변경되거나, 삭제되면 이 기록을 별도의 컬럼에 기록해야한다. Spring Data JPA는 이러한 기능을 제공하며, 이를 `JPA Auditing` 이라고 한다.
+
+## Spring Legacy vs. Spring Boot
 - 임베디드 톰캣을 사용한다.
-- `AutoConfiguration`을 통해 더욱 쉽게 서비스를 위한 설정을 할 수 있다.
 - Spring이 주로 XML 파일에 빈을 정의하는 반면 Spring Boot는 어노테이션을 기반으로 빈을 관리한다.
+- 사전에 정의된 합리적인 설정인 `Auto Configuration`을 통해 더욱 쉽게 서비스를 위한 설정을 할 수 있다.
 
 ## Spring Security
 - 인증과 접근 제어를 제공하는 스프링 모듈
-- 스프링 시큐리티는 여러 필터들의 묶음인 필터 체인으로 동작한다.
+- 스프링 시큐리티는 여러 서블릿 필터들의 묶음인 필터 체인으로 동작한다.
 - 스프링 구성파일의 `HttpSecurity`를 조작하여 접근을 제어할 수 있다.
 - 스프링 시큐리티는 `SecurityContext`의 `Authentication`에 현재 스레드와 관련된 인증 정보를 유지하고 있다.
 
@@ -207,9 +207,9 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 어플리케이션이 커질 수록 통합테스트는 속도가 느려진다. 따라서 레이어드 아키텍쳐나 클린 아키텍처를 도입하여 계층을 명확하게 분리하고 모듈 간 응집도는 높히고 결합도는 낮추는 것이 가장 중요하다. 이후 슬라이싱 테스트를 도입하는 것이 좋다고 생각해요.
 
 ## Spring WebFlux
-`Spring MVC`는 동기/블로킹이며, 런타임으로 멀티 스레드로 동작하는 톰캣 같은 서블릿 컨테이너를 사용한다. Spring MVC는 `One request One thread` 모델로 요청이 올 때마다 스레드를 생성하여 전담하게 한다. 이 모델에서는 네트워크나 입출력 등 무거운 작업을 수행하면 스레드가 자원을 점유한 채 대기하게 된다. CPU는 다른 스레드를 실행시키기 위해 Context Switching을 하며, 스레드 수가 많아질 수록 이에 대한 비용이 커지게 된다.
+`Spring MVC`는 동기/블로킹이며, 런타임으로 멀티 스레드로 동작하는 톰캣 같은 서블릿 컨테이너를 사용한다. Spring MVC는 `One request One thread` 모델로 요청이 올 때마다 스레드를 생성하여 전담하게 한다. 이 모델에서는 네트워크나 입출력 등 무거운 작업을 수행하면 스레드가 자원을 점유한 채 대기하게 된다. CPU는 다른 스레드를 실행시키기 위해 `Context Switching`을 하며, 스레드 수가 많아질 수록 이에 대한 비용이 커지게 된다.
 
-<b>`Spring WebFlux`</b>는 비동기/논블로킹 모델이며, 보통 네티 같은 비동기/논블로킹 런타임을 사용한다. Spring WebFlux는 <u>이벤트 드리븐 모델</u>인 `Node.js`와 유사하다. 다만 싱글 스레드는 아니며 CPU 코어 수 만큼의 스레드로 병렬처리를 한다. 비동기/논블로킹 모델에서 워커 스레드는 입출력 같이 오랜 시간이 걸리는 작업이 I/O Controller에 의해 처리될 때 이를 기다리지 않고 다른 작업을 수행한다. 다시 말해 스레드를 놀지 않게 하는 것이 핵심이며, 같은 스레드를 사용하기 때문에 Context Switching 비용이 최소화된다.
+<b>`Spring WebFlux`</b>는 비동기/논블로킹 모델이며, 보통 네티 같은 비동기/논블로킹 런타임을 사용한다. Spring WebFlux는 <u>이벤트 드리븐 모델</u>인 `Node.js`와 유사하다. 다만 싱글 스레드는 아니며 CPU 코어 수 만큼의 스레드로 병렬처리를 한다. 비동기/논블로킹 모델에서 워커 스레드는 입출력 같이 오랜 시간이 걸리는 작업이 I/O Controller에 의해 처리될 때 이를 기다리지 않고 다른 작업을 수행한다. 다시 말해 <u>스레드를 놀지 않게 하는 것이 핵심이며, 같은 스레드를 사용하기 때문에 `Context Switching` 비용이 최소화된다.</u>
 
 비동기/논블로킹 모델에서는 다른작업이 종료되었을 때 이를 알려줄 수 있는 방법이 필요한데, 보통 다음과 같은 방법으로 구현한다.
 - Callback를 함께 전달하여 작업이 끝났을 때 호출되도록 한다.
@@ -221,7 +221,7 @@ JPA에는 엔티티 수정을 위한 별도의 `update()`같은 메소드가 없
 
 비동기/논블로킹 모델은 요청 하나가 CPU를 적게 사용하지만 요청 수는 많은 모델에 적합하다. 
 
-WebFlux는 Reactive Stream API 명세의 구현체인 `Reactor`의 `Mono`, `Flux`를 사용한다. 불론 다른 구현체는 `RxJava`를 사용할 수 있으며, Kotlin과 코루틴의 `suspend`함수를 사용하면 코드를 더욱 직관적으로 작성할 수 있다. 
+WebFlux는 Reactive Stream API 명세의 구현체인 `Reactor`의 `Mono`, `Flux`를 사용한다. 물론 다른 구현체는 `RxJava`를 사용할 수 있으며, Kotlin과 코루틴의 `suspend`함수를 사용하면 코드를 더욱 직관적으로 작성할 수 있다. 
 
 WebFlux는 `Server Sent Event` 구현에도 사용할 수 있다.
 

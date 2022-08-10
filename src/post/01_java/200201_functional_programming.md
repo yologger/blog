@@ -31,8 +31,8 @@ fun printName(name: String) {
 }
 ```
 
-### Java 7 이전에서의 람다식
-Java는 Kotlin, Swift 같은 언어에 비해 비교적 오래되었다. 또한 객체지향 프로그래밍을 패러다임으로 만들어졌기 때문에 Java 7 이전에는 언어 자체적으로 람다식을 지원하지 않았다. 
+### Java 8 이전에서의 람다식
+Java는 Kotlin, Swift 같은 언어에 비해 비교적 오래되었다. 또한 객체지향 프로그래밍을 패러다임으로 만들어졌기 때문에 Java 8 이전에는 언어 자체적으로 람다식을 지원하지 않았다. 
 
 
 ## 일급 객체와 함수형 프로그래밍
@@ -85,7 +85,7 @@ Object method = printHelloWorld;    // 에러
 그러나 Java 8부터 람다식과 함수형 프로그래밍을 지원하기 위한 Java API가 추가되었다.
 
 ## Java 8의 람다식, 함수형 인터페이스
-Java 8부터는 `람다식`을 지원한다.
+Java 8부터는 `람다식`을 지원하며 다음과 같이 선언한다.
 
 ``` java
 (String name) -> {
@@ -109,14 +109,7 @@ MyLambda printName = (String name) -> {
 
 printName.myMethod("Paul");
 ```
-이제 마치 변수에 함수를 할당하는 것처럼 람다식을 사용할 수 있다.
-``` java
-MyLambda printName = (String name) -> {
-    System.out.println(name);
-};
 
-printName.myMethod("Paul");
-```
 인터페이스와 메소드의 이름은 원하는대로 선택하면 된다.
 ``` java
 @FunctionalInterface
