@@ -9,17 +9,17 @@ sidebarDepth: 0
 [[toc]]
 
 ## 함수
-`함수(Function)`는 <u>특정 값을 입력받아 작업을 수행하고 결과를 반환</u>한다.
+`함수(Function)`는 <u>값을 입력받아 작업을 수행하고 결과를 반환</u>한다.
 
 ### 매개변수가 있는 함수
-함수를 선언할 때는 키워드`fun`을 사용한다. 함수 호출 시 값을 전달할 수 있다. 이를 `매개변수(Parameter)`라고 한다.
+함수를 선언할 때는 키워드`fun`을 사용한다. 함수 호출 시 값을 전달할 수 있으며, 이를 `매개변수(Parameter)`라고 한다.
 ``` kotlin
 // 함수 선언
 fun printSomething(something: String) {
     println(something);  
 } 
 ```
-이렇게 정의한 함수는 아래와 같이 호출한다.
+정의한 함수는 다음과 같이 호출한다.
 ``` kotlin
 // 함수 호출
 printSomething("Hello World!")
@@ -32,22 +32,18 @@ printSomething("Hello World!")
 fun printHelloWorld() {
     println("Hello World.")
 }
-```
 
-이렇게 정의한 함수는 아래와 같이 호출한다.
-``` kotlin
+// 함수 호출
 printHelloWorld()  // Hello World.
 ```
 ### 반환값이 있는 함수
-함수는 값을 반환할 수 있다. 값을 반환할 때는 키워드`return`을 사용한다. 또한 반환값이 있는 경우 함수에 타입을 반드시 명시해야한다.
+함수는 값을 반환할 수 있다. 값을 반환할 때는 키워드`return`을 사용하며, 반환 값의 타입을 명시해야 한다.
 ``` kotlin
 // 함수 선언
 fun getLength(something: String): Int {
     return something.length
 }
-```
-이렇게 정의한 함수는 아래와 같이 호출한다.
-``` kotlin
+
 // 함수 호출
 var length = getLength("Hello World!")
 ```
@@ -130,7 +126,7 @@ printSomething("Hello World!")
 
 ## Unit vs. Nothing
 ### Unit
-`Unit`은 Java의 Void와 유사하며 <u>함수의 반환값이 없음</u>을 의미한다.
+`Unit`은 <u>함수의 반환값이 없음</u>을 의미한다.
 ``` kotlin
 fun printSomething(something: String): Unit {
     println(something)
@@ -248,14 +244,16 @@ fun Person.printInformation() {
 val person: Person = Person("Paul", 35)
 person.printInformation()
 ``` 
-보통 Java API나 다른 사람이 만든 라이브러리처럼 코드를 직접 변경하기 어려운 경우 `확장 함수`을 사용한다. 다음은 `Int`클래스에 홀수인지 짝수인지 판단해주는 함수를 추가하는 예제다.
+보통 Java 표준 라이브러리나 외부 라이브러리처럼 코드를 직접 변경하기 어려운 경우 `확장 함수`을 사용한다. 다음은 `Int`클래스에 홀수인지 짝수인지 판단해주는 함수를 `Int` 클래스에 추가하는 예제다.
 ``` kotlin
 fun Int.isEven() = this % 2 == 0
 
 fun Int.isOdd() {
     return this % 2 !== 0
 }
-	
+```
+정의한 확장 함수는 다음과 같이 사용할 수 있다.
+``` kotlin
 val age: Int = 5	
 
 println(a.isEven())   // false
