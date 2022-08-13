@@ -9,7 +9,7 @@ sidebarDepth: 0
 [[toc]]
 
 # 객체지향 프로그래밍
-Kotlin은 모든 대상을 `객체(Object)`로 바라본다. 이러한 점에서 Kotlin은 객체지향 프로그래밍 언어다. 객체지향 프로그래밍을 이해하려면 클래스와 인스턴스에 대해 알아야 한다.
+`객체지향 프로그래밍`은 모든 대상을 `객체(Object)`로 바라본다. Kotlin 역시 객체지향 프로그래밍 언어이며, 객체지향 프로그래밍을 이해하려면 클래스와 인스턴스에 대해 알아야 한다.
 
 ## 클래스와 인스턴스
 클래스와 인스턴스를 설명할 때 와플 기계와 와플을 예로 많이 든다.
@@ -28,7 +28,7 @@ var waffle = Waffle()
 이렇게 만든 인스턴스는 `객체(Object)`라고도 한다.
 
 ## 생성자
-`생성자(Constructor)`는 클래스의 인스턴스를 생성할 때 호출되는 구문이다. 보통 생성자에서 초기화 작업을 수행한다. 생성자는 키워드`constructor`를 사용하여 선언한다.
+`생성자(Constructor)`는 클래스의 인스턴스를 생성할 때 호출되는 구문이며, 보통 초기화 작업을 수행한다. 생성자는 키워드`constructor`를 사용하여 선언한다.
 ``` kotlin
 class Person {
 
@@ -48,7 +48,8 @@ class Person {
 Person person = person()
 // This is constructor.
 ```
-생성자에는 두 가지가 있다.
+Kotlin에는 두 종류의 생성자가 있다.
+
 ### 기본 생성자
 `기본 생성자`는 클래스 이름 뒤에 키워드`constructor`를 붙여서 만든다. 
 ``` kotlin
@@ -56,7 +57,7 @@ class Person constructor(name: String) {
     // ...
 }
 ```
-주의할 점은 기본 생성자는 별도의 초기화 구문이 존재하지 않는다. 이 때는 `init`구문을 사용할 수 있다.
+기본 생성자는 별도의 초기화 구문이 존재하지 않는다. 이 때는 `init`구문을 사용할 수 있다.
 ``` kotlin
 class Person constructor(name: String) {	
 
@@ -72,7 +73,7 @@ class Person constructor(name: String) {
 // 클래스의 인스턴스 생성
 var person = Person("Paul")		
 
-print(person.name)
+print(person.name) // Paul
 ```
 
 키워드`constructor`는 생략할 수 있다.
@@ -168,7 +169,7 @@ class Person(var name: String) {
     }
 }
 ```
-위와 아래 코드는 동일하다. 키워드 `final`이 기본값이며, 이 키워드가 붙은 클래스는 상속이 불가능하다.
+위와 아래 코드는 동일하다.
 ``` kotlin
 final class Person(var name: String) {
 
@@ -177,6 +178,7 @@ final class Person(var name: String) {
     }
 }
 ```
+클래스는 키워드 `final`가 기본값이며, 이 키워드가 붙은 클래스는 상속이 불가능하다.
 
 ### open
 부모 클래스를 상속하려면 부모 클래스에 키워드 `open`을 붙여야한다.
@@ -186,26 +188,25 @@ final class Person(var name: String) {
 // 부모 클래스에서 기본 생성자를 사용하는 경우
 open class Person(val name: String)
 ```
-자식 클래스에서는 생성자 뒤에 `:`를 붙이고 부모 클래스의 이름을 작성한다. 이후 부모 클래스의 생성자를 호출해야한다.
+자식 클래스에서는 생성자 뒤에 `:`를 붙이고 부모 클래스의 이름을 작성한다. 이후 부모 클래스의 생성자를 반드시 호출해야한다.
 ```kotlin
 // 자식 클래스
 class Programmer(name: String, val nation: String): Person(name)
 ```
-위 코드에서는 `: Person(name)`를 통해 부모 클래스를 상속하면서 부모 클래스의 생성자를 호출하고 있다.
 
 이제 부모 클래스에서 보조 생성자를 사용하는 경우에 대해 알아보자.
 ``` kotlin
-// 부모 클래스에서 보조생성자를 사용
 open class Person {
 
     val name: String
     
+    // 부모 클래스에서 보조생성자를 사용
     constructor(name: String) {
         this.name = name
     }
 }
 ```
-자식 클래스에서는 다음과 같이 생성자를 선언한다. 그리고 `super()`를 통해 부모 클래스의 생성자를 호출한다.
+자식 클래스에서는 다음과 같이 생성자를 선언한다. 그리고 `super()`를 통해 부모 클래스의 생성자를 호출해야 한다.
 ``` kotlin
 // 자식 클래스
 class Programmer: Person {
@@ -252,7 +253,7 @@ footballer.work()
 ``` 
 
 ## Nested Class vs. Inner Class
-코틀린에서는 클래스 안에 클래스를 정의할 수 있다.
+Kotlin에서는 클래스 안에 클래스를 정의할 수 있다.
 
 `Nested Class`는 외부 클래스의 멤버변수에 접근할 수 없다.
 ``` kotlin
@@ -260,7 +261,7 @@ class OuterClass {
 
     private val outerVariable: Int = 1
 
-    // Nested Class 
+    // Nested class 
     class NestedClass {
 
         fun printSomething() {
@@ -270,6 +271,7 @@ class OuterClass {
     }
 }
 ```
+`Nested Class`의 인스턴스는 다음과 같이 생성할 수 있다.
 ``` kotlin
 val nestedClass = OuterClass.NestedClass()
 ```
@@ -280,7 +282,7 @@ class OuterClass {
 
     private val outerVariable: Int = 1
 
-    // Nested Class 
+    // Inner class
     inner class InnerClass {
 
         fun printSomething() {
@@ -290,13 +292,14 @@ class OuterClass {
     }
 }
 ```
+`Inner Class`의 인스턴스는 다음과 같이 생성한다.
 ``` kotlin
 val outerClass = OuterClass()
 val innerClass = outerClass.InnerClass()
 ```
 
 ## 추상 클래스
-<u>선언만 있고 구현부는 없는 메소드</u>를 `추상 메소드(Abstract Method)`라고 한다. 또한 <u>추상 메소드를 포함하는 클래스</u>를 `추상 클래스(Abstract Class)`라고 한다. 추상 메소드와 추상 클래스는 앞에 키워드 `abstract`를 붙인다.
+<u>선언만 있고 구현부는 없는 메소드</u>를 `추상 메소드(Abstract Method)`라고 하며, <u>추상 메소드를 포함하는 클래스</u>를 `추상 클래스(Abstract Class)`라고 한다. 추상 메소드와 추상 클래스는 앞에 키워드 `abstract`를 붙인다.
 ``` kotlin
 abstract class Person {
 
@@ -314,7 +317,7 @@ abstract class Person {
 val person = Person()   // Error. Cannot create an instance of an abstract class
 ```
 
-추상 클래스를 상속하는 자식 클래스에서는 추상 메소드를 재정의할 수 있다. 이를 `오버라이드(override)`라고 한다.
+추상 클래스를 상속하는 자식 클래스에서는 추상 메소드를 오버라이드할 수 있다.
 ``` kotlin
 class Programmer: Person() {
 
@@ -323,7 +326,7 @@ class Programmer: Person() {
     }
 }
 ```
-추상 클래스를 구현한 자식 클래스는 다음과 같이 인스턴스를 생성할 수 있다.
+추상 클래스의 모든 추상 메소드를 구현한 자식 클래스는 다음과 같이 인스턴스를 생성할 수 있다.
 ``` kotlin
 var programmer = Programmer()
 programmer.work()
@@ -361,11 +364,11 @@ footballer.eat()
 ```
 
 ## 데이터 클래스
-Kotlin은 데이터만을 담기 위한 클래스를 제공한다. 이를 `데이터 클래스(data class)`라고 한다. 데이터 클래스를 선언할 때는 키워드`data`를 붙인다. 주의할 점은 멤버 변수를 반드시 기본 생성자에 추가해야한다.
+데이터만을 담기 위한 클래스를 `데이터 클래스(data class)`라고 하며, 선언할 때 키워드`data`를 붙여야 한다. 주의할 점은 멤버 변수를 반드시 기본 생성자에 추가해야한다.
 ``` kotlin
 data class Person constructor(val name: String, val nation: String)
 ```
-데이터 클래스는 데이터를 처리하는데 유용한 메소드들을 자동으로 제공한다. 자주 사용하는 몇 가지 메소드만 알아보자.
+데이터 클래스는 데이터를 처리하는데 유용한 메소드들을 자동으로 생성해준다.
 
 ### equal()
 `equal()`메소드는 두 인스턴스가 동일한지 비교하는데 사용한다.
@@ -510,7 +513,7 @@ when(backgroundColor) {
 }
 ``` 
 ### enum class vs. sealed class
-`Sealed Class`는 인스턴스 안에 다른 타입의 데이터를 포함할 수도 있다. 아래 코드를 살펴봅시다.
+`Sealed Class`는 인스턴스 안에 다른 타입의 데이터를 포함할 수도 있다. 아래 코드를 살펴보자.
 ``` kotlin
 sealed class Manager {
     data class Programmer(var school: String) : Manager()
@@ -542,43 +545,42 @@ printInformation(marketingManager)
 ### 로그인 예제
 서버에 로그인을 요청하는 코드가 있다고 가정하자. 로그인에 성공하면 다음과 같이 데이터를 반환한다.
 ``` kotlin
-data class LogInData(val code: Int, var message: String)
+data class LoginData(val code: Int, var message: String)
 ```
 로그인에 실패하면 다음과 같이 에러를 반환한다. 
 ``` kotlin
-enum class LogInError {
+enum class LoginError {
     INVALID_EMAIL,
-    INVALID_PASSWORD,
-    NETWORK_ERROR
+    INVALID_PASSWORD
 } 
 ```
 이처럼 상황에 따라 다른 타입의 데이터를 반환할 때 Sealed Class를 유용하게 사용할 수 있다.
 ``` kotlin
-sealed class LogInResponse {
-    object OnProgress : LogInResponse()
-    data class OnSuccess(val data: LogInData) : LogInResponse()
-    data class OnFailure(val error: LogInError) : LogInResponse()
+sealed class LoginResponse {
+    object OnProgress : LoginResponse()
+    data class OnSuccess(val data: LoginData) : LoginResponse()
+    data class OnFailure(val error: LoginError) : LoginResponse()
 }
 ```
-로그인을 요청하는 함수는 아래와 같이 `LogInResponse`를 반환한다.
+로그인을 요청하는 함수는 아래와 같이 `LoginResponse`를 반환한다.
 ``` kotlin
-fun logIn(id: String, password; String): LogInResponse {
+fun login(id: String, password; String): LoginResponse {
     // 로그인 
 }
 ```
 Sealed Class `when()`구문과 함께 유용하게 사용될 수 있다.
 ``` kotlin
-var response = logIn("Paul@gmail.com", "12345")
+var response = login("Paul@gmail.com", "12345")
 
 when(response) {
-    is SignUpResponse.OnProgress -> {
+    is LoginResponse.OnProgress -> {
         println("${response}")
     }
-    is SignUpResponse.OnSuccess -> {
+    is LoginResponse.OnSuccess -> {
         println("${response.data.code}")
         println("${response.data.message}")
     }
-    is SignUpResponse.OnFailure -> {
+    is LoginResponse.OnFailure -> {
         when(response.error) {
             SignUpError.INVALID_EMAIL -> {
                 println("invalid email")
@@ -625,7 +627,7 @@ Counter.count   // 3
 Counter.clear()
 Counter.count   // 0
 ``` 
-물론 싱글톤은 인스턴스에 할당할 수 있다. 이때 모든 인스턴스가 값을 공유한다.
+물론 싱글톤도 인스턴스를 생성할 수 있다. 이 때 모든 인스턴스가 값을 공유한다.
 ```kotlin
 var myCounter: Counter = Counter
 myCounter.countUp()
@@ -640,7 +642,7 @@ yourCounter.count   // 4
 Counter.count       // 4
 ```
 ### 익명 클래스
-키워드 object는 `익명 클래스(Anonymous Class)`에도 사용된다. 아래 예제는 안드로이드에서 버튼을 클릭했을 때 특정 작업을 수행하는 코드다. 
+키워드 `object`는 `익명 클래스(Anonymous Class)`에도 사용된다. 아래 예제는 안드로이드에서 버튼을 클릭했을 때 특정 작업을 수행하는 코드다. 
 ``` kotlin
 var button: Button
 
@@ -669,17 +671,13 @@ button.setOnClickListener(object: View.OnClickListener {
 ### companion object
 키워드 `companion object`는 자바의 `static`과 유사하다. `companion object`구문 안에 선언된 멤버 변수와 메소드는 인스턴스를 별도로 생성하지 않고 접근할 수 있다.
 ``` kotlin
-class FoodPoll(val name: String) {
+class Poll(val subject: String) {
 
     companion object {
-
         var total = 0
-
         fun printTotal() {
             println(total);
         }
-		
-        const val POLL: String = "food" 
     }
     
     var count = 0
@@ -692,33 +690,40 @@ class FoodPoll(val name: String) {
 ```
 `companion object`구문 안에 선언된 멤버 변수는 클래스의 모든 인스턴스가 공유한다. 
 ``` kotlin
-var melon = FoodPoll("Melon")
+var melon = Poll("Melon")
 melon.vote()
 melon.vote()
 
-var apple = FoodPoll("Apple")
+var apple = Poll("Apple")
 apple.vote()
 apple.vote()
 apple.vote()
 
-FoodPoll.printTotal()   // 5
+Poll.printTotal()   // 5
+println("${Poll.total}") // 5
     
 println("${melon.name}: ${melon.count}")    // Melon: 2
 println("${apple.name}: ${apple.count}")    // Apple: 3
+```
+키워드 `const`와 함께 컴파일 타임에 생성되는 상수를 선언할 수 있다.
+``` kotlin
+class Person(val name: String) {
+    companion object {
+        const val MAX_AGE = 200
+    }
+}
 
-println("Total: ${FoodPoll.total}") // Total: 5
-println("POLL: ${FoodPoll.POLL}")    // food
+Person.MAX_AGE
 ```
 `companion object`에는 이름을 붙일 수도 있다.
 ``` kotlin
-class Person(val name: String) { 
-    companion object Loader { 
-        fun fromJSON(jsonText: String): Person = .... 
-    } 
-} 
+class Person(val name: String) {
+    companion object Constant {
+        const val MAX_AGE = 200
+    }
+}
 
-person1 = Person.Loader.fromJSON("{name:'hong'}") 
-person2 = Person.fromJSON("{name:'kim'}") 
+Person.Constant.MAX_AGE 
 ```
 
 ## 접근 제한자
@@ -794,10 +799,10 @@ class Player(name: String, private var team: String): Person(name) {
 
 
 ## Custom Getter, Setter
-Getter, Setter의 정의 방법은 Java와 Kotlin에서 차이가 있다.
+Java와 Kotlin은 Getter와 Setter를 정의하는 방법에서 차이가 있다.
 
 ### Java의 Getter, Setter
-Java에서는 클래스의 속성에 접근하기 위해 `Getter`와 `Setter`를 정의한다. 
+Java에서는 보통 클래스의 멤버 변수를 `private`으로 선언한 후 `Getter`와 `Setter`를 정의한다.
 ``` java
 class Person {
 
@@ -809,28 +814,27 @@ class Person {
         this.age = age;
     }
     
-    // 게터(Getter)
+    // Getter
     String getName() {
         return this.name;
     }
     
-    // 게터(Getter)
+    // Getter
     int getAge() {
         return this.age;
     }
     
-    // 세터(Setter)
+    // Setter
     void setName(String name) {
         this.name = name;
     }
     
-    // 세터(Setter)
+    // Setter
     void setAge(int age) {
         this.age = age;
     }
 }
 ```
-이제 Person클래스의 name과 age 속성은 `Getter`와 `Setter`를 사용해야만 접근할 수 있다. 
 ``` java
 Person person = new Person("Paul", 35);
 
@@ -870,14 +874,14 @@ var hisAge = person.age
 
 ### Kotlin의 Custom Getter
 
-아래 Java 코드를 살펴봅시다.
+아래 Java 코드를 살펴보자.
 ``` java
 class Person {
 
     private String name;
     private int age;
     
-    // ..
+    // ...
     
     String getInformation() {
         return this.name + " is " + this.age
@@ -908,7 +912,7 @@ class Person(val name: String, val age: Int) {
         get() = "${this.name} is ${this.age}"
 }
 ```
-`Custom Getter`는 값 검증 같은 추가적인 작업에 활용할 수 있다.
+`Custom Getter`의 실행 구문은 속성에 접근할 때 마다 매번 다시 계산되며, 값 검증 같은 추가적인 작업에 활용할 수 있다.
 ``` kotlin
 class Rectangle(val width: Int, val height: Int) {
     val isSquare: Boolean 
@@ -923,35 +927,18 @@ println(rectangle.isSquare)     // false
 var square = Rectangle(10, 10) 
 println(square.isSquare)        // true
 ```
-`Custom Setter`의 실행 구문은 속성에 접근할 때 마다 매번 다시 계산된다.
-``` kotlin
-class Rectangle(val width: Int, val height: Int) {
-    val isSquare: Boolean 
-        get() {
-            return this.width == this.height
-        }
-}
 
-var rectangle = Rectangle(5, 10)
-println(rectangle.isSquare)     // false
-
-rectangle.width = 10
-println(rectangle.isSquare)     // true
-```
 ### Kotlin의 Custom Setter
 `Custom Setter` 역시 값 검증 같은 추가적인 작업에 활용할 수 있다.
 ``` kotlin
 class Person(var name: String) {
-    
     var height: Double = 0.0
         set(value) {
-            if (value < 0) {
-                throw Exception("Wrong height range.")
-            } 
+            if (value < 0) throw Exception("Wrong height range.")
             field = value
         }
-
-    var person = Person("Monica")
-    person.height = -1.1
 }
+
+var person = Person("Monica")
+person.height = -1.1
 ```

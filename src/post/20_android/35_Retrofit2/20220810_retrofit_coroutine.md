@@ -1,5 +1,5 @@
 ---
-title: "Retrofit 2"
+title: "Retrofit과 Coroutine 함께 사용하기"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -15,17 +15,8 @@ sidebarDepth: 0
 `Retrofit`을 사용하기 위해 다음 의존성을 추가한다.
 ``` groovy
 // Retrofit
-implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-```
-그리고 `AndroidManifest.xml`에 인터넷 권한을 추가해야한다.
-``` xml
-<uses-permission android:name="android.permission.INTERNET"/>
-```
-
-에뮬레이터에서 로컬 호스트로 통신할 때는 다음 IP를 사용한다.
-``` kotlin
-val BASE_URL = "http://10.0.2.2:${YOUR_PORT}"
+implementation 'com.squareup.retrofit2:retrofit:2.8.2'
+implementation 'com.squareup.retrofit2:converter-gson:2.8.2'
 ```
 
 ## 사용법
@@ -227,16 +218,14 @@ authApi.enqueue(object: Callback<LoginResponse> {
 
 	override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
 		if(response.isSuccessful()) {
-			// 2xx Success
+			// 성공 (응답 코드 = 2xx)
 		} else { 
-            // 4xx, 5xx Error
-            val code = response.code()
-            val errorBody = response.errorBody()
+            // 실패 (응답 코드 = 4xx)
 		}
 	} 
 	
-	override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-		// Connection Error
+	override fun onFailure() { 
+		// 실패 (응답 코드 = 5xx)
 	}   
 })
 ```
