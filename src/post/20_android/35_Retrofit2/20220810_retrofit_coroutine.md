@@ -8,60 +8,38 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-# Retrofit 
-`Retrofit`은 안드로이드에서의 HTTP 통신을 위한 라이브러리다.
+# Retrofit과 RxJava 함께 사용하기
+`Retrofit`과 `RxJava`를 함께 사용하는 방법에 대해 정리한다.
 
-## 설정
-`Retrofit`을 사용하기 위해 다음 의존성을 추가한다.
-``` groovy
-// Retrofit
-implementation 'com.squareup.retrofit2:retrofit:2.8.2'
-implementation 'com.squareup.retrofit2:converter-gson:2.8.2'
-```
+## 의존성 추가
+`Retrofit`은 `Coroutine`과도 함께 사용할 수 있다.
+``` groovy {9}
+dependencies {
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
 
-## 사용법
-`Retrofit`을 사용하려면 먼저 인터페이스를 정의해야한다. HTTP 메소드에 따른 정의 방법은 다음과 같다.
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.8.2'
+    implementation 'com.squareup.retrofit2:converter-gson:2.8.2'
 
-### GET
-HTTP GET 메소드의 경우 `@GET` 어노테이션을 사용한다. `@Query` 어노테이션으로 Query Parameter를 함께 전송할 수 있다.
-``` kotlin
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Query
+    // MockWebServer
+    testImplementation "com.squareup.okhttp3:mockwebserver:4.10.0"
 
-interface PostApi {
-
-    // HTTP GET with query parameter
-    @GET("posts")
-    fun getPosts(@Query("page") page: Int, @Query("size") size: Int): Call<GetPostsResponse>
-}
-```
-`@Path` 어노테이션으로 Path Variable도 설정할 수 있다.
-``` kotlin
-import retrofit2.Call
-import retrofit2.http.GET
-import retrofit2.http.Path
-
-interface PostApi {
-
-    // HTTP GET with path variable
-    @GET("post/{id}")
-    fun getPostById(@Path("id") id: Long): Call<GetPostByIdResponse> 
+    // Truth
+    testImplementation 'com.google.truth:truth:1.1.3'
 }
 ```
 
-## POST
-HTTP POST 메소드의 경우 `@POST` 어노테이션을 사용한다. `@Body` 어노테이션으로 HTTP Body도 설정할 수 있다.
+## 사용하기
+이제 `Retrofit` 인터페이스의 메소드를 `suspend`로 선언할 수 있다.
+`Retrofit`의 `Call` 대신 `RxJava`의 `Observable` 타입으로 반환이 가능하다.
 ``` kotlin
-import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
-
 interface AuthApi {
     @POST("/auth/login")
-    fun login(@Body request: LoginRequest): Call<LoginResponse>
+    suspend fun login(@Body request: LoginRequest): LoginResponse
 }
-```
+``` 
+모델은 다음과 같다.
 ``` kotlin
 import com.google.gson.annotations.SerializedName
 
@@ -71,161 +49,176 @@ data class LoginRequest (
 )
 ```
 ``` kotlin
-import com.google.gson.annotations.SerializedName
-
 data class LoginResponse (
     @SerializedName("user_id") val userId: Long,
     @SerializedName("access_token") val accessToken: String,
     @SerializedName("refresh_token") val refreshToken: String
 )
 ```
-HTTP Body에 실제로 포함되어 전송되는 데이터 형태는 다음과 같다.
-``` json
-{
-    "email": "paul@gmail.com",
-    "password": "1234"
+이제 코루틴 스코프 안에서 이 함수를 호출할 수 있다.
+``` kotlin
+GlobalScope.launch {
+    val response: LoginResponse = authApi.login(request)
+}
+```
+`try-catch` 구문으로 에러 처리를 할 수 있다.
+``` kotlin
+val request = LoginRequest("ronalo@gmail.com", "1234")
+
+GlobalScope.launch {
+    try {
+        val response: LoginResponse = authApi.login(request)
+    } catch (exception: Exception) {
+        // 에러 처리
+    }
+}
+```
+`error`의 타입 비교를 통해 에러의 종류를 파악할 수 있다.
+``` kotlin
+val request = LoginRequest("ronalo@gmail.com", "1234")
+
+GlobalScope.launch {
+    try {
+        val response: LoginResponse = authApi.login(request)
+    } catch (exception: Exception) {
+        when(exception) {
+            is HttpException -> {
+                // 400, 500 Error
+                val code: Int = exception.code()
+                val errorBody: ResponseBody? = exception.response()?.errorBody()
+            }
+            is ConnectException -> {
+                // Connection Error
+            }
+            else -> {
+                // Other Exceptions
+            }
+        }
+    }
 }
 ```
 
-`@FormUrlEncoded`, `@Field` 어노테이션을 사용하면 `application/x-www-form-urlencoded` 타입의 데이터도 전송할 수 있다.
-``` kotlin
-import retrofit2.http.POST
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Field
-
-interface PostApi {
-
-    @FormUrlEncoded
-    @POST("auth/login")
-    fun login(
-        @Field("email") email: String,
-        @Field("password") password: String
-    ): Call<LoginResponse>
+## MockWebServer로 단위 테스트 하기
+코루틴을 테스트하려면 다음 의존성을 추가해야한다.
+``` groovy
+dependencies {
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.3.9"
 }
 ```
-HTTP Body에 실제로 포함되어 전송되는 데이터 형태는 다음과 같다.
-```
-email=paul@gmail.com&password=1234
-```
-
-`@Multipart`, `@Part` 어노테이션을 사용하면 `multipart/form-data` 타입의 데이터도 전송할 수 있다. 이 타입은 보통 이미지 업로드에 많이 사용된다.
+`runBlocking()` 메소드를 사용하면 동기적으로 `suspend` 함수를 처리한 후 결과값을 테스트할 수 있다. 
 ``` kotlin
-import retrofit2.http.POST
-import retrofit2.http.Multipart
-import retrofit2.http.Part
+import kotlinx.coroutines.runBlocking
+// ...
 
-interface PostApi {
+class AuthApiTest {
+    lateinit var mockServer: MockWebServer
+    lateinit var mockUrl: HttpUrl
+    lateinit var client: OkHttpClient
+    lateinit var authApi: AuthApi
 
-    @Multipart
-    @POST("post")
-    fun addPost(
-        @Part("writer_id") writerId: RequestBody,
-        @Part("title") title: RequestBody,
-        @Part("content") content: RequestBody,
-        @Part images: List<MultipartBody.Part>?
-    ): Call<AddPostResponse>
+    @Before
+    fun setUp() {
+        // Set up MockWebServer
+        mockServer = MockWebServer()
+        mockServer.start()
+
+        // Set up Mock URL
+        mockUrl = mockServer.url("/")
+
+        // Set up Okhttp3 client
+        client = OkHttpClient.Builder()
+            .build()
+
+        // Set up AuthApi
+        authApi = Retrofit.Builder()
+            .client(client)
+            .baseUrl(mockUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AuthApi::class.java)
+    }
+
+    @After
+    fun tearDown() {
+        // Shut down MockWebServer
+        mockServer.shutdown()
+    }
+
+    @Test
+    fun `로그인 성공 테스트`() = runBlocking {
+        // Given
+        val dummyUserId: Long = 1
+        val dummyAccessToken = "qwekjqwlkejlkqwe"
+        val dummyRefreshToken = "123jl12j3kj123lk"
+
+        // Create mock response
+        val successResponse by lazy {
+            MockResponse().apply {
+
+                val jsonObject = JsonObject()
+                jsonObject.addProperty("user_id", dummyUserId)
+                jsonObject.addProperty("access_token", dummyAccessToken)
+                jsonObject.addProperty("refresh_token", dummyRefreshToken)
+
+                val gson = Gson()
+
+                val jsonString = gson.toJson(jsonObject)
+
+                addHeader("Content-Type", "application/json")
+                setResponseCode(HttpURLConnection.HTTP_OK)
+                setBody(jsonString)
+            }
+        }
+
+        // Add response to mock server
+        mockServer.enqueue(successResponse)
+
+        // When
+        val request = LoginRequest("paul@gmail.com", "1234")
+
+        // Then
+        val response = authApi.login(request)
+        assertThat(response.userId).isEqualTo(dummyUserId)
+        assertThat(response.accessToken).isEqualTo(dummyAccessToken)
+        assertThat(response.refreshToken).isEqualTo(dummyRefreshToken)
+    }
+
+    @Test
+    fun `로그인 실패 테스트`() = runBlocking {
+        // Given
+        val dummyMessage = "fail"
+
+        // Create mock response
+        val successResponse by lazy {
+            MockResponse().apply {
+
+                val jsonObject = JsonObject()
+                jsonObject.addProperty("message", dummyMessage)
+
+                val gson = Gson()
+
+                val jsonString = gson.toJson(jsonObject)
+
+                addHeader("Content-Type", "application/json")
+                setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
+                setBody(jsonString)
+            }
+        }
+
+        // Add response to mock server
+        mockServer.enqueue(successResponse)
+
+        // When
+        val request = LoginRequest("paul@gmail.com", "1234")
+
+        // Then
+        try {
+            val response = authApi.login(request)
+        } catch (e: HttpException) {
+            assertThat(e.code()).isEqualTo(HttpURLConnection.HTTP_BAD_REQUEST)
+        } catch (e: Exception) {
+            fail()
+        }
+    }
 }
-```
-### PATCH
-HTTP PATCH 메소드의 경우 `@PATCH` 어노테이션을 사용한다. 
-``` kotlin
-import retrofit2.http.PATCH
-
-interface PostApi {
-
-    @PATCH("post/{id}")
-    fun updatePostById(
-        @Path("id") id: Long, 
-        @Body UpdatePostByIdRequest)
-    : Call<UpdatePostByIdResponse>
-}
-```
-
-### DELETE
-HTTP DELETE 메소드의 경우 `@DELETE` 어노테이션을 사용한다. 
-``` kotlin
-import retrofit2.http.DELETE
-
-interface PostApi {
-    @DELETE("post/{id}")
-    fun deletePostById(@Path("id") id: Long)
-}
-```
-
-### Header
-`@Headers`를 사용하여 헤더를 지정할 수 있다.
-``` kotlin
-import retrofit2.http.Headers
-
-@Headers({
-    "Accept: application/json",
-    "User-Agent: Your-App-Name",
-    "Cache-Control: max-age=640000"
-})
-interface PostApi {
-
-    @GET("post/{id}")
-    fun getPostById(
-        @Header("Authorization") String authorization,
-        @Path("id") id: Long
-    ): Call<GetPostByIdResponse> 
-}
-```
-`@Header`를 사용하여 헤더를 동적으로 추가할 수 있다. 파리미터가 `null`이면 헤더가 추가되지 않는다.
-``` kotlin
-import retrofit2.http.Header
-
-interface PostApi {
-
-    @GET("post/{id}")
-    fun getPostById(
-        @Header("Authorization") String authorization,
-        @Path("id") id: Long
-    ): Call<GetPostByIdResponse> 
-}
-```
-
-### 통신하기
-다음과 같이 인터페이스를 정의했다고 가정하자.
-``` kotlin
-import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.POST
-
-interface AuthApi {
-    @POST("/auth/login")
-    fun login(@Body request: LoginRequest): Call<LoginResponse>
-}
-```
-이 인터페이스로 다음과 같이 API 역할을 할 구현체를 생성한다.
-``` kotlin
-val client = OkHttpClient.Builder().build()
-
-val authApi = Retrofit.Builder()
-    .client(client)
-    .baseUrl(BASE_URL)
-    .addConverterFactory(GsonConverterFactory.create())
-    .build()
-    .create(AuthApi::class.java)
-```
-이제 구현체로 통신을 할 수 있다. `execute()`를 사용하면 현재 스레드에서 동기적으로 통신한다. 
-``` kotlin
-val response: LoginResponse = authApi.execute()
-```
-`enqueue()`를 사용하면 별도의 작업 스레드에서 비동기적으로 통신한다. 따라서 통신이 끝났을 때 실행할 Callback을 함께 전달해야한다.
-``` kotlin
-authApi.enqueue(object: Callback<LoginResponse> {
-
-	override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-		if(response.isSuccessful()) {
-			// 성공 (응답 코드 = 2xx)
-		} else { 
-            // 실패 (응답 코드 = 4xx)
-		}
-	} 
-	
-	override fun onFailure() { 
-		// 실패 (응답 코드 = 5xx)
-	}   
-})
 ```
