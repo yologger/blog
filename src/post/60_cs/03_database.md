@@ -12,21 +12,21 @@ sidebarDepth: 0
 `Database`개념에 대해 정리한다.
 
 ## DDL
-`DDL(Data Definition Lauguage)`의 약자로 데이터베이스의 구조(Schema)를 정의하는 기능
+`DDL(Data Definition Lauguage)`의 약자로 데이터베이스의 스키마를 정의하는 기능
 - CREATE
 - ALTER
 - DROP
 - TRUNCATE
 
 ## DML
-`DML(Data Manipulation Lauguage)` 데이터를 조작하는 기능
+`DML(Data Manipulation Lauguage)`의 약자로 데이터를 조작하는 기능
 - SELECT
 - INSERT
 - UPDATE
 - DELETE
 
 ## DCL
-`DCL(Database Control Launuage)`의 약자
+`DCL(Database Control Launuage)`의 약자로 무결성, 동시성, 보안, 권한을 제어하는 기능
 - 무결성과 동시성 제어
     - COMMIT
     - ROLLBACK
@@ -87,7 +87,7 @@ CREATE TABLE post (
 ```
 
 ## 이상현상
-데이터베이스의 설계를 잘못하면 데이터의 `일관성`, `무결성`이 깨지는데 이를 <b>`이상현상(Anomaly)`</b>이라고 한다.
+데이터베이스의 설계를 잘못하면 데이터의 `일관성`과 `무결성`이 깨지는데 이를 <b>`이상현상(Anomaly)`</b>이라고 한다.
 - 삽입 이상
 - 갱신 이상
 - 삭제 이상
@@ -171,8 +171,8 @@ public class App {
 
 ## SQL Mapper
 - 자바 객체와 SQL를 매핑해주는 표준
-- 대표적인 구현체에는 myBatis가 있다 
-- 데이터베이스에 종속적인 SQL을 직접 작성해야한다.
+- 대표적인 구현체에는 `myBatis`가 있다 
+- <u>데이터베이스에 종속적인 SQL을 직접 작성해야 한다.</u>
 ``` xml
 <!-- UserMapper.xml -->
 <?xml version="1.0" encoding="UTF-8"?>
@@ -200,7 +200,7 @@ public interface UserMapper {
 
 ## JPA
 - 관계형 데이터베이스의 테이블과 객체지향 프로그래밍의 객체를 매핑해주는 기술이다.
-- 데이터베이스에 독립적이며, JPA가 DB에 종속적인 쿼리를 대신 작성해준다
+- <u>데이터베이스에 독립적이며, JPA가 DB에 종속적인 쿼리를 대신 작성해준다.</u>
 - 복잡한 쿼리는 JPQL, QueryDSL로 직접 작성할 수 있다.
 
 ## RDBMS vs. NoSQL
@@ -208,18 +208,18 @@ public interface UserMapper {
 - `Row`와 `Column`으로 구성된 테이블 기반의 이차원 관계형 데이터베이스
 - 스키마가 존재하기 때문에 정형화된 형태로 데이터가 저장된다.
 - 외래키로 테이블 간 관계를 표현한다.
-- 관계가 있는 테이블들은 `Join`으로 조회할 수 있다.
+- 관계가 있는 테이블들은 `JOIN`으로 조회할 수 있다.
 - 대표적인 제품군에는 Oracle DB, MySQL, Maria DB가 있다.
 
 ### NoSQL
 - Not Only SQL 
-- 관계형 데이터베이스는 정형화된 형태로 데이터를 저장하지만 No SQL은 상대적으로 비정형화된 형태로 데이터를 자유롭게 저장할 수 있다.
+- NoSQL은 정형화된 스키마가 없어 비교적 자유로운 형태로 데이터를 저장할 수 있다.
 - 은행의 계좌 시스템처럼 ACID(Atomic, Consistency, Integrity, Duarabity)를 반드시 보장해야하는 분야에는 RDBMS를 적용한다.
 - 반면 구조가 복잡하진 않지만 대용량 데이터를 빠르게 처리해야하는 분야, 예를 들면 카카오톡 메시지 저장, 빅데이터 분석 등에 사용할 수 있다.
 - No SQL은 대부분 다음과 같은 특징이 있다.
+    - 정형화된 스키마가 없고 자유로운 형태의 데이터를 저장할 수 있다.
     - 외래키를 통한 관계를 설정하지 않는다.
     - JOIN을 지원하지 않는다.
-    - 정형화된 스키마가 없고 자유로운 형태의 데이터를 저장할 수 있다.
     - 대용량 데이터 처리에 적합하다.
     - 수평적 확장을 위한 클러스터링, 분산 저장 기능을 제공한다.
     - 대표적인 제품군에는 `Key-Value` 기반의 `Redis`, `Document` 기반의 `Mongo DB`, `ElasticSearch`가 있다.
@@ -242,7 +242,7 @@ public interface UserMapper {
 - 스키마가 없어서 저장되는 데이터의 구조가 자유롭다.
 - 테이블은 `Collection`, 행은 `Document`, 열은 `Field`에 대응한다.
 - `Field`에는 자바스크립트의 데이터 타입을 저장할 수 있으며, 추가적으로 `Document`를 유일하게 구분하기 위해 `ObjectId` 타입과 `_id` 필드를 사용한다.
-- `_id`필드는 데이터를 삽입할 때 별도의 값을 제공하지 않으면 자동으로 생성된다.
+- `_id` 필드는 데이터를 삽입할 때 별도의 값을 제공하지 않으면 자동으로 생성된다.
 - 외래키 개념이 없어서 `Embedded` 또는 `Reference` 방식으로 관계를 표현한다.
 - 조인 개념이 없어서 어플리케이션 레벨에서 처리해야한다.
 - 스키마가 자주 바뀌는 환경에서 `Mongo DB`를 사용하면 적합하다.

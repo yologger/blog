@@ -130,8 +130,8 @@ sidebarDepth: 0
 - HTTP 요청이나 응답의 `content-type` 헤더에 이 MIME Type을 이용해서 전송되는 데이터 타입을 명시한다.
 - 자주 사용되는 MIME Type은 다음과 같다.
     - `application/json`: JSON 형식의 데이터
-    - `multipart/form-data`: 이미지와 문자열처럼 두 종류 이상의 데이터 함께 전송할 때 사용하며 주로 파일 업로드에 사용된다. 
     - `application/x-www-form-urlencoded`: HTML의 form 태그
+    - `multipart/form-data`: 이미지와 문자열처럼 두 종류 이상의 데이터 함께 전송할 때 사용하며 주로 파일 업로드에 사용된다. 
     
 
 

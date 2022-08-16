@@ -1513,6 +1513,64 @@ Collections.fill(list, 5);
 System.out.println(list);   // [5, 5, 5, 5]
 ```
 
+### sort()
+`List`를 정렬한다.
+``` java
+List list = new ArrayList(Arrays.asList(3, 7, 1, 9));
+Collections.sort(list);
+System.out.println(list);   // [1, 3, 7, 9]
+```
+요소가 객체인 경우 `sort()`의 두 번째 인자로 `Comparator`를 전달하여 정렬 기준을 지정할 수 있다.
+``` java
+PriorityQueue<Person> priorityQueue = new PriorityQueue<Person>(new Comparator<Person>() {
+    @Override
+    public int compare(Person p1, Person p2) {
+        return p1.getAge() - p2.getAge();
+    }
+});
+```
+또는 요소가 `Comparable` 인터페이스를 구현하고 `compareTo()` 메소드를 오버라이드하여 정렬 기준을 지정할 수 있다.
+``` java
+class Person implements Comparable<Person> {
+
+    // ...
+
+    @Override
+    public int compareTo(Person p) {
+        return this.getAge() - p.getAge();
+    }
+}
+```
+
+### max()
+최대값을 반환한다.
+``` java
+List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
+
+Collections.max(list);  // 8
+```
+요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
+``` java
+List list = new ArrayList(Arrays.asList(
+    new Person("Paul", 35),
+    new Person("Smith", 24),
+    new Person("Kane", 18)
+));
+
+Person old = Collections.max(list, (Person p1, Person p2) -> p1.getAge() - p2.getAge());
+
+System.out.println(old.getName() + " " + old.getAge()); // Paul 35
+```
+
+### min()
+최소값을 반환한다.
+``` java
+List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
+
+Collections.min(list);  // 1
+```
+요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
+
 ### swap()
 두 요소를 스왑한다.
 ``` java {5}
@@ -1548,35 +1606,6 @@ System.out.println(list.hashCode());        // 30817
 System.out.println(copied.hashCode());      // 955331
 ```
 
-### max()
-최대값을 반환한다.
-``` java
-List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
-
-Collections.max(list);  // 8
-```
-요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
-``` java
-List list = new ArrayList(Arrays.asList(
-    new Person("Paul", 35),
-    new Person("Smith", 24),
-    new Person("Kane", 18)
-));
-
-Person old = Collections.max(list, (Person p1, Person p2) -> p1.getAge() - p2.getAge());
-
-System.out.println(old.getName() + " " + old.getAge()); // Paul 35
-```
-
-### min()
-최소값을 반환한다.
-``` java
-List list = new ArrayList(Arrays.asList(3, 7, 8, 1));
-
-Collections.min(list);  // 1
-```
-요소가 객체인 경우 두 번째 인자로 `Comparator`를 전달할 수 있다.
-
 ### addAll()
 여러 요소들을 추가한다.
 ``` java
@@ -1591,35 +1620,6 @@ System.out.println(list);   // [1, 2, 3, 4, 5, 6, 7]
 List list = new ArrayList(Arrays.asList(1, 1, 1, 2, 2, 2, 2));
 Collections.replaceAll(list, 2, 3);
 System.out.println(list);   // [1, 1, 1, 3, 3, 3, 3]
-```
-
-### sort()
-`List`를 정렬한다.
-``` java
-List list = new ArrayList(Arrays.asList(3, 7, 1, 9));
-Collections.sort(list);
-System.out.println(list);   // [1, 3, 7, 9]
-```
-요소가 객체인 경우 `sort()`의 두 번째 인자로 `Comparator`를 전달하여 정렬 기준을 지정할 수 있다.
-``` java
-PriorityQueue<Person> priorityQueue = new PriorityQueue<Person>(new Comparator<Person>() {
-    @Override
-    public int compare(Person p1, Person p2) {
-        return p1.getAge() - p2.getAge();
-    }
-});
-```
-또는 요소가 `Comparable` 인터페이스를 구현하고 `compareTo()` 메소드를 오버라이드하여 정렬 기준을 지정할 수 있다.
-``` java
-class Person implements Comparable<Person> {
-
-    // ...
-
-    @Override
-    public int compareTo(Person p) {
-        return this.getAge() - p.getAge();
-    }
-}
 ```
 
 ### binarySearch()
