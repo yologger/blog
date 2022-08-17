@@ -11,7 +11,7 @@ sidebarDepth: 0
 ## Reactive Programming
 - 이벤트가 발생하거나 상태가 변했을 때 특정 코드를 실행하는 프로그래밍 방식
 - 이벤트를 발생하거나 상태가 변하는 대상을 구독하는 형태로 구현한다.
-- `RxJava`의 Observable, `Reactor`의 Mono나 Flux, `Coroutine`의 Flow, Android의 LiveData가 리액티브 프로그래밍의 예다.
+- `RxJava`의 Observable, `Reactor`의 Mono나 Flux, `Coroutine`의 Flow, Android의 `LiveData`가 리액티브 프로그래밍의 예다.
 - 보통 구독을 하면서 콜백을 함께 전달한다.
 
 ## Event Driven Architecture
@@ -20,7 +20,7 @@ sidebarDepth: 0
 - 특히 여러 모듈에서 발생하는 데이터를 `Kafka`, `Redis` 같은 메시지 큐에 집중화하고, 이를 구독하는 모듈에게 이벤트를 발생시키는 형태로 이벤트 기반 아키텍처를 구현할 수 있다.
 
 ## Domain Driven Design
-- 도메인 주도 설계(Domain Driven Design)
+- 도메인 주도 설계
 - 도메인, 현업의 비즈니스를 중심으로 하는 프로그래밍
 - 기존에는 기획팀, 디자인팀, 개발팀, 인프라팀, 도메인 팀으로 구성되었다면 DDD는 도메인 단위로 팀을 구성한다.
 - 예를 들어 결제와 관련된 기능을 구현할 때 관련된 기획자, 디자이너, 프론트엔드 개발자, 백엔드 개발자가 한 팀을 구성한다.
@@ -47,7 +47,6 @@ sidebarDepth: 0
 - `Consumer Group`을 할당하여 배압 이슈를 해결할 수 있다. Consumer Group의 각 `Consumer`는 서로 다른 `Partition`에서 병렬적으로 데이터를 읽어온다.
 - 기존 메시지 큐가 인메모리 방식으로 데이터를 저장하는 반면, `Kafka`는 온디스크에 데이터를 저장하기 때문에 영속성이 보장이 된다.
 - `Replication`을 활용하여 Topic을 여러 노드에 분산 저장하면 고가용성을 높일 수 있다.
-
 
 ## gRPC
 - google Remote Procedure Call

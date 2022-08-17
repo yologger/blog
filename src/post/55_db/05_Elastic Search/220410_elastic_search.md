@@ -7,12 +7,12 @@ sidebarDepth: 0
 # Table of Contents
 [[toc]]
 
-## ElasticSearch
-- `ElasticSearch`은 Apache Lucene 기반의 Java 오픈 소스 분산 검색 엔진이다. 
+## Elasticsearch
+- `Elasticsearch`은 Apache Lucene 기반의 Java 오픈 소스 분산 검색 엔진이다. 
 - 관계형 데이터베이스는 행의 위치인 `인덱스(Index)`를 사용하여 행을 조회한다. 반면 ElasticSearch은 도큐먼트의 문자, 단어 등을 매핑한 `역색인(Inverted Index)`을 사용하여 데이터를 조회한다. 일반 인덱스는 책 앞 페이지의 목차와 같은 의미이고, 역색인은 책 뒷 편의 단어 별 빠른 페이지와 같다.
-- 인덱스를 통한 검색은 인덱스를 순차검색 하기 때문에 `O(n)`의 시간 복잡도를 갖는다. 반면 역색인은 마치 해시함수와 같아서 `O(1)`의 시간 복잡도를 갖는다. 이 때문에 ElasticSearch은 방대한 데이터를 빠르게 검색하는데 적합하다.
+- 인덱스를 통한 검색은 인덱스를 순차검색 하기 때문에 `O(n)` 또는  `O(logn)`의 시간 복잡도를 갖는다. 반면 역색인은 마치 해시함수와 같아서 `O(1)`의 시간 복잡도를 갖는다. 이 때문에 ElasticSearch은 빠른 검색에 사용된다.
 - ElasticSearch는 스키마가 없기 때문에 NoSQL처럼 비정형 데이터를 저장할 수 있다. 물론 `Mapping`을 사용하면 스키마를 설정할 수도 있다.
-- Elastic Search는 기본적으로 REST API에 HTTP 요청을 보내는 형태로 데이터를 조작한다.
+- ElasticSearch는 기본적으로 REST API에 HTTP 요청을 보내는 형태로 데이터를 조작한다.
 
     |RDBMS|Elastic Search|
     |------|---|
@@ -22,7 +22,7 @@ sidebarDepth: 0
     |DELETE|DELETE|
 
 ## ELK 스택
-- `ElasticSearch`은 빠른 검색을 위해 단독으로 사용되기도 하지만 `ELK(ElasticSearch / LogStash / Kibana)` + `Beats` 스택으로 사용되기도 한다.
+- `Elasticsearch`은 빠른 검색을 위해 단독으로 사용되기도 하지만 `ELK(Elasticsearch / LogStash / Kibana)` + `Beats` 스택으로 사용되기도 한다.
 - ELK 스택을 사용하면 여러 데이터소스에서 발생한 데이터를 수집, 가공, 분석한 후 시각화할 수 있다.
 - ELK 스택은 MSA 환경에서 여러 개별 서비스의 로그를 중앙 집중형 로깅하고 모니터링하는데 사용할 수 있다.
 - 빅데이터 분야에도 활용할 수 있다.
@@ -37,7 +37,7 @@ sidebarDepth: 0
 - 데이터 소스의 데이터를 실시간으로 수집하여 Elastic Search로 전달하는 파이프 라인 엔진이다.
 - 여러 데이터 소스로부터 발생하는 데이터를 적절하게 변환한다.
 
-### Elastic Search
+### Elasticsearch
 - Logstash를 통해 수신된 데이터를 저장소에 저장하는 역할을 담당한다.
 - 역인덱싱을 통한 빠른 검색을 제공한다.
 - 어그리게이션 등을 통한 데이터 가공 및 분석 기능을 제공한다.
@@ -45,7 +45,7 @@ sidebarDepth: 0
 ### Kibana
 - ElasticSearch에 저장된 데이터를 시각화한다.
 
-## Elastic Search 설치
+## Elasticsearch 설치
 ::: tip Information
 ElasticSearch 7.17.4 버전을 기준으로 합니다.
 :::
