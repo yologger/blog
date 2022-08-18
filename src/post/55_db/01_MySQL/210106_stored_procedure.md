@@ -1,5 +1,5 @@
 ---
-title: "MYSQL - 변수, Stored Procedure"
+title: "MYSQL - 변수, Stored Procedure, Function"
 lang: ko
 showOnSidebar: true
 sidebarDepth: 0
@@ -20,7 +20,7 @@ MySQL에는 크게 네 가지의 변수가 있다.
 - Store Procedure의 파라미터
 - Store Procedure의 지역 변수
 
-## 시스템 변수
+### 시스템 변수
 시스템 변수는 데이터베이스 전체에서 유효한 변수다.
 
 시스템 변수는 다음과 같이 조회할 수 있다.
@@ -32,7 +32,7 @@ SHOW GLOBAL VARIABLES;
 SHOW GLOBAL VARIABLES LIKE 'CHAR%';
 ```
 
-## 사용자 정의 변수
+### 사용자 정의 변수
 사용자 정의 변수는 현재 MySQL에 연결된 세션에만 유효한 변수다. 세션이 닫히면 사용자 정의 변수도 사라진다.
 ``` sql
 SET @num = 0;
@@ -85,14 +85,14 @@ DELIMITER ;
 ``` sql
 DROP PROCEDURE GetMemberCount;
 ```
-### Store Procedure의 파라미터
+### Stored Procedure의 파라미터
 저장 프로시저는 세 가지 종류의 파라미터를 가질 수 있다.
 
 - in
 - out
 - inout
 
-`IN`은 Call-by-value 타입의 파라미터다.
+`IN`은 Call-by-value 타입의 파라미터로 원본 변수에 영향을 주지 않는다.
 ``` sql
 DELIMITER $$
 CREATE PROCEDURE PrintUserByName(
@@ -108,7 +108,7 @@ DELIMITER ;
 ``` sql
 CALL PrintUserByName("yologger");
 ```
-`OUT`은 Call-by-reference 타입의 파라미터다.
+`OUT`은 Call-by-reference 타입의 파라미터로 원본 변수에 영향을 준다. 프로시저의 반환값에 사용할 수 있다.
 ``` sql
 DELIMITER $$
 CREATE PROCEDURE GetUserCount(
@@ -125,7 +125,7 @@ DELIMITER ;
 SET @num = 0;
 CALL GetUserCount(@num);
 ```
-`INOUT`은 위 두 특성을 합친 파라미터다.
+`INOUT`은 위 두 특성을 모두 가진 파라미터다.
 ``` sql
 DELIMITER $$
 CREATE PROCEDURE MULTIPLY(
@@ -143,16 +143,16 @@ CALL MULTIPLY(@num);
 SELECT @num;    -- 64
 ```
 
-### Stored Procedure의 지역 변수
-저장 프로시저는 내부에 지역 변수를 가질 수 있다. 기본값을 선언하지 않으면 `NULL`로 초기화된다.
+### Stored Procedure의 지역변수
+저장 프로시저는 내부에 지역변수를 가질 수 있다. 지역변수는 기본값을 선언하지 않으면 `NULL`로 초기화된다.
 ``` sql
 DELIMITER $$ 
 CREATE PROCEDURE PrintUserInfo() 
 BEGIN
     -- 변수 선언
-	DECLARE v_age INT;
-    DECLARE v_height FLOAT;
-    DECLARE v_weight FLOAT;
+	DECLARE v_age INT;  -- NULL
+    DECLARE v_height FLOAT;  -- NULL
+    DECLARE v_weight FLOAT;  -- NULL
 
     -- 생략 ... 
 END $$
@@ -214,3 +214,36 @@ DELIMITER ;
 ``` sql
 CALL test();
 ```
+
+## Function
+`함수(Function)`는 다음과 같이 생성한다.
+``` sql
+DELIMITER $$
+CREATE FUNCTION getSum(value1 INT, value2 INT) RETURNS INT
+BEGIN
+	DECLARE sum INT;
+    SET sum = value1 + value2;
+    RETURN sum;
+END $$
+DELIMITER ;
+```
+함수는 다음과 같이 호출할 수 있다.
+``` sql
+SELECT getSum(1, 2);  -- 3
+```
+데이터베이스에 생성된 함수는 다음 명령어로 확인할 수 있다.
+``` sql
+SHOW function status where db = 'my_db';
+```
+생성된 함수의 내용은 다음 명령어로 확인할 수 있다.
+``` sql
+SHOW CREATE FUNCTION getSum;
+```
+
+## Stored Procedure vs. Function
+저장 프로시저와 함수는 다음과 같은 차이점이 있다.
+|Stored Procedure|Function|
+|------|---|
+|반환값이 있을 수도 없을 수도 있다. </br> 여러 값을 반환할 수도 있다.|반환값이 있어야한다.|
+|서버에서 실행되기 때문에 상대적으로 빠르다.|클라이언트에서 실행되기 때문에 상대적으로 느리다.|
+|`CALL procudure()` 형태로 호출한다.|`SELECT function()` 형태로 호출한다.|
