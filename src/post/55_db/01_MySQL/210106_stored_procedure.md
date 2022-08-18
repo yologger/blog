@@ -247,3 +247,39 @@ SHOW CREATE FUNCTION getSum;
 |반환값이 있을 수도 없을 수도 있다. </br> 여러 값을 반환할 수도 있다.|반환값이 있어야한다.|
 |서버에서 실행되기 때문에 상대적으로 빠르다.|클라이언트에서 실행되기 때문에 상대적으로 느리다.|
 |`CALL procudure()` 형태로 호출한다.|`SELECT function()` 형태로 호출한다.|
+
+## CURSOR, FETCH
+쿼리의 결과 집합을 다루는데 `CURSOR`를 활용할 수 도 있다.
+``` sql
+DELIMITER $$
+CREATE PROCEDURE getCount(OUT count INT) 
+BEGIN
+	DECLARE _done INT DEFAULT false;
+    DECLARE _id BIGINT;
+    DECLARE _email VARCHAR(255);
+    DECLARE _name VARCHAR(255);
+    DECLARE _count INT DEFAULT 0;
+
+	DECLARE _cursor Cursor FOR SELECT id, email, name FROM person; 
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET _done = true;
+    
+    OPEN _cursor;
+    _loop: LOOP
+		FETCH _cursor INTO _id, _email, _name;
+		IF _done THEN LEAVE _loop;
+		END IF;
+        
+        SET _count = _count + 1;
+        
+    END LOOP _loop;
+    CLOSE _cursor;
+
+	SET count = _count;
+END $$
+DELIMITER ;
+```
+``` sql
+SET @count = 0;
+CALL getCount(@count);
+SELECT @COUNT;	-- 14
+```
