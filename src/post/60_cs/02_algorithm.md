@@ -266,6 +266,46 @@ public static int sum(ArrayList<Integer> dataList) {
 ```
 :::
 
+### DFS
+::: DFS
+``` java
+public class App {
+
+    public static void main(String[] args) {
+        int[][] graph = {
+                {0, 1, 1, 0, 1, 0},
+                {1, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 0, 1, 0},
+                {1, 0, 1, 1, 0, 0},
+                {0, 0, 1, 0, 0, 0}
+        };
+
+        boolean[] isVisited = new boolean[graph.length];
+
+        List<Integer> visited = new ArrayList<>();
+
+        dfs(graph, 0, isVisited, visited);
+
+        System.out.println(visited);    // [0, 1, 2, 4, 3, 5]
+    }
+
+    public static void dfs(int[][] graph, int start, boolean[] isVisited, List<Integer> visited) {
+        isVisited[start] = true;
+        visited.add(start);
+
+        // 인접한 노드 중에서
+        for (int i=0; i<graph[start].length; i++) {
+            // 정점 start에서 정점 i로의 경로가 존재하고, 정점 i를 방문하지 않았다면,
+            if (graph[start][i] == 1 && isVisited[i] == false) {
+                dfs(graph, i, isVisited, visitedList);
+            }
+        }
+    }
+}
+```
+:::
+
 ## 탐욕 알고리즘 (Greedy Algorithm)
 - 지금 이 순간에서의 최적의 답을 구하는 전략
 - 반드시 최적의 해는 아니다.
@@ -409,7 +449,8 @@ class Solution {
 :::
 
 ## 백 트래킹(Backtracking)
-Brute Force + 가지 치기(Pruning)
+- 완전 탐색 + 가지 치기(Pruning)
+- 보통 DFS에서 조건에 맞지 않으면 즉시 이전으로 돌아가는 것을 의미한다.
 
 ### 부분 수열의 합
 ::: details 부분 수열의 합
@@ -497,7 +538,7 @@ public static void dfs(int N, int M, int depth) {
 :::
 
 ## 분할 정복 (Divide & Conquer)
-큰 문제를 부분 문제로 나누어 계산하는 전략
+큰 문제를 여러 개의 작은 문제로 나누어 해결하는 기법
 
 ### 병합정렬    
 ::: details 병합정렬    
@@ -615,6 +656,7 @@ System.out.println(quickSort.sort(notSorted));
 ## 동적 계획법(Dynamic Programming)
 - Divide & Conquer + Memorization(Reuse)
 - Memorization: 부분 문제의 결과값을 저장하여 재활용하는 전략
+- 마치 점화식과 유사하다.
 
 ### 피보나치 
 ::: details 피보나치

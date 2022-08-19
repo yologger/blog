@@ -1110,7 +1110,7 @@ head.add(new Student("John", 10));
 head.add(new Student("Son", 20));
 ```
 
-### 더 맵게
+#### 더 맵게
 ::: details 더 맵게
 매운 것을 좋아하는 Leo는 모든 음식의 스코빌 지수를 K 이상으로 만들고 싶습니다. 모든 음식의 스코빌 지수를 K 이상으로 만들기 위해 Leo는 스코빌 지수가 가장 낮은 두 개의 음식을 아래와 같이 특별한 방법으로 섞어 새로운 음식을 만듭니다.
 ```
@@ -1243,13 +1243,15 @@ public class App {
         needVisit.push(start);
 
         while(needVisit.size() > 0) {
+            // 방문이 필요한 노드 하나를 가져와서
             int node = needVisit.pop();
 
             // 방문하지 않았다면
             if (!visited.contains(node)) {
                 // 방문하고
                 visited.add(node);
-                // 인접한 노드를 needVisit에 넣는다
+
+                // 인접한 노드 중에서 방문하지 않는 노드를 needVisit에 넣는다
                 for (int i=0; i<graph[node].length; i++) {
                     if (graph[node][i] == 1 && !visited.contains(i)) {
                         needVisit.push(i);
@@ -1417,9 +1419,9 @@ public class App {
                 // node를 방문하고
                 visited.add(node);
 
-                // 인접한 노드를 needVisit에 넣는다.
                 for (int i=0; i< graph[node].length; i++) {
-                    if (graph[node][i] == 1) {
+                    // 인접한 노드 중에서 방문하지 않는 노드만 needVisit에 넣는다.
+                    if (graph[node][i] == 1 && !visited.contains(i)) {
                         needVisit.add(i);
                     }
                 }
