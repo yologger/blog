@@ -538,7 +538,7 @@ public static void dfs(int N, int M, int depth) {
 :::
 
 ## 분할 정복 (Divide & Conquer)
-큰 문제를 여러 개의 작은 문제로 나누어 해결하는 기법
+큰 문제를 작은 문제로 나누어 해결하는 전략
 
 ### 병합정렬    
 ::: details 병합정렬    
@@ -654,41 +654,24 @@ System.out.println(quickSort.sort(notSorted));
 
 
 ## 동적 계획법(Dynamic Programming)
-- Divide & Conquer + Memorization(Reuse)
-- Memorization: 부분 문제의 결과값을 저장하여 재활용하는 전략
-- 마치 점화식과 유사하다.
+- 큰 문제를 작은 문제로 나누어 해결하는 전략
+- `Divider & Conquer`와의 차이점은 중복된 부분 문제를 반복 계산하지 않는 것이다.
+- `Memorization`: 부분 문제의 결과값을 저장한 후 재사용하는 전략. 작은 문제의 결과값을 저장하기 위해 `캐시` 또는 `DP 테이블`이라는 배열을 사용한다.
+- 동적 계획법에는 크게 `Botton up` 방식과 `Top down` 방식이 있다.
 
-### 피보나치 
-::: details 피보나치
-- 방법 1. Recursive
-``` java
-public int fibonacci(int n) {
-    if (n == 0) {
-        return 0;
-    } else if (n == 1) {
-        return 1;
-    } else {
-        return fibonacci(n-1) + fibonacci(n-2);
-    }
-}
+### Bottom up 방식
+`Bottom up` 방식은 작은 문제부터 풀고 크게 만들어가는 방식으로 보통 `반복(Iteration)`을 사용한다.
 
-fibonacci(1);   // 1
-fibonacci(2);   // 1
-fibonacci(3);   // 2
-fibonacci(4);   // 3
-fibonacci(5);   // 5
-fibonacci(6);   // 8
-```
-        
-- 방법 2. DP
-        
 ``` java
 public int fibonacci(int n) {
 
     int[] cache = new int[n+1];
-    cache[0] = 0;   // 이미 계산된 작은 값을 다시 계산하지 않고 재사용
-    cache[1] = 1;   // 이미 계산된 작은 값을 다시 계산하지 않고 재사용
 
+    // 작은 문제를 푼다
+    cache[0] = 0;   
+    cache[1] = 1;
+
+    // 작은 문제를 바탕으로 반복하여 큰 문제를 풀어나간다.
     for (int i=2; i<n+1; i++) {
         cache[i] = cache[i-1] + cache[i-2];
     }
@@ -703,9 +686,89 @@ fibonacci(4);   // 3
 fibonacci(5);   // 5
 fibonacci(6);   // 8
 ```
+
+#### 정수 삼각형
+
+::: details 정수 삼각형
+
+![](./02_algorithm/7.png)
+
+위와 같은 삼각형의 꼭대기에서 바닥까지 이어지는 경로 중, 거쳐간 숫자의 합이 가장 큰 경우를 찾아보려고 합니다. 아래 칸으로 이동할 때는 대각선 방향으로 한 칸 오른쪽 또는 왼쪽으로만 이동 가능합니다. 예를 들어 3에서는 그 아래칸의 8 또는 1로만 이동이 가능합니다.
+
+삼각형의 정보가 담긴 배열 triangle이 매개변수로 주어질 때, 거쳐간 숫자의 최댓값을 return 하도록 solution 함수를 완성하세요.
+
+제한사항
+- 삼각형의 높이는 1 이상 500 이하입니다.
+- 삼각형을 이루고 있는 숫자는 0 이상 9,999 이하의 정수입니다.
+
+입출력 예
+
+|triangle|result|
+|------|---|
+|[[7], [3, 8], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]]|30|
+
+``` java
+import java.util.*;
+import java.lang.*;
+
+class Solution {
+    public int solution(int[][] triangle) {
+        
+        int answer = 0;
+        
+        // 캐시, 요소에 이 때까지의 합을 저장한다.
+        int[][] cache = new int[triangle.length][triangle.length];
+
+        // 작은 문제를 푼다. (꼭지점 값 설정)
+        cache[0][0] = triangle[0][0];
+        
+        // 반복문
+        for (int i=1; i<triangle.length; i++) {
+            // 각 행의 첫 번째 요소 초기화
+            cache[i][0] = triangle[i][0] + cache[i-1][0];
+            
+            for (int j=1; j<i+1; j++)  {
+                cache[i][j] = triangle[i][j] + Math.max(cache[i-1][j], cache[i-1][j-1]);
+            }
+        }
+        
+        // 최대값 계산
+        for (int i=0; i<triangle.length; i++)
+            answer = Math.max(cache[triangle.length-1][i], max);
+        
+        return answer;
+    }
+}
+```
 :::
 
-### 타겟 넘버
+
+### Top down 방식
+`Top down` 방식은 큰 문제를 해결하기 위해 한 단계 작은 문제들을 계속 호출하는 방식이다. 보통 `재귀(Recursion)`을 사용하며, 점화식과 유사하다.
+``` java
+final int MAX = 1000;
+int[] cache = new int[MAX];
+
+public int fibonacci(int n, int[] cache) {
+    if (n==1 || n==2) return 1;
+
+    // 이미 계산한 적 있으면 이전 값 사용
+    if (cache[n] != 0) return cache[n];
+
+    // 재귀를 사용하여 한 단계 작은 문제 호출, 점화식과 유사
+    cache[n] = fibonacci(n-1, cache) + fibonacci(n-2, cache);
+    return cache[n];
+}
+
+fibonacci(1, cache);    // 1
+fibonacci(2, cache);    // 1
+fibonacci(3, cache);    // 2
+fibonacci(4, cache);    // 3
+fibonacci(5, cache);    // 5
+fibonacci(6, cache);    // 8
+```        
+
+#### 타겟 넘버
 ::: details 타겟 넘버
 n개의 음이 아닌 정수들이 있습니다. 이 정수들을 순서를 바꾸지 않고 적절히 더하거나 빼서 타겟 넘버를 만들려고 합니다. 예를 들어 [1, 1, 1, 1, 1]로 숫자 3을 만들려면 다음 다섯 방법을 쓸 수 있습니다.
 
@@ -731,11 +794,14 @@ class Solution {
     public int dp(int[] numbers, int depth, int sum, int target) {
         if (numbers.length == depth) {
             if (sum == target) {
+                // 이미 계산된 작은 값을 재사용
                 return 1;
             } else {
+                // 이미 계산된 작은 값을 재사용
                 return 0;
             }
         } else {
+            // 작은 문제를 호출
             return dp(numbers, depth+1, sum+numbers[depth], target) + dp(numbers, depth+1, sum-numbers[depth], target);
         }
     }
