@@ -396,8 +396,7 @@ class Solution {
 
 
 ## 완전 탐색(Brute Force)
-- 무식하게 모든 경우의 수를 탐색하는 전략
-- 컴퓨터의 빠른 연산 속도를 이용
+- 모든 경우의 수를 다 확인하는 전략
 
 ### 모의고사
 ::: details 모의고사
@@ -448,61 +447,86 @@ class Solution {
 ```
 :::
 
-## 백 트래킹(Backtracking)
+## Backtracking
 - 완전 탐색 + 가지 치기(Pruning)
-- 보통 DFS에서 조건에 맞지 않으면 즉시 이전으로 돌아가는 것을 의미한다.
+- 모든 경우의 수에서 유망하지 않는 경우의 수는 건너뛰는 것.
+- BFS, DFS는 그래프 탐색에서 이미 방문한 노드는 다시 방문하지 않는다는 점에서 Backtracking 방법 중 하나다.
 
 ### 부분 수열의 합
 ::: details 부분 수열의 합
-N개의 정수로 이루어진 수열이 있을 때, 크기가 양수인 부분수열 중에서 그 수열의 원소를 다 더한 값이 S가 되는 경우의 수를 구하는 프로그램을 작성하시오.
+N개의 정수로 이루어진 수열이 있을 때, 크기가 양수인 부분수열 중에서 그 수열의 원소를 다 더한 값이 S가 되는 부분수열의 개수를 구하라. 
+- 1 ≤ N ≤ 20
+- |S| ≤ 1,000,000
+- 정수의 절댓값은 100,000을 넘지 않는다.
+
+
 ``` java
-public class Main {
-    private static int N;
-    private static int S;
-    private static int count = 0;
-    private static int[] arr;
+class Solution {
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+    private int count;
+    private int target;
+    private int[] numbers;
 
-        N = scanner.nextInt();
-        S = scanner.nextInt();
-
-        scanner.nextLine();
-        String input = scanner.nextLine();
-
-        arr = new int[N];
-        for (int i = 0; i < N; i++) {
-            arr[i] = Integer.parseInt(input.split(" ")[i]);
+    public int solution(int N, int S, int[] numbers) {
+        this.count = N;
+        this.target = S;
+        this.numbers = numbers;
+        
+        for (int i=0; i<N; i++) {
+            backtracking(numbers[i], i);
         }
-
-        for (int i = 0; i < N; i++) {
-            backtracking(arr[i], i);
-        }
-
-        System.out.println(count);
     }
 
-    private static void backtracking(int total, int depth) {
-        if (depth == N - 1 && total == S) {
-            count++;
-        }
-
-        depth++;
+    public void backtracking(int total, int depth) {
+        if (depth == N-1 && total == target) count ++;
+        depth ++;
         if (depth < N) {
-            backtracking(total + arr[depth], depth);
+            backtracking(total + numbers[depth], depth);
             backtracking(total, depth);
         }
     }
 }
 ```
-`dfs` 탐색을 먼저 하되, 조건을 충족하지 않으면 이전 깊이로 돌아간다.
 :::
 
 ### N과 M
 ::: details N과 M
-자연수 N과 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오
-- 1부터 N까지의 자연수 중에서 중복 없이 M개를 고른 수열
+자연수 N과 M (1 ≤ M ≤ N ≤ 8)이 주어졌을 때 1부터 N까지의 자연수 중에서 중복없이 M개를 고른 수열을 출력하세요. 
+
+
+``` java
+class Solution {
+
+    boolean[] isVisited;
+    int[] numbers;
+
+    public int solution(int N, int M) {
+        backtracking(N, M, 0);
+    }
+
+    public void backtracking(int N, int M, int depth) {
+
+        // 재귀 깊이가 M과 같아지면 탐색과정에서 담았던 배열을 출력
+        if (depth == M) {
+            for (int number: numbers) System.out.print(number + " ");
+            System.out.println();
+            return;
+        }
+
+        for (int i=0; i < N; i++) {
+            // 해당 노드를 방문하지 않았다면
+            if (!isVisited[i]) {
+                isVisited[i] = true;  // 해당 노드 방문
+                numbers[depth] = i+1;  // 해당 깊이를 index로 하여 i+1 저장
+                backtracking(N, M, depth+1);  // 다음 자식 노드 방문을 위해 depth를 1 증가시켜 재귀 호출
+                // 자식 노드 방문이 끝나고 돌아오면 해당 노드를 방문하지 않는 상태로 다시 변경
+                isVisited[i] = false;
+            }
+        }
+        return;
+    }
+}
+```
 ``` java
 boolean[] visit = new boolean[N];
 int[] arr = new int[M];
@@ -536,6 +560,101 @@ public static void dfs(int N, int M, int depth) {
 }
 ```
 :::
+
+### 양과 늑대 
+::: details 양과 늑대
+- 문제 설명
+
+2진 트리 모양 초원의 각 노드에 늑대와 양이 한 마리씩 놓여 있습니다. 이 초원의 루트 노드에서 출발하여 각 노드를 돌아다니며 양을 모으려 합니다. 각 노드를 방문할 때 마다 해당 노드에 있던 양과 늑대가 당신을 따라오게 됩니다. 이때, 늑대는 양을 잡아먹을 기회를 노리고 있으며, 당신이 모은 양의 수보다 늑대의 수가 같거나 더 많아지면 바로 모든 양을 잡아먹어 버립니다. 당신은 중간에 양이 늑대에게 잡아먹히지 않도록 하면서 최대한 많은 수의 양을 모아서 다시 루트 노드로 돌아오려 합니다.
+
+![](./02_algorithm/8.png)
+
+예를 들어, 위 그림의 경우(루트 노드에는 항상 양이 있습니다) 0번 노드(루트 노드)에서 출발하면 양을 한마리 모을 수 있습니다. 다음으로 1번 노드로 이동하면 당신이 모은 양은 두 마리가 됩니다. 이때, 바로 4번 노드로 이동하면 늑대 한 마리가 당신을 따라오게 됩니다. 아직은 양 2마리, 늑대 1마리로 양이 잡아먹히지 않지만, 이후에 갈 수 있는 아직 방문하지 않은 모든 노드(2, 3, 6, 8번)에는 늑대가 있습니다. 이어서 늑대가 있는 노드로 이동한다면(예를 들어 바로 6번 노드로 이동한다면) 양 2마리, 늑대 2마리가 되어 양이 모두 잡아먹힙니다. 여기서는 0번, 1번 노드를 방문하여 양을 2마리 모은 후, 8번 노드로 이동한 후(양 2마리 늑대 1마리) 이어서 7번, 9번 노드를 방문하면 양 4마리 늑대 1마리가 됩니다. 이제 4번, 6번 노드로 이동하면 양 4마리, 늑대 3마리가 되며, 이제 5번 노드로 이동할 수 있게 됩니다. 따라서 양을 최대 5마리 모을 수 있습니다.
+
+각 노드에 있는 양 또는 늑대에 대한 정보가 담긴 배열 `info`, 2진 트리의 각 노드들의 연결 관계를 담은 2차원 배열 `edges`가 매개변수로 주어질 때, 문제에 제시된 조건에 따라 각 노드를 방문하면서 모을 수 있는 양은 최대 몇 마리인지 return 하도록 solution 함수를 완성해주세요.
+
+- 제한사항
+    - 2 ≤ `info`의 길이 ≤ 17
+        - `info`의 원소는 0 또는 1 입니다.
+        - `info[i]`는 i번 노드에 있는 양 또는 늑대를 나타냅니다.
+        - 0은 양, 1은 늑대를 의미합니다.
+        - info[0]의 값은 항상 0입니다. 즉, 0번 노드(루트 노드)에는 항상 양이 있습니다.
+    - `edges`의 세로(행) 길이 = `info`의 길이 - 1
+        - `edges`의 가로(열) 길이 = 2
+        - `edges`의 각 행은 [부모 노드 번호, 자식 노드 번호] 형태로, 서로 연결된 두 노드를 나타냅니다.
+        - 동일한 간선에 대한 정보가 중복해서 주어지지 않습니다.
+        - 항상 하나의 이진 트리 형태로 입력이 주어지며, 잘못된 데이터가 주어지는 경우는 없습니다.
+        - 0번 노드는 항상 루트 노드입니다.
+
+- 입출력 예
+
+|info|edges|result|
+|------|---|---|
+|[0,0,1,1,1,0,1,0,1,0,1,1]|[[0,1],[1,2],[1,4],[0,8],[8,7],[9,10],[9,11],[4,3],[6,5],[4,6],[8,9]]|5|
+|[0,1,0,1,1,0,1,0,0,1,0]|[[0,1],[0,2],[1,3],[1,4],[2,5],[2,6],[3,7],[4,8],[6,9],[9,10]]|5|
+
+``` java
+import java.util.*;
+
+class Solution {
+    public static int max_sheep;
+    public static int[] infos;
+    public static boolean[][][] visited;
+    public static ArrayList<Integer>[] connect;
+    
+    public int solution(int[] info, int[][] edges) {
+        int answer = 0;
+        infos = info;
+
+        connect = new ArrayList[info.length];
+        for(int i=0;i<info.length;i++){
+            connect[i] = new ArrayList<Integer>();
+        }
+        
+        for(int i=0;i<edges.length;i++){
+            int a = edges[i][0];
+            int b = edges[i][1];
+            connect[a].add(b);
+            connect[b].add(a);
+            
+        }
+        
+        visited = new boolean[info.length][info.length+1][info.length+1];
+        dfs(0, 0, 0);
+        answer = max_sheep;
+        return answer;
+    }
+    
+    public static void dfs(int s, int w, int now){
+        
+        if(infos[now] == 0){
+            s++;
+        } else if(infos[now] == 1){
+            w++;
+        }
+        
+        
+        if(w >= s) return;
+        
+        max_sheep = Math.max(max_sheep, s);
+     
+
+        for(int i=0;i<connect[now].size();i++){
+            int next = connect[now].get(i);
+            int temp = infos[now];
+            if(!visited[next][s][w]){
+                infos[now] = -1;
+                visited[now][s][w] = true;
+                dfs(s, w, next);
+                infos[now] = temp;
+                visited[now][s][w] = false;
+            }
+        }
+        
+    }
+}
+```
+::: 
 
 ## 분할 정복 (Divide & Conquer)
 큰 문제를 작은 문제로 나누어 해결하는 전략
