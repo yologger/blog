@@ -199,7 +199,7 @@ System.out.println(binarySearch.search(list, 20));
 
 
 ## 재귀(Recursion)
-`재귀(Recursion)`는 자기 자신을 호출한다. 
+`재귀(Recursion) 함수`는 자기 자신을 호출하는 함수이며, 재귀를 탈출하기 위한 조건이 필요하다.
 ``` java
 function(입력) {
     if (입력 <= 일정값) {
@@ -215,14 +215,29 @@ function(입력) {
 
 ![](./02_algorithm/6.png)
 
-### Factorial
-::: details Factorial
+### 피보나치
+::: details 피보나치
+``` java
+public int fibonacci(int n) {
+    if (n == 0 || n = 1) {
+        // 탈출 조건
+        return n;
+    } else {
+        return fibonacci(n-1) + fibonacci(n-2);
+    }
+}
+```
+:::
+
+### 팩토리얼
+::: details 팩토리얼
 ``` java
 public class Factorial {
     public Integer factorial(Integer n) {
         if (n>0) {
             return n * factorial(n-1);
         } else {
+            // 탈출 조건
             return 1;
         }
     }
@@ -235,21 +250,6 @@ System.out.println(factorial.factorial(1)); // 1
 System.out.println(factorial.factorial(2)); // 1*2
 System.out.println(factorial.factorial(3)); // 1*2*3
 System.out.println(factorial.factorial(4)); // 1*2*3*4
-```
-:::
-
-### 피보나치
-::: details 피보나치
-``` java
-public int fibonacci(int n) {
-    if (n == 0) {
-        return 1;
-    } else if (n = 1) {
-        return 1;
-    } else {
-        return fibonacci(n-1) + fibonacci(n-2);
-    }
-}
 ```
 :::
 
@@ -266,59 +266,20 @@ public static int sum(ArrayList<Integer> dataList) {
 ```
 :::
 
-### DFS
-::: DFS
-``` java
-public class App {
-
-    public static void main(String[] args) {
-        int[][] graph = {
-                {0, 1, 1, 0, 1, 0},
-                {1, 0, 0, 0, 0, 0},
-                {1, 0, 0, 0, 1, 1},
-                {0, 0, 0, 0, 1, 0},
-                {1, 0, 1, 1, 0, 0},
-                {0, 0, 1, 0, 0, 0}
-        };
-
-        boolean[] isVisited = new boolean[graph.length];
-
-        List<Integer> visited = new ArrayList<>();
-
-        dfs(graph, 0, isVisited, visited);
-
-        System.out.println(visited);    // [0, 1, 2, 4, 3, 5]
-    }
-
-    public static void dfs(int[][] graph, int start, boolean[] isVisited, List<Integer> visited) {
-        isVisited[start] = true;
-        visited.add(start);
-
-        // 인접한 노드 중에서
-        for (int i=0; i<graph[start].length; i++) {
-            // 정점 start에서 정점 i로의 경로가 존재하고, 정점 i를 방문하지 않았다면,
-            if (graph[start][i] == 1 && isVisited[i] == false) {
-                dfs(graph, i, isVisited, visitedList);
-            }
-        }
-    }
-}
-```
-:::
-
 ## 탐욕 알고리즘 (Greedy Algorithm)
-- 지금 이 순간에서의 최적의 답을 구하는 전략
-- 반드시 최적의 해는 아니다.
+- 지금 이 순간에서 최적의 답을 구하는 전략
+- 전체에서 반드시 최적의 해는 아니다.
 
 ### 최소 동전 문제
 ::: details 최소 동전 문제
-- 10원, 100원, 500원을 사용해서 최소한의 동전으로 710원을 거슬러주는 방법은?
+- 10원, 100원, 500원을 사용해서 710원을 거슬러줄 때 최소한의 동전의 수를 반환하는 함수를 작성하라.
 - 큰 수부터 선택해보자.
-    - 500 1개 / 100 2개 / 10 1개 => 총 4개
-- 10원, 30원, 40원, 50원을 사용해서 최소한의 동전으로 70원을 거슬러주는 방법은?
+    - 500 1개, 100 2개, 10 1개 / 총 4개 
+- 만약 10원, 30원, 40원, 50원을 사용해서 최소한의 동전으로 70원을 거슬러주는 방법은?
 - 마찬가지로 큰 수부터 선택해보자.
-    - 50원 1개 / 10원 2개 => 총 3개 => 최적의 답이 아니다.
-    - 40원 1개 / 30원 1개 => 총 2개
+    - 50원 1개, 10원 2개 / 총 3개 => 최적의 답이 아니다.
+    - 40원 1개, 30원 1개 / 총 2개
+- 순간에서 최적의 답이 반드시 전체에서 최적의 답은 아니다.
 
 ```java
 public Integer coin(Integer price, ArrayList<Integer> coinList) {
@@ -361,6 +322,15 @@ coin(710, list);
 
 여벌 체육복이 있는 학생만 다른 학생에게 체육복을 빌려줄 수 있습니다.
 여벌 체육복을 가져온 학생이 체육복을 도난당했을 수 있습니다. 이때 이 학생은 체육복을 하나만 도난당했다고 가정하며, 남은 체육복이 하나이기에 다른 학생에게는 체육복을 빌려줄 수 없습니다.
+
+- 입출력 예
+
+|n|lost|reserve|return|
+|------|---|---|--|
+|5|[2, 4]|[1, 3, 5]|5|
+|5|[2, 4]|[3]|4|
+|3|[3]|[1]|2|
+
 ``` java
 import java.util.*;
 
@@ -497,6 +467,46 @@ class Solution {
         backtracking(depth+1, sum + numbers[depth]);
         // 해당 원소 미포함
         backtracking(depth+1, sum);
+    }
+}
+```
+:::
+
+### DFS
+::: details DFS
+``` java
+public class App {
+
+    public static void main(String[] args) {
+        int[][] graph = {
+                {0, 1, 1, 0, 1, 0},
+                {1, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 0, 1, 0},
+                {1, 0, 1, 1, 0, 0},
+                {0, 0, 1, 0, 0, 0}
+        };
+
+        boolean[] isVisited = new boolean[graph.length];
+
+        List<Integer> visited = new ArrayList<>();
+
+        dfs(graph, 0, isVisited, visited);
+
+        System.out.println(visited);    // [0, 1, 2, 4, 3, 5]
+    }
+
+    public static void dfs(int[][] graph, int start, boolean[] isVisited, List<Integer> visited) {
+        isVisited[start] = true;
+        visited.add(start);
+
+        // 인접한 노드 중에서
+        for (int i=0; i<graph[start].length; i++) {
+            // 정점 start에서 정점 i로의 경로가 존재하고, 정점 i를 방문하지 않았다면,
+            if (graph[start][i] == 1 && isVisited[i] == false) {
+                dfs(graph, i, isVisited, visitedList);
+            }
+        }
     }
 }
 ```
@@ -716,13 +726,13 @@ final int MAX = 1000;
 int[] cache = new int[MAX];
 
 public int fibonacci(int n, int[] cache) {
-    if (n==1 || n==2) return 1;
+    if (n==0 || n==1) return n;
 
     // 이미 계산한 적 있으면 이전 값 사용
     if (cache[n] != 0) return cache[n];
 
-    // 재귀를 사용하여 한 단계 작은 문제 호출, 점화식과 유사
-    cache[n] = fibonacci(n-1, cache) + fibonacci(n-2, cache);
+    // 이미 계산한 적 없으면 재귀를 사용하여 한 단계 작은 문제 호출
+    cache[n] = fibonacci(n-1, cache) + fibonacci(n-2, cache);  // 점화식과 유사
     return cache[n];
 }
 
@@ -752,23 +762,19 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] numbers, int target) {
-        
-        int answer = dp(numbers, 0, 0, target);
+    
+        int answer = dp(0, 0, target, numbers);
         return answer;
     }
     
-    public int dp(int[] numbers, int depth, int sum, int target) {
+    public int dp(int depth, int sum, int target, int[] numbers) {    
         if (numbers.length == depth) {
-            if (sum == target) {
-                // 이미 계산된 작은 값을 재사용
-                return 1;
-            } else {
-                // 이미 계산된 작은 값을 재사용
-                return 0;
-            }
+            // 이미 계산된 작은 값을 재사용
+            if (sum == target) return 1;
+            else return 0;
         } else {
-            // 작은 문제를 호출
-            return dp(numbers, depth+1, sum+numbers[depth], target) + dp(numbers, depth+1, sum-numbers[depth], target);
+            // 한 단계 작은 문제를 호출
+            return dp(depth+1, sum+numbers[depth], target, numbers) + dp(depth+1, sum-numbers[depth], target, numbers);
         }
     }
 }
