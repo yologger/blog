@@ -1157,9 +1157,19 @@ class Solution {
     }
 }
 ```
-
 :::
 
+### Balanced Tree
+- Binary Search Tree는 좌우 균형이 맞지 않으면 최악의 경우 `O(n)`의 시간 복잡도를 갖게 된다.
+- Balanced Tree는 삽입, 삭제, 변경 시 필요하면 균형을 맞춰서 `O(logn)`의 시간 복잡도를 갖게 한다.
+- Balanced Tree에는 AVL Tree, 2-3 Tree, 2-3-4 Tree, Red-Black Tree, B-Tree 등이 있다.
+
+![](./01_data_structure/4.png)
+
+#### B-Tree
+- 하나의 노드에 여러 자료가 배치되는 자료구조
+- 한 노드에 N개의 자료가 저장되면 N차 B-tree라고 한다.
+- 한 노드에 N개의 자료가 저장된다면 그 노드의 자식 수는 N+1개 여야한다.
 
 ## Graph
 
