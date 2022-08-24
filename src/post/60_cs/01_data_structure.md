@@ -1483,7 +1483,7 @@ public class App {
 }
 ```
 
-### 네트워크
+#### 네트워크
 
 ::: details 네트워크
 네트워크란 컴퓨터 상호 간에 정보를 교환할 수 있도록 연결된 형태를 의미합니다. 예를 들어, 컴퓨터 A와 컴퓨터 B가 직접적으로 연결되어있고, 컴퓨터 B와 컴퓨터 C가 직접적으로 연결되어 있을 때 컴퓨터 A와 컴퓨터 C도 간접적으로 연결되어 정보를 교환할 수 있습니다. 따라서 컴퓨터 A, B, C는 모두 같은 네트워크 상에 있다고 할 수 있습니다.
@@ -1526,7 +1526,7 @@ class Solution {
 ```
 :::
 
-### 단어 변환
+#### 단어 변환
 
 ::: details 단어 변환
 두 개의 단어 begin, target과 단어의 집합 words가 있습니다. 아래와 같은 규칙을 이용하여 begin에서 target으로 변환하는 가장 짧은 변환 과정을 찾으려고 합니다.
@@ -1589,24 +1589,210 @@ class Solution {
 - 이전에 계산한 값을 재사용한다는 점에서 다이나믹 프로그래밍으로 분류하기도 한다.
 - 현재 노드에서 가장 짧은 거리의 노드를 선택한다는 점에서 그리디 알고리즘으로 분류하기도 한다.
 
-![](./01_data_structure/3.png)
+#### 배열의 표현 방법
 
-- `거리저장 배열`: 배열에는 각 노드까지의 최단거리를 기록하는데 사용
-- `우선순위 큐`: 최소 힙은 체크해야 할 노드를 저장하는데 사용
-        
-```java
-public static class Edge implements Comparable<Edge> {
+![](./01_data_structure/5.png)
 
-    public int distance;
-    public String destination;
+#### 풀이 1. 이차원 배열
+`가중치 인접행렬`이라는 이차원 배열을 사용할 수 있다.
+``` java
+public class App {
+    public static void main(String[] args) {
 
-    public Edge(int distance, String destination) {
-        this.distance = distance;
-        this.destination = destination;
+        Graph graph = new Graph(6);
+
+        graph.input(0, 1, 1);
+        graph.input(0, 2, 3);
+        graph.input(1, 0, 1);
+        graph.input(1, 3, 2);
+        graph.input(1, 5, 9);
+        graph.input(2, 0, 3);
+        graph.input(2, 3, 6);
+        graph.input(2, 4, 8);
+        graph.input(3, 1, 2);
+        graph.input(3, 2, 6);
+        graph.input(3, 4, 1);
+        graph.input(3, 5, 2);
+        graph.input(4, 2, 8);
+        graph.input(4, 3, 1);
+        graph.input(4, 5, 15);
+        graph.input(5, 1, 9);
+        graph.input(5, 3, 2);
+        graph.input(5, 4, 15);
+
+        System.out.println(Arrays.toString(graph.dijkstra(0)));  // [0, 1, 3, 3, 4, 5]
+        System.out.println(Arrays.toString(graph.dijkstra(1)));  // [1, 0, 4, 2, 3, 4]
+        System.out.println(Arrays.toString(graph.dijkstra(2)));  // [3, 4, 0, 6, 7, 8]
+        System.out.println(Arrays.toString(graph.dijkstra(3)));  // [3, 2, 6, 0, 1, 2]
+        System.out.println(Arrays.toString(graph.dijkstra(4)));  // [4, 3, 7, 1, 0, 3]
+        System.out.println(Arrays.toString(graph.dijkstra(5)));  // [5, 4, 8, 2, 3, 0]
+    }
+}
+
+class Graph {
+    private int n;  // Node의 수
+    private int[][] graph;  // 그래프
+
+    public Graph(int n) {
+        this.n = n;
+        this.graph = new int[n][n];
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                graph[i][j] = Integer.MAX_VALUE;
     }
 
-    public String toString() {
-        return "destination: " + this.destination + ", distance: " + this.distance;
+    public void input(int i, int j, int weight) {
+        graph[i][j] = weight;
+        graph[j][i] = weight;
+    }
+
+    public int[] dijkstra(int start) {
+
+        // 거리 저장 배열 생성
+        int[] distance = new int[n];
+
+        // 거리 저장 배열 무한대로 초기화
+        for (int i = 0; i < distance.length; i++) {
+            distance[i] = Integer.MAX_VALUE;
+        }
+
+        // 방문 여부 확인 배열 생성
+        boolean[] isVisited = new boolean[n];
+
+        // 시작 노드 초기화
+        distance[start] = 0;
+        isVisited[start] = true;
+
+        // 시작 노드와 연결된 노드들의 distance 초기화
+        for (int i = 0; i < n; i++) {
+            // 방문하지 않았고, 시작 노드와 연결되어있다면
+            if (!isVisited[i] && graph[start][i] != Integer.MAX_VALUE) {
+                distance[i] = graph[start][i];
+            }
+        }
+
+        for (int i = 0; i < n - 1; i++) {
+            int min = Integer.MAX_VALUE;
+            int minIdx = -1;
+
+            // 현재 노드에서 최소 거리의 노드 찾기
+            for (int j = 0; j < n; j++) {
+                // j 노드를 방문하지 않았고, j 노드가 가장 가깝다면
+                if (!isVisited[j] && distance[j] < min) {
+                    min = distance[j];
+                    minIdx = j;
+                }
+            }
+
+            // 현재 노드에서 최단거리 노드 방문
+            isVisited[minIdx] = true;
+
+            // 다른 노드를 통한 경로보다 거리가 더 가까운지 비교
+            for (int k = 0; k < n; k++) {
+                // k번 노드에 방문하지 않았고 && k번 노드로의 경로가 있고 &&
+                if (!isVisited[k] && graph[minIdx][k] != Integer.MAX_VALUE && distance[minIdx] + graph[minIdx][k] < distance[k]) {
+                    distance[k] = distance[minIdx] + graph[minIdx][k];
+                }
+            }
+        }
+        return distance;
+    }
+
+    public void printGraph() {
+        System.out.println("=========================");
+        for (int i = 0; i < graph.length; i++)
+            System.out.println(Arrays.toString(graph[i]));
+        System.out.println("=========================");
+    }
+}
+```
+시간 복잡도 `O(n^2)`
+
+#### 풀이 2. 우선순위 큐
+
+        
+```java
+public class App {
+    public static void main(String[] args) {
+        Map<Integer, ArrayList<Edge>> graph = new HashMap<>();;
+        graph.put(0, new ArrayList<>(Arrays.asList(new Edge(2, 3), new Edge(1, 1))));
+        graph.put(1, new ArrayList<>(Arrays.asList(new Edge(0, 1), new Edge(3, 2), new Edge(5, 9))));
+        graph.put(2, new ArrayList<>(Arrays.asList(new Edge(0, 3), new Edge(3, 6), new Edge(4, 8))));
+        graph.put(3, new ArrayList<>(Arrays.asList(new Edge(1, 2), new Edge(2, 6), new Edge(4, 1), new Edge(5, 2))));
+        graph.put(4, new ArrayList<>(Arrays.asList(new Edge(2, 8), new Edge(3, 1), new Edge(5, 15))));
+        graph.put(5, new ArrayList<>(Arrays.asList(new Edge(1, 9), new Edge(3, 2), new Edge(4, 15))));
+
+        Solution solution = new Solution();
+
+        System.out.println(solution.dijkstra(graph, 0));  // {0=0, 1=1, 2=3, 3=3, 4=4, 5=5}
+        System.out.println(solution.dijkstra(graph, 1));  // {0=1, 1=0, 2=4, 3=2, 4=3, 5=4}
+        System.out.println(solution.dijkstra(graph, 2));  // {0=3, 1=4, 2=0, 3=6, 4=7, 5=8}
+        System.out.println(solution.dijkstra(graph, 3));  // {0=3, 1=2, 2=6, 3=0, 4=1, 5=2}
+        System.out.println(solution.dijkstra(graph, 4));  // {0=4, 1=3, 2=7, 3=1, 4=0, 5=3}
+        System.out.println(solution.dijkstra(graph, 5));  // {0=5, 1=4, 2=8, 3=2, 4=3, 5=0}
+    }
+}
+``` 
+``` java
+class Solution {
+
+    public Solution() {
+
+    }
+
+    public Map<Integer, Integer> dijkstra(Map<Integer, ArrayList<Edge>> graph, int start) {
+
+        // 거리 저장 Map 생성 & 초기화
+        Map<Integer, Integer> distances = new HashMap<>();
+        for (Integer key : graph.keySet()) distances.put(key, Integer.MAX_VALUE);
+
+        // start 노드 추가
+        distances.put(start, 0);
+
+        Edge edgeNode;
+        Integer currentDistance;
+        Integer currentNode;
+        ArrayList<Edge> nodeList;
+        Integer adjacent;
+        Integer weight;
+        Integer distance;
+
+        PriorityQueue<Edge> priorityQueue = new PriorityQueue<>();
+        priorityQueue.add(new Edge(start, 0));
+
+        while (priorityQueue.size() > 0) {
+            edgeNode = priorityQueue.remove();
+            currentDistance = edgeNode.distance;
+            currentNode = edgeNode.destination;
+
+            if (distances.get(currentNode) < currentDistance) continue;
+
+            nodeList = graph.get(currentNode);
+
+            for (Edge node : nodeList) {
+                adjacent = node.destination;
+                weight = node.distance;
+                distance = weight + currentDistance;
+
+                if (distance < distances.get(adjacent)) {
+                    distances.put(adjacent, distance);
+                    priorityQueue.add(new Edge(adjacent, distance));
+                }
+            }
+        }
+        return distances;
+    }
+}
+```
+``` java
+class Edge implements Comparable<Edge> {
+
+    Integer destination;
+    Integer distance;
+
+    public Edge(Integer destination, Integer distance) {
+        this.destination = destination;
+        this.distance = distance;
     }
 
     @Override
@@ -1614,65 +1800,6 @@ public static class Edge implements Comparable<Edge> {
         return this.distance - edge.distance;
     }
 }
-```
-        
-```java
-public HashMap<String, Integer> dijkstra(HashMap<String, ArrayList<Edge>> graph, String start) {
-
-    // 초기화
-    HashMap<String, Integer> distances = new HashMap<String, Integer>();
-    for (String key: graph.keySet()) {
-        distances.put(key, Integer.MAX_VALUE);
-    }
-    distances.put(start, 0);
-
-    PriorityQueue<Edge> priorityQueue = new PriorityQueue<Edge>();
-    priorityQueue.add(new Edge(distances.get(start), start));
-
-    // 알고리즘 시작
-    Edge edge, adjacentNode;
-    int currentDistance, weight, distance;
-    String currentNode, adjacent;
-    ArrayList<Edge> nodeList;
-
-    while(priorityQueue.size() > 0) {
-        edge = priorityQueue.poll();
-        currentDistance = edge.distance;
-        currentNode = edge.destination;
-
-        if (distances.get(currentNode) < currentDistance) {
-            continue;
-        }
-
-        nodeList = graph.get(currentNode);
-        for (int index=0; index<nodeList.size(); index++) {
-            adjacentNode = nodeList.get(index);
-            adjacent = adjacentNode.destination;
-            weight = adjacentNode.distance;
-            distance = currentDistance + weight;
-
-            if (distance < distances.get(adjacent)) {
-                distances.put(adjacent, distance);
-                priorityQueue.add(new Edge(distance, adjacent));
-            }
-        }
-    }
-
-    return distances;
-}
-```
-        
-```java
-HashMap<String, ArrayList<Edge>> graph = new HashMap<String, ArrayList<Edge>>();
-
-graph.put("A", new ArrayList<Edge>(Arrays.asList(new Edge(8, "B"), new Edge(1, "C"), new Edge(2, "D"))));
-graph.put("B", new ArrayList<Edge>());
-graph.put("C", new ArrayList<Edge>(Arrays.asList(new Edge(5, "B"), new Edge(2, "D"))));
-graph.put("D", new ArrayList<Edge>(Arrays.asList(new Edge(3, "E"), new Edge(5, "F"))));
-graph.put("E", new ArrayList<Edge>(Arrays.asList(new Edge(1, "F"))));
-graph.put("F", new ArrayList<Edge>(Arrays.asList(new Edge(5, "A"))));
-
-HashMap<String, Integer> result = dijkstra(graph, "A");     // {A=0, B=6, C=1, D=2, E=5, F=6}
 ```
         
 
