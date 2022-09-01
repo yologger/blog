@@ -144,41 +144,7 @@ queue.remove();    // 2
     - 배포는 하루에 한 번만 할 수 있으며, 하루의 끝에 이루어진다고 가정합니다. 예를 들어 진도율이 95%인 작업의 개발 속도가 하루에 4%라면 배포는 2일 뒤에 이루어집니다.
 
 ``` java
-import java.util.*; 
 
-class Solution {
-    public int[] solution(int[] progresses, int[] speeds) {
-
-        // 남은 시간 계산
-        int[] remainTime = new int[progresses.length];
-        for (int i=0; i<progresses.length; i++) {
-            remainTime[i] = (int)Math.ceil((100-progresses[i])/(double)speeds[i]);
-        }
-        
-        ArrayList<Integer> completedCount = new ArrayList<Integer>();
-        
-        Queue<Integer> queue = new LinkedList();
-        
-        for (int i=0; i<remainTime.length; i++) {
-            if (queue.size() > 0 && queue.peek() < remainTime[i]) {
-                completedCount.add(queue.size());
-                queue.clear();
-            }
-            queue.add(remainTime[i]);
-        }
-        
-        completedCount.add(queue.size());
-        queue.clear();
-        
-        int[] arr = new int[completedCount.size()];
-        for (int i=0; i<completedCount.size(); i++) {
-            arr[i] = completedCount.get(i);
-        }
-        
-        return arr;
-    }
-}
-```
 :::
 
 ### 주식 가격
@@ -325,7 +291,7 @@ class Solution {
 
 ## Deque
 `Deque`는 `Stack`과 `Queue`를 합친 자료구조다. Java에서는 `Deque`인터페이스와 <b>`ArrayDeque`</b>클래스로 구현한다.
-``` java Deque
+``` java
 import java.util.Deque;
 import java.util.ArrayDeque;
 
@@ -781,7 +747,7 @@ class Solution {
 ### 완전 이진 트리
 `완전 이진 트리(Complete Binary Tree)`는 다음과 같은 특성을 갖는다.
 - 레벨의 왼쪽에서부터 순차적으로 노드를 추가한다.
-- 레벨 N이 다 채워지지 않았는데 레벨 N+1에 노드를 추가할 수 있다.
+- 레벨 N이 다 채워져야만 레벨 N+1에 노드를 추가할 수 있다.
 
 ### 이진 검색 트리
 `BST(Binary Serach Tree, 이진 검색 트리)`는 `Left < Root < Right`라는 특성을 갖는 이진 트리이며, 빠른 검색(`O(logn)`)에 사용된다.

@@ -2,8 +2,9 @@
 home: true
 heroImage: "/logo.jpg"
 tagline: "배운 것을 정리하고 공유하는 공간입니다."
-# actionText: Quick Start →
-# actionLink: /guide/
+actionText: "블로그 이전 중입니다 →"
+## actionLink: /guide/
+actionLink: "https://yologger.oopy.io/"
 features:
 - title: Programming
   details: Java, Kotlin 개념을 정리합니다.
