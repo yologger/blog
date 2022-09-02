@@ -1817,6 +1817,74 @@ class Edge implements Comparable<Edge> {
 - 최소 비용의 간선부터 선택한다.
 - 사이클이 생기는 간선은 선택하지 않는다.
 - 모든 노드가 연결될 때 까지 반복 실행한다.
+
+``` java
+public class Main {
+
+    static int[] parent;
+    static int V;
+    static int E;
+
+    static int cost = 0;
+
+    public static int find(int x) {
+        if (parent[x] == x) return x;
+        else return find(parent[x]);
+    }
+
+    public static void union(int x, int y) {
+        int xParent = find(x);
+        int yParent = find(y);
+        if (xParent > yParent) parent[x] = y;
+        else parent[y] = x;
+    }
+
+    public static void main(String[] args) {
+        V = 6;
+        E = 9;
+        int[][] graph = {
+                {0, 1, 4}, // {정점 0, 정점 1, 가중치 4}
+                {0, 2, 3},
+                {1, 3, 5},
+                {1, 5, 9},
+                {2, 3, 2},
+                {2, 4, 6},
+                {3, 4, 1},
+                {3, 5, 8},
+                {4, 5, 15}
+        };
+
+        // 배열 parent 생성 & 초기화
+        parent = new int[6];
+        for (int i=0; i<parent.length; i++) parent[i] = i;
+
+        // graph를 가중치 기준으로 오름차순 정렬
+        Arrays.sort(graph, (int[] vertex1, int[] vertex2) -> vertex1[2] - vertex2[2]);
+
+        // MakeSet
+        for (int i=0; i<V; i++) parent[i] = i;
+
+        // 최소 가중치부터 크루스컬 알고리즘 진행
+        for (int i=0; i<E; i++) {
+            // 사이클이 존재하지 않는 경우에만 간선을 선택한다.
+            if (find(graph[i][0]) != find(graph[i][1])) {
+                cost += graph[i][2];
+                union(graph[i][0], graph[i][1]);
+                System.out.println("Selected Edge: " + Arrays.toString(graph[i]));
+            }
+        }
+
+        System.out.println("cost: " + cost);
+    }
+}
+
+// Selected Edge: [3, 4, 1]
+// Selected Edge: [2, 3, 2]
+// Selected Edge: [0, 2, 3]
+// Selected Edge: [0, 1, 4]
+// Selected Edge: [3, 5, 8]
+// cost: 18
+```
         
 ```java
 public class Edge implements Comparable<Edge> {
