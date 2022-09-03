@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>ElasticSearch, ELK 스택 시작하기 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.32362dc0.js" as="script"><link rel="preload" href="/blog/assets/js/3.8795c9a2.js" as="script"><link rel="preload" href="/blog/assets/js/149.eb4bec1b.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.009f8593.js"><link rel="prefetch" href="/blog/assets/js/100.04c8c108.js"><link rel="prefetch" href="/blog/assets/js/101.02907c78.js"><link rel="prefetch" href="/blog/assets/js/102.34e5043e.js"><link rel="prefetch" href="/blog/assets/js/103.9f91abc2.js"><link rel="prefetch" href="/blog/assets/js/104.31f63255.js"><link rel="prefetch" href="/blog/assets/js/105.8a43c1db.js"><link rel="prefetch" href="/blog/assets/js/106.b9460ed3.js"><link rel="prefetch" href="/blog/assets/js/107.f8cdc232.js"><link rel="prefetch" href="/blog/assets/js/108.8978a1ba.js"><link rel="prefetch" href="/blog/assets/js/109.968539f7.js"><link rel="prefetch" href="/blog/assets/js/11.70d9a8f5.js"><link rel="prefetch" href="/blog/assets/js/110.ad77dfe5.js"><link rel="prefetch" href="/blog/assets/js/111.a3e57423.js"><link rel="prefetch" href="/blog/assets/js/112.87034314.js"><link rel="prefetch" href="/blog/assets/js/113.2fcf2309.js"><link rel="prefetch" href="/blog/assets/js/114.8fed71aa.js"><link rel="prefetch" href="/blog/assets/js/115.a4990a06.js"><link rel="prefetch" href="/blog/assets/js/116.1780fd7a.js"><link rel="prefetch" href="/blog/assets/js/117.f22668d4.js"><link rel="prefetch" href="/blog/assets/js/118.bbe27d51.js"><link rel="prefetch" href="/blog/assets/js/119.25b9b643.js"><link rel="prefetch" href="/blog/assets/js/12.31f8420a.js"><link rel="prefetch" href="/blog/assets/js/120.9d9f48f0.js"><link rel="prefetch" href="/blog/assets/js/121.40af3a0c.js"><link rel="prefetch" href="/blog/assets/js/122.a636d2ef.js"><link rel="prefetch" href="/blog/assets/js/123.5c99f4f4.js"><link rel="prefetch" href="/blog/assets/js/124.3e75231d.js"><link rel="prefetch" href="/blog/assets/js/125.7cf1f005.js"><link rel="prefetch" href="/blog/assets/js/126.86bd0915.js"><link rel="prefetch" href="/blog/assets/js/127.34dfb59d.js"><link rel="prefetch" href="/blog/assets/js/128.cb8753b6.js"><link rel="prefetch" href="/blog/assets/js/129.75f1821b.js"><link rel="prefetch" href="/blog/assets/js/13.d86b1ae2.js"><link rel="prefetch" href="/blog/assets/js/130.352fa799.js"><link rel="prefetch" href="/blog/assets/js/131.57a5cee5.js"><link rel="prefetch" href="/blog/assets/js/132.b774b3fe.js"><link rel="prefetch" href="/blog/assets/js/133.5cea1190.js"><link rel="prefetch" href="/blog/assets/js/134.dbc3bbbd.js"><link rel="prefetch" href="/blog/assets/js/135.02ff9368.js"><link rel="prefetch" href="/blog/assets/js/136.f7128a40.js"><link rel="prefetch" href="/blog/assets/js/137.a3c425d9.js"><link rel="prefetch" href="/blog/assets/js/138.187b1e7e.js"><link rel="prefetch" href="/blog/assets/js/139.d581d7f6.js"><link rel="prefetch" href="/blog/assets/js/14.78cdbe3d.js"><link rel="prefetch" href="/blog/assets/js/140.1947f6c2.js"><link rel="prefetch" href="/blog/assets/js/141.d2397ceb.js"><link rel="prefetch" href="/blog/assets/js/142.a4fca10f.js"><link rel="prefetch" href="/blog/assets/js/143.868445e7.js"><link rel="prefetch" href="/blog/assets/js/144.a1c80310.js"><link rel="prefetch" href="/blog/assets/js/145.319913ba.js"><link rel="prefetch" href="/blog/assets/js/146.d19fd28e.js"><link rel="prefetch" href="/blog/assets/js/147.0f7acde4.js"><link rel="prefetch" href="/blog/assets/js/148.945a5b62.js"><link rel="prefetch" href="/blog/assets/js/15.c479e5b5.js"><link rel="prefetch" href="/blog/assets/js/150.50892fe5.js"><link rel="prefetch" href="/blog/assets/js/151.c675ddff.js"><link rel="prefetch" href="/blog/assets/js/152.05d1ee8a.js"><link rel="prefetch" href="/blog/assets/js/153.75510d20.js"><link rel="prefetch" href="/blog/assets/js/154.f579d477.js"><link rel="prefetch" href="/blog/assets/js/155.12dbf578.js"><link rel="prefetch" href="/blog/assets/js/156.af8b54dd.js"><link rel="prefetch" href="/blog/assets/js/157.02eb87f5.js"><link rel="prefetch" href="/blog/assets/js/158.a1fbd08d.js"><link rel="prefetch" href="/blog/assets/js/159.75594bb8.js"><link rel="prefetch" href="/blog/assets/js/16.aec21ad3.js"><link rel="prefetch" href="/blog/assets/js/160.4eb83312.js"><link rel="prefetch" href="/blog/assets/js/161.104311e5.js"><link rel="prefetch" href="/blog/assets/js/162.aabbb479.js"><link rel="prefetch" href="/blog/assets/js/163.bf862198.js"><link rel="prefetch" href="/blog/assets/js/164.73e0e8e9.js"><link rel="prefetch" href="/blog/assets/js/165.052c0123.js"><link rel="prefetch" href="/blog/assets/js/166.f5eb35cc.js"><link rel="prefetch" href="/blog/assets/js/167.7a313045.js"><link rel="prefetch" href="/blog/assets/js/168.86fb56fe.js"><link rel="prefetch" href="/blog/assets/js/169.df883b7e.js"><link rel="prefetch" href="/blog/assets/js/17.3a9b6735.js"><link rel="prefetch" href="/blog/assets/js/170.47f0dbf7.js"><link rel="prefetch" href="/blog/assets/js/171.aec0020e.js"><link rel="prefetch" href="/blog/assets/js/172.c1d8c91b.js"><link rel="prefetch" href="/blog/assets/js/173.a6f2fcd6.js"><link rel="prefetch" href="/blog/assets/js/174.38b52e5e.js"><link rel="prefetch" href="/blog/assets/js/175.ae38f488.js"><link rel="prefetch" href="/blog/assets/js/176.29adebfe.js"><link rel="prefetch" href="/blog/assets/js/177.41b97ad0.js"><link rel="prefetch" href="/blog/assets/js/178.0fa9bbf3.js"><link rel="prefetch" href="/blog/assets/js/179.8559c981.js"><link rel="prefetch" href="/blog/assets/js/18.0c383095.js"><link rel="prefetch" href="/blog/assets/js/180.8733c320.js"><link rel="prefetch" href="/blog/assets/js/181.21e0e018.js"><link rel="prefetch" href="/blog/assets/js/182.b6e485e9.js"><link rel="prefetch" href="/blog/assets/js/183.c27d150d.js"><link rel="prefetch" href="/blog/assets/js/184.0fbcb691.js"><link rel="prefetch" href="/blog/assets/js/185.7e650b04.js"><link rel="prefetch" href="/blog/assets/js/186.6657fe1d.js"><link rel="prefetch" href="/blog/assets/js/187.551c064a.js"><link rel="prefetch" href="/blog/assets/js/188.8ba6e40b.js"><link rel="prefetch" href="/blog/assets/js/189.041316b7.js"><link rel="prefetch" href="/blog/assets/js/19.750739bf.js"><link rel="prefetch" href="/blog/assets/js/190.d71b0917.js"><link rel="prefetch" href="/blog/assets/js/191.a7d8bb61.js"><link rel="prefetch" href="/blog/assets/js/192.5fce8db9.js"><link rel="prefetch" href="/blog/assets/js/193.c5cc9ffb.js"><link rel="prefetch" href="/blog/assets/js/194.a63b6260.js"><link rel="prefetch" href="/blog/assets/js/195.d2e09806.js"><link rel="prefetch" href="/blog/assets/js/196.063ba68f.js"><link rel="prefetch" href="/blog/assets/js/197.d39d3324.js"><link rel="prefetch" href="/blog/assets/js/198.ce84b47e.js"><link rel="prefetch" href="/blog/assets/js/199.93c36c7f.js"><link rel="prefetch" href="/blog/assets/js/2.b088ac97.js"><link rel="prefetch" href="/blog/assets/js/20.13aea874.js"><link rel="prefetch" href="/blog/assets/js/200.48855557.js"><link rel="prefetch" href="/blog/assets/js/201.af6c3d13.js"><link rel="prefetch" href="/blog/assets/js/202.355fa950.js"><link rel="prefetch" href="/blog/assets/js/203.8b9a3978.js"><link rel="prefetch" href="/blog/assets/js/204.9d334517.js"><link rel="prefetch" href="/blog/assets/js/205.9d4d72ca.js"><link rel="prefetch" href="/blog/assets/js/206.2734a14e.js"><link rel="prefetch" href="/blog/assets/js/207.856430a2.js"><link rel="prefetch" href="/blog/assets/js/208.553763b5.js"><link rel="prefetch" href="/blog/assets/js/209.39f55833.js"><link rel="prefetch" href="/blog/assets/js/21.b5875938.js"><link rel="prefetch" href="/blog/assets/js/210.5c7be277.js"><link rel="prefetch" href="/blog/assets/js/211.8d787e7d.js"><link rel="prefetch" href="/blog/assets/js/212.97822173.js"><link rel="prefetch" href="/blog/assets/js/213.26729f1a.js"><link rel="prefetch" href="/blog/assets/js/214.7c6fd838.js"><link rel="prefetch" href="/blog/assets/js/215.ffa3d1cb.js"><link rel="prefetch" href="/blog/assets/js/216.5d2ebcf4.js"><link rel="prefetch" href="/blog/assets/js/217.17f13f17.js"><link rel="prefetch" href="/blog/assets/js/218.4209a714.js"><link rel="prefetch" href="/blog/assets/js/219.e1b478d8.js"><link rel="prefetch" href="/blog/assets/js/22.265c8215.js"><link rel="prefetch" href="/blog/assets/js/220.86c2079c.js"><link rel="prefetch" href="/blog/assets/js/221.1c717f8b.js"><link rel="prefetch" href="/blog/assets/js/222.585d0104.js"><link rel="prefetch" href="/blog/assets/js/223.29fc7e37.js"><link rel="prefetch" href="/blog/assets/js/224.d5e24637.js"><link rel="prefetch" href="/blog/assets/js/225.df1946ac.js"><link rel="prefetch" href="/blog/assets/js/226.2aa1c4d7.js"><link rel="prefetch" href="/blog/assets/js/227.a751e31d.js"><link rel="prefetch" href="/blog/assets/js/228.6e330b47.js"><link rel="prefetch" href="/blog/assets/js/229.77229d7b.js"><link rel="prefetch" href="/blog/assets/js/23.c83da651.js"><link rel="prefetch" href="/blog/assets/js/230.062a5ac1.js"><link rel="prefetch" href="/blog/assets/js/231.87bbf70b.js"><link rel="prefetch" href="/blog/assets/js/232.31af7ed9.js"><link rel="prefetch" href="/blog/assets/js/233.b1a58839.js"><link rel="prefetch" href="/blog/assets/js/234.68cec967.js"><link rel="prefetch" href="/blog/assets/js/235.ea62ee88.js"><link rel="prefetch" href="/blog/assets/js/236.a2f2b050.js"><link rel="prefetch" href="/blog/assets/js/237.e7cad44f.js"><link rel="prefetch" href="/blog/assets/js/238.81b4b5a3.js"><link rel="prefetch" href="/blog/assets/js/239.1c862178.js"><link rel="prefetch" href="/blog/assets/js/24.421a250c.js"><link rel="prefetch" href="/blog/assets/js/240.18b5df51.js"><link rel="prefetch" href="/blog/assets/js/241.aa077fb6.js"><link rel="prefetch" href="/blog/assets/js/242.c63afd4d.js"><link rel="prefetch" href="/blog/assets/js/243.b2129f8c.js"><link rel="prefetch" href="/blog/assets/js/244.ff8e7a30.js"><link rel="prefetch" href="/blog/assets/js/245.88169faa.js"><link rel="prefetch" href="/blog/assets/js/246.fa9199da.js"><link rel="prefetch" href="/blog/assets/js/247.cdd33986.js"><link rel="prefetch" href="/blog/assets/js/248.765f4cb5.js"><link rel="prefetch" href="/blog/assets/js/249.2a26a296.js"><link rel="prefetch" href="/blog/assets/js/25.154520e5.js"><link rel="prefetch" href="/blog/assets/js/250.439fb16a.js"><link rel="prefetch" href="/blog/assets/js/251.e057e7e0.js"><link rel="prefetch" href="/blog/assets/js/252.34794853.js"><link rel="prefetch" href="/blog/assets/js/253.c622fcbd.js"><link rel="prefetch" href="/blog/assets/js/254.74a70b9f.js"><link rel="prefetch" href="/blog/assets/js/255.fed47ff6.js"><link rel="prefetch" href="/blog/assets/js/256.a88005ca.js"><link rel="prefetch" href="/blog/assets/js/257.11083964.js"><link rel="prefetch" href="/blog/assets/js/258.0b1a7d73.js"><link rel="prefetch" href="/blog/assets/js/259.62c584ff.js"><link rel="prefetch" href="/blog/assets/js/26.4a88bf4d.js"><link rel="prefetch" href="/blog/assets/js/260.1063ea57.js"><link rel="prefetch" href="/blog/assets/js/261.8f065193.js"><link rel="prefetch" href="/blog/assets/js/262.f796ed15.js"><link rel="prefetch" href="/blog/assets/js/263.38c3508c.js"><link rel="prefetch" href="/blog/assets/js/264.6a5fb90f.js"><link rel="prefetch" href="/blog/assets/js/265.79985a16.js"><link rel="prefetch" href="/blog/assets/js/266.58737293.js"><link rel="prefetch" href="/blog/assets/js/267.c0489be8.js"><link rel="prefetch" href="/blog/assets/js/268.9b482a12.js"><link rel="prefetch" href="/blog/assets/js/269.d807798b.js"><link rel="prefetch" href="/blog/assets/js/27.7f6c507f.js"><link rel="prefetch" href="/blog/assets/js/270.62e46aaf.js"><link rel="prefetch" href="/blog/assets/js/271.a2636662.js"><link rel="prefetch" href="/blog/assets/js/272.2c029ac2.js"><link rel="prefetch" href="/blog/assets/js/273.c0803a3e.js"><link rel="prefetch" href="/blog/assets/js/274.feed5dcb.js"><link rel="prefetch" href="/blog/assets/js/275.d026e4d0.js"><link rel="prefetch" href="/blog/assets/js/276.6348ed02.js"><link rel="prefetch" href="/blog/assets/js/277.cb5be1e0.js"><link rel="prefetch" href="/blog/assets/js/28.86691d04.js"><link rel="prefetch" href="/blog/assets/js/29.34f07073.js"><link rel="prefetch" href="/blog/assets/js/30.c7caa137.js"><link rel="prefetch" href="/blog/assets/js/31.07b08573.js"><link rel="prefetch" href="/blog/assets/js/32.2d17c55c.js"><link rel="prefetch" href="/blog/assets/js/33.34659507.js"><link rel="prefetch" href="/blog/assets/js/34.ca823a5d.js"><link rel="prefetch" href="/blog/assets/js/35.fdee0018.js"><link rel="prefetch" href="/blog/assets/js/36.1df26e75.js"><link rel="prefetch" href="/blog/assets/js/37.e84c6798.js"><link rel="prefetch" href="/blog/assets/js/38.0ab020a7.js"><link rel="prefetch" href="/blog/assets/js/39.c752cd4a.js"><link rel="prefetch" href="/blog/assets/js/4.dce05cd8.js"><link rel="prefetch" href="/blog/assets/js/40.e6ff46a5.js"><link rel="prefetch" href="/blog/assets/js/41.7b5ace1e.js"><link rel="prefetch" href="/blog/assets/js/42.bd14936e.js"><link rel="prefetch" href="/blog/assets/js/43.d12fece7.js"><link rel="prefetch" href="/blog/assets/js/44.6fca8fd5.js"><link rel="prefetch" href="/blog/assets/js/45.907b4f15.js"><link rel="prefetch" href="/blog/assets/js/46.f9d2e206.js"><link rel="prefetch" href="/blog/assets/js/47.b1653fc1.js"><link rel="prefetch" href="/blog/assets/js/48.99b3c7bb.js"><link rel="prefetch" href="/blog/assets/js/49.828907da.js"><link rel="prefetch" href="/blog/assets/js/5.7193cd84.js"><link rel="prefetch" href="/blog/assets/js/50.f51f2a3e.js"><link rel="prefetch" href="/blog/assets/js/51.29a6e8ea.js"><link rel="prefetch" href="/blog/assets/js/52.4d64b497.js"><link rel="prefetch" href="/blog/assets/js/53.12dca8e6.js"><link rel="prefetch" href="/blog/assets/js/54.e3c4fef4.js"><link rel="prefetch" href="/blog/assets/js/55.b801643c.js"><link rel="prefetch" href="/blog/assets/js/56.a3d351a1.js"><link rel="prefetch" href="/blog/assets/js/57.cfabc431.js"><link rel="prefetch" href="/blog/assets/js/58.8a3cbbf5.js"><link rel="prefetch" href="/blog/assets/js/59.a5a7464b.js"><link rel="prefetch" href="/blog/assets/js/6.98f083fd.js"><link rel="prefetch" href="/blog/assets/js/60.affca2b3.js"><link rel="prefetch" href="/blog/assets/js/61.adf43eb0.js"><link rel="prefetch" href="/blog/assets/js/62.480ff614.js"><link rel="prefetch" href="/blog/assets/js/63.725f57dc.js"><link rel="prefetch" href="/blog/assets/js/64.ee3ea45f.js"><link rel="prefetch" href="/blog/assets/js/65.a9874219.js"><link rel="prefetch" href="/blog/assets/js/66.ec0c5b17.js"><link rel="prefetch" href="/blog/assets/js/67.043a2f09.js"><link rel="prefetch" href="/blog/assets/js/68.c85cdc1a.js"><link rel="prefetch" href="/blog/assets/js/69.24eb94a2.js"><link rel="prefetch" href="/blog/assets/js/7.a3939503.js"><link rel="prefetch" href="/blog/assets/js/70.7ab8f348.js"><link rel="prefetch" href="/blog/assets/js/71.3f967059.js"><link rel="prefetch" href="/blog/assets/js/72.296c112d.js"><link rel="prefetch" href="/blog/assets/js/73.4bad88aa.js"><link rel="prefetch" href="/blog/assets/js/74.ad674c4d.js"><link rel="prefetch" href="/blog/assets/js/75.6e3c3e6d.js"><link rel="prefetch" href="/blog/assets/js/76.e027ccc7.js"><link rel="prefetch" href="/blog/assets/js/77.963c60ef.js"><link rel="prefetch" href="/blog/assets/js/78.b6ecfd1c.js"><link rel="prefetch" href="/blog/assets/js/79.5c540919.js"><link rel="prefetch" href="/blog/assets/js/8.af2847e2.js"><link rel="prefetch" href="/blog/assets/js/80.cb971025.js"><link rel="prefetch" href="/blog/assets/js/81.8fea14a9.js"><link rel="prefetch" href="/blog/assets/js/82.e177062a.js"><link rel="prefetch" href="/blog/assets/js/83.c89e463b.js"><link rel="prefetch" href="/blog/assets/js/84.89d68e32.js"><link rel="prefetch" href="/blog/assets/js/85.12901aa6.js"><link rel="prefetch" href="/blog/assets/js/86.f7b120e4.js"><link rel="prefetch" href="/blog/assets/js/87.a620f73f.js"><link rel="prefetch" href="/blog/assets/js/88.aef154fa.js"><link rel="prefetch" href="/blog/assets/js/89.9f71412f.js"><link rel="prefetch" href="/blog/assets/js/9.820df2c6.js"><link rel="prefetch" href="/blog/assets/js/90.dd797eb4.js"><link rel="prefetch" href="/blog/assets/js/91.2f4cee08.js"><link rel="prefetch" href="/blog/assets/js/92.fcbd90d3.js"><link rel="prefetch" href="/blog/assets/js/93.49088527.js"><link rel="prefetch" href="/blog/assets/js/94.2162a1ba.js"><link rel="prefetch" href="/blog/assets/js/95.69c4c5ba.js"><link rel="prefetch" href="/blog/assets/js/96.70c77a1a.js"><link rel="prefetch" href="/blog/assets/js/97.77ecde0a.js"><link rel="prefetch" href="/blog/assets/js/98.bdec1ab1.js"><link rel="prefetch" href="/blog/assets/js/99.928b66ab.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/55_db/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>MySQL</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Mongo DB</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Redis</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Elastic Search</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/55_db/05_Elastic Search/220410_elastic_search.html" class="active sidebar-link">ElasticSearch, ELK 스택 시작하기</a></li><li><a href="/blog/post/55_db/05_Elastic Search/220411_kibana.html" class="sidebar-link">kibana 시작하기</a></li><li><a href="/blog/post/55_db/05_Elastic Search/220412_logstash.html" class="sidebar-link">Logstash 시작하기</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>ERD</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#elasticsearch">Elasticsearch</a></li><li><a href="#elk-스택">ELK 스택</a><ul><li><a href="#beats">Beats</a></li><li><a href="#logstash">Logstash</a></li><li><a href="#elasticsearch">Elasticsearch</a></li><li><a href="#kibana">Kibana</a></li></ul></li><li><a href="#elasticsearch-설치">Elasticsearch 설치</a></li><li><a href="#index">Index</a><ul><li><a href="#모든-인덱스-조회">모든 인덱스 조회</a></li><li><a href="#인덱스-생성">인덱스 생성</a></li><li><a href="#인덱스-정보-조회">인덱스 정보 조회</a></li><li><a href="#인덱스-삭제">인덱스 삭제</a></li></ul></li><li><a href="#document">Document</a><ul><li><a href="#도큐먼트-생성">도큐먼트 생성</a></li><li><a href="#도큐먼트-조회">도큐먼트 조회</a></li><li><a href="#도큐먼트-업데이트">도큐먼트 업데이트</a></li><li><a href="#도큐먼트-삭제">도큐먼트 삭제</a></li></ul></li><li><a href="#벌크-작업">벌크 작업</a></li><li><a href="#검색">검색</a><ul><li><a href="#예제-코드">예제 코드</a></li><li><a href="#term-쿼리">Term 쿼리</a></li><li><a href="#match-쿼리">Match 쿼리</a></li><li><a href="#match-phrase-쿼리">Match Phrase 쿼리</a></li></ul></li><li><a href="#mapping">Mapping</a><ul><li><a href="#매핑-조회">매핑 조회</a></li><li><a href="#매핑-생성">매핑 생성</a></li></ul></li><li><a href="#집계">집계</a><ul><li><a href="#메트릭-어그리게이션">메트릭 어그리게이션</a><ul><li><a href="#평균-계산하기">평균 계산하기</a></li><li><a href="#최대값-계산하기">최대값 계산하기</a></li><li><a href="#최소값-계산하기">최소값 계산하기</a></li><li><a href="#합계-계산하기">합계 계산하기</a></li><li><a href="#모든-통계-정보">모든 통계 정보</a></li></ul></li><li><a href="#버킷-어그리게이션">버킷 어그리게이션</a><ul><li><a href="#terms-aggregation">Terms aggregation</a></li></ul></li></ul></li></ul></div><p></p> <h2 id="elasticsearch"><a href="#elasticsearch" class="header-anchor">#</a> Elasticsearch</h2> <ul><li><p><code>Elasticsearch</code>은 Apache Lucene 기반의 Java 오픈 소스 분산 검색 엔진이다.</p></li> <li><p>관계형 데이터베이스는 행의 위치인 <code>인덱스(Index)</code>를 사용하여 행을 조회한다. 반면 ElasticSearch은 도큐먼트의 문자, 단어 등을 매핑한 <code>역색인(Inverted Index)</code>을 사용하여 데이터를 조회한다. 일반 인덱스는 책 앞 페이지의 목차와 같은 의미이고, 역색인은 책 뒷 편의 단어 별 빠른 페이지와 같다.</p></li> <li><p>인덱스를 통한 검색은 인덱스를 순차검색 하기 때문에 <code>O(n)</code> 또는  <code>O(logn)</code>의 시간 복잡도를 갖는다. 반면 역색인은 마치 해시함수와 같아서 <code>O(1)</code>의 시간 복잡도를 갖는다. 이 때문에 ElasticSearch은 빠른 검색에 사용된다.</p></li> <li><p>ElasticSearch는 스키마가 없기 때문에 NoSQL처럼 비정형 데이터를 저장할 수 있다. 물론 <code>Mapping</code>을 사용하면 스키마를 설정할 수도 있다.</p></li> <li><p>ElasticSearch는 기본적으로 REST API에 HTTP 요청을 보내는 형태로 데이터를 조작한다.</p> <table><thead><tr><th>RDBMS</th> <th>Elastic Search</th></tr></thead> <tbody><tr><td>SELECT</td> <td>GET</td></tr> <tr><td>UPDATE</td> <td>PUT</td></tr> <tr><td>INSERT</td> <td>POST</td></tr> <tr><td>DELETE</td> <td>DELETE</td></tr></tbody></table></li></ul> <h2 id="elk-스택"><a href="#elk-스택" class="header-anchor">#</a> ELK 스택</h2> <ul><li><code>Elasticsearch</code>은 빠른 검색을 위해 단독으로 사용되기도 하지만 <code>ELK(Elasticsearch / LogStash / Kibana)</code> + <code>Beats</code> 스택으로 사용되기도 한다.</li> <li>ELK 스택을 사용하면 여러 데이터소스에서 발생한 데이터를 수집, 가공, 분석한 후 시각화할 수 있다.</li> <li>ELK 스택은 MSA 환경에서 여러 개별 서비스의 로그를 중앙 집중형 로깅하고 모니터링하는데 사용할 수 있다.</li> <li>빅데이터 분야에도 활용할 수 있다.</li></ul> <p><img src="/blog/assets/img/1.af032386.png" alt=""></p> <h3 id="beats"><a href="#beats" class="header-anchor">#</a> Beats</h3> <ul><li>여러 데이터 소스에 설치되어 데이터를 수집한 후 Logstash로 전송한다.</li></ul> <h3 id="logstash"><a href="#logstash" class="header-anchor">#</a> Logstash</h3> <ul><li>데이터 소스의 데이터를 실시간으로 수집하여 Elastic Search로 전달하는 파이프 라인 엔진이다.</li> <li>여러 데이터 소스로부터 발생하는 데이터를 적절하게 변환한다.</li></ul> <h3 id="elasticsearch-2"><a href="#elasticsearch-2" class="header-anchor">#</a> Elasticsearch</h3> <ul><li>Logstash를 통해 수신된 데이터를 저장소에 저장하는 역할을 담당한다.</li> <li>역인덱싱을 통한 빠른 검색을 제공한다.</li> <li>어그리게이션 등을 통한 데이터 가공 및 분석 기능을 제공한다.</li></ul> <h3 id="kibana"><a href="#kibana" class="header-anchor">#</a> Kibana</h3> <ul><li>ElasticSearch에 저장된 데이터를 시각화한다.</li></ul> <h2 id="elasticsearch-설치"><a href="#elasticsearch-설치" class="header-anchor">#</a> Elasticsearch 설치</h2> <div class="custom-block tip"><p class="custom-block-title">Information</p> <p>ElasticSearch 7.17.4 버전을 기준으로 합니다.</p></div> <p>Mac OS 환경에서는 Homebrew로 쉽게 설치할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew install elastic/tap/elasticsearch-full
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ brew info elastic/tap/elasticsearch-full
+elastic/tap/elasticsearch-full: stable 7.17.4
+Distributed search &amp; analytics engine
+https://www.elastic.co/products/elasticsearch
+Conflicts with:
+  elasticsearch
+/usr/local/Cellar/elasticsearch-full/7.17.4 (946 files, 476.2MB) *
+  Built from source on 2022-06-07 at 03:21:58
+From: https://github.com/elastic/homebrew-tap/blob/HEAD/Formula/elasticsearch-full.rb
+==&gt; Caveats
+Data:    /usr/local/var/lib/elasticsearch/elasticsearch_hyukjung/
+Logs:    /usr/local/var/log/elasticsearch/elasticsearch_hyukjung.log
+Plugins: /usr/local/var/elasticsearch/plugins/
+Config:  /usr/local/etc/elasticsearch/ 
+</code></pre></div><p>설치가 완료되었다면 다음과 같이 시작할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew services start elastic/tap/elasticsearch-full
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ brew services list
+Name                  Status  User     File
+elasticsearch-full    started yologger ~/Library/LaunchAgents/homebrew.mxcl.elasticsearch-full.plist
+</code></pre></div><p>참고로 다음과 같이 Elastic Search를 종료할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew services stop elastic/tap/elasticsearch-full
+</code></pre></div><h2 id="index"><a href="#index" class="header-anchor">#</a> Index</h2> <p><code>인덱스(Index)</code>는 관계형 데이터베이스의 데이터베이스에 상응한다.</p> <h3 id="모든-인덱스-조회"><a href="#모든-인덱스-조회" class="header-anchor">#</a> 모든 인덱스 조회</h3> <p>모든 인덱스는 다음과 같이 조회할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/_cat/indices?v
+health status index                           uuid                   pri rep docs.count docs.deleted store.size pri.store.size
+green  open   .geoip_databases                SulDhHIrS0m9Saj_8dDmiw   1   0         40           37     38.2mb         38.2mb
+green  open   .apm-custom-link                RnYiMMZaQG2-wIGVOOHO9g   1   0          0            0       226b           226b
+green  open   .apm-agent-configuration        dZ38RFD3TxeX1i5Qew_iag   1   0          0            0       226b           226b
+green  open   .kibana_task_manager_7.17.4_001 v9bQStFQQwirWPuyzHcXSA   1   0         17        63369      7.1mb          7.1mb
+green  open   .kibana_7.17.4_001              NJda68wDRoOK213SMSOuXQ   1   0        316           24      2.4mb          2.4mb
+green  open   .tasks                          TChPhQP_RymhB-xr0TdxuQ   1   0          4            0     27.4kb         27.4kb
+</code></pre></div><h3 id="인덱스-생성"><a href="#인덱스-생성" class="header-anchor">#</a> 인덱스 생성</h3> <p>다음과 같이 인덱스를 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/&lt;INDEX_NAME&gt;
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/person
+{&quot;acknowledged&quot;:true,&quot;shards_acknowledged&quot;:true,&quot;index&quot;:&quot;person&quot;}
+</code></pre></div><h3 id="인덱스-정보-조회"><a href="#인덱스-정보-조회" class="header-anchor">#</a> 인덱스 정보 조회</h3> <p>다음과 같이 인덱스에 대한 정보를 조회할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/&lt;INDEX_NAME&gt;
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/person
+{&quot;person&quot;:{&quot;aliases&quot;:{},&quot;mappings&quot;:{},&quot;settings&quot;:{&quot;index&quot;:{&quot;routing&quot;:{&quot;allocation&quot;:{&quot;include&quot;:{&quot;_tier_preference&quot;:&quot;data_content&quot;}}},&quot;number_of_shards&quot;:&quot;1&quot;,&quot;provided_name&quot;:&quot;person&quot;,&quot;creation_date&quot;:&quot;1654690323178&quot;,&quot;number_of_replicas&quot;:&quot;1&quot;,&quot;uuid&quot;:&quot;b-Lm10C-RBOqo8JlYSqw8A&quot;,&quot;version&quot;:{&quot;created&quot;:&quot;7170499&quot;}}}}}
+</code></pre></div><p>인덱스가 없다면 다음과 같은 오류가 발생한다.</p> <div class="language- extra-class"><pre class="language-text"><code>{&quot;error&quot;:{&quot;root_cause&quot;:[{&quot;type&quot;:&quot;index_not_found_exception&quot;,&quot;reason&quot;:&quot;no such index [person]&quot;,&quot;resource.type&quot;:&quot;index_or_alias&quot;,&quot;resource.id&quot;:&quot;person&quot;,&quot;index_uuid&quot;:&quot;_na_&quot;,&quot;index&quot;:&quot;person&quot;}],&quot;type&quot;:&quot;index_not_found_exception&quot;,&quot;reason&quot;:&quot;no such index [person]&quot;,&quot;resource.type&quot;:&quot;index_or_alias&quot;,&quot;resource.id&quot;:&quot;person&quot;,&quot;index_uuid&quot;:&quot;_na_&quot;,&quot;index&quot;:&quot;person&quot;},&quot;status&quot;:404}
+</code></pre></div><p><code>pretty</code> 옵션으로 결과값을 예쁘게 출력할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/person?pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;person&quot; : {
+    &quot;aliases&quot; : { },
+    &quot;mappings&quot; : { },
+    &quot;settings&quot; : {
+      &quot;index&quot; : {
+        &quot;routing&quot; : {
+          &quot;allocation&quot; : {
+            &quot;include&quot; : {
+              &quot;_tier_preference&quot; : &quot;data_content&quot;
+            }
+          }
+        },
+        &quot;number_of_shards&quot; : &quot;1&quot;,
+        &quot;provided_name&quot; : &quot;person&quot;,
+        &quot;creation_date&quot; : &quot;1654690323178&quot;,
+        &quot;number_of_replicas&quot; : &quot;1&quot;,
+        &quot;uuid&quot; : &quot;b-Lm10C-RBOqo8JlYSqw8A&quot;,
+        &quot;version&quot; : {
+          &quot;created&quot; : &quot;7170499&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre></div><h3 id="인덱스-삭제"><a href="#인덱스-삭제" class="header-anchor">#</a> 인덱스 삭제</h3> <p>다음과 같이 인덱스를 삭제할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XDELETE http://localhost:9200/person
+{&quot;acknowledged&quot;:true}
+</code></pre></div><h2 id="document"><a href="#document" class="header-anchor">#</a> Document</h2> <h3 id="도큐먼트-생성"><a href="#도큐먼트-생성" class="header-anchor">#</a> 도큐먼트 생성</h3> <p>도큐먼트를 생성할 때는 HTTP PUT 메소드를 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/&lt;INDEX&gt;/_doc/&lt;DOCUMENT_ID&gt; \ 
+- H 'Content-Type: application/json' \
+- d '{&quot;key&quot;: &quot;value&quot;}' 
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/player/_doc/1?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;name&quot;: &quot;messi&quot;, &quot;nation&quot;: &quot;argentina&quot;}'
+</code></pre></div><p>도큐먼트 생성에 성공하면 <code>&quot;result&quot; : &quot;created&quot;</code>가 표시된다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>{
+  &quot;_index&quot; : &quot;player&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;1&quot;,
+  &quot;_version&quot; : 1,
+  &quot;result&quot; : &quot;created&quot;,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 2,
+    &quot;successful&quot; : 1,
+    &quot;failed&quot; : 0
+  },
+  &quot;_seq_no&quot; : 0,
+  &quot;_primary_term&quot; : 1
+}
+</code></pre></div><p>동일한 URL에 다른 도큐먼트를 입력하면 기존 도큐먼트를 덮어쓰게 되며 <code>&quot;result&quot; : &quot;updated&quot;</code>가 표시된다. 또한 &quot;_version&quot;의 값이 1 증가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/player/_doc/1?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;name&quot;: &quot;ronaldo&quot;, &quot;nation&quot;: &quot;portugal&quot;}'
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>{
+  &quot;_index&quot; : &quot;player&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;1&quot;,
+  &quot;_version&quot; : 2,
+  &quot;result&quot; : &quot;updated&quot;,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 2,
+    &quot;successful&quot; : 1,
+    &quot;failed&quot; : 0
+  },
+  &quot;_seq_no&quot; : 1,
+  &quot;_primary_term&quot; : 1
+}
+</code></pre></div><p>도큐먼트는 JSON 파일을 사용하여 생성할 수도 있다.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// player.json</span>
+<span class="token punctuation">{</span>
+	<span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;benzema&quot;</span><span class="token punctuation">,</span>
+	<span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;france&quot;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/player/_doc/3 \
+-H 'Content-Type: application/json' \
+-d @player.json
+</code></pre></div><p>ID 없이 도큐먼트를 생성하면 ID가 자동으로 생성된다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br></div><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/player/_doc?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;name&quot;: &quot;neymar&quot;, &quot;nation&quot;: &quot;brazil&quot;}'
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>{
+  &quot;_index&quot; : &quot;player&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;QCFIQ4EBhCK0-IfWXiwB&quot;,
+  &quot;_version&quot; : 1,
+  &quot;result&quot; : &quot;created&quot;,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 2,
+    &quot;successful&quot; : 1,
+    &quot;failed&quot; : 0
+  },
+  &quot;_seq_no&quot; : 2,
+  &quot;_primary_term&quot; : 1
+}
+</code></pre></div><p>실수로 기존 도큐먼트가 덮어씌워지는 것을 방지하기 위해 <code>_doc</code> 대신 <code>_create</code>를 사용하여 도큐먼트를 생성할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/player/_create/1?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;name&quot;: &quot;kane&quot;, &quot;nation&quot;: &quot;england&quot;}'
+</code></pre></div><p>도큐먼트가 이미 존재하는 경우 다음 에러가 발생한다.</p> <div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;error&quot; : {
+    &quot;root_cause&quot; : [
+      {
+        &quot;type&quot; : &quot;version_conflict_engine_exception&quot;,
+        &quot;reason&quot; : &quot;[1]: version conflict, document already exists (current version [2])&quot;,
+        &quot;index_uuid&quot; : &quot;wIiKCmHQSYijirqahH_tpw&quot;,
+        &quot;shard&quot; : &quot;0&quot;,
+        &quot;index&quot; : &quot;player&quot;
+      }
+    ],
+    &quot;type&quot; : &quot;version_conflict_engine_exception&quot;,
+    &quot;reason&quot; : &quot;[1]: version conflict, document already exists (current version [2])&quot;,
+    &quot;index_uuid&quot; : &quot;wIiKCmHQSYijirqahH_tpw&quot;,
+    &quot;shard&quot; : &quot;0&quot;,
+    &quot;index&quot; : &quot;player&quot;
+  },
+  &quot;status&quot; : 409
+}
+</code></pre></div><h3 id="도큐먼트-조회"><a href="#도큐먼트-조회" class="header-anchor">#</a> 도큐먼트 조회</h3> <p>도큐먼트를 조회할 때는 HTTP GET 메서드를 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_doc/1?pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;_index&quot; : &quot;player&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;1&quot;,
+  &quot;_version&quot; : 2,
+  &quot;_seq_no&quot; : 1,
+  &quot;_primary_term&quot; : 1,
+  &quot;found&quot; : true,
+  &quot;_source&quot; : {
+    &quot;name&quot; : &quot;ronaldo&quot;,
+    &quot;nation&quot; : &quot;portugal&quot;
+  }
+}
+</code></pre></div><h3 id="도큐먼트-업데이트"><a href="#도큐먼트-업데이트" class="header-anchor">#</a> 도큐먼트 업데이트</h3> <p>다음과 같은 도큐먼트가 있다고 하자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_doc/1?pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;_index&quot; : &quot;player&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;1&quot;,
+  &quot;_version&quot; : 2,
+  &quot;_seq_no&quot; : 1,
+  &quot;_primary_term&quot; : 1,
+  &quot;found&quot; : true,
+  &quot;_source&quot; : {
+    &quot;name&quot; : &quot;ronaldo&quot;,
+    &quot;nation&quot; : &quot;portugal&quot;
+  }
+}
+</code></pre></div><p>URL 뒤에 <code>_update</code>을 붙이면 특정 필드만 업데이트할 수 있다. Request Body에는 <code>doc</code> 키를 통해 변경할 내용을 전달한다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/player/_update/1?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;doc&quot;: {&quot;name&quot;: &quot;pepe&quot;}}'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_doc/1\?pretty
+{
+  &quot;_index&quot; : &quot;player&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;1&quot;,
+  &quot;_version&quot; : 3,
+  &quot;_seq_no&quot; : 3,
+  &quot;_primary_term&quot; : 1,
+  &quot;found&quot; : true,
+  &quot;_source&quot; : {
+    &quot;name&quot; : &quot;pepe&quot;,
+    &quot;nation&quot; : &quot;portugal&quot;
+  }
+}
+</code></pre></div><p>특정 필드를 추가할 수도 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/player/_update/1?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;doc&quot;: {&quot;team&quot;: &quot;real madrid&quot;}}'
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br></div><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_doc/1?pretty
+{
+  &quot;_index&quot; : &quot;player&quot;,
+  &quot;_type&quot; : &quot;_doc&quot;,
+  &quot;_id&quot; : &quot;1&quot;,
+  &quot;_version&quot; : 4,
+  &quot;_seq_no&quot; : 4,
+  &quot;_primary_term&quot; : 1,
+  &quot;found&quot; : true,
+  &quot;_source&quot; : {
+    &quot;name&quot; : &quot;pepe&quot;,
+    &quot;nation&quot; : &quot;portugal&quot;,
+    &quot;team&quot; : &quot;real madrid&quot;
+  }
+}
+</code></pre></div><p><code>doc</code> 대신 <code>script</code> 키를 통해 계산식을 사용할 수도 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/person/player/2/_update \
+-H 'Content-Type: application/json' \
+-d '{&quot;script&quot;: &quot;ctx._source.age += 5&quot;}'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/person/player/2\?pretty
+{
+  &quot;_index&quot; : &quot;person&quot;,
+  &quot;_type&quot; : &quot;player&quot;,
+  &quot;_id&quot; : &quot;2&quot;,
+  &quot;_version&quot; : 6,
+  &quot;_seq_no&quot; : 6,
+  &quot;_primary_term&quot; : 1,
+  &quot;found&quot; : true,
+  &quot;_source&quot; : {
+    &quot;name&quot; : &quot;Smith&quot;,
+    &quot;nation&quot; : &quot;UK&quot;,
+    &quot;team&quot; : &quot;real madrid&quot;,
+    &quot;age&quot; : 40
+  }
+}
+</code></pre></div><h3 id="도큐먼트-삭제"><a href="#도큐먼트-삭제" class="header-anchor">#</a> 도큐먼트 삭제</h3> <p>HTTP DELETE 메소드로 도큐먼트를 삭제할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>$ curl -XDELETE http://localhost:9200/player/_doc/1?pretty
+{
+  &quot;_index&quot;:&quot;player&quot;,
+  &quot;_type&quot;:&quot;_doc&quot;,
+  &quot;_id&quot;:&quot;1&quot;,
+  &quot;_version&quot;:5,
+  &quot;result&quot;:&quot;deleted&quot;,
+  &quot;_shards&quot;:{
+    &quot;total&quot;:2,
+    &quot;successful&quot;:1,
+    &quot;failed&quot;:0
+  },
+  &quot;_seq_no&quot;:5,
+  &quot;_primary_term&quot;:1
+} 
+</code></pre></div><h2 id="벌크-작업"><a href="#벌크-작업" class="header-anchor">#</a> 벌크 작업</h2> <p>ElasticSearch는 벌크 작업도 지원한다.</p> <p>JSON 파일로 벌크 INSERT 작업을 수행해보자.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// players.json</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;1&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ronaldo&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;portugal&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">37</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">15</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;2&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;son&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;south korea&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">31</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">13</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;3&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;salah&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egypt&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">31</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">19</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">11</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;4&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;benzema&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;france&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">36</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">27</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">11</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;5&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;ebappe&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;france&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;6&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;pogba&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;france&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">31</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">20</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;7&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;kane&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;england&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">30</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">12</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">18</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span> <span class="token property">&quot;index&quot;</span> <span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;player&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;_id&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;8&quot;</span> <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;fernandes&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token string">&quot;portugal&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token number">16</span><span class="token punctuation">}</span>
+</code></pre></div><p><code>--data-binary</code>옵션을 사용하면 된다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/player/_bulk \
+-H 'Content-Type: application/json' \
+--data-binary @players.json
+</code></pre></div><h2 id="검색"><a href="#검색" class="header-anchor">#</a> 검색</h2> <p>URL 뒤에 <code>_search</code>를 붙여 도큐먼트를 검색할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_search\?pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;took&quot; : 0,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 8,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : 1.0,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;1&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;ronaldo&quot;,
+          &quot;nation&quot; : &quot;portugal&quot;,
+          &quot;age&quot; : 37,
+          &quot;score&quot; : 15,
+          &quot;assist&quot; : 15
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;2&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;son&quot;,
+          &quot;nation&quot; : &quot;south korea&quot;,
+          &quot;age&quot; : 31,
+          &quot;score&quot; : 20,
+          &quot;assist&quot; : 13
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;3&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;salah&quot;,
+          &quot;nation&quot; : &quot;egypt&quot;,
+          &quot;age&quot; : 31,
+          &quot;score&quot; : 19,
+          &quot;assist&quot; : 11
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;4&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;benzema&quot;,
+          &quot;nation&quot; : &quot;france&quot;,
+          &quot;age&quot; : 36,
+          &quot;score&quot; : 27,
+          &quot;assist&quot; : 11
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;5&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;ebappe&quot;,
+          &quot;nation&quot; : &quot;france&quot;,
+          &quot;age&quot; : 25,
+          &quot;score&quot; : 25,
+          &quot;assist&quot; : 7
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;6&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;pogba&quot;,
+          &quot;nation&quot; : &quot;france&quot;,
+          &quot;age&quot; : 31,
+          &quot;score&quot; : 8,
+          &quot;assist&quot; : 20
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;7&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;kane&quot;,
+          &quot;nation&quot; : &quot;england&quot;,
+          &quot;age&quot; : 30,
+          &quot;score&quot; : 12,
+          &quot;assist&quot; : 18
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;8&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;fernandes&quot;,
+          &quot;nation&quot; : &quot;portugal&quot;,
+          &quot;age&quot; : 28,
+          &quot;score&quot; : 10,
+          &quot;assist&quot; : 16
+        }
+      }
+    ]
+  }
+}
+</code></pre></div><p>조건을 쿼리 파라미터 형태로 전달할 수 있다. <code>_search</code> 뒤에 <code>q</code> 파라미터를 추가하면 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_search?q=age:36&amp;pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;took&quot; : 0,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 1,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : 1.0,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;4&quot;,
+        &quot;_score&quot; : 1.0,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;benzema&quot;,
+          &quot;nation&quot; : &quot;france&quot;,
+          &quot;age&quot; : 36,
+          &quot;score&quot; : 27,
+          &quot;assist&quot; : 11
+        }
+      }
+    ]
+  }
+}
+</code></pre></div><p>조건을 HTTP request body 형태로 전달할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_search\?pretty \
+-H 'Content-Type: application/json' \
+-d '{ &quot;query&quot;: { &quot;match&quot;: {&quot;name&quot;: &quot;kane&quot;} }}'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;took&quot; : 0,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 1,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : 1.7917595,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;player&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;7&quot;,
+        &quot;_score&quot; : 1.7917595,
+        &quot;_source&quot; : {
+          &quot;name&quot; : &quot;kane&quot;,
+          &quot;nation&quot; : &quot;england&quot;,
+          &quot;age&quot; : 30,
+          &quot;score&quot; : 12,
+          &quot;assist&quot; : 18
+        }
+      }
+    ]
+  }
+}
+</code></pre></div><p>다양한 검색 옵션을 좀 더 알아보자.</p> <h3 id="예제-코드"><a href="#예제-코드" class="header-anchor">#</a> 예제 코드</h3> <p>예제를 위한 데이터는 다음과 같다.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token punctuation">{</span><span class="token property">&quot;index&quot;</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">&quot;_id&quot;</span><span class="token operator">:</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;post&quot;</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;content&quot;</span><span class="token operator">:</span><span class="token string">&quot;hello world&quot;</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;index&quot;</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">&quot;_id&quot;</span><span class="token operator">:</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;post&quot;</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;content&quot;</span><span class="token operator">:</span><span class="token string">&quot;hello world nice to meet you&quot;</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;index&quot;</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">&quot;_id&quot;</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;post&quot;</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;content&quot;</span><span class="token operator">:</span><span class="token string">&quot;hello world see you again&quot;</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;index&quot;</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">&quot;_id&quot;</span><span class="token operator">:</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;post&quot;</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;content&quot;</span><span class="token operator">:</span><span class="token string">&quot;see you again good bye&quot;</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;index&quot;</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">&quot;_id&quot;</span><span class="token operator">:</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;post&quot;</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;content&quot;</span><span class="token operator">:</span><span class="token string">&quot;good bye have a nice day&quot;</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;index&quot;</span><span class="token operator">:</span><span class="token punctuation">{</span><span class="token property">&quot;_id&quot;</span><span class="token operator">:</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token property">&quot;_index&quot;</span> <span class="token operator">:</span> <span class="token string">&quot;post&quot;</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span><span class="token property">&quot;content&quot;</span><span class="token operator">:</span><span class="token string">&quot;hello world nice to meet you good bye have a nice day&quot;</span><span class="token punctuation">}</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/post/_bulk \
+-H 'Content-Type: application/json' \
+--data-binary @posts.json
+</code></pre></div><h3 id="term-쿼리"><a href="#term-쿼리" class="header-anchor">#</a> Term 쿼리</h3> <p><code>Term 쿼리</code>는 검색어에 대한 분석을 하지않고 온전히 그 검색어와 일치하는 문서를 검색한다. 아래 예제에서는 정확히 <code>again</code>을 포함한 도큐먼트만 결과물로 출력한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/post/_search?pretty \
+-H 'Content-Type: application/json' \
+-d '
+{
+  &quot;query&quot;: {
+    &quot;term&quot;: {
+      &quot;content&quot;: &quot;again&quot;
+    }
+  }
+}
+'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;took&quot; : 0,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 2,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : 1.1049575,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;3&quot;,
+        &quot;_score&quot; : 1.1049575,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world see you again&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;4&quot;,
+        &quot;_score&quot; : 1.1049575,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;see you again good bye&quot;
+        }
+      }
+    ]
+  }
+}
+</code></pre></div><h3 id="match-쿼리"><a href="#match-쿼리" class="header-anchor">#</a> Match 쿼리</h3> <p>Term 쿼리가 완전히 정확한 검색이라면 <code>Match 쿼리</code>는 다소 모호한 검색이다. 예를 들어 여러 도큐먼트에 <code>do</code>, <code>done</code>, <code>doing</code>의 단어가 포함되어있고 용어(Term)에 <code>do</code>가 등록되어있다면 <code>do</code> 뿐만 아니라 <code>done</code>, <code>doing</code>을 포함하는 도큐먼트도 검색해준다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/post/_search?pretty \
+-H 'Content-Type: application/json' \
+-d '
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content&quot;: &quot;hello&quot;
+    }
+  }
+}
+'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;took&quot; : 0,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 4,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : 0.60752,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;1&quot;,
+        &quot;_score&quot; : 0.60752,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;3&quot;,
+        &quot;_score&quot; : 0.47416198,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world see you again&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;2&quot;,
+        &quot;_score&quot; : 0.44183272,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world nice to meet you&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;6&quot;,
+        &quot;_score&quot; : 0.3135587,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world nice to meet you good bye have a nice day&quot;
+        }
+      }
+    ]
+  }
+}
+</code></pre></div><p><code>match</code> 검색에 여러 개의 검색어를 넣으면 OR 조건으로 검색을 한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/post/_search?pretty \
+-H 'Content-Type: application/json' \
+-d '
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content&quot;: &quot;hello nice&quot;
+    }
+  }
+}
+'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content&quot;: &quot;hello nice&quot;
+    }
+  }
+}
+'
+{
+  &quot;took&quot; : 40,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 5,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : 1.1349798,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;2&quot;,
+        &quot;_score&quot; : 1.1349798,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world nice to meet you&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;6&quot;,
+        &quot;_score&quot; : 1.057424,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world nice to meet you good bye have a nice day&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;5&quot;,
+        &quot;_score&quot; : 0.6931471,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;good bye have a nice day&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;1&quot;,
+        &quot;_score&quot; : 0.60752,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world&quot;
+        }
+      },
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;3&quot;,
+        &quot;_score&quot; : 0.47416198,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;hello world see you again&quot;
+        }
+      }
+    ]
+  }
+}
+</code></pre></div><p>다음과 같이 AND 조건으로 검색할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/post/_search?pretty \
+-H 'Content-Type: application/json' \
+-d '
+{
+  &quot;query&quot;: {
+    &quot;match&quot;: {
+      &quot;content&quot;: &quot;hello nice&quot;,
+		&quot;operator&quot;: &quot;and&quot;
+    }
+  }
+}
+'
+</code></pre></div><h3 id="match-phrase-쿼리"><a href="#match-phrase-쿼리" class="header-anchor">#</a> Match Phrase 쿼리</h3> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/post/_search?pretty \
+-H 'Content-Type: application/json' \
+-d '
+{
+  &quot;query&quot;: {
+    &quot;match_phrase&quot;: {
+      &quot;content&quot;: &quot;again good&quot;
+    }
+  }
+}
+'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;took&quot; : 56,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 1,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : 1.8488227,
+    &quot;hits&quot; : [
+      {
+        &quot;_index&quot; : &quot;post&quot;,
+        &quot;_type&quot; : &quot;_doc&quot;,
+        &quot;_id&quot; : &quot;4&quot;,
+        &quot;_score&quot; : 1.8488227,
+        &quot;_source&quot; : {
+          &quot;content&quot; : &quot;see you again good bye&quot;
+        }
+      }
+    ]
+  }
+}
+</code></pre></div><h2 id="mapping"><a href="#mapping" class="header-anchor">#</a> Mapping</h2> <p>ElasticSearch는 자유로운 형태로 도큐먼트를 추가할 수 있다. 그러나 <code>매핑(Mapping)</code>을 사용하면 관계형 데이터베이스의 스키마처럼 형식을 강제할 수 있다.</p> <p>ElasticSearch는 별도의 매핑을 정의하지 않아도 도큐먼트를 새로 추가할 때 매핑이 자동으로 생성된다. 다음과 같이 도큐먼트를 추가하면</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/player/_doc/1 \
+-H 'Content-Type: application/json' \
+-d '{&quot;name&quot;: &quot;ronaldo&quot;, &quot;nation&quot;: &quot;portugal&quot;, &quot;age&quot;: 37, &quot;score&quot;: 15, &quot;assist&quot;: 15}'
+</code></pre></div><p>다음과 같이 매핑이 자동으로 생성된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/player/_mapping?pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;player&quot; : {
+    &quot;mappings&quot; : {
+      &quot;properties&quot; : {
+        &quot;age&quot; : {
+          &quot;type&quot; : &quot;long&quot;
+        },
+        &quot;assist&quot; : {
+          &quot;type&quot; : &quot;long&quot;
+        },
+        &quot;name&quot; : {
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;fields&quot; : {
+            &quot;keyword&quot; : {
+              &quot;type&quot; : &quot;keyword&quot;,
+              &quot;ignore_above&quot; : 256
+            }
+          }
+        },
+        &quot;nation&quot; : {
+          &quot;type&quot; : &quot;text&quot;,
+          &quot;fields&quot; : {
+            &quot;keyword&quot; : {
+              &quot;type&quot; : &quot;keyword&quot;,
+              &quot;ignore_above&quot; : 256
+            }
+          }
+        },
+        &quot;score&quot; : {
+          &quot;type&quot; : &quot;long&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre></div><h3 id="매핑-조회"><a href="#매핑-조회" class="header-anchor">#</a> 매핑 조회</h3> <p>URL 뒤에 <code>_mapping</code>을 붙여 인덱스의 매핑을 확인할 수 있다. 매핑이 없다면 다음과 같이 출력된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/post
+
+$ curl -XGET http://localhost:9200/post/_mapping\?pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;post&quot; : {
+    &quot;mappings&quot; : { }
+  }
+}
+</code></pre></div><h3 id="매핑-생성"><a href="#매핑-생성" class="header-anchor">#</a> 매핑 생성</h3> <p>인덱스를 생성할 때 매핑을 함께 정의할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/person \
+-H 'Content-Type: application/json' \
+-d '
+{
+  &quot;mappings&quot;: {
+    &quot;properties&quot;: {
+      &quot;name&quot;: { &quot;type&quot;: &quot;text&quot;  },   
+      &quot;age&quot;: { &quot;type&quot;: &quot;integer&quot; }
+    }
+  }  
+}
+'
+</code></pre></div><p>이미 매핑이 존재할 때 필드를 추가할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/person/_mapping \
+-H 'Content-Type: application/json' \
+-d '
+{
+  &quot;properties&quot;: {
+    &quot;nation&quot;: { &quot;type&quot;: &quot;text&quot;  }
+  }
+}
+'
+</code></pre></div><p>매핑을 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/person/_mapping\?pretty
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;person&quot; : {
+    &quot;mappings&quot; : {
+      &quot;properties&quot; : {
+        &quot;age&quot; : {
+          &quot;type&quot; : &quot;integer&quot;
+        },
+        &quot;name&quot; : {
+          &quot;type&quot; : &quot;text&quot;
+        },
+        &quot;nation&quot; : {
+          &quot;type&quot; : &quot;text&quot;
+        }
+      }
+    }
+  }
+}
+</code></pre></div><p>이제 매핑에 맞는 형식으로 도큐먼트를 추가해야한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/player/_doc/1?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;name&quot;: &quot;paul&quot;, &quot;nation&quot;: &quot;usa&quot;, &quot;age&quot;: &quot;35&quot;}'
+</code></pre></div><p>매핑에 맞지 않는 형식으로 도큐먼트를 추가하면 에러가 발생한다.</p> <div class="language- extra-class"><pre class="language-text"><code>curl -XPUT http://localhost:9200/player/_doc/4?pretty \
+-H 'Content-Type: application/json' \
+-d '{&quot;name&quot;: &quot;paul&quot;, &quot;nation&quot;: &quot;usa&quot;, &quot;age&quot;: &quot;hello world&quot;}'
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>{
+  &quot;error&quot; : {
+    &quot;root_cause&quot; : [
+      {
+        &quot;type&quot; : &quot;mapper_parsing_exception&quot;,
+        &quot;reason&quot; : &quot;failed to parse field [age] of type [long] in document with id '4'. Preview of field's value: 'hello world'&quot;
+      }
+    ],
+    &quot;type&quot; : &quot;mapper_parsing_exception&quot;,
+    &quot;reason&quot; : &quot;failed to parse field [age] of type [long] in document with id '4'. Preview of field's value: 'hello world'&quot;,
+    &quot;caused_by&quot; : {
+      &quot;type&quot; : &quot;illegal_argument_exception&quot;,
+      &quot;reason&quot; : &quot;For input string: \&quot;hello world\&quot;&quot;
+    }
+  },
+  &quot;status&quot; : 400
+}
+</code></pre></div><h2 id="집계"><a href="#집계" class="header-anchor">#</a> 집계</h2> <p><code>집계(Aggregation)</code>은 모든 데이터의 분석 및 요약을 제공하는 기능이다. 관계형 데이터베이스의 <code>Grouping</code>, <code>Project</code>에 상응한다.</p> <p>어그리게이션 예제를 위한 테스트 데이터는 다음과 같다.</p> <div class="language- extra-class"><pre class="language-text"><code>{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;1&quot; } }
+{&quot;name&quot;: &quot;ronaldo&quot;, &quot;nation&quot;: &quot;portugal&quot;, &quot;age&quot;: 37, &quot;score&quot;: 15, &quot;assist&quot;: 15}
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;2&quot; } }
+{&quot;name&quot;: &quot;son&quot;, &quot;nation&quot;: &quot;south korea&quot;, &quot;age&quot;: 31, &quot;score&quot;: 20, &quot;assist&quot;: 13}
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;3&quot; } }
+{&quot;name&quot;: &quot;salah&quot;, &quot;nation&quot;: &quot;egypt&quot;, &quot;age&quot;: 31, &quot;score&quot;: 19, &quot;assist&quot;: 11}
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;4&quot; } }
+{&quot;name&quot;: &quot;benzema&quot;, &quot;nation&quot;: &quot;france&quot;, &quot;age&quot;: 36, &quot;score&quot;: 27, &quot;assist&quot;: 11}
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;5&quot; } }
+{&quot;name&quot;: &quot;ebappe&quot;, &quot;nation&quot;: &quot;france&quot;, &quot;age&quot;: 25, &quot;score&quot;: 25, &quot;assist&quot;: 7}
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;6&quot; } }
+{&quot;name&quot;: &quot;pogba&quot;, &quot;nation&quot;: &quot;france&quot;, &quot;age&quot;: 31, &quot;score&quot;: 8, &quot;assist&quot;: 20}
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;7&quot; } }
+{&quot;name&quot;: &quot;kane&quot;, &quot;nation&quot;: &quot;england&quot;, &quot;age&quot;: 30, &quot;score&quot;: 12, &quot;assist&quot;: 18}
+{ &quot;index&quot; : { &quot;_index&quot; : &quot;person&quot;, &quot;_type&quot; : &quot;player&quot;, &quot;_id&quot; : &quot;8&quot; } }
+{&quot;name&quot;: &quot;fernandes&quot;, &quot;nation&quot;: &quot;portugal&quot;, &quot;age&quot;: 28, &quot;score&quot;: 10, &quot;assist&quot;: 16}
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XPOST http://localhost:9200/_bulk? \
+-H 'Content-Type: application/json' \
+--data-binary @players.json
+</code></pre></div><h3 id="메트릭-어그리게이션"><a href="#메트릭-어그리게이션" class="header-anchor">#</a> 메트릭 어그리게이션</h3> <p>산술이나 통계에 대한 어그리게이션을 <code>메트릭 어그리게이션</code>이라고 한다.</p> <h4 id="평균-계산하기"><a href="#평균-계산하기" class="header-anchor">#</a> 평균 계산하기</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// avg_score.json</span>
+<span class="token punctuation">{</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;aggs&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;avg_score&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;avg&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;field&quot;</span><span class="token operator">:</span> <span class="token string">&quot;score&quot;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br></div><pre class="language-text"><code>$ curl -XGET http://localhost:9200/_search\?pretty \
+-H 'Content-Type: application/json' \
+--data-binary @avg_score.json
+{
+  &quot;took&quot; : 409,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 8,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : null,
+    &quot;hits&quot; : [ ]
+  },
+  &quot;aggregations&quot; : {
+    &quot;avg_score&quot; : {
+      &quot;value&quot; : 17.0
+    }
+  }
+}
+</code></pre></div><h4 id="최대값-계산하기"><a href="#최대값-계산하기" class="header-anchor">#</a> 최대값 계산하기</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// max_score.json</span>
+<span class="token punctuation">{</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;aggs&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;max_score&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;max&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;field&quot;</span><span class="token operator">:</span> <span class="token string">&quot;score&quot;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="최소값-계산하기"><a href="#최소값-계산하기" class="header-anchor">#</a> 최소값 계산하기</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// min_score.json</span>
+<span class="token punctuation">{</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;aggs&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;min_score&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;min&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;field&quot;</span><span class="token operator">:</span> <span class="token string">&quot;score&quot;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="합계-계산하기"><a href="#합계-계산하기" class="header-anchor">#</a> 합계 계산하기</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// sum_score.json</span>
+<span class="token punctuation">{</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;aggs&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;sum_score&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;sum&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;field&quot;</span><span class="token operator">:</span> <span class="token string">&quot;score&quot;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h4 id="모든-통계-정보"><a href="#모든-통계-정보" class="header-anchor">#</a> 모든 통계 정보</h4> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// stats_score.json</span>
+<span class="token punctuation">{</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;aggs&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;stats_score&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;stats&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;field&quot;</span><span class="token operator">:</span> <span class="token string">&quot;score&quot;</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br></div><pre class="language-text"><code>$ curl -XGET http://localhost:9200/_search\?pretty \
+-H 'Content-Type: application/json' \
+--data-binary @stats_score.json
+{
+  &quot;took&quot; : 5,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 8,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : null,
+    &quot;hits&quot; : [ ]
+  },
+  &quot;aggregations&quot; : {
+    &quot;stats_score&quot; : {
+      &quot;count&quot; : 8,
+      &quot;min&quot; : 8.0,
+      &quot;max&quot; : 27.0,
+      &quot;avg&quot; : 17.0,
+      &quot;sum&quot; : 136.0
+    }
+  }
+}
+</code></pre></div><h3 id="버킷-어그리게이션"><a href="#버킷-어그리게이션" class="header-anchor">#</a> 버킷 어그리게이션</h3> <p>버킷 어그리게이션는 관계형 데이터베이스의 <code>Group by</code>와 유사하다. 버킷 어그리게이션을 사용하려면 매핑이 추가되어있어야 한다.</p> <div class="language-json extra-class"><pre class="language-json"><code><span class="token comment">// player_mapping.json</span>
+<span class="token punctuation">{</span>
+    <span class="token property">&quot;player&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;properties&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;name&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;text&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;fielddata&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;nation&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;text&quot;</span><span class="token punctuation">,</span> <span class="token property">&quot;fielddata&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;age&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;long&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;score&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;long&quot;</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token property">&quot;assist&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token property">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;long&quot;</span><span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>   
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XPUT http://localhost:9200/person/player/_mapping?include_type_name=true&amp;pretty \
+-H 'Content-Type: application/json' \
+-d @player_mapping.json
+</code></pre></div><h4 id="terms-aggregation"><a href="#terms-aggregation" class="header-anchor">#</a> Terms aggregation</h4> <div class="language-json extra-class"><div class="highlight-lines"><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br></div><pre class="language-json"><code><span class="token comment">// terms_aggs.json</span>
+<span class="token punctuation">{</span>
+    <span class="token property">&quot;size&quot;</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+    <span class="token property">&quot;aggs&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">&quot;player&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token property">&quot;terms&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">&quot;field&quot;</span><span class="token operator">:</span> <span class="token string">&quot;nation&quot;</span><span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ curl -XGET http://localhost:9200/_search\?pretty \                                        
+-H 'Content-Type: application/json' \
+--data-binary @teams_aggs.json
+{
+  &quot;took&quot; : 89,
+  &quot;timed_out&quot; : false,
+  &quot;_shards&quot; : {
+    &quot;total&quot; : 1,
+    &quot;successful&quot; : 1,
+    &quot;skipped&quot; : 0,
+    &quot;failed&quot; : 0
+  },
+  &quot;hits&quot; : {
+    &quot;total&quot; : {
+      &quot;value&quot; : 8,
+      &quot;relation&quot; : &quot;eq&quot;
+    },
+    &quot;max_score&quot; : null,
+    &quot;hits&quot; : [ ]
+  },
+  &quot;aggregations&quot; : {
+    &quot;player&quot; : {
+      &quot;doc_count_error_upper_bound&quot; : 0,
+      &quot;sum_other_doc_count&quot; : 0,
+      &quot;buckets&quot; : [
+        {
+          &quot;key&quot; : &quot;france&quot;,
+          &quot;doc_count&quot; : 3
+        },
+        {
+          &quot;key&quot; : &quot;portugal&quot;,
+          &quot;doc_count&quot; : 2
+        },
+        {
+          &quot;key&quot; : &quot;egypt&quot;,
+          &quot;doc_count&quot; : 1
+        },
+        {
+          &quot;key&quot; : &quot;england&quot;,
+          &quot;doc_count&quot; : 1
+        },
+        {
+          &quot;key&quot; : &quot;korea&quot;,
+          &quot;doc_count&quot; : 1
+        },
+        {
+          &quot;key&quot; : &quot;south&quot;,
+          &quot;doc_count&quot; : 1
+        }
+      ]
+    }
+  }
+}
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/55_db/03_Redis/220410_start_redis.html" class="prev">
+        Redis 정리
+      </a></span> <span class="next"><a href="/blog/post/55_db/05_Elastic Search/220411_kibana.html">
+        kibana 시작하기
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.32362dc0.js" defer></script><script src="/blog/assets/js/3.8795c9a2.js" defer></script><script src="/blog/assets/js/149.eb4bec1b.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Kubernetes 시작하기 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.32362dc0.js" as="script"><link rel="preload" href="/blog/assets/js/3.8795c9a2.js" as="script"><link rel="preload" href="/blog/assets/js/76.e027ccc7.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.009f8593.js"><link rel="prefetch" href="/blog/assets/js/100.04c8c108.js"><link rel="prefetch" href="/blog/assets/js/101.02907c78.js"><link rel="prefetch" href="/blog/assets/js/102.34e5043e.js"><link rel="prefetch" href="/blog/assets/js/103.9f91abc2.js"><link rel="prefetch" href="/blog/assets/js/104.31f63255.js"><link rel="prefetch" href="/blog/assets/js/105.8a43c1db.js"><link rel="prefetch" href="/blog/assets/js/106.b9460ed3.js"><link rel="prefetch" href="/blog/assets/js/107.f8cdc232.js"><link rel="prefetch" href="/blog/assets/js/108.8978a1ba.js"><link rel="prefetch" href="/blog/assets/js/109.968539f7.js"><link rel="prefetch" href="/blog/assets/js/11.70d9a8f5.js"><link rel="prefetch" href="/blog/assets/js/110.ad77dfe5.js"><link rel="prefetch" href="/blog/assets/js/111.a3e57423.js"><link rel="prefetch" href="/blog/assets/js/112.87034314.js"><link rel="prefetch" href="/blog/assets/js/113.2fcf2309.js"><link rel="prefetch" href="/blog/assets/js/114.8fed71aa.js"><link rel="prefetch" href="/blog/assets/js/115.a4990a06.js"><link rel="prefetch" href="/blog/assets/js/116.1780fd7a.js"><link rel="prefetch" href="/blog/assets/js/117.f22668d4.js"><link rel="prefetch" href="/blog/assets/js/118.bbe27d51.js"><link rel="prefetch" href="/blog/assets/js/119.25b9b643.js"><link rel="prefetch" href="/blog/assets/js/12.31f8420a.js"><link rel="prefetch" href="/blog/assets/js/120.9d9f48f0.js"><link rel="prefetch" href="/blog/assets/js/121.40af3a0c.js"><link rel="prefetch" href="/blog/assets/js/122.a636d2ef.js"><link rel="prefetch" href="/blog/assets/js/123.5c99f4f4.js"><link rel="prefetch" href="/blog/assets/js/124.3e75231d.js"><link rel="prefetch" href="/blog/assets/js/125.7cf1f005.js"><link rel="prefetch" href="/blog/assets/js/126.86bd0915.js"><link rel="prefetch" href="/blog/assets/js/127.34dfb59d.js"><link rel="prefetch" href="/blog/assets/js/128.cb8753b6.js"><link rel="prefetch" href="/blog/assets/js/129.75f1821b.js"><link rel="prefetch" href="/blog/assets/js/13.d86b1ae2.js"><link rel="prefetch" href="/blog/assets/js/130.352fa799.js"><link rel="prefetch" href="/blog/assets/js/131.57a5cee5.js"><link rel="prefetch" href="/blog/assets/js/132.b774b3fe.js"><link rel="prefetch" href="/blog/assets/js/133.5cea1190.js"><link rel="prefetch" href="/blog/assets/js/134.dbc3bbbd.js"><link rel="prefetch" href="/blog/assets/js/135.02ff9368.js"><link rel="prefetch" href="/blog/assets/js/136.f7128a40.js"><link rel="prefetch" href="/blog/assets/js/137.a3c425d9.js"><link rel="prefetch" href="/blog/assets/js/138.187b1e7e.js"><link rel="prefetch" href="/blog/assets/js/139.d581d7f6.js"><link rel="prefetch" href="/blog/assets/js/14.78cdbe3d.js"><link rel="prefetch" href="/blog/assets/js/140.1947f6c2.js"><link rel="prefetch" href="/blog/assets/js/141.d2397ceb.js"><link rel="prefetch" href="/blog/assets/js/142.a4fca10f.js"><link rel="prefetch" href="/blog/assets/js/143.868445e7.js"><link rel="prefetch" href="/blog/assets/js/144.a1c80310.js"><link rel="prefetch" href="/blog/assets/js/145.319913ba.js"><link rel="prefetch" href="/blog/assets/js/146.d19fd28e.js"><link rel="prefetch" href="/blog/assets/js/147.0f7acde4.js"><link rel="prefetch" href="/blog/assets/js/148.945a5b62.js"><link rel="prefetch" href="/blog/assets/js/149.eb4bec1b.js"><link rel="prefetch" href="/blog/assets/js/15.c479e5b5.js"><link rel="prefetch" href="/blog/assets/js/150.50892fe5.js"><link rel="prefetch" href="/blog/assets/js/151.c675ddff.js"><link rel="prefetch" href="/blog/assets/js/152.05d1ee8a.js"><link rel="prefetch" href="/blog/assets/js/153.75510d20.js"><link rel="prefetch" href="/blog/assets/js/154.f579d477.js"><link rel="prefetch" href="/blog/assets/js/155.12dbf578.js"><link rel="prefetch" href="/blog/assets/js/156.af8b54dd.js"><link rel="prefetch" href="/blog/assets/js/157.02eb87f5.js"><link rel="prefetch" href="/blog/assets/js/158.a1fbd08d.js"><link rel="prefetch" href="/blog/assets/js/159.75594bb8.js"><link rel="prefetch" href="/blog/assets/js/16.aec21ad3.js"><link rel="prefetch" href="/blog/assets/js/160.4eb83312.js"><link rel="prefetch" href="/blog/assets/js/161.104311e5.js"><link rel="prefetch" href="/blog/assets/js/162.aabbb479.js"><link rel="prefetch" href="/blog/assets/js/163.bf862198.js"><link rel="prefetch" href="/blog/assets/js/164.73e0e8e9.js"><link rel="prefetch" href="/blog/assets/js/165.052c0123.js"><link rel="prefetch" href="/blog/assets/js/166.f5eb35cc.js"><link rel="prefetch" href="/blog/assets/js/167.7a313045.js"><link rel="prefetch" href="/blog/assets/js/168.86fb56fe.js"><link rel="prefetch" href="/blog/assets/js/169.df883b7e.js"><link rel="prefetch" href="/blog/assets/js/17.3a9b6735.js"><link rel="prefetch" href="/blog/assets/js/170.47f0dbf7.js"><link rel="prefetch" href="/blog/assets/js/171.aec0020e.js"><link rel="prefetch" href="/blog/assets/js/172.c1d8c91b.js"><link rel="prefetch" href="/blog/assets/js/173.a6f2fcd6.js"><link rel="prefetch" href="/blog/assets/js/174.38b52e5e.js"><link rel="prefetch" href="/blog/assets/js/175.ae38f488.js"><link rel="prefetch" href="/blog/assets/js/176.29adebfe.js"><link rel="prefetch" href="/blog/assets/js/177.41b97ad0.js"><link rel="prefetch" href="/blog/assets/js/178.0fa9bbf3.js"><link rel="prefetch" href="/blog/assets/js/179.8559c981.js"><link rel="prefetch" href="/blog/assets/js/18.0c383095.js"><link rel="prefetch" href="/blog/assets/js/180.8733c320.js"><link rel="prefetch" href="/blog/assets/js/181.21e0e018.js"><link rel="prefetch" href="/blog/assets/js/182.b6e485e9.js"><link rel="prefetch" href="/blog/assets/js/183.c27d150d.js"><link rel="prefetch" href="/blog/assets/js/184.0fbcb691.js"><link rel="prefetch" href="/blog/assets/js/185.7e650b04.js"><link rel="prefetch" href="/blog/assets/js/186.6657fe1d.js"><link rel="prefetch" href="/blog/assets/js/187.551c064a.js"><link rel="prefetch" href="/blog/assets/js/188.8ba6e40b.js"><link rel="prefetch" href="/blog/assets/js/189.041316b7.js"><link rel="prefetch" href="/blog/assets/js/19.750739bf.js"><link rel="prefetch" href="/blog/assets/js/190.d71b0917.js"><link rel="prefetch" href="/blog/assets/js/191.a7d8bb61.js"><link rel="prefetch" href="/blog/assets/js/192.5fce8db9.js"><link rel="prefetch" href="/blog/assets/js/193.c5cc9ffb.js"><link rel="prefetch" href="/blog/assets/js/194.a63b6260.js"><link rel="prefetch" href="/blog/assets/js/195.d2e09806.js"><link rel="prefetch" href="/blog/assets/js/196.063ba68f.js"><link rel="prefetch" href="/blog/assets/js/197.d39d3324.js"><link rel="prefetch" href="/blog/assets/js/198.ce84b47e.js"><link rel="prefetch" href="/blog/assets/js/199.93c36c7f.js"><link rel="prefetch" href="/blog/assets/js/2.b088ac97.js"><link rel="prefetch" href="/blog/assets/js/20.13aea874.js"><link rel="prefetch" href="/blog/assets/js/200.48855557.js"><link rel="prefetch" href="/blog/assets/js/201.af6c3d13.js"><link rel="prefetch" href="/blog/assets/js/202.355fa950.js"><link rel="prefetch" href="/blog/assets/js/203.8b9a3978.js"><link rel="prefetch" href="/blog/assets/js/204.9d334517.js"><link rel="prefetch" href="/blog/assets/js/205.9d4d72ca.js"><link rel="prefetch" href="/blog/assets/js/206.2734a14e.js"><link rel="prefetch" href="/blog/assets/js/207.856430a2.js"><link rel="prefetch" href="/blog/assets/js/208.553763b5.js"><link rel="prefetch" href="/blog/assets/js/209.39f55833.js"><link rel="prefetch" href="/blog/assets/js/21.b5875938.js"><link rel="prefetch" href="/blog/assets/js/210.5c7be277.js"><link rel="prefetch" href="/blog/assets/js/211.8d787e7d.js"><link rel="prefetch" href="/blog/assets/js/212.97822173.js"><link rel="prefetch" href="/blog/assets/js/213.26729f1a.js"><link rel="prefetch" href="/blog/assets/js/214.7c6fd838.js"><link rel="prefetch" href="/blog/assets/js/215.ffa3d1cb.js"><link rel="prefetch" href="/blog/assets/js/216.5d2ebcf4.js"><link rel="prefetch" href="/blog/assets/js/217.17f13f17.js"><link rel="prefetch" href="/blog/assets/js/218.4209a714.js"><link rel="prefetch" href="/blog/assets/js/219.e1b478d8.js"><link rel="prefetch" href="/blog/assets/js/22.265c8215.js"><link rel="prefetch" href="/blog/assets/js/220.86c2079c.js"><link rel="prefetch" href="/blog/assets/js/221.1c717f8b.js"><link rel="prefetch" href="/blog/assets/js/222.585d0104.js"><link rel="prefetch" href="/blog/assets/js/223.29fc7e37.js"><link rel="prefetch" href="/blog/assets/js/224.d5e24637.js"><link rel="prefetch" href="/blog/assets/js/225.df1946ac.js"><link rel="prefetch" href="/blog/assets/js/226.2aa1c4d7.js"><link rel="prefetch" href="/blog/assets/js/227.a751e31d.js"><link rel="prefetch" href="/blog/assets/js/228.6e330b47.js"><link rel="prefetch" href="/blog/assets/js/229.77229d7b.js"><link rel="prefetch" href="/blog/assets/js/23.c83da651.js"><link rel="prefetch" href="/blog/assets/js/230.062a5ac1.js"><link rel="prefetch" href="/blog/assets/js/231.87bbf70b.js"><link rel="prefetch" href="/blog/assets/js/232.31af7ed9.js"><link rel="prefetch" href="/blog/assets/js/233.b1a58839.js"><link rel="prefetch" href="/blog/assets/js/234.68cec967.js"><link rel="prefetch" href="/blog/assets/js/235.ea62ee88.js"><link rel="prefetch" href="/blog/assets/js/236.a2f2b050.js"><link rel="prefetch" href="/blog/assets/js/237.e7cad44f.js"><link rel="prefetch" href="/blog/assets/js/238.81b4b5a3.js"><link rel="prefetch" href="/blog/assets/js/239.1c862178.js"><link rel="prefetch" href="/blog/assets/js/24.421a250c.js"><link rel="prefetch" href="/blog/assets/js/240.18b5df51.js"><link rel="prefetch" href="/blog/assets/js/241.aa077fb6.js"><link rel="prefetch" href="/blog/assets/js/242.c63afd4d.js"><link rel="prefetch" href="/blog/assets/js/243.b2129f8c.js"><link rel="prefetch" href="/blog/assets/js/244.ff8e7a30.js"><link rel="prefetch" href="/blog/assets/js/245.88169faa.js"><link rel="prefetch" href="/blog/assets/js/246.fa9199da.js"><link rel="prefetch" href="/blog/assets/js/247.cdd33986.js"><link rel="prefetch" href="/blog/assets/js/248.765f4cb5.js"><link rel="prefetch" href="/blog/assets/js/249.2a26a296.js"><link rel="prefetch" href="/blog/assets/js/25.154520e5.js"><link rel="prefetch" href="/blog/assets/js/250.439fb16a.js"><link rel="prefetch" href="/blog/assets/js/251.e057e7e0.js"><link rel="prefetch" href="/blog/assets/js/252.34794853.js"><link rel="prefetch" href="/blog/assets/js/253.c622fcbd.js"><link rel="prefetch" href="/blog/assets/js/254.74a70b9f.js"><link rel="prefetch" href="/blog/assets/js/255.fed47ff6.js"><link rel="prefetch" href="/blog/assets/js/256.a88005ca.js"><link rel="prefetch" href="/blog/assets/js/257.11083964.js"><link rel="prefetch" href="/blog/assets/js/258.0b1a7d73.js"><link rel="prefetch" href="/blog/assets/js/259.62c584ff.js"><link rel="prefetch" href="/blog/assets/js/26.4a88bf4d.js"><link rel="prefetch" href="/blog/assets/js/260.1063ea57.js"><link rel="prefetch" href="/blog/assets/js/261.8f065193.js"><link rel="prefetch" href="/blog/assets/js/262.f796ed15.js"><link rel="prefetch" href="/blog/assets/js/263.38c3508c.js"><link rel="prefetch" href="/blog/assets/js/264.6a5fb90f.js"><link rel="prefetch" href="/blog/assets/js/265.79985a16.js"><link rel="prefetch" href="/blog/assets/js/266.58737293.js"><link rel="prefetch" href="/blog/assets/js/267.c0489be8.js"><link rel="prefetch" href="/blog/assets/js/268.9b482a12.js"><link rel="prefetch" href="/blog/assets/js/269.d807798b.js"><link rel="prefetch" href="/blog/assets/js/27.7f6c507f.js"><link rel="prefetch" href="/blog/assets/js/270.62e46aaf.js"><link rel="prefetch" href="/blog/assets/js/271.a2636662.js"><link rel="prefetch" href="/blog/assets/js/272.2c029ac2.js"><link rel="prefetch" href="/blog/assets/js/273.c0803a3e.js"><link rel="prefetch" href="/blog/assets/js/274.feed5dcb.js"><link rel="prefetch" href="/blog/assets/js/275.d026e4d0.js"><link rel="prefetch" href="/blog/assets/js/276.6348ed02.js"><link rel="prefetch" href="/blog/assets/js/277.cb5be1e0.js"><link rel="prefetch" href="/blog/assets/js/28.86691d04.js"><link rel="prefetch" href="/blog/assets/js/29.34f07073.js"><link rel="prefetch" href="/blog/assets/js/30.c7caa137.js"><link rel="prefetch" href="/blog/assets/js/31.07b08573.js"><link rel="prefetch" href="/blog/assets/js/32.2d17c55c.js"><link rel="prefetch" href="/blog/assets/js/33.34659507.js"><link rel="prefetch" href="/blog/assets/js/34.ca823a5d.js"><link rel="prefetch" href="/blog/assets/js/35.fdee0018.js"><link rel="prefetch" href="/blog/assets/js/36.1df26e75.js"><link rel="prefetch" href="/blog/assets/js/37.e84c6798.js"><link rel="prefetch" href="/blog/assets/js/38.0ab020a7.js"><link rel="prefetch" href="/blog/assets/js/39.c752cd4a.js"><link rel="prefetch" href="/blog/assets/js/4.dce05cd8.js"><link rel="prefetch" href="/blog/assets/js/40.e6ff46a5.js"><link rel="prefetch" href="/blog/assets/js/41.7b5ace1e.js"><link rel="prefetch" href="/blog/assets/js/42.bd14936e.js"><link rel="prefetch" href="/blog/assets/js/43.d12fece7.js"><link rel="prefetch" href="/blog/assets/js/44.6fca8fd5.js"><link rel="prefetch" href="/blog/assets/js/45.907b4f15.js"><link rel="prefetch" href="/blog/assets/js/46.f9d2e206.js"><link rel="prefetch" href="/blog/assets/js/47.b1653fc1.js"><link rel="prefetch" href="/blog/assets/js/48.99b3c7bb.js"><link rel="prefetch" href="/blog/assets/js/49.828907da.js"><link rel="prefetch" href="/blog/assets/js/5.7193cd84.js"><link rel="prefetch" href="/blog/assets/js/50.f51f2a3e.js"><link rel="prefetch" href="/blog/assets/js/51.29a6e8ea.js"><link rel="prefetch" href="/blog/assets/js/52.4d64b497.js"><link rel="prefetch" href="/blog/assets/js/53.12dca8e6.js"><link rel="prefetch" href="/blog/assets/js/54.e3c4fef4.js"><link rel="prefetch" href="/blog/assets/js/55.b801643c.js"><link rel="prefetch" href="/blog/assets/js/56.a3d351a1.js"><link rel="prefetch" href="/blog/assets/js/57.cfabc431.js"><link rel="prefetch" href="/blog/assets/js/58.8a3cbbf5.js"><link rel="prefetch" href="/blog/assets/js/59.a5a7464b.js"><link rel="prefetch" href="/blog/assets/js/6.98f083fd.js"><link rel="prefetch" href="/blog/assets/js/60.affca2b3.js"><link rel="prefetch" href="/blog/assets/js/61.adf43eb0.js"><link rel="prefetch" href="/blog/assets/js/62.480ff614.js"><link rel="prefetch" href="/blog/assets/js/63.725f57dc.js"><link rel="prefetch" href="/blog/assets/js/64.ee3ea45f.js"><link rel="prefetch" href="/blog/assets/js/65.a9874219.js"><link rel="prefetch" href="/blog/assets/js/66.ec0c5b17.js"><link rel="prefetch" href="/blog/assets/js/67.043a2f09.js"><link rel="prefetch" href="/blog/assets/js/68.c85cdc1a.js"><link rel="prefetch" href="/blog/assets/js/69.24eb94a2.js"><link rel="prefetch" href="/blog/assets/js/7.a3939503.js"><link rel="prefetch" href="/blog/assets/js/70.7ab8f348.js"><link rel="prefetch" href="/blog/assets/js/71.3f967059.js"><link rel="prefetch" href="/blog/assets/js/72.296c112d.js"><link rel="prefetch" href="/blog/assets/js/73.4bad88aa.js"><link rel="prefetch" href="/blog/assets/js/74.ad674c4d.js"><link rel="prefetch" href="/blog/assets/js/75.6e3c3e6d.js"><link rel="prefetch" href="/blog/assets/js/77.963c60ef.js"><link rel="prefetch" href="/blog/assets/js/78.b6ecfd1c.js"><link rel="prefetch" href="/blog/assets/js/79.5c540919.js"><link rel="prefetch" href="/blog/assets/js/8.af2847e2.js"><link rel="prefetch" href="/blog/assets/js/80.cb971025.js"><link rel="prefetch" href="/blog/assets/js/81.8fea14a9.js"><link rel="prefetch" href="/blog/assets/js/82.e177062a.js"><link rel="prefetch" href="/blog/assets/js/83.c89e463b.js"><link rel="prefetch" href="/blog/assets/js/84.89d68e32.js"><link rel="prefetch" href="/blog/assets/js/85.12901aa6.js"><link rel="prefetch" href="/blog/assets/js/86.f7b120e4.js"><link rel="prefetch" href="/blog/assets/js/87.a620f73f.js"><link rel="prefetch" href="/blog/assets/js/88.aef154fa.js"><link rel="prefetch" href="/blog/assets/js/89.9f71412f.js"><link rel="prefetch" href="/blog/assets/js/9.820df2c6.js"><link rel="prefetch" href="/blog/assets/js/90.dd797eb4.js"><link rel="prefetch" href="/blog/assets/js/91.2f4cee08.js"><link rel="prefetch" href="/blog/assets/js/92.fcbd90d3.js"><link rel="prefetch" href="/blog/assets/js/93.49088527.js"><link rel="prefetch" href="/blog/assets/js/94.2162a1ba.js"><link rel="prefetch" href="/blog/assets/js/95.69c4c5ba.js"><link rel="prefetch" href="/blog/assets/js/96.70c77a1a.js"><link rel="prefetch" href="/blog/assets/js/97.77ecde0a.js"><link rel="prefetch" href="/blog/assets/js/98.bdec1ab1.js"><link rel="prefetch" href="/blog/assets/js/99.928b66ab.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link router-link-active">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link router-link-active">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/50_infra_devops/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Git, GitHub</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Linux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Docker</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Kubernetes</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220101_start_kubernetes.html" aria-current="page" class="active sidebar-link">Kubernetes 시작하기</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220103_kubernetes_objects.html" class="sidebar-link">Kubernetes 오브젝트</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220104_kubernetes_command.html" class="sidebar-link">Kubernetes 명령어 정리</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220105_spring_with_docker.html" class="sidebar-link">Dockerize Springboot &amp; Deploy to Kubernetes</a></li><li><a href="/blog/post/50_infra_devops/54_Kubernetes/220106_kubernetes_argo.html" class="sidebar-link">Github Actions + Argo CD 으로 Kubernetes CI/CD 파이프라인 구축하기</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#kubernetes">Kubernetes</a></li><li><a href="#master-node-worker-node">Master node, Worker node</a></li><li><a href="#다양한-kubernetes-환경">다양한 Kubernetes 환경</a><ul><li><a href="#개발-환경">개발 환경</a></li><li><a href="#운영-환경-온프레미스">운영 환경 - 온프레미스</a></li><li><a href="#운영-환경-클라우드-컴퓨팅-서비스에-쿠버네티스-클러스터-구성">운영 환경 - 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터 구성</a></li><li><a href="#운영-환경-관리형-쿠버네티스">운영 환경 - 관리형 쿠버네티스</a></li></ul></li><li><a href="#mac-os에서-쿠버네티스-시작하기">Mac OS에서 쿠버네티스 시작하기</a></li><li><a href="#aws-ec2에서-쿠버네티스-클러스터-구축해보기">AWS EC2에서 쿠버네티스 클러스터 구축해보기</a><ul><li><a href="#보안-그룹-설정">보안 그룹 설정</a><ul><li><a href="#master-node">Master node</a></li><li><a href="#worker-node">Worker node</a></li></ul></li><li><a href="#호스트-이름-변경">호스트 이름 변경</a></li><li><a href="#패키지-업그레이드">패키지 업그레이드</a></li><li><a href="#메모리-스왑-비활성화">메모리 스왑 비활성화</a></li><li><a href="#ntp-설정">NTP 설정</a></li><li><a href="#도커-설치">도커 설치</a></li><li><a href="#쿠버네티스-설치">쿠버네티스 설치</a></li><li><a href="#마스터-노드에서-클러스터-초기화하기">마스터 노드에서 클러스터 초기화하기</a></li><li><a href="#워커-노드-추가하기">워커 노드 추가하기</a></li><li><a href="#오버레이-네트워크-설치">오버레이 네트워크 설치</a></li><li><a href="#노드-삭제하기">노드 삭제하기</a></li><li><a href="#클러스터에-오브젝트-추가해보기">클러스터에 오브젝트 추가해보기</a></li></ul></li></ul></div><p></p> <h2 id="kubernetes"><a href="#kubernetes" class="header-anchor">#</a> Kubernetes</h2> <p><code>Kubernetes</code>는 <u>컨테이너 오케스트레이션</u> 시스템으로 다음과 같은 기능을 제공한다.</p> <ul><li><code>클러스터링</code> <ul><li>쿠버네티스는 여러 실제 서버를 논리적으로 하나의 서버로 클러스터링해준다.</li> <li>각 서버는 직접 구축한 온프레미스 서버일 수도 있고, AWS EC2처럼 클라우드 서버일 수도 있다.</li></ul></li> <li><code>오토 스케일링</code> <ul><li>쿠버네티스는 노드나 컨테이너를 쉽게 수평적 확장할 수 있다.</li></ul></li> <li><code>셀프 힐링</code> <ul><li>쿠버네티스는 특정 노드나 컨테이너가 다운되어도 자동으로 복구해준다.</li></ul></li> <li><code>로드 밸런싱</code> <ul><li>쿠버네티스는 노드나 컨테이너에 트래픽을 골고루 분배해준다.</li></ul></li> <li><code>롤링 업데이트</code> <ul><li>쿠버네티스는 무중단 배포를 지원한다.</li></ul></li> <li><code>롤백</code> <ul><li>쿠버네티스는 이전 버전으로 쉽게 돌아가는 롤백 기능을 제공한다.</li></ul></li> <li>그 밖에도 <code>네트워킹</code>, <code>보안</code>, <code>스토리지</code> 등의 다양한 기능을 제공한다.</li></ul> <h2 id="master-node-worker-node"><a href="#master-node-worker-node" class="header-anchor">#</a> Master node, Worker node</h2> <p>쿠버네티스는 여러 서버를 <code>클러스터(Cluster)</code>로 만들어준다. 쿠버네티스에서는 각 서버를 <code>노드(Node)</code>라고 한다.</p> <p><img src="/blog/assets/img/1.0c104602.png" alt=""></p> <p><code>마스터 노드(Master node)</code>는 클러스터와 워커 노드를 관리하며, <code>워커 노드(Worker node)</code>에는 컨테이너가 생성된다. (마스터 노드에도 컨테이너가 생성될 수 있다.)</p> <p><img src="/blog/assets/img/2.817c5cdf.png" alt=""></p> <p>보통 다음과 같은 순서로 쿠버네티스 클러스터를 구축한다.</p> <ol><li>실제 서버든 클라우드 서비스의 서버든 상관없이 노드 역할을 할 서버를 세 개 이상 준비한다.</li> <li>모든 서버에 쿠버네티스를 설치한다.</li> <li>마스터 노드 역할을 할 서버를 선택한다.</li> <li>사용자는 <code>kubectl</code>로 마스터 노드에 접속하여 워커 노드를 등록한다.</li> <li>사용자는 워커 노드에 접속하여 마스터 노드에 대한 정보를 등록하여 클러스터 구축을 마무리한다.</li> <li>모든 노드에 설치된 <code>kubelet</code>이 유기적으로 통신하며 하나의 서버처럼 동작한다.</li> <li>사용자는 마스터 노드에 접속하여 클러스터를 관리, 운영한다.</li></ol> <h2 id="다양한-kubernetes-환경"><a href="#다양한-kubernetes-환경" class="header-anchor">#</a> 다양한 Kubernetes 환경</h2> <h3 id="개발-환경"><a href="#개발-환경" class="header-anchor">#</a> 개발 환경</h3> <p>개발 환경에서는 하나의 노드로 구성된 쿠버네티스를 구축할 수 있다. 리눅스 환경에서는 <code>Minikube</code>, Mac OS 환경에서는 <code>Docker Destkop for Mac</code>, Window 환경에서는 <code>Docker Desktop for Window</code>를 설치하면 된다.</p> <h3 id="운영-환경-온프레미스"><a href="#운영-환경-온프레미스" class="header-anchor">#</a> 운영 환경 - 온프레미스</h3> <p><code>온프레미스</code>는 AWS 같은 클라우드 서비스를 이용하지 않고 자체적인 서버실을 구축하여 운영하는 방식을 말한다. 온프레미스 환경에서는 <code>kubeadm</code>, <code>kops</code>, <code>kubespray</code> 등을 사용하여 쿠버네티스 클러스터를 구축할 수 있다.</p> <h3 id="운영-환경-클라우드-컴퓨팅-서비스에-쿠버네티스-클러스터-구성"><a href="#운영-환경-클라우드-컴퓨팅-서비스에-쿠버네티스-클러스터-구성" class="header-anchor">#</a> 운영 환경 - 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터 구성</h3> <p>AWS EC2와 같은 클라우드 컴퓨팅 서비스에 쿠버네티스 클러스터를 구축할 수도 있다. 보통 <code>kubeadm</code>, <code>kops</code>, <code>kubespray</code> 등을 사용하여 쿠버네티스 클러스터를 구축할 수 있다.</p> <h3 id="운영-환경-관리형-쿠버네티스"><a href="#운영-환경-관리형-쿠버네티스" class="header-anchor">#</a> 운영 환경 - 관리형 쿠버네티스</h3> <p>온프레미스 환경이든 AWS EC2 클라우드 컴퓨팅 서비스를 사용하든 마스터 노드에서 클러스터 구성을 위한 복잡한 환경설정을 해야한다. <code>AWS EKS(Elastic Kubernetes Service)</code>, <code>GCP GKE(Google Kubernetes Engine)</code> 같은 서비스는 마스터 노드 역할을 하는 클라우드 컴퓨팅 서비스를 제공하며, 이를 <code>관리형 쿠버네티스(Managed Kubernetes)</code>라고 한다.</p> <h2 id="mac-os에서-쿠버네티스-시작하기"><a href="#mac-os에서-쿠버네티스-시작하기" class="header-anchor">#</a> Mac OS에서 쿠버네티스 시작하기</h2> <p><code>Docker Desktop for Mac</code>에는 쿠버네티스가 내장되어있다. <code>Docker Desktop for Mac</code>을 실행하여 다음과 같은 순서로 쿠버네티스를 활성화하면 된다.</p> <p><img src="/blog/assets/img/3.22903ab8.png" alt=""></p> <p><code>kubectl version</code> 명령어로 쿠버네티스 버전을 확인해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl version  
+Client Version: version.Info{Major:&quot;1&quot;, Minor:&quot;22&quot;, GitVersion:&quot;v1.22.4&quot;, GitCommit:&quot;b695d79d4f967c403a96986f1750a35eb75e75f1&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2021-11-17T15:48:33Z&quot;, GoVersion:&quot;go1.16.10&quot;, Compiler:&quot;gc&quot;, Platform:&quot;darwin/amd64&quot;}
+Server Version: version.Info{Major:&quot;1&quot;, Minor:&quot;22&quot;, GitVersion:&quot;v1.22.4&quot;, GitCommit:&quot;b695d79d4f967c403a96986f1750a35eb75e75f1&quot;, GitTreeState:&quot;clean&quot;, BuildDate:&quot;2021-11-17T15:42:41Z&quot;, GoVersion:&quot;go1.16.10&quot;, Compiler:&quot;gc&quot;, Platform:&quot;linux/amd64&quot;}
+</code></pre></div><p><code>kubectl get nodes</code>명령어로 클러스터에 포함된 노드들을 확인할 수 있다. 현재 하나의 노드를 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl get nodes
+NAME             STATUS   ROLES                  AGE   VERSION
+docker-desktop   Ready    control-plane,master   66m   v1.22.4
+</code></pre></div><h2 id="aws-ec2에서-쿠버네티스-클러스터-구축해보기"><a href="#aws-ec2에서-쿠버네티스-클러스터-구축해보기" class="header-anchor">#</a> AWS EC2에서 쿠버네티스 클러스터 구축해보기</h2> <p>쿠버네티스 클러스터를 구성하기 위한 조건은 다음과 같다.</p> <ul><li>서버가 2개의 CPU core, 2GB RAM 이상이어야 한다.</li> <li>메모르 스왑을 비활성화해야한다.</li> <li>모든 서버의 시간이 NTP를 통해 동기화되어야한다.</li></ul> <p>두 개의 AWS EC2 인스턴스로 쿠버네티스 클러스터를 구축해보자. AWS EC2 스펙은 다음과 같다.</p> <ul><li>Ubuntu Server 20.04 LTS (HVM), SSD Volume Type</li> <li>t3a.small (2 CPU core, 2GB RAM)</li></ul> <h3 id="보안-그룹-설정"><a href="#보안-그룹-설정" class="header-anchor">#</a> 보안 그룹 설정</h3> <p>쿠버네티스 노드 간 통신을 위해 다음과 같은 포트를 개방해야한다.</p> <h4 id="master-node"><a href="#master-node" class="header-anchor">#</a> Master node</h4> <ul><li><code>kubelet</code>: 10250</li> <li><code>kube-apiserver</code>: 6443</li> <li><code>etcd</code>: 2379, 2380</li></ul> <h4 id="worker-node"><a href="#worker-node" class="header-anchor">#</a> Worker node</h4> <ul><li><code>kubelet</code>: 10250</li></ul> <h3 id="호스트-이름-변경"><a href="#호스트-이름-변경" class="header-anchor">#</a> 호스트 이름 변경</h3> <p><code>Hostname</code>에는 영문 소문자(a-z), 숫자(0-9), 그리고 하이폰(-)만 사용해야 한다.
+우선 <code>sudo hostnamectl set-hostname &lt;HOSTNAME&gt;</code> 명령어로 호스트 이름을 변경한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo hostnamectl set-hostname cluster-master1
+</code></pre></div><p><code>hostnamectl</code> 명령어로 반영되었는지 확인한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ hostnamectl
+   Static hostname: cluster-master1
+         Icon name: computer-vm
+           Chassis: vm
+        Machine ID: ec ... 766e7
+           Boot ID: 33 ... e0732
+    Virtualization: kvm
+  Operating System: Ubuntu 18.04.6 LTS
+            Kernel: Linux 5.4.0-1060-aws
+      Architecture: x86-64
+</code></pre></div><p><code>/etc/hosts</code> 파일을 열고 호스트 네임을 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo vim /etc/hosts
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>127.0.0.1 localhost
+127.0.0.1 cluster-master1
+....
+</code></pre></div><p>마지막으로 서버를 재시작한다.</p> <h3 id="패키지-업그레이드"><a href="#패키지-업그레이드" class="header-anchor">#</a> 패키지 업그레이드</h3> <p>기본으로 설치된 패키지들을 최신으로 업데이트 한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo apt update
+
+$ sudo apt upgrade
+</code></pre></div><h3 id="메모리-스왑-비활성화"><a href="#메모리-스왑-비활성화" class="header-anchor">#</a> 메모리 스왑 비활성화</h3> <div class="language- extra-class"><pre class="language-text"><code>$ sudo swapoff -a
+</code></pre></div><h3 id="ntp-설정"><a href="#ntp-설정" class="header-anchor">#</a> NTP 설정</h3> <p>쿠버네티스 클러스터는 여러 서버로 구성된다. 따라서 모든 서버의 시간을 <code>NTP(Network Time Protocol)</code>로 동기화 해야한다. 다음 명령어를 순서대로 입력하자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo apt install ntp
+
+$ sudo service ntp restart
+
+$ sudo ntpq -p
+</code></pre></div><h3 id="도커-설치"><a href="#도커-설치" class="header-anchor">#</a> 도커 설치</h3> <p>먼저 각 노드에 도커를 설치하기 위해 다음 명령어를 순서대로 입력한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo apt-get update &amp;&amp; sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common gnupg2
+
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key --keyring /etc/apt/trusted.gpg.d/docker.gpg add -
+
+$ sudo add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable&quot;
+
+$ sudo apt-get update &amp;&amp; sudo apt-get install -y containerd.io=1.2.13-2 docker-ce=5:19.03.11~3-0~ubuntu-$(lsb_release -cs) docker-ce-cli=5:19.03.11~3-0~ubuntu-$(lsb_release -cs)
+
+$ sudo mkdir /etc/docker
+
+$ cat &lt;&lt;EOF | sudo tee /etc/docker/daemon.json
+{
+  &quot;exec-opts&quot;: [&quot;native.cgroupdriver=systemd&quot;],
+  &quot;log-driver&quot;: &quot;json-file&quot;,
+  &quot;log-opts&quot;: {
+    &quot;max-size&quot;: &quot;100m&quot;
+  },
+  &quot;storage-driver&quot;: &quot;overlay2&quot;
+}
+EOF
+
+$ sudo mkdir -p /etc/systemd/system/docker.service.d
+
+$ sudo systemctl daemon-reload
+
+$ sudo systemctl restart docker
+
+$ sudo systemctl enable docker
+</code></pre></div><p>도커가 설치되었는지 확인하자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker --version
+Docker version 20.10.14, build a224086
+</code></pre></div><p>도커는 다음과 같이 시작, 상태 확인, 정지할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo systemctl start docker 
+
+$ sudo systemctl status docker 
+
+$ sudo systemctl stop docker 
+</code></pre></div><h3 id="쿠버네티스-설치"><a href="#쿠버네티스-설치" class="header-anchor">#</a> 쿠버네티스 설치</h3> <p>먼저 쿠버네티스 저장소를 추가한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo apt-get update
+
+$ sudo apt-get install -y apt-transport-https ca-certificates curl
+
+$ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+
+$ echo &quot;deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main&quot; | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+$ sudo apt-get update
+
+$ sudo apt-get install -y kubectl kubeadm kubelet 
+
+$ sudo apt-mark hold kubectl kubeadm kubelet 
+</code></pre></div><ul><li><code>kubectl</code>: 쿠버네티스를 제어하기 위한 CLI 도구</li> <li><code>kubeadm</code>: 쿠버네티스 클러스터를 구축하고 실행하는 도구</li> <li><code>kubelet</code>: 쿠버네티스 노드 사이에서 실행되며, 노드 사이의 통신을 담당하는 도구</li></ul> <p>지금까지 마스터 노드에 도커와 쿠버네티스를 설치했다. 다른 작업 노드에도 동일한 방법으로 도커와 쿠버네티스를 설치하자.</p> <h3 id="마스터-노드에서-클러스터-초기화하기"><a href="#마스터-노드에서-클러스터-초기화하기" class="header-anchor">#</a> 마스터 노드에서 클러스터 초기화하기</h3> <p>마스터 노드로 사용할 호스트에서 다음 명령어로 클러스터를 초기화하고 마스터 노드를 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo kubeadm init \
+    --pod-network-cidr=192.168.0.0/16 \
+    --control-plane-endpoint=&lt;EC2 IP주소&gt; \
+    --apiserver-cert-extra-sans=&lt;EC2 IP주소&gt;    
+</code></pre></div><p>마스터 노드 생성에 성공하면 다음과 같은 결과물이 출력된다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run &quot;kubectl apply -f [podnetwork].yaml&quot; with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of control-plane nodes by copying certificate authorities
+and service account keys on each node and then running the following as root:
+
+  kubeadm &lt;마스터 노드 EC2 IP&gt;:&lt;PORT&gt; --token 생략 ...
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+  kubeadm join &lt;마스터노드 EC2 IP&gt;:&lt;PORT&gt; --token 생략 ...
+</code></pre></div><p>결과물에서 명령어 몇 가지를 확인할 수 있는데 먼저 첫 번째 명령어를 마스터 노드에서 실행한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo mkdir -p $HOME/.kube
+
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+
+$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre></div><p>두 번째 명령어는 마스터 노드를 추가하고 싶을 때 마스터 노드에서 실행한다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>You can now join any number of control-plane nodes by copying certificate authorities
+and service account keys on each node and then running the following as root:
+
+  kubeadm &lt;마스터 노드 EC2 IP&gt;:&lt;PORT&gt; --token 생략 ...
+</code></pre></div><p>세 번째 명령어는 워커 노드를 추가하고 싶을 때 워커 노드에서 실행한다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br></div><pre class="language-text"><code>Then you can join any number of worker nodes by running the following on each as root:
+
+  kubeadm join &lt;마스터노드 EC2 IP&gt;:&lt;PORT&gt; --token 생략 ...
+</code></pre></div><h3 id="워커-노드-추가하기"><a href="#워커-노드-추가하기" class="header-anchor">#</a> 워커 노드 추가하기</h3> <p>워커 노드로 사용할 EC2 인스턴스에도 위와 동일한 방법으로 도커와 쿠버네티스를 설치한다. 그리고 마스터 노드를 생성할 때 출력된 세 번째 명령어를 워커 노드에서 실행한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ sudo kubeadm join &lt;마스터노드 EC2 IP&gt;:&lt;PORT&gt; --token 생략 ...
+This node has joined the cluster
+</code></pre></div><h3 id="오버레이-네트워크-설치"><a href="#오버레이-네트워크-설치" class="header-anchor">#</a> 오버레이 네트워크 설치</h3> <p>우선 마스터 노드 다음 명령어를 입력한다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br></div><pre class="language-text"><code>$ kubectl get pod --all-namespaces
+NAMESPACE     NAME                                      READY   STATUS              RESTARTS   AGE
+kube-system   coredns-64897985d-7cn8t                   0/1     Pending             0          10m
+kube-system   coredns-64897985d-fqxbs                   0/1     Pending             0          10m
+kube-system   etcd-cluster-master1                      1/1     Running             0          10m
+kube-system   kube-apiserver-cluster-master1            1/1     Running             0          10m
+kube-system   kube-controller-manager-cluster-master1   1/1     Running             0          10m
+kube-system   kube-proxy-8xft2                          1/1     Running             0          9m6s
+kube-system   kube-proxy-qkd54                          1/1     Running             0          10m
+kube-system   kube-scheduler-cluster-master1            1/1     Running             0          10m
+</code></pre></div><p><code>kube-system</code>에 <code>coredns</code>로 시작하는 오브젝트를 확인할 수 있다. 쿠버네티스는 싱글 노드 환경에서 기본적으로 <code>coredns</code>를 사용하여 오브젝트를 식별하며, <code>coredns-64897985d-7cn8t</code>, <code>coredns-64897985d-fqxbs</code>는 <code>coredns</code>와 관련된 오브젝트다.</p> <p>그러나 멀티 노드로 구성된 클러스터 환경에서 오브젝트 사이의 통신을 위해서는 오버레이 네트워크를 구성해야한다. <code>CNI(Contaier Network Interface)</code>는 컨테이너 간 네트워킹을 제어할 수 있는 플러그인 표준이며, 이 구현체에는 <code>Calico</code>, <code>Flannel</code> 등이 존재한다.</p> <p>아직 오버레이 네트워크가 구성되지 않았기 때문에 <code>coredns</code>와 관련된 오브젝트의 상태가 <code>Pending</code>이다.</p> <p>이제 <code>Calico</code>를 사용하여 오버레이 네트워크를 구성해보자. 다음 명령어를 입력하기만 하면 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+</code></pre></div><p>정상적으로 설치가 완료되면 <code>Calico</code>와 관련된 오브젝트가 생성, 실행되는 것을 확인할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br></div><pre class="language-text"><code>$ kubectl get pods --all-namespaces
+NAMESPACE     NAME                                      READY   STATUS    RESTARTS   AGE
+kube-system   calico-kube-controllers-7c845d499-x84g7   1/1     Running   0          11m
+kube-system   calico-node-shffx                         0/1     Running   0          11m
+kube-system   calico-node-tgw54                         0/1     Running   0          11m
+kube-system   coredns-64897985d-7cn8t                   1/1     Running   0          22m
+kube-system   coredns-64897985d-fqxbs                   1/1     Running   0          22m
+kube-system   etcd-cluster-master1                      1/1     Running   0          23m
+kube-system   kube-apiserver-cluster-master1            1/1     Running   0          23m
+kube-system   kube-controller-manager-cluster-master1   1/1     Running   0          23m
+kube-system   kube-proxy-8xft2                          1/1     Running   0          21m
+kube-system   kube-proxy-qkd54                          1/1     Running   0          22m
+kube-system   kube-scheduler-cluster-master1            1/1     Running   0          23m
+</code></pre></div><p>또한 오버레이 네트워크가 구성됐기 때문에 <code>coredns</code>와 관련된 오브젝트의 상태도 <code>Running</code>으로 변경되었다.</p> <h3 id="노드-삭제하기"><a href="#노드-삭제하기" class="header-anchor">#</a> 노드 삭제하기</h3> <p>삭제할 노드에서 <code>kubeadm reset</code> 명령어를 입력하면 쿠버네티스에서 노드가 삭제된다.</p> <h3 id="클러스터에-오브젝트-추가해보기"><a href="#클러스터에-오브젝트-추가해보기" class="header-anchor">#</a> 클러스터에 오브젝트 추가해보기</h3> <p>디플로이먼트, 서비스를 추가하여 클러스터가 잘 작동하는지 확인하자.</p> <p>우선 디플로이먼트를 생성한다.</p> <div class="language-yml extra-class"><pre class="language-yml"><code><span class="token comment"># nginx-deployment.yml</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>deployment
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod<span class="token punctuation">-</span>label
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+      <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span> 
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod<span class="token punctuation">-</span>label
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>container
+          <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>latest
+          <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">80</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl apply -f nginx-deployment.yml
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl get deployment
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           33s
+</code></pre></div><p>그리고 ClusterIP 타입의 서비스를 생성한다.</p> <div class="language-yml extra-class"><pre class="language-yml"><code><span class="token comment"># nginx-service.yml</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>service
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>service<span class="token punctuation">-</span>port
+      <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">9999</span>
+      <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <span class="token number">80</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>pod<span class="token punctuation">-</span>label
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> ClusterIP
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl apply -f nginx-service.yml
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl get services
+NAME            TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+kubernetes      ClusterIP   10.96.0.1        &lt;none&gt;        443/TCP    14m
+nginx-service   ClusterIP   10.103.118.151   &lt;none&gt;        9999/TCP   6s
+</code></pre></div><p>그 다음 인그레스 오브젝트를 생성한다.</p> <div class="language-yml extra-class"><pre class="language-yml"><code><span class="token comment"># nginx-ingress.yml</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> networking.k8s.io/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Ingress
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>ingress
+  <span class="token key atrule">annotations</span><span class="token punctuation">:</span>
+    <span class="token key atrule">nginx.ingress.kubernetes.io/rewrite-target</span><span class="token punctuation">:</span> / 
+    <span class="token key atrule">kubernetes.io/ingress.class</span><span class="token punctuation">:</span> <span class="token string">&quot;nginx&quot;</span>
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">rules</span><span class="token punctuation">:</span> 
+  <span class="token punctuation">-</span> <span class="token key atrule">http</span><span class="token punctuation">:</span>
+      <span class="token key atrule">paths</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">path</span><span class="token punctuation">:</span> /service
+        <span class="token key atrule">pathType</span><span class="token punctuation">:</span> Prefix
+        <span class="token key atrule">backend</span><span class="token punctuation">:</span>
+          <span class="token key atrule">service</span><span class="token punctuation">:</span>
+            <span class="token key atrule">name</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>service
+            <span class="token key atrule">port</span><span class="token punctuation">:</span>
+              <span class="token key atrule">number</span><span class="token punctuation">:</span> <span class="token number">9999</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl apply -f nginx-ingress.yml
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kubectl get ingress
+NAME            CLASS    HOSTS   ADDRESS   PORTS   AGE
+nginx-ingress   &lt;none&gt;   *                 80      2m32s
+</code></pre></div><p>그리고 nginx 인그레스 컨트롤러를 설치한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.0.0/deploy/static/provider/baremetal/deploy.yaml
+</code></pre></div><p>마지막으로 nginx 인그레스 컨트롤러 서비스의 외부 포트를 EC2 보안 그룹에서 개방한다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>$ kubectl get services -n ingress-nginx 
+NAME                                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+ingress-nginx-controller             NodePort    10.102.204.237   &lt;none&gt;        80:30480/TCP,443:32300/TCP   10m
+ingress-nginx-controller-admission   ClusterIP   10.106.35.236    &lt;none&gt;        443/TCP                      10m
+</code></pre></div><p><img src="/blog/assets/img/4.877339a7.png" alt=""></p> <p>이제 워커노드로 요청을 보낼 수 있게 된다.</p> <p><img src="/blog/assets/img/5.c74bb77f.png" alt=""></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/50_infra_devops/53_Docker/210103_docker_compose.html" class="prev">
+        Docker Compose
+      </a></span> <span class="next"><a href="/blog/post/50_infra_devops/54_Kubernetes/220103_kubernetes_objects.html">
+        Kubernetes 오브젝트
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.32362dc0.js" defer></script><script src="/blog/assets/js/3.8795c9a2.js" defer></script><script src="/blog/assets/js/76.e027ccc7.js" defer></script>
+  </body>
+</html>

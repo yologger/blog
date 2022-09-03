@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Apache Kafka 시작하기 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.32362dc0.js" as="script"><link rel="preload" href="/blog/assets/js/3.8795c9a2.js" as="script"><link rel="preload" href="/blog/assets/js/16.aec21ad3.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.009f8593.js"><link rel="prefetch" href="/blog/assets/js/100.04c8c108.js"><link rel="prefetch" href="/blog/assets/js/101.02907c78.js"><link rel="prefetch" href="/blog/assets/js/102.34e5043e.js"><link rel="prefetch" href="/blog/assets/js/103.9f91abc2.js"><link rel="prefetch" href="/blog/assets/js/104.31f63255.js"><link rel="prefetch" href="/blog/assets/js/105.8a43c1db.js"><link rel="prefetch" href="/blog/assets/js/106.b9460ed3.js"><link rel="prefetch" href="/blog/assets/js/107.f8cdc232.js"><link rel="prefetch" href="/blog/assets/js/108.8978a1ba.js"><link rel="prefetch" href="/blog/assets/js/109.968539f7.js"><link rel="prefetch" href="/blog/assets/js/11.70d9a8f5.js"><link rel="prefetch" href="/blog/assets/js/110.ad77dfe5.js"><link rel="prefetch" href="/blog/assets/js/111.a3e57423.js"><link rel="prefetch" href="/blog/assets/js/112.87034314.js"><link rel="prefetch" href="/blog/assets/js/113.2fcf2309.js"><link rel="prefetch" href="/blog/assets/js/114.8fed71aa.js"><link rel="prefetch" href="/blog/assets/js/115.a4990a06.js"><link rel="prefetch" href="/blog/assets/js/116.1780fd7a.js"><link rel="prefetch" href="/blog/assets/js/117.f22668d4.js"><link rel="prefetch" href="/blog/assets/js/118.bbe27d51.js"><link rel="prefetch" href="/blog/assets/js/119.25b9b643.js"><link rel="prefetch" href="/blog/assets/js/12.31f8420a.js"><link rel="prefetch" href="/blog/assets/js/120.9d9f48f0.js"><link rel="prefetch" href="/blog/assets/js/121.40af3a0c.js"><link rel="prefetch" href="/blog/assets/js/122.a636d2ef.js"><link rel="prefetch" href="/blog/assets/js/123.5c99f4f4.js"><link rel="prefetch" href="/blog/assets/js/124.3e75231d.js"><link rel="prefetch" href="/blog/assets/js/125.7cf1f005.js"><link rel="prefetch" href="/blog/assets/js/126.86bd0915.js"><link rel="prefetch" href="/blog/assets/js/127.34dfb59d.js"><link rel="prefetch" href="/blog/assets/js/128.cb8753b6.js"><link rel="prefetch" href="/blog/assets/js/129.75f1821b.js"><link rel="prefetch" href="/blog/assets/js/13.d86b1ae2.js"><link rel="prefetch" href="/blog/assets/js/130.352fa799.js"><link rel="prefetch" href="/blog/assets/js/131.57a5cee5.js"><link rel="prefetch" href="/blog/assets/js/132.b774b3fe.js"><link rel="prefetch" href="/blog/assets/js/133.5cea1190.js"><link rel="prefetch" href="/blog/assets/js/134.dbc3bbbd.js"><link rel="prefetch" href="/blog/assets/js/135.02ff9368.js"><link rel="prefetch" href="/blog/assets/js/136.f7128a40.js"><link rel="prefetch" href="/blog/assets/js/137.a3c425d9.js"><link rel="prefetch" href="/blog/assets/js/138.187b1e7e.js"><link rel="prefetch" href="/blog/assets/js/139.d581d7f6.js"><link rel="prefetch" href="/blog/assets/js/14.78cdbe3d.js"><link rel="prefetch" href="/blog/assets/js/140.1947f6c2.js"><link rel="prefetch" href="/blog/assets/js/141.d2397ceb.js"><link rel="prefetch" href="/blog/assets/js/142.a4fca10f.js"><link rel="prefetch" href="/blog/assets/js/143.868445e7.js"><link rel="prefetch" href="/blog/assets/js/144.a1c80310.js"><link rel="prefetch" href="/blog/assets/js/145.319913ba.js"><link rel="prefetch" href="/blog/assets/js/146.d19fd28e.js"><link rel="prefetch" href="/blog/assets/js/147.0f7acde4.js"><link rel="prefetch" href="/blog/assets/js/148.945a5b62.js"><link rel="prefetch" href="/blog/assets/js/149.eb4bec1b.js"><link rel="prefetch" href="/blog/assets/js/15.c479e5b5.js"><link rel="prefetch" href="/blog/assets/js/150.50892fe5.js"><link rel="prefetch" href="/blog/assets/js/151.c675ddff.js"><link rel="prefetch" href="/blog/assets/js/152.05d1ee8a.js"><link rel="prefetch" href="/blog/assets/js/153.75510d20.js"><link rel="prefetch" href="/blog/assets/js/154.f579d477.js"><link rel="prefetch" href="/blog/assets/js/155.12dbf578.js"><link rel="prefetch" href="/blog/assets/js/156.af8b54dd.js"><link rel="prefetch" href="/blog/assets/js/157.02eb87f5.js"><link rel="prefetch" href="/blog/assets/js/158.a1fbd08d.js"><link rel="prefetch" href="/blog/assets/js/159.75594bb8.js"><link rel="prefetch" href="/blog/assets/js/160.4eb83312.js"><link rel="prefetch" href="/blog/assets/js/161.104311e5.js"><link rel="prefetch" href="/blog/assets/js/162.aabbb479.js"><link rel="prefetch" href="/blog/assets/js/163.bf862198.js"><link rel="prefetch" href="/blog/assets/js/164.73e0e8e9.js"><link rel="prefetch" href="/blog/assets/js/165.052c0123.js"><link rel="prefetch" href="/blog/assets/js/166.f5eb35cc.js"><link rel="prefetch" href="/blog/assets/js/167.7a313045.js"><link rel="prefetch" href="/blog/assets/js/168.86fb56fe.js"><link rel="prefetch" href="/blog/assets/js/169.df883b7e.js"><link rel="prefetch" href="/blog/assets/js/17.3a9b6735.js"><link rel="prefetch" href="/blog/assets/js/170.47f0dbf7.js"><link rel="prefetch" href="/blog/assets/js/171.aec0020e.js"><link rel="prefetch" href="/blog/assets/js/172.c1d8c91b.js"><link rel="prefetch" href="/blog/assets/js/173.a6f2fcd6.js"><link rel="prefetch" href="/blog/assets/js/174.38b52e5e.js"><link rel="prefetch" href="/blog/assets/js/175.ae38f488.js"><link rel="prefetch" href="/blog/assets/js/176.29adebfe.js"><link rel="prefetch" href="/blog/assets/js/177.41b97ad0.js"><link rel="prefetch" href="/blog/assets/js/178.0fa9bbf3.js"><link rel="prefetch" href="/blog/assets/js/179.8559c981.js"><link rel="prefetch" href="/blog/assets/js/18.0c383095.js"><link rel="prefetch" href="/blog/assets/js/180.8733c320.js"><link rel="prefetch" href="/blog/assets/js/181.21e0e018.js"><link rel="prefetch" href="/blog/assets/js/182.b6e485e9.js"><link rel="prefetch" href="/blog/assets/js/183.c27d150d.js"><link rel="prefetch" href="/blog/assets/js/184.0fbcb691.js"><link rel="prefetch" href="/blog/assets/js/185.7e650b04.js"><link rel="prefetch" href="/blog/assets/js/186.6657fe1d.js"><link rel="prefetch" href="/blog/assets/js/187.551c064a.js"><link rel="prefetch" href="/blog/assets/js/188.8ba6e40b.js"><link rel="prefetch" href="/blog/assets/js/189.041316b7.js"><link rel="prefetch" href="/blog/assets/js/19.750739bf.js"><link rel="prefetch" href="/blog/assets/js/190.d71b0917.js"><link rel="prefetch" href="/blog/assets/js/191.a7d8bb61.js"><link rel="prefetch" href="/blog/assets/js/192.5fce8db9.js"><link rel="prefetch" href="/blog/assets/js/193.c5cc9ffb.js"><link rel="prefetch" href="/blog/assets/js/194.a63b6260.js"><link rel="prefetch" href="/blog/assets/js/195.d2e09806.js"><link rel="prefetch" href="/blog/assets/js/196.063ba68f.js"><link rel="prefetch" href="/blog/assets/js/197.d39d3324.js"><link rel="prefetch" href="/blog/assets/js/198.ce84b47e.js"><link rel="prefetch" href="/blog/assets/js/199.93c36c7f.js"><link rel="prefetch" href="/blog/assets/js/2.b088ac97.js"><link rel="prefetch" href="/blog/assets/js/20.13aea874.js"><link rel="prefetch" href="/blog/assets/js/200.48855557.js"><link rel="prefetch" href="/blog/assets/js/201.af6c3d13.js"><link rel="prefetch" href="/blog/assets/js/202.355fa950.js"><link rel="prefetch" href="/blog/assets/js/203.8b9a3978.js"><link rel="prefetch" href="/blog/assets/js/204.9d334517.js"><link rel="prefetch" href="/blog/assets/js/205.9d4d72ca.js"><link rel="prefetch" href="/blog/assets/js/206.2734a14e.js"><link rel="prefetch" href="/blog/assets/js/207.856430a2.js"><link rel="prefetch" href="/blog/assets/js/208.553763b5.js"><link rel="prefetch" href="/blog/assets/js/209.39f55833.js"><link rel="prefetch" href="/blog/assets/js/21.b5875938.js"><link rel="prefetch" href="/blog/assets/js/210.5c7be277.js"><link rel="prefetch" href="/blog/assets/js/211.8d787e7d.js"><link rel="prefetch" href="/blog/assets/js/212.97822173.js"><link rel="prefetch" href="/blog/assets/js/213.26729f1a.js"><link rel="prefetch" href="/blog/assets/js/214.7c6fd838.js"><link rel="prefetch" href="/blog/assets/js/215.ffa3d1cb.js"><link rel="prefetch" href="/blog/assets/js/216.5d2ebcf4.js"><link rel="prefetch" href="/blog/assets/js/217.17f13f17.js"><link rel="prefetch" href="/blog/assets/js/218.4209a714.js"><link rel="prefetch" href="/blog/assets/js/219.e1b478d8.js"><link rel="prefetch" href="/blog/assets/js/22.265c8215.js"><link rel="prefetch" href="/blog/assets/js/220.86c2079c.js"><link rel="prefetch" href="/blog/assets/js/221.1c717f8b.js"><link rel="prefetch" href="/blog/assets/js/222.585d0104.js"><link rel="prefetch" href="/blog/assets/js/223.29fc7e37.js"><link rel="prefetch" href="/blog/assets/js/224.d5e24637.js"><link rel="prefetch" href="/blog/assets/js/225.df1946ac.js"><link rel="prefetch" href="/blog/assets/js/226.2aa1c4d7.js"><link rel="prefetch" href="/blog/assets/js/227.a751e31d.js"><link rel="prefetch" href="/blog/assets/js/228.6e330b47.js"><link rel="prefetch" href="/blog/assets/js/229.77229d7b.js"><link rel="prefetch" href="/blog/assets/js/23.c83da651.js"><link rel="prefetch" href="/blog/assets/js/230.062a5ac1.js"><link rel="prefetch" href="/blog/assets/js/231.87bbf70b.js"><link rel="prefetch" href="/blog/assets/js/232.31af7ed9.js"><link rel="prefetch" href="/blog/assets/js/233.b1a58839.js"><link rel="prefetch" href="/blog/assets/js/234.68cec967.js"><link rel="prefetch" href="/blog/assets/js/235.ea62ee88.js"><link rel="prefetch" href="/blog/assets/js/236.a2f2b050.js"><link rel="prefetch" href="/blog/assets/js/237.e7cad44f.js"><link rel="prefetch" href="/blog/assets/js/238.81b4b5a3.js"><link rel="prefetch" href="/blog/assets/js/239.1c862178.js"><link rel="prefetch" href="/blog/assets/js/24.421a250c.js"><link rel="prefetch" href="/blog/assets/js/240.18b5df51.js"><link rel="prefetch" href="/blog/assets/js/241.aa077fb6.js"><link rel="prefetch" href="/blog/assets/js/242.c63afd4d.js"><link rel="prefetch" href="/blog/assets/js/243.b2129f8c.js"><link rel="prefetch" href="/blog/assets/js/244.ff8e7a30.js"><link rel="prefetch" href="/blog/assets/js/245.88169faa.js"><link rel="prefetch" href="/blog/assets/js/246.fa9199da.js"><link rel="prefetch" href="/blog/assets/js/247.cdd33986.js"><link rel="prefetch" href="/blog/assets/js/248.765f4cb5.js"><link rel="prefetch" href="/blog/assets/js/249.2a26a296.js"><link rel="prefetch" href="/blog/assets/js/25.154520e5.js"><link rel="prefetch" href="/blog/assets/js/250.439fb16a.js"><link rel="prefetch" href="/blog/assets/js/251.e057e7e0.js"><link rel="prefetch" href="/blog/assets/js/252.34794853.js"><link rel="prefetch" href="/blog/assets/js/253.c622fcbd.js"><link rel="prefetch" href="/blog/assets/js/254.74a70b9f.js"><link rel="prefetch" href="/blog/assets/js/255.fed47ff6.js"><link rel="prefetch" href="/blog/assets/js/256.a88005ca.js"><link rel="prefetch" href="/blog/assets/js/257.11083964.js"><link rel="prefetch" href="/blog/assets/js/258.0b1a7d73.js"><link rel="prefetch" href="/blog/assets/js/259.62c584ff.js"><link rel="prefetch" href="/blog/assets/js/26.4a88bf4d.js"><link rel="prefetch" href="/blog/assets/js/260.1063ea57.js"><link rel="prefetch" href="/blog/assets/js/261.8f065193.js"><link rel="prefetch" href="/blog/assets/js/262.f796ed15.js"><link rel="prefetch" href="/blog/assets/js/263.38c3508c.js"><link rel="prefetch" href="/blog/assets/js/264.6a5fb90f.js"><link rel="prefetch" href="/blog/assets/js/265.79985a16.js"><link rel="prefetch" href="/blog/assets/js/266.58737293.js"><link rel="prefetch" href="/blog/assets/js/267.c0489be8.js"><link rel="prefetch" href="/blog/assets/js/268.9b482a12.js"><link rel="prefetch" href="/blog/assets/js/269.d807798b.js"><link rel="prefetch" href="/blog/assets/js/27.7f6c507f.js"><link rel="prefetch" href="/blog/assets/js/270.62e46aaf.js"><link rel="prefetch" href="/blog/assets/js/271.a2636662.js"><link rel="prefetch" href="/blog/assets/js/272.2c029ac2.js"><link rel="prefetch" href="/blog/assets/js/273.c0803a3e.js"><link rel="prefetch" href="/blog/assets/js/274.feed5dcb.js"><link rel="prefetch" href="/blog/assets/js/275.d026e4d0.js"><link rel="prefetch" href="/blog/assets/js/276.6348ed02.js"><link rel="prefetch" href="/blog/assets/js/277.cb5be1e0.js"><link rel="prefetch" href="/blog/assets/js/28.86691d04.js"><link rel="prefetch" href="/blog/assets/js/29.34f07073.js"><link rel="prefetch" href="/blog/assets/js/30.c7caa137.js"><link rel="prefetch" href="/blog/assets/js/31.07b08573.js"><link rel="prefetch" href="/blog/assets/js/32.2d17c55c.js"><link rel="prefetch" href="/blog/assets/js/33.34659507.js"><link rel="prefetch" href="/blog/assets/js/34.ca823a5d.js"><link rel="prefetch" href="/blog/assets/js/35.fdee0018.js"><link rel="prefetch" href="/blog/assets/js/36.1df26e75.js"><link rel="prefetch" href="/blog/assets/js/37.e84c6798.js"><link rel="prefetch" href="/blog/assets/js/38.0ab020a7.js"><link rel="prefetch" href="/blog/assets/js/39.c752cd4a.js"><link rel="prefetch" href="/blog/assets/js/4.dce05cd8.js"><link rel="prefetch" href="/blog/assets/js/40.e6ff46a5.js"><link rel="prefetch" href="/blog/assets/js/41.7b5ace1e.js"><link rel="prefetch" href="/blog/assets/js/42.bd14936e.js"><link rel="prefetch" href="/blog/assets/js/43.d12fece7.js"><link rel="prefetch" href="/blog/assets/js/44.6fca8fd5.js"><link rel="prefetch" href="/blog/assets/js/45.907b4f15.js"><link rel="prefetch" href="/blog/assets/js/46.f9d2e206.js"><link rel="prefetch" href="/blog/assets/js/47.b1653fc1.js"><link rel="prefetch" href="/blog/assets/js/48.99b3c7bb.js"><link rel="prefetch" href="/blog/assets/js/49.828907da.js"><link rel="prefetch" href="/blog/assets/js/5.7193cd84.js"><link rel="prefetch" href="/blog/assets/js/50.f51f2a3e.js"><link rel="prefetch" href="/blog/assets/js/51.29a6e8ea.js"><link rel="prefetch" href="/blog/assets/js/52.4d64b497.js"><link rel="prefetch" href="/blog/assets/js/53.12dca8e6.js"><link rel="prefetch" href="/blog/assets/js/54.e3c4fef4.js"><link rel="prefetch" href="/blog/assets/js/55.b801643c.js"><link rel="prefetch" href="/blog/assets/js/56.a3d351a1.js"><link rel="prefetch" href="/blog/assets/js/57.cfabc431.js"><link rel="prefetch" href="/blog/assets/js/58.8a3cbbf5.js"><link rel="prefetch" href="/blog/assets/js/59.a5a7464b.js"><link rel="prefetch" href="/blog/assets/js/6.98f083fd.js"><link rel="prefetch" href="/blog/assets/js/60.affca2b3.js"><link rel="prefetch" href="/blog/assets/js/61.adf43eb0.js"><link rel="prefetch" href="/blog/assets/js/62.480ff614.js"><link rel="prefetch" href="/blog/assets/js/63.725f57dc.js"><link rel="prefetch" href="/blog/assets/js/64.ee3ea45f.js"><link rel="prefetch" href="/blog/assets/js/65.a9874219.js"><link rel="prefetch" href="/blog/assets/js/66.ec0c5b17.js"><link rel="prefetch" href="/blog/assets/js/67.043a2f09.js"><link rel="prefetch" href="/blog/assets/js/68.c85cdc1a.js"><link rel="prefetch" href="/blog/assets/js/69.24eb94a2.js"><link rel="prefetch" href="/blog/assets/js/7.a3939503.js"><link rel="prefetch" href="/blog/assets/js/70.7ab8f348.js"><link rel="prefetch" href="/blog/assets/js/71.3f967059.js"><link rel="prefetch" href="/blog/assets/js/72.296c112d.js"><link rel="prefetch" href="/blog/assets/js/73.4bad88aa.js"><link rel="prefetch" href="/blog/assets/js/74.ad674c4d.js"><link rel="prefetch" href="/blog/assets/js/75.6e3c3e6d.js"><link rel="prefetch" href="/blog/assets/js/76.e027ccc7.js"><link rel="prefetch" href="/blog/assets/js/77.963c60ef.js"><link rel="prefetch" href="/blog/assets/js/78.b6ecfd1c.js"><link rel="prefetch" href="/blog/assets/js/79.5c540919.js"><link rel="prefetch" href="/blog/assets/js/8.af2847e2.js"><link rel="prefetch" href="/blog/assets/js/80.cb971025.js"><link rel="prefetch" href="/blog/assets/js/81.8fea14a9.js"><link rel="prefetch" href="/blog/assets/js/82.e177062a.js"><link rel="prefetch" href="/blog/assets/js/83.c89e463b.js"><link rel="prefetch" href="/blog/assets/js/84.89d68e32.js"><link rel="prefetch" href="/blog/assets/js/85.12901aa6.js"><link rel="prefetch" href="/blog/assets/js/86.f7b120e4.js"><link rel="prefetch" href="/blog/assets/js/87.a620f73f.js"><link rel="prefetch" href="/blog/assets/js/88.aef154fa.js"><link rel="prefetch" href="/blog/assets/js/89.9f71412f.js"><link rel="prefetch" href="/blog/assets/js/9.820df2c6.js"><link rel="prefetch" href="/blog/assets/js/90.dd797eb4.js"><link rel="prefetch" href="/blog/assets/js/91.2f4cee08.js"><link rel="prefetch" href="/blog/assets/js/92.fcbd90d3.js"><link rel="prefetch" href="/blog/assets/js/93.49088527.js"><link rel="prefetch" href="/blog/assets/js/94.2162a1ba.js"><link rel="prefetch" href="/blog/assets/js/95.69c4c5ba.js"><link rel="prefetch" href="/blog/assets/js/96.70c77a1a.js"><link rel="prefetch" href="/blog/assets/js/97.77ecde0a.js"><link rel="prefetch" href="/blog/assets/js/98.bdec1ab1.js"><link rel="prefetch" href="/blog/assets/js/99.928b66ab.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link router-link-active">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link router-link-active">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/30_spring/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Servlet, JSP</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Core</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring WebMVC, Spring Boot</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Data JPA</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Data Redis</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Data MongoDB</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Data ElasticSearch</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Security</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring gRPC</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>Apache Kafka</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/30_spring/21_Apache Kafka/220502_kafka.html" class="active sidebar-link">Apache Kafka 시작하기</a></li><li><a href="/blog/post/30_spring/21_Apache Kafka/220505_spring_kafka.html" class="sidebar-link">Spring Kafka 시작하기</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring WebFlux</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring WebSocket</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Spring Batch</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>TDD</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Swagger2</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>IntelliJ</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Eclipse</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#zookeeper-kafka-서버-구축해보기">Zookeeper, Kafka 서버 구축해보기</a></li><li><a href="#kafka-클라이언트-설치">Kafka 클라이언트 설치</a></li><li><a href="#kafka-사용해보기">Kafka 사용해보기</a></li><li><a href="#message-broker">Message Broker</a></li><li><a href="#kafka의-구성요소">Kafka의 구성요소</a><ul><li><a href="#kafka-서버">Kafka 서버</a></li><li><a href="#kafka-클러스터">Kafka 클러스터</a></li><li><a href="#zookeeper">Zookeeper</a></li><li><a href="#topic">Topic</a></li><li><a href="#producer">Producer</a></li><li><a href="#consumer">Consumer</a></li><li><a href="#key-value-형식으로-메시지-다루기">Key-Value 형식으로 메시지 다루기</a></li><li><a href="#partition">Partition</a></li><li><a href="#consumer-group">Consumer Group</a></li><li><a href="#offset">Offset</a></li><li><a href="#replication">Replication</a></li></ul></li></ul></div><p></p> <h1 id="apache-kafka"><a href="#apache-kafka" class="header-anchor">#</a> Apache Kafka</h1> <p><code>Apache Kafka</code>는 아파치 재단의 오픈소스 <code>메시지 큐(Message Queue)</code>다.</p> <h2 id="zookeeper-kafka-서버-구축해보기"><a href="#zookeeper-kafka-서버-구축해보기" class="header-anchor">#</a> Zookeeper, Kafka 서버 구축해보기</h2> <p>먼저 도커 컴포즈를 사용하여 <code>Zookeeper</code>서버와 <code>Kafka</code> 서버를 구축해보자.</p> <div class="language-yml extra-class"><pre class="language-yml"><code><span class="token comment"># docker-compose.yml</span>
+<span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'2'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">zookeeper</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/zookeeper
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> zookeeper
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;2181:2181&quot;</span>
+  <span class="token key atrule">kafka</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/kafka
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> kafka
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;9092:9092&quot;</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_HOST_NAME</span><span class="token punctuation">:</span> 127.0.0.1
+      <span class="token key atrule">KAFKA_ZOOKEEPER_CONNECT</span><span class="token punctuation">:</span> zookeeper<span class="token punctuation">:</span><span class="token number">2181</span>
+</code></pre></div><p>다음 명령어로 도커 컴포스를 백그라운드로 실행할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker-compose up -d
+</code></pre></div><p>다음 명령어로 포그라운드로 시작하면 로그를 실시간으로 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker-compose up
+</code></pre></div><p>생성된 컨테이너를 확인해보자. Zookeeper는 <code>2181</code>포트, Kafka는 <code>9092</code> 포트를 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker-compose ps 
+  Name                 Command               State                         Ports                       
+-------------------------------------------------------------------------------------------------------
+kafka       start-kafka.sh                   Up      0.0.0.0:9092-&gt;9092/tcp                            
+zookeeper   /bin/sh -c /usr/sbin/sshd  ...   Up      0.0.0.0:2181-&gt;2181/tcp, 22/tcp, 2888/tcp, 3888/tcp
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ docker ps 
+CONTAINER ID   IMAGE                                    COMMAND                  CREATED         STATUS         PORTS                                                NAMES
+a18bb010ab3e   wurstmeister/zookeeper                   &quot;/bin/sh -c '/usr/sb…&quot;   3 minutes ago   Up 3 minutes   22/tcp, 2888/tcp, 3888/tcp, 0.0.0.0:2181-&gt;2181/tcp   zookeeper
+f17107e94596   wurstmeister/kafka                       &quot;start-kafka.sh&quot;         3 minutes ago   Up 3 minutes   0.0.0.0:9092-&gt;9092/tcp                               kafka
+</code></pre></div><p>참고로 다 사용한 컨테이너는 다음과 같이 종료할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker-compose down
+</code></pre></div><h2 id="kafka-클라이언트-설치"><a href="#kafka-클라이언트-설치" class="header-anchor">#</a> Kafka 클라이언트 설치</h2> <p><code>Kafka 클라이언트</code>는 Zookeeper, Kafka 서버 제어를 위한 실행파일들을 제공한다. Mac OS 환경에서 <code>Homebrew</code> Kafka를 설치하면 Kafka 클라이언트도 포함되어있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ brew install kafka
+</code></pre></div><p><code>brew info kafka</code> 명령어로 Kafka 설치 경로를 확인할 수 있다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><br><br><br><br></div><pre class="language-text"><code>$ brew info kafka
+kafka: stable 3.1.0 (bottled)
+Open-source distributed event streaming platform
+https://kafka.apache.org/
+/usr/local/Cellar/kafka/3.1.0 (198 files, 84.2MB) *
+  Poured from bottle on 2022-05-04 at 13:36:01
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/kafka.rb
+...
+</code></pre></div><p>설치 경로의 <code>bin</code> 폴더에서 다양한 실행 파일을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ cd /usr/local/Cellar/kafka/3.1.0/bin
+
+$ ls
+connect-distributed             kafka-console-consumer          kafka-features                  kafka-reassign-partitions       kafka-topics                    zookeeper-server-stop
+connect-mirror-maker            kafka-console-producer          kafka-get-offsets               kafka-replica-verification      kafka-transactions              zookeeper-shell
+connect-standalone              kafka-consumer-groups           kafka-leader-election           kafka-run-class                 kafka-verifiable-consumer
+kafka-acls                      kafka-consumer-perf-test        kafka-log-dirs                  kafka-server-start              kafka-verifiable-producer
+kafka-broker-api-versions       kafka-delegation-tokens         kafka-metadata-shell            kafka-server-stop               trogdor
+kafka-cluster                   kafka-delete-records            kafka-mirror-maker              kafka-storage                   zookeeper-security-migration
+kafka-configs                   kafka-dump-log                  kafka-producer-perf-test        kafka-streams-application-reset zookeeper-server-start
+</code></pre></div><h2 id="kafka-사용해보기"><a href="#kafka-사용해보기" class="header-anchor">#</a> Kafka 사용해보기</h2> <p>이제 Kafka의 메시지 브로커 기능을 사용해보자. 우선 <code>Topic</code>이라는 것을 생성해야한다. Zookeeper, Kafka 서버가 구동되고 있는 상태에서 다음과 같이  test-topic 이라는 이름의 Topic을 생성해보자. <code>--bootstrap-server</code> 옵션에는 Kafka 서버 주소, <code>--topic</code> 옵션에는 생성할 Topic의 이름을 전달한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic test-topic \
+--create
+Created topic test-topic.
+</code></pre></div><p>그리고 새로운 데이터를 소비하는 <code>Consumer</code>를 실행한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer \
+--bootstrap-server localhost:9092 \
+--topic test-topic
+</code></pre></div><p>그 다음 새로운 터미널을 열고 데이터를 생성하는 <code>Producer</code>를 실행한다. 그리고 세 개의 메시지를 카프카로 전송해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-producer \
+--bootstrap-server localhost:9092 \
+--topic test-topic
+&gt; This is message 1.
+&gt; This is message 2.
+&gt; This is message 3.
+</code></pre></div><p>이제 Consumer를 확인해보자. 데이터가 소비되는 것을 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer \
+--bootstrap-server localhost:9092 \
+--topic test-topic
+This is message 1.
+This is message 2.
+This is message 3.
+</code></pre></div><h2 id="message-broker"><a href="#message-broker" class="header-anchor">#</a> Message Broker</h2> <p>이처럼 <b><code>메시지 큐(Message Queue)</code></b>는 <u>Producer가 생성한 데이터를 Consumer에게 전달하는 시스템이다.</u> 메시지 큐는 <code>메시지 브로커(Message Broker)</code>라고도 하며 Apache Kafka, Redis, Rabbit MQ, Active MQ, AWS SQS 등의 제품군이 있다.</p> <p>Apache Kafka에서 Producer와 Consumer는 서로의 존재를 알지 못한다. Producer는 그저 Kafka에 메시지를 전송한다. Kafka는 메시지가 들어오면 해당 Topic을 구독 중인 Consumer에게 메시지를 전달한다. 이러한 점에서 Apache Kafka의 메시지 전달 방식을 <code>Publish/Subscribe</code> 모델이라고도 한다.</p> <h2 id="kafka의-구성요소"><a href="#kafka의-구성요소" class="header-anchor">#</a> Kafka의 구성요소</h2> <h3 id="kafka-서버"><a href="#kafka-서버" class="header-anchor">#</a> Kafka 서버</h3> <p><code>Kafka 서버</code>는 메시지 브로커 역할을 하며, <code>Broker 서버</code>라고도 한다. ZooKeeper 1대, Broker 서버 1대로 이루어진 클러스터는 다음과 같이 구축할 수 있다.</p> <div class="language-yml extra-class"><div class="highlight-lines"><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br></div><pre class="language-yml"><code><span class="token comment"># docker-compose.yml</span>
+<span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'2'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+
+  <span class="token comment"># Zookeeper</span>
+  <span class="token key atrule">zookeeper</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/zookeeper
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> zookeeper
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;2181:2181&quot;</span>
+
+  <span class="token comment"># Kafka</span>
+  <span class="token key atrule">kafka</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/kafka
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> kafka
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;9092:9092&quot;</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_HOST_NAME</span><span class="token punctuation">:</span> 127.0.0.1
+      <span class="token key atrule">KAFKA_ZOOKEEPER_CONNECT</span><span class="token punctuation">:</span> zookeeper<span class="token punctuation">:</span><span class="token number">2181</span>
+</code></pre></div><p><code>wurstmeister/kafka</code> 이미지를 사용하는 경우 Kafka가 <code>/opt/kafka</code>에 설치되어있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker exec -it kafka /bin/bash
+
+bash-5.1# cd opt/kafka
+
+bash-5.1# ls
+LICENSE    NOTICE     bin        config     libs       licenses   logs       site-docs
+</code></pre></div><p><code>/opt/kafka/config</code>의 <b><code>server.properties</code></b> 파일로 Broker 서버의 환경을 설정할 수 있다. 중요한 설정값은 음영처리해놨다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><div class="highlighted"> </div><br><br><br><div class="highlighted"> </div><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br></div><pre class="language-text"><code>$ cat opt/kafka/config/server.properties
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the &quot;License&quot;); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# see kafka.server.KafkaConfig for additional details and defaults
+
+############################# Server Basics #############################
+
+# The id of the broker. This must be set to a unique integer for each broker.
+broker.id=-1
+
+############################# Socket Server Settings #############################
+
+# The address the socket server listens on. It will get the value returned from 
+# java.net.InetAddress.getCanonicalHostName() if not configured.
+#   FORMAT:
+#     listeners = listener_name://host_name:port
+#   EXAMPLE:
+#     listeners = PLAINTEXT://your.host.name:9092
+#listeners=PLAINTEXT://:9092
+
+# Hostname and port the broker will advertise to producers and consumers. If not set, 
+# it uses the value for &quot;listeners&quot; if configured.  Otherwise, it will use the value
+# returned from java.net.InetAddress.getCanonicalHostName().
+#advertised.listeners=PLAINTEXT://your.host.name:9092
+
+# Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
+#listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
+
+# The number of threads that the server uses for receiving requests from the network and sending responses to the network
+num.network.threads=3
+
+# The number of threads that the server uses for processing requests, which may include disk I/O
+num.io.threads=8
+
+# The send buffer (SO_SNDBUF) used by the socket server
+socket.send.buffer.bytes=102400
+
+# The receive buffer (SO_RCVBUF) used by the socket server
+socket.receive.buffer.bytes=102400
+
+# The maximum size of a request that the socket server will accept (protection against OOM)
+socket.request.max.bytes=104857600
+
+
+############################# Log Basics #############################
+
+# A comma separated list of directories under which to store log files
+log.dirs=/kafka/kafka-logs-8a7f9df2b449
+
+# The default number of log partitions per topic. More partitions allow greater
+# parallelism for consumption, but this will also result in more files across
+# the brokers.
+num.partitions=1
+
+# The number of threads per data directory to be used for log recovery at startup and flushing at shutdown.
+# This value is recommended to be increased for installations with data dirs located in RAID array.
+num.recovery.threads.per.data.dir=1
+
+############################# Internal Topic Settings  #############################
+# The replication factor for the group metadata internal topics &quot;__consumer_offsets&quot; and &quot;__transaction_state&quot;
+# For anything other than development testing, a value greater than 1 is recommended to ensure availability such as 3.
+offsets.topic.replication.factor=1
+transaction.state.log.replication.factor=1
+transaction.state.log.min.isr=1
+
+############################# Log Flush Policy #############################
+
+# Messages are immediately written to the filesystem but by default we only fsync() to sync
+# the OS cache lazily. The following configurations control the flush of data to disk.
+# There are a few important trade-offs here:
+#    1. Durability: Unflushed data may be lost if you are not using replication.
+#    2. Latency: Very large flush intervals may lead to latency spikes when the flush does occur as there will be a lot of data to flush.
+#    3. Throughput: The flush is generally the most expensive operation, and a small flush interval may lead to excessive seeks.
+# The settings below allow one to configure the flush policy to flush data after a period of time or
+# every N messages (or both). This can be done globally and overridden on a per-topic basis.
+
+# The number of messages to accept before forcing a flush of data to disk
+#log.flush.interval.messages=10000
+
+# The maximum amount of time a message can sit in a log before we force a flush
+#log.flush.interval.ms=1000
+
+############################# Log Retention Policy #############################
+
+# The following configurations control the disposal of log segments. The policy can
+# be set to delete segments after a period of time, or after a given size has accumulated.
+# A segment will be deleted whenever *either* of these criteria are met. Deletion always happens
+# from the end of the log.
+
+# The minimum age of a log file to be eligible for deletion due to age
+log.retention.hours=168
+
+# A size-based retention policy for logs. Segments are pruned from the log unless the remaining
+# segments drop below log.retention.bytes. Functions independently of log.retention.hours.
+#log.retention.bytes=1073741824
+
+# The maximum size of a log segment file. When this size is reached a new log segment will be created.
+log.segment.bytes=1073741824
+
+# The interval at which log segments are checked to see if they can be deleted according
+# to the retention policies
+log.retention.check.interval.ms=300000
+
+############################# Zookeeper #############################
+
+# Zookeeper connection string (see zookeeper docs for details).
+# This is a comma separated host:port pairs, each corresponding to a zk
+# server. e.g. &quot;127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002&quot;.
+# You can also append an optional chroot string to the urls to specify the
+# root directory for all kafka znodes.
+zookeeper.connect=zookeeper:2181
+
+# Timeout in ms for connecting to zookeeper
+zookeeper.connection.timeout.ms=18000
+
+
+############################# Group Coordinator Settings #############################
+
+# The following configuration specifies the time, in milliseconds, that the GroupCoordinator will delay the initial consumer rebalance.
+# The rebalance will be further delayed by the value of group.initial.rebalance.delay.ms as new members join the group, up to a maximum of max.poll.interval.ms.
+# The default value for this is 3 seconds.
+# We override this to 0 here as it makes for a better out-of-the-box experience for development and testing.
+# However, in production environments the default value of 3 seconds is more suitable as this will help to avoid unnecessary, and potentially expensive, rebalances during application startup.
+group.initial.rebalance.delay.ms=0
+
+port=9092
+advertised.host.name=127.0.0.1
+</code></pre></div><h3 id="kafka-클러스터"><a href="#kafka-클러스터" class="header-anchor">#</a> Kafka 클러스터</h3> <p>Kafka 서버 여러 대를 하나로 묶어 <code>Kafka 클러스터</code>를 구축하면 더 많은 트래픽을 견딜 수 있다.</p> <p>ZooKeeper 1대, Broker 서버 3대로 이루어진 클러스터는 다음과 같이 구축할 수 있다.</p> <div class="language-yml extra-class"><pre class="language-yml"><code><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'2'</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+
+  <span class="token key atrule">zookeeper</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> zookeeper
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/zookeeper
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;2181:2181&quot;</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span> 
+        <span class="token key atrule">ZOOKEEPER_CLIENT_PORT</span><span class="token punctuation">:</span> <span class="token number">2181</span> 
+
+  <span class="token key atrule">kafka1</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> kafka1
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/kafka
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;9092:9092&quot;</span>
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /var/run/docker.sock<span class="token punctuation">:</span>/var/run/docker.sock
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">KAFKA_BROKER_ID</span><span class="token punctuation">:</span> <span class="token number">1</span>
+      <span class="token key atrule">KAFKA_ZOOKEEPER_CONNECT</span><span class="token punctuation">:</span> zookeeper<span class="token punctuation">:</span><span class="token number">2181</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_HOST_NAME</span><span class="token punctuation">:</span> 127.0.0.1
+      <span class="token key atrule">KAFKA_ADVERTISED_PORT</span><span class="token punctuation">:</span> <span class="token number">9092</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_LISTENERS</span><span class="token punctuation">:</span> PLAINTEXT<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span><span class="token number">9092</span>
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> zookeeper  
+
+  <span class="token key atrule">kafka2</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> kafka2
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/kafka
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;9093:9092&quot;</span>
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /var/run/docker.sock<span class="token punctuation">:</span>/var/run/docker.sock
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">KAFKA_BROKER_ID</span><span class="token punctuation">:</span> <span class="token number">2</span>
+      <span class="token key atrule">KAFKA_ZOOKEEPER_CONNECT</span><span class="token punctuation">:</span> zookeeper<span class="token punctuation">:</span><span class="token number">2181</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_HOST_NAME</span><span class="token punctuation">:</span> 127.0.0.1
+      <span class="token key atrule">KAFKA_ADVERTISED_PORT</span><span class="token punctuation">:</span> <span class="token number">9093</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_LISTENERS</span><span class="token punctuation">:</span> PLAINTEXT<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span><span class="token number">9093</span>
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> zookeeper  
+
+  <span class="token key atrule">kafka3</span><span class="token punctuation">:</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> kafka3
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> wurstmeister/kafka
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">&quot;9094:9092&quot;</span>
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> /var/run/docker.sock<span class="token punctuation">:</span>/var/run/docker.sock
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token key atrule">KAFKA_BROKER_ID</span><span class="token punctuation">:</span> <span class="token number">3</span>
+      <span class="token key atrule">KAFKA_ZOOKEEPER_CONNECT</span><span class="token punctuation">:</span> zookeeper<span class="token punctuation">:</span><span class="token number">2181</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_HOST_NAME</span><span class="token punctuation">:</span> 127.0.0.1
+      <span class="token key atrule">KAFKA_ADVERTISED_PORT</span><span class="token punctuation">:</span> <span class="token number">9094</span>
+      <span class="token key atrule">KAFKA_ADVERTISED_LISTENERS</span><span class="token punctuation">:</span> PLAINTEXT<span class="token punctuation">:</span>//127.0.0.1<span class="token punctuation">:</span><span class="token number">9094</span>
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> zookeeper  
+</code></pre></div><h3 id="zookeeper"><a href="#zookeeper" class="header-anchor">#</a> Zookeeper</h3> <p><code>Zookeeper</code>는 카프카 클러스터를 관리하고 조정하는 분산 코디네이터 시스템이다. <code>Zookeeper</code>의 핵심 역할은 다음과 같다.</p> <ul><li>여러 Broker 서버를 하나의 클러스터로 코디네이팅</li> <li>Replication 사용 시 Leader Topic을 결정</li></ul> <p><code>wurstmeister/zookeeper</code> 이미지를 사용하는 경우 <code>/opt/zookeeper-3.4.13</code> 경로에 Zookeeper가 설치된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ docker exec -it zookeeper /bin/bash
+
+root@f932e40590e3:~# /opt/zookeeper-3.4.13
+
+root@f932e40590e3:/opt/zookeeper-3.4.13# ls
+LICENSE.txt  README.md             bin        conf     data        docs     ivysettings.xml  recipes  zookeeper-3.4.13.jar      zookeeper-3.4.13.jar.md5
+NOTICE.txt   README_packaging.txt  build.xml  contrib  dist-maven  ivy.xml  lib              src      zookeeper-3.4.13.jar.asc  zookeeper-3.4.13.jar.sha1
+</code></pre></div><p><code>/opt/zookeeper-3.4.13/config</code>의 <b><code>zoo.cfg</code></b> 파일로 Zookeeper 서버의 환경을 설정할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>root@f932e40590e3:/opt/zookeeper-3.4.13/conf# cat zoo.cfg 
+# The number of milliseconds of each tick
+tickTime=2000
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between 
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just 
+# example sakes.
+dataDir=/opt/zookeeper-3.4.13/data
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the 
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to &quot;0&quot; to disable auto purge feature
+autopurge.purgeInterval=1
+</code></pre></div><h3 id="topic"><a href="#topic" class="header-anchor">#</a> Topic</h3> <p>Kafka는 전송되는 메시지를 <code>Topic</code>이라는 개념으로 분류한다. <code>Topic</code>은 다음과 같이 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics --bootstrap-server localhost:9092 --topic &lt;TOPIC&gt; --create
+</code></pre></div><p>두 개의 <code>Topic</code>을 생성해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics --bootstrap-server localhost:9092 --topic my-topic --create
+
+$ kafka-topics --bootstrap-server localhost:9092 --topic your-topic --create
+</code></pre></div><p><code>Topic</code> 목록을 확인할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics --bootstrap-server localhost:9092 --list
+__consumer_offsets
+my-topic
+your-topic
+</code></pre></div><p><code>Topic</code>을 삭제할 수도 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics --bootstrap-server localhost:9092 --topic &lt;TOPIC&gt; --delete
+</code></pre></div><h3 id="producer"><a href="#producer" class="header-anchor">#</a> Producer</h3> <p><code>Producer</code>는 메시지를 생산하는 주체다. 다음과 같이 Producer를 실행하고 특정 Topic으로 메시지를 전달할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-producer --bootstrap-server localhost:9092 --topic &lt;TOPIC&gt;
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-producer --bootstrap-server localhost:9092 --topic test-topic
+&gt; This is message 1
+&gt; This is message 2
+&gt; This is message 3
+</code></pre></div><h3 id="consumer"><a href="#consumer" class="header-anchor">#</a> Consumer</h3> <p><code>Consumer</code>는 메시지를 소비하는 주체다. 다음과 같이 Consumer를 실행하고 특정 Topic으로 들어온 메시지를 구독할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server localhost:9092 --topic &lt;TOPIC&gt;
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server localhost:9092 --topic test-topic
+This is message 1
+This is message 2
+This is message 3
+</code></pre></div><p>Consumer는 구독을 시작한 이후 발생된 메시지만을 소비한다는 것에 주의하자. 모든 메시지를 읽어오려면 <code>--from-beginning</code> 옵션을 사용한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server localhost:9092 --topic test-topic --from-beginning
+</code></pre></div><h3 id="key-value-형식으로-메시지-다루기"><a href="#key-value-형식으로-메시지-다루기" class="header-anchor">#</a> Key-Value 형식으로 메시지 다루기</h3> <p>Kafka는 <code>Key-Value</code> 형식으로 메시지를 주고 받을 수 있다.</p> <p>Producer 측에서는 다음 옵션을 추가하면 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-producer --bootstrap-server localhost:9092 --topic test-topic \
+  --property parse.key=true \
+  --property key.separator=&quot;:&quot;
+&gt; name: paul
+&gt; nation: korea
+&gt; address: seoul
+</code></pre></div><p>Consumer 측에서도 다음 옵션을 추가하면 된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --topic example-topic --bootstrap-server broker:9092 \
+ --property print.key=true \
+ --property key.separator=&quot;-&quot;
+name-paul
+nation-korea
+address-seoul
+</code></pre></div><h3 id="partition"><a href="#partition" class="header-anchor">#</a> Partition</h3> <p>개인적으로 Kafka에서 가장 이해하기 어렵고 중요한 개념은 <code>Partition</code>과 <code>Consumer Group</code>이라고 생각한다.</p> <p>별도 옵션없이 Topic을 생성하면 하나의 Partition으로 구성된 Topic이 생성된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic my-topic \
+--create
+</code></pre></div><p><img src="/blog/assets/img/30.83305933.png" alt=""></p> <p>메시지를 생성하면 Partition에 FIFO 방식으로 저장된다. Queue와 같다고 생각하면 된다.</p> <p><img src="/blog/assets/img/31.f5596988.png" alt=""></p> <p>Topic은 여러 개의 파티션을 가질 수 있다. Topic을 생성할 때 <code>--partitions</code> 옵션을 사용하면 된다.</p> <div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>$ kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic your-topic \
+--partitions 3 \
+--create
+</code></pre></div><p><img src="/blog/assets/img/32.ddf32d7d.png" alt=""></p> <p>다음 명령어로 Partition을 포함한 Topic 상세 정보를 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics \
+--describe \
+--bootstrap-server localhost:9092 \
+--topic your-topic
+Topic: your-topic	TopicId: 5qxz0eB3Sr6RF362tClk_A	PartitionCount: 3	ReplicationFactor: 1	Configs: segment.bytes=1073741824
+	Topic: your-topic	Partition: 0	Leader: 1001	Replicas: 1001	Isr: 1001
+	Topic: your-topic	Partition: 1	Leader: 1001	Replicas: 1001	Isr: 1001
+	Topic: your-topic	Partition: 2	Leader: 1001	Replicas: 1001	Isr: 1001
+</code></pre></div><p>그렇다면 왜 Partition을 사용할까? 바로 <code>병렬 처리</code> 때문이다.</p> <p>Topic에 a, b, c, d, e, f, g, .. 의 메시지를 생성한다고 가정해보자. Partition이 1개일 경우 메시지는 다음과 같이 저장된다.</p> <p><img src="/blog/assets/img/33.604ad608.png" alt=""></p> <p>Partition이 2개 이상일 경우 <u>라운드로빈 방식</u>으로 메시지가 저장된다.</p> <p><img src="/blog/assets/img/34.99a712b3.png" alt=""></p> <p>라운드로빈 방식으로 메시지가 저장된다는 것은 Consumer가 Topic을 구독할 때 메시지가 쓰여진 순서대로 읽혀지진 않는다는 것을 의미한다. 즉 <u>메시지의 순서를 보장하지 않는다.</u> 따라서 메시지의 순서가 보장되어야 하는 시스템에서는 한계가 존재한다.</p> <h3 id="consumer-group"><a href="#consumer-group" class="header-anchor">#</a> Consumer Group</h3> <p>Producer가 메시지를 쓰는 속도가 Consumer의 소비 속도보다 빠르면 메시지가 계속 쌓이게 된다.</p> <p><img src="/blog/assets/img/40.7264ca8b.png" alt=""></p> <p>Multi Producer &amp; Multi Partition 환경에서는 문제가 더 심각해진다.</p> <p><img src="/blog/assets/img/41.cda63411.png" alt=""></p> <p><code>Consumer Group</code>은 <u>여러 Consumer의 집합</u>이다. <u>각각의 Consumer는 한 Topic에 대한 데이터를 소비하기 위해 협력한다.</u> 즉, <u>각 Consumer가 같은 Topic의 서로 다른 Parition을 병렬적으로 담당하게 하여 메시지 생산 속도를 따라갈 수 있다.</u></p> <p><img src="/blog/assets/img/42.c8a5e31d.png" alt=""></p> <p><img src="/blog/assets/img/43.71b39e83.png" alt=""></p> <p>예제를 살펴보자. 우선 3개의 Partition으로 구성된 Topic을 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics \
+--bootstrap-server localhost:9092 \
+--topic test-topic \
+--partitions 3 \
+--create
+</code></pre></div><p><code>Consumer Group</code>은 Consumer를 생성할 때 <code>--group</code> 옵션으로 지정할 수 있다. Consumer Group이 없다면 새로 만들어진다. 새로운 터미널을 열어 다음 명령어를 입력하여 <u>첫 번째 Consumer</u>를 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer \ 
+--bootstrap-server 127.0.0.1:9092 \
+--topic test-topic \
+--group test-consumer-group
+</code></pre></div><p>새로운 터미널을 열어 <u>두 번째 Consumer</u>를 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer \
+--bootstrap-server 127.0.0.1:9092 \
+--topic test-topic \
+--group test-consumer-group
+</code></pre></div><p>새로운 터미널을 열어 <u>세 번째 Consumer</u>를 생성한다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer \
+--bootstrap-server 127.0.0.1:9092 \
+--topic test-topic \
+--group test-consumer-group
+</code></pre></div><p>새로운 터미널을 열어 Producer를 실행한 후 7개의 메시지 a, b, c, d, e, f, g를 전송해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-producer --bootstrap-server localhost:9092 --topic test-topic
+&gt;a
+&gt;b
+&gt;c
+&gt;d
+&gt;e
+&gt;f
+&gt;g
+</code></pre></div><p>첫 번째 Consumer에는 다음과 같이 출력된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic test-topic --group test-consumer-group
+a
+d
+g
+</code></pre></div><p>두 번째 Consumer에는 다음과 같이 출력된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic test-topic --group test-consumer-group
+b
+e
+</code></pre></div><p>세 번째 Consumer에는 다음과 같이 출력된다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server 127.0.0.1:9092 --topic test-topic --group test-consumer-group
+c
+f
+</code></pre></div><p><code>Consumer Group</code> 정보는 다음 명령어로 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-consumer-groups --bootstrap-server localhost:9092 --describe --group test-consumer-group
+
+GROUP             TOPIC           PARTITION  CURRENT-OFFSET  LOG-END-OFFSET  LAG             CONSUMER-ID                                           HOST            CLIENT-ID
+my-consumer-group test-topic      0          35              35              0               console-consumer-9d91eed0-c344-4acb-8019-e907d8539124 /172.20.0.1     console-consumer
+my-consumer-group my-topic        0          0               0               0               -    
+</code></pre></div><h3 id="offset"><a href="#offset" class="header-anchor">#</a> Offset</h3> <p><code>Topic</code>을 생성하면 <code>Partition</code>이라는 큐에 메시지가 저장된다. <code>his-topic</code> 이라는 Topic을 생성한 후 Producer에서 데이터를 생성해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics --bootstrap-server localhost:9092 --topic his-topic --create
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-producer --bootstrap-server localhost:9092 --topic his-topic                          
+&gt;a
+&gt;b
+&gt;c
+&gt;d
+&gt;e
+&gt;f
+&gt;g
+&gt;h
+&gt;i
+&gt;j
+</code></pre></div><p><code>Partition</code>에는 다음과 같이 데이터가 저장되어있다. 데이터 하나하나를 <code>레코드(Record)</code>라고 한다.</p> <p><img src="/blog/assets/img/1.ad2b76c7.png" alt=""></p> <p><code>Offset</code>은 <u>Consumer가 어떤 레코드까지 읽었는지를 나타내는 정수값</u>이다.</p> <p>아래 명령어로 Kafka를 구독해보자.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server localhost:9092 --topic his-topic
+</code></pre></div><p>아무 레코드도 출력되지 않는 것을 확인할 수 있다. 이 명령어는 명령어가 실행되기 전 발행된 레코드를 이미 읽었다고 간주하며, 이후 발행된 레코드가 없기 때문에 아무 결과가 출력되지 않는 것이다.</p> <p><code>--offset</code> 옵션을 사용하면 특정 지점 이후에 발행된 레코드를 소비할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server localhost:9092 --topic his-topic --partition 0 --offset 4
+e
+f
+g
+h
+i
+j
+</code></pre></div><p><code>--from-beginning</code> 옵션으로 Partition의 모든 레코드도 확인할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-console-consumer --bootstrap-server localhost:9092 --topic his-topic --partition 0 --from-beginning
+a
+b
+c
+d
+e
+f
+g
+h
+i
+j
+</code></pre></div><h3 id="replication"><a href="#replication" class="header-anchor">#</a> Replication</h3> <p>세 개의 Broker 서버로 구성된 Kafka 클러스터가 있다고 가정하자. Topic은 Broker A 서버에 위치한다.</p> <p><img src="/blog/assets/img/10.25b3b0b3.png" alt=""></p> <p>만약 Broker A 서버에 장애가 생기면 Topic이 모두 유실된다.</p> <p><img src="/blog/assets/img/11.dcb67d1d.png" alt=""></p> <p><code>Replication</code>을 사용하면 <u>여러 Broker 서버에 Topic의 복사본을 저장하여 데이터 유실을 방지할 수 있다.</u></p> <p><img src="/blog/assets/img/12.9b2353d2.png" alt=""></p> <p>Replication 기능은 Topic을 생성할 때 <code>--replication-factor</code> 옵션으로 지정할 수 있다.</p> <div class="language- extra-class"><pre class="language-text"><code>$ kafka-topics --bootstrap-server localhost:9092 --topic &lt;TOPIC 이름&gt; --replication-factor 1 --create
+</code></pre></div><p>Jookeepr는 여러 Replication 중 하나를 Leader Topic으로 지정한다. 모든 메시지는 이 Leader를 통해서만 전달된다.
+<img src="/blog/assets/img/13.fcba537b.png" alt=""></p> <p>Leader를 제외한 나머지는 Follower가 된다. Follower는 Leader의 상태가 변했을 때 이를 동기화하여 동일한 상태를 유지한다.</p> <p><img src="/blog/assets/img/14.f5bbb257.png" alt=""></p> <p>만약 Leader가 위치한 Broker 서버가 다운되면 Kafka는 Follower 중 하나를 Leader로 승격시킨다.</p> <p><img src="/blog/assets/img/15.134a67a1.png" alt=""></p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/30_spring/20_Spring gRPC/211001_grpc.html" class="prev">
+        Spring gPRC 시작하기
+      </a></span> <span class="next"><a href="/blog/post/30_spring/21_Apache Kafka/220505_spring_kafka.html">
+        Spring Kafka 시작하기
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.32362dc0.js" defer></script><script src="/blog/assets/js/3.8795c9a2.js" defer></script><script src="/blog/assets/js/16.aec21ad3.js" defer></script>
+  </body>
+</html>

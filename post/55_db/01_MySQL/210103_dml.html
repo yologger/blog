@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>MYSQL - DML 정리 | Yologger&#39;s Blog</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    <link rel="icon" href="/blog/favicon.ico">
+    <meta name="description" content="yologger&#39;s blog">
+    <meta name="theme-color" content="#3eaf7c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0e080af6.css" as="style"><link rel="preload" href="/blog/assets/js/app.32362dc0.js" as="script"><link rel="preload" href="/blog/assets/js/3.8795c9a2.js" as="script"><link rel="preload" href="/blog/assets/js/249.2a26a296.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.009f8593.js"><link rel="prefetch" href="/blog/assets/js/100.04c8c108.js"><link rel="prefetch" href="/blog/assets/js/101.02907c78.js"><link rel="prefetch" href="/blog/assets/js/102.34e5043e.js"><link rel="prefetch" href="/blog/assets/js/103.9f91abc2.js"><link rel="prefetch" href="/blog/assets/js/104.31f63255.js"><link rel="prefetch" href="/blog/assets/js/105.8a43c1db.js"><link rel="prefetch" href="/blog/assets/js/106.b9460ed3.js"><link rel="prefetch" href="/blog/assets/js/107.f8cdc232.js"><link rel="prefetch" href="/blog/assets/js/108.8978a1ba.js"><link rel="prefetch" href="/blog/assets/js/109.968539f7.js"><link rel="prefetch" href="/blog/assets/js/11.70d9a8f5.js"><link rel="prefetch" href="/blog/assets/js/110.ad77dfe5.js"><link rel="prefetch" href="/blog/assets/js/111.a3e57423.js"><link rel="prefetch" href="/blog/assets/js/112.87034314.js"><link rel="prefetch" href="/blog/assets/js/113.2fcf2309.js"><link rel="prefetch" href="/blog/assets/js/114.8fed71aa.js"><link rel="prefetch" href="/blog/assets/js/115.a4990a06.js"><link rel="prefetch" href="/blog/assets/js/116.1780fd7a.js"><link rel="prefetch" href="/blog/assets/js/117.f22668d4.js"><link rel="prefetch" href="/blog/assets/js/118.bbe27d51.js"><link rel="prefetch" href="/blog/assets/js/119.25b9b643.js"><link rel="prefetch" href="/blog/assets/js/12.31f8420a.js"><link rel="prefetch" href="/blog/assets/js/120.9d9f48f0.js"><link rel="prefetch" href="/blog/assets/js/121.40af3a0c.js"><link rel="prefetch" href="/blog/assets/js/122.a636d2ef.js"><link rel="prefetch" href="/blog/assets/js/123.5c99f4f4.js"><link rel="prefetch" href="/blog/assets/js/124.3e75231d.js"><link rel="prefetch" href="/blog/assets/js/125.7cf1f005.js"><link rel="prefetch" href="/blog/assets/js/126.86bd0915.js"><link rel="prefetch" href="/blog/assets/js/127.34dfb59d.js"><link rel="prefetch" href="/blog/assets/js/128.cb8753b6.js"><link rel="prefetch" href="/blog/assets/js/129.75f1821b.js"><link rel="prefetch" href="/blog/assets/js/13.d86b1ae2.js"><link rel="prefetch" href="/blog/assets/js/130.352fa799.js"><link rel="prefetch" href="/blog/assets/js/131.57a5cee5.js"><link rel="prefetch" href="/blog/assets/js/132.b774b3fe.js"><link rel="prefetch" href="/blog/assets/js/133.5cea1190.js"><link rel="prefetch" href="/blog/assets/js/134.dbc3bbbd.js"><link rel="prefetch" href="/blog/assets/js/135.02ff9368.js"><link rel="prefetch" href="/blog/assets/js/136.f7128a40.js"><link rel="prefetch" href="/blog/assets/js/137.a3c425d9.js"><link rel="prefetch" href="/blog/assets/js/138.187b1e7e.js"><link rel="prefetch" href="/blog/assets/js/139.d581d7f6.js"><link rel="prefetch" href="/blog/assets/js/14.78cdbe3d.js"><link rel="prefetch" href="/blog/assets/js/140.1947f6c2.js"><link rel="prefetch" href="/blog/assets/js/141.d2397ceb.js"><link rel="prefetch" href="/blog/assets/js/142.a4fca10f.js"><link rel="prefetch" href="/blog/assets/js/143.868445e7.js"><link rel="prefetch" href="/blog/assets/js/144.a1c80310.js"><link rel="prefetch" href="/blog/assets/js/145.319913ba.js"><link rel="prefetch" href="/blog/assets/js/146.d19fd28e.js"><link rel="prefetch" href="/blog/assets/js/147.0f7acde4.js"><link rel="prefetch" href="/blog/assets/js/148.945a5b62.js"><link rel="prefetch" href="/blog/assets/js/149.eb4bec1b.js"><link rel="prefetch" href="/blog/assets/js/15.c479e5b5.js"><link rel="prefetch" href="/blog/assets/js/150.50892fe5.js"><link rel="prefetch" href="/blog/assets/js/151.c675ddff.js"><link rel="prefetch" href="/blog/assets/js/152.05d1ee8a.js"><link rel="prefetch" href="/blog/assets/js/153.75510d20.js"><link rel="prefetch" href="/blog/assets/js/154.f579d477.js"><link rel="prefetch" href="/blog/assets/js/155.12dbf578.js"><link rel="prefetch" href="/blog/assets/js/156.af8b54dd.js"><link rel="prefetch" href="/blog/assets/js/157.02eb87f5.js"><link rel="prefetch" href="/blog/assets/js/158.a1fbd08d.js"><link rel="prefetch" href="/blog/assets/js/159.75594bb8.js"><link rel="prefetch" href="/blog/assets/js/16.aec21ad3.js"><link rel="prefetch" href="/blog/assets/js/160.4eb83312.js"><link rel="prefetch" href="/blog/assets/js/161.104311e5.js"><link rel="prefetch" href="/blog/assets/js/162.aabbb479.js"><link rel="prefetch" href="/blog/assets/js/163.bf862198.js"><link rel="prefetch" href="/blog/assets/js/164.73e0e8e9.js"><link rel="prefetch" href="/blog/assets/js/165.052c0123.js"><link rel="prefetch" href="/blog/assets/js/166.f5eb35cc.js"><link rel="prefetch" href="/blog/assets/js/167.7a313045.js"><link rel="prefetch" href="/blog/assets/js/168.86fb56fe.js"><link rel="prefetch" href="/blog/assets/js/169.df883b7e.js"><link rel="prefetch" href="/blog/assets/js/17.3a9b6735.js"><link rel="prefetch" href="/blog/assets/js/170.47f0dbf7.js"><link rel="prefetch" href="/blog/assets/js/171.aec0020e.js"><link rel="prefetch" href="/blog/assets/js/172.c1d8c91b.js"><link rel="prefetch" href="/blog/assets/js/173.a6f2fcd6.js"><link rel="prefetch" href="/blog/assets/js/174.38b52e5e.js"><link rel="prefetch" href="/blog/assets/js/175.ae38f488.js"><link rel="prefetch" href="/blog/assets/js/176.29adebfe.js"><link rel="prefetch" href="/blog/assets/js/177.41b97ad0.js"><link rel="prefetch" href="/blog/assets/js/178.0fa9bbf3.js"><link rel="prefetch" href="/blog/assets/js/179.8559c981.js"><link rel="prefetch" href="/blog/assets/js/18.0c383095.js"><link rel="prefetch" href="/blog/assets/js/180.8733c320.js"><link rel="prefetch" href="/blog/assets/js/181.21e0e018.js"><link rel="prefetch" href="/blog/assets/js/182.b6e485e9.js"><link rel="prefetch" href="/blog/assets/js/183.c27d150d.js"><link rel="prefetch" href="/blog/assets/js/184.0fbcb691.js"><link rel="prefetch" href="/blog/assets/js/185.7e650b04.js"><link rel="prefetch" href="/blog/assets/js/186.6657fe1d.js"><link rel="prefetch" href="/blog/assets/js/187.551c064a.js"><link rel="prefetch" href="/blog/assets/js/188.8ba6e40b.js"><link rel="prefetch" href="/blog/assets/js/189.041316b7.js"><link rel="prefetch" href="/blog/assets/js/19.750739bf.js"><link rel="prefetch" href="/blog/assets/js/190.d71b0917.js"><link rel="prefetch" href="/blog/assets/js/191.a7d8bb61.js"><link rel="prefetch" href="/blog/assets/js/192.5fce8db9.js"><link rel="prefetch" href="/blog/assets/js/193.c5cc9ffb.js"><link rel="prefetch" href="/blog/assets/js/194.a63b6260.js"><link rel="prefetch" href="/blog/assets/js/195.d2e09806.js"><link rel="prefetch" href="/blog/assets/js/196.063ba68f.js"><link rel="prefetch" href="/blog/assets/js/197.d39d3324.js"><link rel="prefetch" href="/blog/assets/js/198.ce84b47e.js"><link rel="prefetch" href="/blog/assets/js/199.93c36c7f.js"><link rel="prefetch" href="/blog/assets/js/2.b088ac97.js"><link rel="prefetch" href="/blog/assets/js/20.13aea874.js"><link rel="prefetch" href="/blog/assets/js/200.48855557.js"><link rel="prefetch" href="/blog/assets/js/201.af6c3d13.js"><link rel="prefetch" href="/blog/assets/js/202.355fa950.js"><link rel="prefetch" href="/blog/assets/js/203.8b9a3978.js"><link rel="prefetch" href="/blog/assets/js/204.9d334517.js"><link rel="prefetch" href="/blog/assets/js/205.9d4d72ca.js"><link rel="prefetch" href="/blog/assets/js/206.2734a14e.js"><link rel="prefetch" href="/blog/assets/js/207.856430a2.js"><link rel="prefetch" href="/blog/assets/js/208.553763b5.js"><link rel="prefetch" href="/blog/assets/js/209.39f55833.js"><link rel="prefetch" href="/blog/assets/js/21.b5875938.js"><link rel="prefetch" href="/blog/assets/js/210.5c7be277.js"><link rel="prefetch" href="/blog/assets/js/211.8d787e7d.js"><link rel="prefetch" href="/blog/assets/js/212.97822173.js"><link rel="prefetch" href="/blog/assets/js/213.26729f1a.js"><link rel="prefetch" href="/blog/assets/js/214.7c6fd838.js"><link rel="prefetch" href="/blog/assets/js/215.ffa3d1cb.js"><link rel="prefetch" href="/blog/assets/js/216.5d2ebcf4.js"><link rel="prefetch" href="/blog/assets/js/217.17f13f17.js"><link rel="prefetch" href="/blog/assets/js/218.4209a714.js"><link rel="prefetch" href="/blog/assets/js/219.e1b478d8.js"><link rel="prefetch" href="/blog/assets/js/22.265c8215.js"><link rel="prefetch" href="/blog/assets/js/220.86c2079c.js"><link rel="prefetch" href="/blog/assets/js/221.1c717f8b.js"><link rel="prefetch" href="/blog/assets/js/222.585d0104.js"><link rel="prefetch" href="/blog/assets/js/223.29fc7e37.js"><link rel="prefetch" href="/blog/assets/js/224.d5e24637.js"><link rel="prefetch" href="/blog/assets/js/225.df1946ac.js"><link rel="prefetch" href="/blog/assets/js/226.2aa1c4d7.js"><link rel="prefetch" href="/blog/assets/js/227.a751e31d.js"><link rel="prefetch" href="/blog/assets/js/228.6e330b47.js"><link rel="prefetch" href="/blog/assets/js/229.77229d7b.js"><link rel="prefetch" href="/blog/assets/js/23.c83da651.js"><link rel="prefetch" href="/blog/assets/js/230.062a5ac1.js"><link rel="prefetch" href="/blog/assets/js/231.87bbf70b.js"><link rel="prefetch" href="/blog/assets/js/232.31af7ed9.js"><link rel="prefetch" href="/blog/assets/js/233.b1a58839.js"><link rel="prefetch" href="/blog/assets/js/234.68cec967.js"><link rel="prefetch" href="/blog/assets/js/235.ea62ee88.js"><link rel="prefetch" href="/blog/assets/js/236.a2f2b050.js"><link rel="prefetch" href="/blog/assets/js/237.e7cad44f.js"><link rel="prefetch" href="/blog/assets/js/238.81b4b5a3.js"><link rel="prefetch" href="/blog/assets/js/239.1c862178.js"><link rel="prefetch" href="/blog/assets/js/24.421a250c.js"><link rel="prefetch" href="/blog/assets/js/240.18b5df51.js"><link rel="prefetch" href="/blog/assets/js/241.aa077fb6.js"><link rel="prefetch" href="/blog/assets/js/242.c63afd4d.js"><link rel="prefetch" href="/blog/assets/js/243.b2129f8c.js"><link rel="prefetch" href="/blog/assets/js/244.ff8e7a30.js"><link rel="prefetch" href="/blog/assets/js/245.88169faa.js"><link rel="prefetch" href="/blog/assets/js/246.fa9199da.js"><link rel="prefetch" href="/blog/assets/js/247.cdd33986.js"><link rel="prefetch" href="/blog/assets/js/248.765f4cb5.js"><link rel="prefetch" href="/blog/assets/js/25.154520e5.js"><link rel="prefetch" href="/blog/assets/js/250.439fb16a.js"><link rel="prefetch" href="/blog/assets/js/251.e057e7e0.js"><link rel="prefetch" href="/blog/assets/js/252.34794853.js"><link rel="prefetch" href="/blog/assets/js/253.c622fcbd.js"><link rel="prefetch" href="/blog/assets/js/254.74a70b9f.js"><link rel="prefetch" href="/blog/assets/js/255.fed47ff6.js"><link rel="prefetch" href="/blog/assets/js/256.a88005ca.js"><link rel="prefetch" href="/blog/assets/js/257.11083964.js"><link rel="prefetch" href="/blog/assets/js/258.0b1a7d73.js"><link rel="prefetch" href="/blog/assets/js/259.62c584ff.js"><link rel="prefetch" href="/blog/assets/js/26.4a88bf4d.js"><link rel="prefetch" href="/blog/assets/js/260.1063ea57.js"><link rel="prefetch" href="/blog/assets/js/261.8f065193.js"><link rel="prefetch" href="/blog/assets/js/262.f796ed15.js"><link rel="prefetch" href="/blog/assets/js/263.38c3508c.js"><link rel="prefetch" href="/blog/assets/js/264.6a5fb90f.js"><link rel="prefetch" href="/blog/assets/js/265.79985a16.js"><link rel="prefetch" href="/blog/assets/js/266.58737293.js"><link rel="prefetch" href="/blog/assets/js/267.c0489be8.js"><link rel="prefetch" href="/blog/assets/js/268.9b482a12.js"><link rel="prefetch" href="/blog/assets/js/269.d807798b.js"><link rel="prefetch" href="/blog/assets/js/27.7f6c507f.js"><link rel="prefetch" href="/blog/assets/js/270.62e46aaf.js"><link rel="prefetch" href="/blog/assets/js/271.a2636662.js"><link rel="prefetch" href="/blog/assets/js/272.2c029ac2.js"><link rel="prefetch" href="/blog/assets/js/273.c0803a3e.js"><link rel="prefetch" href="/blog/assets/js/274.feed5dcb.js"><link rel="prefetch" href="/blog/assets/js/275.d026e4d0.js"><link rel="prefetch" href="/blog/assets/js/276.6348ed02.js"><link rel="prefetch" href="/blog/assets/js/277.cb5be1e0.js"><link rel="prefetch" href="/blog/assets/js/28.86691d04.js"><link rel="prefetch" href="/blog/assets/js/29.34f07073.js"><link rel="prefetch" href="/blog/assets/js/30.c7caa137.js"><link rel="prefetch" href="/blog/assets/js/31.07b08573.js"><link rel="prefetch" href="/blog/assets/js/32.2d17c55c.js"><link rel="prefetch" href="/blog/assets/js/33.34659507.js"><link rel="prefetch" href="/blog/assets/js/34.ca823a5d.js"><link rel="prefetch" href="/blog/assets/js/35.fdee0018.js"><link rel="prefetch" href="/blog/assets/js/36.1df26e75.js"><link rel="prefetch" href="/blog/assets/js/37.e84c6798.js"><link rel="prefetch" href="/blog/assets/js/38.0ab020a7.js"><link rel="prefetch" href="/blog/assets/js/39.c752cd4a.js"><link rel="prefetch" href="/blog/assets/js/4.dce05cd8.js"><link rel="prefetch" href="/blog/assets/js/40.e6ff46a5.js"><link rel="prefetch" href="/blog/assets/js/41.7b5ace1e.js"><link rel="prefetch" href="/blog/assets/js/42.bd14936e.js"><link rel="prefetch" href="/blog/assets/js/43.d12fece7.js"><link rel="prefetch" href="/blog/assets/js/44.6fca8fd5.js"><link rel="prefetch" href="/blog/assets/js/45.907b4f15.js"><link rel="prefetch" href="/blog/assets/js/46.f9d2e206.js"><link rel="prefetch" href="/blog/assets/js/47.b1653fc1.js"><link rel="prefetch" href="/blog/assets/js/48.99b3c7bb.js"><link rel="prefetch" href="/blog/assets/js/49.828907da.js"><link rel="prefetch" href="/blog/assets/js/5.7193cd84.js"><link rel="prefetch" href="/blog/assets/js/50.f51f2a3e.js"><link rel="prefetch" href="/blog/assets/js/51.29a6e8ea.js"><link rel="prefetch" href="/blog/assets/js/52.4d64b497.js"><link rel="prefetch" href="/blog/assets/js/53.12dca8e6.js"><link rel="prefetch" href="/blog/assets/js/54.e3c4fef4.js"><link rel="prefetch" href="/blog/assets/js/55.b801643c.js"><link rel="prefetch" href="/blog/assets/js/56.a3d351a1.js"><link rel="prefetch" href="/blog/assets/js/57.cfabc431.js"><link rel="prefetch" href="/blog/assets/js/58.8a3cbbf5.js"><link rel="prefetch" href="/blog/assets/js/59.a5a7464b.js"><link rel="prefetch" href="/blog/assets/js/6.98f083fd.js"><link rel="prefetch" href="/blog/assets/js/60.affca2b3.js"><link rel="prefetch" href="/blog/assets/js/61.adf43eb0.js"><link rel="prefetch" href="/blog/assets/js/62.480ff614.js"><link rel="prefetch" href="/blog/assets/js/63.725f57dc.js"><link rel="prefetch" href="/blog/assets/js/64.ee3ea45f.js"><link rel="prefetch" href="/blog/assets/js/65.a9874219.js"><link rel="prefetch" href="/blog/assets/js/66.ec0c5b17.js"><link rel="prefetch" href="/blog/assets/js/67.043a2f09.js"><link rel="prefetch" href="/blog/assets/js/68.c85cdc1a.js"><link rel="prefetch" href="/blog/assets/js/69.24eb94a2.js"><link rel="prefetch" href="/blog/assets/js/7.a3939503.js"><link rel="prefetch" href="/blog/assets/js/70.7ab8f348.js"><link rel="prefetch" href="/blog/assets/js/71.3f967059.js"><link rel="prefetch" href="/blog/assets/js/72.296c112d.js"><link rel="prefetch" href="/blog/assets/js/73.4bad88aa.js"><link rel="prefetch" href="/blog/assets/js/74.ad674c4d.js"><link rel="prefetch" href="/blog/assets/js/75.6e3c3e6d.js"><link rel="prefetch" href="/blog/assets/js/76.e027ccc7.js"><link rel="prefetch" href="/blog/assets/js/77.963c60ef.js"><link rel="prefetch" href="/blog/assets/js/78.b6ecfd1c.js"><link rel="prefetch" href="/blog/assets/js/79.5c540919.js"><link rel="prefetch" href="/blog/assets/js/8.af2847e2.js"><link rel="prefetch" href="/blog/assets/js/80.cb971025.js"><link rel="prefetch" href="/blog/assets/js/81.8fea14a9.js"><link rel="prefetch" href="/blog/assets/js/82.e177062a.js"><link rel="prefetch" href="/blog/assets/js/83.c89e463b.js"><link rel="prefetch" href="/blog/assets/js/84.89d68e32.js"><link rel="prefetch" href="/blog/assets/js/85.12901aa6.js"><link rel="prefetch" href="/blog/assets/js/86.f7b120e4.js"><link rel="prefetch" href="/blog/assets/js/87.a620f73f.js"><link rel="prefetch" href="/blog/assets/js/88.aef154fa.js"><link rel="prefetch" href="/blog/assets/js/89.9f71412f.js"><link rel="prefetch" href="/blog/assets/js/9.820df2c6.js"><link rel="prefetch" href="/blog/assets/js/90.dd797eb4.js"><link rel="prefetch" href="/blog/assets/js/91.2f4cee08.js"><link rel="prefetch" href="/blog/assets/js/92.fcbd90d3.js"><link rel="prefetch" href="/blog/assets/js/93.49088527.js"><link rel="prefetch" href="/blog/assets/js/94.2162a1ba.js"><link rel="prefetch" href="/blog/assets/js/95.69c4c5ba.js"><link rel="prefetch" href="/blog/assets/js/96.70c77a1a.js"><link rel="prefetch" href="/blog/assets/js/97.77ecde0a.js"><link rel="prefetch" href="/blog/assets/js/98.bdec1ab1.js"><link rel="prefetch" href="/blog/assets/js/99.928b66ab.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0e080af6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><img src="/blog/logo.jpg" alt="Yologger's Blog" class="logo"> <span class="site-name can-hide">Yologger's Blog</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/blog/post/01_java/" class="nav-link">
+  Java
+</a></div><div class="nav-item"><a href="/blog/post/02_kotlin/" class="nav-link">
+  Kotlin
+</a></div><div class="nav-item"><a href="/blog/post/30_spring/" class="nav-link">
+  Spring
+</a></div><div class="nav-item"><a href="/blog/post/20_android/" class="nav-link">
+  Android
+</a></div><div class="nav-item"><a href="/blog/post/50_infra_devops/" class="nav-link">
+  Infra/DevOps
+</a></div><div class="nav-item"><a href="/blog/post/55_db/" class="nav-link router-link-active">
+  DB
+</a></div><div class="nav-item"><a href="/blog/post/60_cs/" class="nav-link">
+  CS
+</a></div><div class="nav-item"><a href="/blog/post/80_more/" class="nav-link">
+  More
+</a></div><div class="nav-item"><a href="https://github.com/yologger" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Github
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/blog/post/55_db/" aria-current="page" class="sidebar-link">Introduction</a></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading open"><span>MySQL</span> <span class="arrow down"></span></p> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/post/55_db/01_MySQL/210102_ddl.html" class="sidebar-link">MYSQL - DDL 정리</a></li><li><a href="/blog/post/55_db/01_MySQL/210103_dml.html" aria-current="page" class="active sidebar-link">MYSQL - DML 정리</a></li><li><a href="/blog/post/55_db/01_MySQL/210104_constraint.html" class="sidebar-link">MYSQL - 제약조건</a></li><li><a href="/blog/post/55_db/01_MySQL/210105_index.html" class="sidebar-link">MYSQL - 인덱스</a></li><li><a href="/blog/post/55_db/01_MySQL/210106_stored_procedure.html" class="sidebar-link">MYSQL - 변수, Stored Procedure, Function</a></li><li><a href="/blog/post/55_db/01_MySQL/210110_dcl.html" class="sidebar-link">MYSQL - DCL 정리</a></li><li><a href="/blog/post/55_db/01_MySQL/210113_recovery.html" class="sidebar-link">MYSQL - Recovery</a></li></ul></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Mongo DB</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Redis</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>Elastic Search</span> <span class="arrow right"></span></p> <!----></section></li><li><section class="sidebar-group collapsable depth-0"><p class="sidebar-heading"><span>ERD</span> <span class="arrow right"></span></p> <!----></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="table-of-contents"><a href="#table-of-contents" class="header-anchor">#</a> Table of Contents</h1> <p></p><div class="table-of-contents"><ul><li><a href="#insert">INSERT</a></li><li><a href="#update">UPDATE</a></li><li><a href="#delete">DELETE</a></li><li><a href="#select">SELECT</a><ul><li><a href="#distinct">DISTINCT</a></li></ul></li><li><a href="#where">WHERE</a><ul><li><a href="#and">AND</a></li><li><a href="#or">OR</a></li><li><a href="#in">IN</a></li><li><a href="#not-in">NOT IN</a></li><li><a href="#is">IS</a></li><li><a href="#is-not">IS NOT</a></li><li><a href="#all">ALL</a></li><li><a href="#any">ANY</a></li><li><a href="#like">LIKE</a></li><li><a href="#exists">EXISTS</a></li><li><a href="#as">AS</a></li></ul></li><li><a href="#grouping">Grouping</a></li><li><a href="#order-by">ORDER BY</a></li><li><a href="#subquery">SubQuery</a></li><li><a href="#with">WITH</a></li><li><a href="#수학-연산">수학 연산</a></li><li><a href="#집합-연산">집합 연산</a><ul><li><a href="#union">UNION</a></li><li><a href="#union-all">UNION ALL</a></li></ul></li><li><a href="#join">JOIN</a><ul><li><a href="#cross-join">CROSS JOIN</a></li><li><a href="#inner-join">INNER JOIN</a></li><li><a href="#left-outer-join">LEFT OUTER JOIN</a></li><li><a href="#right-outer-join">RIGHT OUTER JOIN</a></li><li><a href="#full-outer-join">FULL OUTER JOIN</a></li></ul></li><li><a href="#조건문">조건문</a><ul><li><a href="#if">IF</a></li><li><a href="#ifnull">IFNULL</a></li><li><a href="#nvl">NVL</a></li><li><a href="#case-when">CASE WHEN</a></li></ul></li></ul></div><p></p> <h1 id="dml"><a href="#dml" class="header-anchor">#</a> DML</h1> <p><code>DML(Data Manipulation Lauguage)</code>은 데이터를 조작하는 연산이다.</p> <ul><li>INSERT</li> <li>UPDATE</li> <li>DELETE</li> <li>SELECT</li></ul> <h2 id="insert"><a href="#insert" class="header-anchor">#</a> INSERT</h2> <p>다음과 같이 Row를 삽입할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> member<span class="token punctuation">(</span>name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> nation<span class="token punctuation">,</span> gender<span class="token punctuation">)</span> 
+<span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token string">'paul'</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">,</span> <span class="token string">'england'</span><span class="token punctuation">,</span> <span class="token string">'man'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><p>여러 Row를 한꺼번에 삽입할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> member<span class="token punctuation">(</span>name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> nation<span class="token punctuation">,</span> gender<span class="token punctuation">)</span> <span class="token keyword">VALUES</span> 
+<span class="token punctuation">(</span><span class="token string">'monica'</span><span class="token punctuation">,</span> <span class="token number">23</span><span class="token punctuation">,</span> <span class="token string">'usa'</span><span class="token punctuation">,</span> <span class="token string">'woman'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+<span class="token punctuation">(</span><span class="token string">'ross'</span><span class="token punctuation">,</span> <span class="token number">28</span><span class="token punctuation">,</span> <span class="token string">'australia'</span><span class="token punctuation">,</span> <span class="token string">'man'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+<span class="token punctuation">(</span><span class="token string">'chandler'</span><span class="token punctuation">,</span> <span class="token number">29</span><span class="token punctuation">,</span> <span class="token string">'england'</span><span class="token punctuation">,</span> <span class="token string">'woman'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+<span class="token punctuation">(</span><span class="token string">'chuck'</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">,</span> <span class="token string">'usa'</span><span class="token punctuation">,</span> <span class="token string">'man'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+<span class="token punctuation">(</span><span class="token string">'john'</span><span class="token punctuation">,</span> <span class="token number">35</span><span class="token punctuation">,</span> <span class="token string">'australia'</span><span class="token punctuation">,</span> <span class="token string">'man'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+</code></pre></div><p><code>SELECT</code>의 결과값을 삽입할 수도 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> employee <span class="token punctuation">(</span>name<span class="token punctuation">,</span> team<span class="token punctuation">,</span> nation<span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> name<span class="token punctuation">,</span> team<span class="token punctuation">,</span> nation
+<span class="token keyword">FROM</span> person
+<span class="token keyword">WHERE</span> job <span class="token operator">IS</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="update"><a href="#update" class="header-anchor">#</a> UPDATE</h2> <p>다음과 같이 Column을 업데이트할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">UPDATE</span> member <span class="token keyword">SET</span> name <span class="token operator">=</span> <span class="token string">'paul'</span> <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre></div><p>여러 Column을 동시에 업데이트할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">UPDATE</span> member <span class="token keyword">SET</span> name <span class="token operator">=</span> <span class="token string">'paul'</span><span class="token punctuation">,</span> age <span class="token operator">=</span> <span class="token number">33</span> <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="delete"><a href="#delete" class="header-anchor">#</a> DELETE</h2> <p>다음과 같이 Row를 삭제할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> age <span class="token operator">=</span> <span class="token number">29</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="select"><a href="#select" class="header-anchor">#</a> SELECT</h2> <p>다음과 같이 Row를 조회할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><p>원하는 Column만 조회할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> name<span class="token punctuation">,</span> age <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><h3 id="distinct"><a href="#distinct" class="header-anchor">#</a> DISTINCT</h3> <p>중복된 결과를 제거할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token keyword">DISTINCT</span> gender <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token keyword">DISTINCT</span> gender<span class="token punctuation">)</span> <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><h2 id="where"><a href="#where" class="header-anchor">#</a> WHERE</h2> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> id <span class="token operator">!=</span> <span class="token number">5</span><span class="token punctuation">;</span> 
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member age <span class="token operator">&gt;=</span> <span class="token number">20</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="and"><a href="#and" class="header-anchor">#</a> AND</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> age <span class="token operator">&gt;=</span> <span class="token number">25</span> <span class="token operator">AND</span> age <span class="token operator">&lt;</span> <span class="token number">30</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="or"><a href="#or" class="header-anchor">#</a> OR</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> age <span class="token operator">&lt;=</span> <span class="token number">25</span> <span class="token operator">OR</span> age <span class="token operator">&gt;</span> <span class="token number">30</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="in"><a href="#in" class="header-anchor">#</a> IN</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> id <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+</code></pre></div><h3 id="not-in"><a href="#not-in" class="header-anchor">#</a> NOT IN</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> id <span class="token operator">NOT</span> <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+</code></pre></div><h3 id="is"><a href="#is" class="header-anchor">#</a> IS</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> job <span class="token operator">IS</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="is-not"><a href="#is-not" class="header-anchor">#</a> IS NOT</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> job <span class="token operator">IS</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="all"><a href="#all" class="header-anchor">#</a> ALL</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> id <span class="token operator">&gt;</span> <span class="token keyword">ALL</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment">// SELECT * FROM member WHERE id &gt; 6 AND id &gt; 7;</span>
+</code></pre></div><h3 id="any"><a href="#any" class="header-anchor">#</a> ANY</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> id <span class="token operator">&lt;</span> <span class="token keyword">ANY</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment">// SELECT * FROM member WHERE id &lt; 6 OR id &lt; 7;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> id <span class="token operator">=</span> <span class="token keyword">ANY</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment">// SELECT * FROM member WHERE id = 6 OR id = 7;</span>
+</code></pre></div><h3 id="like"><a href="#like" class="header-anchor">#</a> LIKE</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+------+-----------+--------+
+| id | name     | age  | nation    | gender |
++----+----------+------+-----------+--------+
+|  1 | paul     |   35 | england   | man    |
+|  2 | monica   |   23 | usa       | woman  |
+|  3 | ross     |   28 | australia | man    |
+|  4 | chandler |   29 | england   | woman  |
+|  5 | chuck    |   15 | usa       | man    |
+|  6 | john     |   35 | australia | man    |
+|  7 | silvia   |   23 | usa       | NULL   |
+|  8 | boss     |   28 | australia | NULL   |
+|  9 | corona   |   29 | usa       | NULL   |
+| 10 | julia    |   15 | england   | NULL   |
+| 11 | joy      |   30 | england   | NULL   |
+| 12 | kane     |   38 | england   | NULL   |
++----+----------+------+-----------+--------+
+</code></pre></div><p><code>C</code>로 시작하는 데이터 조회</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> name <span class="token operator">LIKE</span> <span class="token string">'C%'</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+------+---------+--------+
+| id | name     | age  | nation  | gender |
++----+----------+------+---------+--------+
+|  4 | chandler |   29 | england | woman  |
+|  5 | chuck    |   15 | usa     | man    |
+|  9 | corona   |   29 | usa     | NULL   |
++----+----------+------+---------+--------+
+</code></pre></div><p><code>ia</code>로 끝나는 데이터 조회</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> name <span class="token operator">LIKE</span> <span class="token string">'%ia'</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+--------+------+---------+--------+
+| id | name   | age  | nation  | gender |
++----+--------+------+---------+--------+
+|  7 | silvia |   23 | usa     | NULL   |
+| 10 | julia  |   15 | england | NULL   |
++----+--------+------+---------+--------+
+</code></pre></div><p><code>on</code>을 포함하는 데이터 조회</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> name <span class="token operator">LIKE</span> <span class="token string">'%on%'</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+--------+------+--------+--------+
+| id | name   | age  | nation | gender |
++----+--------+------+--------+--------+
+|  2 | monica |   23 | usa    | woman  |
+|  9 | corona |   29 | usa    | NULL   |
++----+--------+------+--------+--------+
+</code></pre></div><p>문자열 길이가 <code>4</code>, 두 번째 문자가 <code>o</code>인 데이터 조회</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> name <span class="token operator">LIKE</span> <span class="token string">'_o__'</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+------+------+-----------+--------+
+| id | name | age  | nation    | gender |
++----+------+------+-----------+--------+
+|  3 | ross |   28 | australia | man    |
+|  6 | john |   35 | australia | man    |
+|  8 | boss |   28 | australia | NULL   |
++----+------+------+-----------+--------+
+</code></pre></div><h3 id="exists"><a href="#exists" class="header-anchor">#</a> EXISTS</h3> <p>게시글이 있는 사용자의 이메일 조회</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> email
+<span class="token keyword">FROM</span> member
+<span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> id <span class="token keyword">FROM</span> post<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="as"><a href="#as" class="header-anchor">#</a> AS</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>name <span class="token keyword">as</span> member_name <span class="token keyword">FROM</span> member m <span class="token keyword">WHERE</span> age <span class="token operator">&lt;=</span> <span class="token number">25</span> <span class="token operator">OR</span> age <span class="token operator">&gt;</span> <span class="token number">30</span><span class="token punctuation">;</span>
+</code></pre></div><h2 id="grouping"><a href="#grouping" class="header-anchor">#</a> Grouping</h2> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+------+-----------+--------+
+| id | name     | age  | nation    | gender |
++----+----------+------+-----------+--------+
+|  1 | paul     |   35 | england   | man    |
+|  2 | monica   |   23 | usa       | woman  |
+|  3 | ross     |   28 | australia | man    |
+|  4 | chandler |   29 | england   | woman  |
+|  5 | chuck    |   15 | usa       | man    |
+|  6 | john     |   35 | australia | man    |
+|  7 | silvia   |   23 | usa       | NULL   |
+|  8 | boss     |   28 | australia | NULL   |
+|  9 | corona   |   29 | usa       | NULL   |
+| 10 | julia    |   15 | england   | NULL   |
+| 11 | joy      |   30 | england   | NULL   |
+| 12 | kane     |   38 | england   | NULL   |
++----+----------+------+-----------+--------+
+</code></pre></div><p><code>GROUP BY</code>로 그룹핑하는 컬럼은 프로젝션 대상에 반드시 포함되어야한다.</p> <div class="language-SQL extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> nation
+<span class="token keyword">FROM</span> member
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> nation<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+-----------+
+| nation    |
++-----------+
+| england   |
+| usa       |
+| australia |
++-----------+
+</code></pre></div><p><code>GROUP BY</code>에 포함되지 않은 컬럼을 프로젝션하려면 <code>Grouping Function</code>을 사용해야한다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> nation<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> member
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> nation<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+-----------+-------------+
+| nation    | COUNT(name) |
++-----------+-------------+
+| england   |           5 |
+| usa       |           4 |
+| australia |           3 |
++-----------+-------------+
+</code></pre></div><p><code>HAVING</code>절로 <code>GROUPING</code>에 조건을 추가할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> nation<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> member
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> nation
+<span class="token keyword">HAVING</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">3</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+---------+-------------+
+| nation  | COUNT(name) |
++---------+-------------+
+| england |           5 |
+| usa     |           4 |
++---------+-------------+
+</code></pre></div><p><code>WHERE 절</code>은 <code>GROUPING</code>하기 전, <code>HAVING 절</code>은 <code>GROUPING</code>한 후 필터링한다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> nation<span class="token punctuation">,</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> member
+<span class="token keyword">WHERE</span> age <span class="token operator">&gt;=</span> <span class="token number">20</span>
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> nation
+<span class="token keyword">HAVING</span> <span class="token function">COUNT</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">3</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+---------+-------------+
+| nation  | COUNT(name) |
++---------+-------------+
+| england |           4 |
++---------+-------------+
+</code></pre></div><p><code>WITH ROLLUP</code>으로 부분 합계도 계산할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> nation<span class="token punctuation">,</span> job<span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> person
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> nation<span class="token punctuation">,</span> job <span class="token keyword">WITH ROLLUP</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>+-----------+-------------------+-------------+
+| nation    | job               | count(name) |
++-----------+-------------------+-------------+
+| argentina | backend engineer  |           1 |
+| argentina | devops engineer   |           1 |
+| argentina | frontend engineer |           1 |
+| argentina | NULL              |           3 |
+| brazil    | backend engineer  |           1 |
+| brazil    | designer          |           3 |
+| brazil    | frontend engineer |           1 |
+| brazil    | NULL              |           5 |
+| uk        | backend engineer  |           1 |
+| uk        | frontend engineer |           1 |
+| uk        | NULL              |           2 |
+| usa       | backend engineer  |           2 |
+| usa       | frontend engineer |           2 |
+| usa       | NULL              |           4 |
+| NULL      | NULL              |          14 |
++-----------+-------------------+-------------+
+</code></pre></div><p><code>COALESCE()</code> 함수로 원하는 텍스트를 넣을 수도 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token keyword">COALESCE</span><span class="token punctuation">(</span>nation<span class="token punctuation">,</span> <span class="token string">&quot;총 합계&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">COALESCE</span><span class="token punctuation">(</span>job<span class="token punctuation">,</span> <span class="token string">&quot;합계&quot;</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> person
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> nation<span class="token punctuation">,</span> job <span class="token keyword">WITH ROLLUP</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><div class="highlighted"> </div><br><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>+-------------------------------+----------------------+-------------+
+| COALESCE(nation, &quot;Total&quot;)     | COALESCE(job, &quot;Sum&quot;) | count(name) |
++-------------------------------+----------------------+-------------+
+| argentina                     | backend engineer     |           1 |
+| argentina                     | devops engineer      |           1 |
+| argentina                     | frontend engineer    |           1 |
+| argentina                     | Sum                  |           3 |
+| brazil                        | backend engineer     |           1 |
+| brazil                        | designer             |           3 |
+| brazil                        | frontend engineer    |           1 |
+| brazil                        | Sum                  |           5 |
+| uk                            | backend engineer     |           1 |
+| uk                            | frontend engineer    |           1 |
+| uk                            | Sum                  |           2 |
+| usa                           | backend engineer     |           2 |
+| usa                           | frontend engineer    |           2 |
+| usa                           | Sum                  |           4 |
+| Total                         | Sum                  |          14 |
++-------------------------------+----------------------+-------------+
+</code></pre></div><h2 id="order-by"><a href="#order-by" class="header-anchor">#</a> ORDER BY</h2> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> member
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> age <span class="token keyword">ASC</span><span class="token punctuation">,</span> nation <span class="token keyword">DESC</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+------+-----------+--------+
+| id | name     | age  | nation    | gender |
++----+----------+------+-----------+--------+
+|  5 | chuck    |   15 | usa       | man    |
+| 10 | julia    |   15 | england   | NULL   |
+|  2 | monica   |   23 | usa       | woman  |
+|  7 | silvia   |   23 | usa       | NULL   |
+|  3 | ross     |   28 | australia | man    |
+|  8 | boss     |   28 | australia | NULL   |
+|  9 | corona   |   29 | usa       | NULL   |
+|  4 | chandler |   29 | england   | woman  |
+| 11 | joy      |   30 | england   | NULL   |
+|  1 | paul     |   35 | england   | man    |
+|  6 | john     |   35 | australia | man    |
+| 12 | kane     |   38 | england   | NULL   |
++----+----------+------+-----------+--------+
+</code></pre></div><h2 id="subquery"><a href="#subquery" class="header-anchor">#</a> SubQuery</h2> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> name 
+<span class="token keyword">FROM</span> <span class="token punctuation">(</span>
+	<span class="token keyword">SELECT</span> name<span class="token punctuation">,</span> age<span class="token punctuation">,</span> gender
+	<span class="token keyword">FROM</span> member
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> post <span class="token keyword">WHERE</span> writer_id <span class="token operator">IN</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> id <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> age <span class="token operator">&gt;</span> <span class="token number">30</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> post <span class="token keyword">WHERE</span> writer_id <span class="token operator">NOT</span> <span class="token operator">IN</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> id <span class="token keyword">FROM</span> member <span class="token keyword">WHERE</span> age <span class="token operator">&gt;</span> <span class="token number">30</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> email
+<span class="token keyword">FROM</span> member
+<span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> id <span class="token keyword">FROM</span> post<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> member
+<span class="token keyword">WHERE</span> age <span class="token operator">&gt;</span> <span class="token keyword">ALL</span><span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> age 
+    <span class="token keyword">FROM</span> member
+    <span class="token keyword">WHERE</span> nation <span class="token operator">=</span> <span class="token string">'usa'</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+------+------+-----------+--------+
+| id | name | age  | nation    | gender |
++----+------+------+-----------+--------+
+|  1 | paul |   35 | england   | man    |
+|  6 | john |   35 | australia | man    |
+| 11 | joy  |   30 | england   | NULL   |
+| 12 | kane |   38 | england   | NULL   |
++----+------+------+-----------+--------+
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> member
+<span class="token keyword">WHERE</span> age <span class="token operator">&gt;</span> <span class="token keyword">ANY</span><span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> age 
+    <span class="token keyword">FROM</span> member
+    <span class="token keyword">WHERE</span> nation <span class="token operator">=</span> <span class="token string">'usa'</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+------+-----------+--------+
+| id | name     | age  | nation    | gender |
++----+----------+------+-----------+--------+
+|  1 | paul     |   35 | england   | man    |
+|  2 | monica   |   23 | usa       | woman  |
+|  3 | ross     |   28 | australia | man    |
+|  4 | chandler |   29 | england   | woman  |
+|  6 | john     |   35 | australia | man    |
+|  7 | silvia   |   23 | usa       | NULL   |
+|  8 | boss     |   28 | australia | NULL   |
+|  9 | corona   |   29 | usa       | NULL   |
+| 11 | joy      |   30 | england   | NULL   |
+| 12 | kane     |   38 | england   | NULL   |
++----+----------+------+-----------+--------+
+</code></pre></div><h2 id="with"><a href="#with" class="header-anchor">#</a> WITH</h2> <p><code>WITH</code> 구문을 사용하면 쿼리의 결과값을 임시로 저장할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">WITH</span>
+    programmer <span class="token keyword">AS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> person <span class="token keyword">WHERE</span> job <span class="token operator">=</span> <span class="token string">'programmer'</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> email<span class="token punctuation">,</span> name<span class="token punctuation">,</span> job <span class="token keyword">FROM</span> programmer<span class="token punctuation">;</span>
+</code></pre></div><p>다음과 같이 여러 테이블을 대상으로 임시 값을 저장할 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">WITH</span>
+    frontend_engineer <span class="token keyword">AS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> person <span class="token keyword">WHERE</span> job <span class="token operator">=</span> <span class="token string">'frontend engineer'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    backend_engineer <span class="token keyword">AS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> person <span class="token keyword">WHERE</span> job <span class="token operator">=</span> <span class="token string">'backend engineer'</span><span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> email<span class="token punctuation">,</span> name<span class="token punctuation">,</span> job <span class="token keyword">FROM</span> frontend_engineer
+<span class="token keyword">UNION</span> 
+<span class="token keyword">SELECT</span> email<span class="token punctuation">,</span> name<span class="token punctuation">,</span> job <span class="token keyword">FROM</span> backend_engineer<span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">WITH</span> programmer <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> person <span class="token keyword">WHERE</span> job <span class="token operator">=</span> <span class="token string">'frontend engineer'</span>
+    <span class="token keyword">UNION</span> <span class="token keyword">ALL</span>
+    <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> person <span class="token keyword">WHERE</span> job <span class="token operator">=</span> <span class="token string">'backend engineer'</span>
+<span class="token punctuation">)</span> 
+<span class="token keyword">SELECT</span> email<span class="token punctuation">,</span> name<span class="token punctuation">,</span> job <span class="token keyword">FROM</span> programmer<span class="token punctuation">;</span>
+</code></pre></div><h2 id="수학-연산"><a href="#수학-연산" class="header-anchor">#</a> 수학 연산</h2> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> age<span class="token operator">+</span><span class="token number">3</span> <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> salary<span class="token operator">*</span><span class="token number">2</span> <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><h2 id="집합-연산"><a href="#집합-연산" class="header-anchor">#</a> 집합 연산</h2> <h3 id="union"><a href="#union" class="header-anchor">#</a> UNION</h3> <p><code>UNION</code>은 중복을 제거한다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> post <span class="token keyword">WHERE</span> writer_id<span class="token operator">=</span><span class="token number">3</span> <span class="token operator">or</span> id <span class="token operator">=</span> <span class="token number">4</span>
+<span class="token keyword">UNION</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> post <span class="token keyword">WHERE</span> writer_id<span class="token operator">=</span><span class="token number">4</span> <span class="token operator">or</span> id <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+-----------+-----------+
+| id | content  | writer_id | violating |
++----+----------+-----------+-----------+
+|  4 | content4 |         3 |         0 |
+|  5 | content5 |         3 |         0 |
+|  6 | content6 |         4 |         0 |
+|  7 | content7 |         4 |         0 |
++----+----------+-----------+-----------+
+</code></pre></div><h3 id="union-all"><a href="#union-all" class="header-anchor">#</a> UNION ALL</h3> <p><code>UNION</code>은 중복을 제거하지 않는다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> post <span class="token keyword">WHERE</span> writer_id<span class="token operator">=</span><span class="token number">3</span> <span class="token operator">or</span> id <span class="token operator">=</span> <span class="token number">4</span>
+<span class="token keyword">UNION</span> <span class="token keyword">ALL</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> post <span class="token keyword">WHERE</span> writer_id<span class="token operator">=</span><span class="token number">4</span> <span class="token operator">or</span> id <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+-----------+-----------+
+| id | content  | writer_id | violating |
++----+----------+-----------+-----------+
+|  4 | content4 |         3 |         0 |
+|  5 | content5 |         3 |         0 |
+|  5 | content5 |         3 |         0 |
+|  6 | content6 |         4 |         0 |
+|  7 | content7 |         4 |         0 |
++----+----------+-----------+-----------+
+</code></pre></div><h2 id="join"><a href="#join" class="header-anchor">#</a> JOIN</h2> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> member<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+----------+------+-----------+--------+
+| id | name     | age  | nation    | gender |
++----+----------+------+-----------+--------+
+|  1 | paul     |   35 | england   | man    |
+|  2 | monica   |   23 | usa       | woman  |
+|  3 | ross     |   28 | australia | man    |
+|  4 | chandler |   29 | england   | woman  |
+|  5 | chuck    |   15 | usa       | man    |
+|  6 | john     |   35 | australia | man    |
+|  7 | silvia   |   23 | usa       | NULL   |
+|  8 | boss     |   28 | australia | NULL   |
+|  9 | corona   |   29 | usa       | NULL   |
+| 10 | julia    |   15 | england   | NULL   |
+| 11 | joy      |   30 | england   | NULL   |
+| 12 | kane     |   38 | england   | NULL   |
++----+----------+------+-----------+--------+
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> post<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----+-----------+-----------+-----------+
+| id | content   | writer_id | violating |
++----+-----------+-----------+-----------+
+|  1 | content1  |         2 |         0 |
+|  2 | content2  |         2 |         0 |
+|  3 | content3  |         2 |         0 |
+|  4 | content4  |         3 |         0 |
+|  5 | content5  |         3 |         0 |
+|  6 | content6  |         4 |         0 |
+|  7 | content7  |         4 |         0 |
+|  8 | content8  |         7 |         1 |
+|  9 | content9  |         7 |         1 |
+| 10 | content10 |         8 |         1 |
+| 11 | content11 |         8 |         1 |
+| 12 | content12 |         9 |         1 |
+| 13 | content13 |         9 |         1 |
+| 14 | content14 |         9 |         1 |
+| 15 | content15 |      NULL |         0 |
+| 16 | content16 |      NULL |         0 |
++----+-----------+-----------+-----------+
+</code></pre></div><h3 id="cross-join"><a href="#cross-join" class="header-anchor">#</a> CROSS JOIN</h3> <p><code>Cartesian Product</code>라고도 한다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>id <span class="token keyword">as</span> member_id<span class="token punctuation">,</span> m<span class="token punctuation">.</span>name<span class="token punctuation">,</span> m<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>id <span class="token keyword">as</span> post_id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>content<span class="token punctuation">,</span> p<span class="token punctuation">.</span>writer_id 
+<span class="token keyword">FROM</span> member m
+<span class="token keyword">CROSS</span> <span class="token keyword">JOIN</span> post p<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+-----------+----------+------+---------+-----------+-----------+
+| member_id | name     | age  | post_id | content   | writer_id |
++-----------+----------+------+---------+-----------+-----------+
+|        12 | kane     |   38 |       1 | content1  |         2 |
+|        11 | joy      |   30 |       1 | content1  |         2 |
+|        10 | julia    |   15 |       1 | content1  |         2 |
+|         9 | corona   |   29 |       1 | content1  |         2 |
+|         8 | boss     |   28 |       1 | content1  |         2 |
+|         7 | silvia   |   23 |       1 | content1  |         2 |
+|         6 | john     |   35 |       1 | content1  |         2 |
+|         5 | chuck    |   15 |       1 | content1  |         2 |
+|         4 | chandler |   29 |       1 | content1  |         2 |
+|         3 | ross     |   28 |       1 | content1  |         2 |
+|         2 | monica   |   23 |       1 | content1  |         2 |
+|         1 | paul     |   35 |       1 | content1  |         2 |
+|        12 | kane     |   38 |       2 | content2  |         2 |
+|        11 | joy      |   30 |       2 | content2  |         2 |
+|        10 | julia    |   15 |       2 | content2  |         2 |
+|         9 | corona   |   29 |       2 | content2  |         2 |
+|         8 | boss     |   28 |       2 | content2  |         2 |
+|         7 | silvia   |   23 |       2 | content2  |         2 |
+|         6 | john     |   35 |       2 | content2  |         2 |
+|         5 | chuck    |   15 |       2 | content2  |         2 |
+|         4 | chandler |   29 |       2 | content2  |         2 |
+|         3 | ross     |   28 |       2 | content2  |         2 |
+|         2 | monica   |   23 |       2 | content2  |         2 |
+|         1 | paul     |   35 |       2 | content2  |         2 |
+|        12 | kane     |   38 |       3 | content3  |         2 |
+|        11 | joy      |   30 |       3 | content3  |         2 |
+|        10 | julia    |   15 |       3 | content3  |         2 |
+|         9 | corona   |   29 |       3 | content3  |         2 |
+|         8 | boss     |   28 |       3 | content3  |         2 |
+|         7 | silvia   |   23 |       3 | content3  |         2 |
+|         6 | john     |   35 |       3 | content3  |         2 |
+|         5 | chuck    |   15 |       3 | content3  |         2 |
+|         4 | chandler |   29 |       3 | content3  |         2 |
+|         3 | ross     |   28 |       3 | content3  |         2 |
+|         2 | monica   |   23 |       3 | content3  |         2 |
+|         1 | paul     |   35 |       3 | content3  |         2 |
+|        12 | kane     |   38 |       4 | content4  |         3 |
+|        11 | joy      |   30 |       4 | content4  |         3 |
+|        10 | julia    |   15 |       4 | content4  |         3 |
+|         9 | corona   |   29 |       4 | content4  |         3 |
+|         8 | boss     |   28 |       4 | content4  |         3 |
+|         7 | silvia   |   23 |       4 | content4  |         3 |
+|         6 | john     |   35 |       4 | content4  |         3 |
+|         5 | chuck    |   15 |       4 | content4  |         3 |
+|         4 | chandler |   29 |       4 | content4  |         3 |
+|         3 | ross     |   28 |       4 | content4  |         3 |
+|         2 | monica   |   23 |       4 | content4  |         3 |
+|         1 | paul     |   35 |       4 | content4  |         3 |
+|        12 | kane     |   38 |       5 | content5  |         3 |
+|        11 | joy      |   30 |       5 | content5  |         3 |
+|        10 | julia    |   15 |       5 | content5  |         3 |
+|         9 | corona   |   29 |       5 | content5  |         3 |
+|         8 | boss     |   28 |       5 | content5  |         3 |
+|         7 | silvia   |   23 |       5 | content5  |         3 |
+|         6 | john     |   35 |       5 | content5  |         3 |
+|         5 | chuck    |   15 |       5 | content5  |         3 |
+|         4 | chandler |   29 |       5 | content5  |         3 |
+|         3 | ross     |   28 |       5 | content5  |         3 |
+|         2 | monica   |   23 |       5 | content5  |         3 |
+|         1 | paul     |   35 |       5 | content5  |         3 |
+|        12 | kane     |   38 |       6 | content6  |         4 |
+|        11 | joy      |   30 |       6 | content6  |         4 |
+|        10 | julia    |   15 |       6 | content6  |         4 |
+|         9 | corona   |   29 |       6 | content6  |         4 |
+|         8 | boss     |   28 |       6 | content6  |         4 |
+|         7 | silvia   |   23 |       6 | content6  |         4 |
+|         6 | john     |   35 |       6 | content6  |         4 |
+|         5 | chuck    |   15 |       6 | content6  |         4 |
+|         4 | chandler |   29 |       6 | content6  |         4 |
+|         3 | ross     |   28 |       6 | content6  |         4 |
+|         2 | monica   |   23 |       6 | content6  |         4 |
+|         1 | paul     |   35 |       6 | content6  |         4 |
+|        12 | kane     |   38 |       7 | content7  |         4 |
+|        11 | joy      |   30 |       7 | content7  |         4 |
+|        10 | julia    |   15 |       7 | content7  |         4 |
+|         9 | corona   |   29 |       7 | content7  |         4 |
+|         8 | boss     |   28 |       7 | content7  |         4 |
+|         7 | silvia   |   23 |       7 | content7  |         4 |
+|         6 | john     |   35 |       7 | content7  |         4 |
+|         5 | chuck    |   15 |       7 | content7  |         4 |
+|         4 | chandler |   29 |       7 | content7  |         4 |
+|         3 | ross     |   28 |       7 | content7  |         4 |
+|         2 | monica   |   23 |       7 | content7  |         4 |
+|         1 | paul     |   35 |       7 | content7  |         4 |
+|        12 | kane     |   38 |       8 | content8  |         7 |
+|        11 | joy      |   30 |       8 | content8  |         7 |
+|        10 | julia    |   15 |       8 | content8  |         7 |
+|         9 | corona   |   29 |       8 | content8  |         7 |
+|         8 | boss     |   28 |       8 | content8  |         7 |
+|         7 | silvia   |   23 |       8 | content8  |         7 |
+|         6 | john     |   35 |       8 | content8  |         7 |
+|         5 | chuck    |   15 |       8 | content8  |         7 |
+|         4 | chandler |   29 |       8 | content8  |         7 |
+|         3 | ross     |   28 |       8 | content8  |         7 |
+|         2 | monica   |   23 |       8 | content8  |         7 |
+|         1 | paul     |   35 |       8 | content8  |         7 |
+|        12 | kane     |   38 |       9 | content9  |         7 |
+|        11 | joy      |   30 |       9 | content9  |         7 |
+|        10 | julia    |   15 |       9 | content9  |         7 |
+|         9 | corona   |   29 |       9 | content9  |         7 |
+|         8 | boss     |   28 |       9 | content9  |         7 |
+|         7 | silvia   |   23 |       9 | content9  |         7 |
+|         6 | john     |   35 |       9 | content9  |         7 |
+|         5 | chuck    |   15 |       9 | content9  |         7 |
+|         4 | chandler |   29 |       9 | content9  |         7 |
+|         3 | ross     |   28 |       9 | content9  |         7 |
+|         2 | monica   |   23 |       9 | content9  |         7 |
+|         1 | paul     |   35 |       9 | content9  |         7 |
+|        12 | kane     |   38 |      10 | content10 |         8 |
+|        11 | joy      |   30 |      10 | content10 |         8 |
+|        10 | julia    |   15 |      10 | content10 |         8 |
+|         9 | corona   |   29 |      10 | content10 |         8 |
+|         8 | boss     |   28 |      10 | content10 |         8 |
+|         7 | silvia   |   23 |      10 | content10 |         8 |
+|         6 | john     |   35 |      10 | content10 |         8 |
+|         5 | chuck    |   15 |      10 | content10 |         8 |
+|         4 | chandler |   29 |      10 | content10 |         8 |
+|         3 | ross     |   28 |      10 | content10 |         8 |
+|         2 | monica   |   23 |      10 | content10 |         8 |
+|         1 | paul     |   35 |      10 | content10 |         8 |
+|        12 | kane     |   38 |      11 | content11 |         8 |
+|        11 | joy      |   30 |      11 | content11 |         8 |
+|        10 | julia    |   15 |      11 | content11 |         8 |
+|         9 | corona   |   29 |      11 | content11 |         8 |
+|         8 | boss     |   28 |      11 | content11 |         8 |
+|         7 | silvia   |   23 |      11 | content11 |         8 |
+|         6 | john     |   35 |      11 | content11 |         8 |
+|         5 | chuck    |   15 |      11 | content11 |         8 |
+|         4 | chandler |   29 |      11 | content11 |         8 |
+|         3 | ross     |   28 |      11 | content11 |         8 |
+|         2 | monica   |   23 |      11 | content11 |         8 |
+|         1 | paul     |   35 |      11 | content11 |         8 |
+|        12 | kane     |   38 |      12 | content12 |         9 |
+|        11 | joy      |   30 |      12 | content12 |         9 |
+|        10 | julia    |   15 |      12 | content12 |         9 |
+|         9 | corona   |   29 |      12 | content12 |         9 |
+|         8 | boss     |   28 |      12 | content12 |         9 |
+|         7 | silvia   |   23 |      12 | content12 |         9 |
+|         6 | john     |   35 |      12 | content12 |         9 |
+|         5 | chuck    |   15 |      12 | content12 |         9 |
+|         4 | chandler |   29 |      12 | content12 |         9 |
+|         3 | ross     |   28 |      12 | content12 |         9 |
+|         2 | monica   |   23 |      12 | content12 |         9 |
+|         1 | paul     |   35 |      12 | content12 |         9 |
+|        12 | kane     |   38 |      13 | content13 |         9 |
+|        11 | joy      |   30 |      13 | content13 |         9 |
+|        10 | julia    |   15 |      13 | content13 |         9 |
+|         9 | corona   |   29 |      13 | content13 |         9 |
+|         8 | boss     |   28 |      13 | content13 |         9 |
+|         7 | silvia   |   23 |      13 | content13 |         9 |
+|         6 | john     |   35 |      13 | content13 |         9 |
+|         5 | chuck    |   15 |      13 | content13 |         9 |
+|         4 | chandler |   29 |      13 | content13 |         9 |
+|         3 | ross     |   28 |      13 | content13 |         9 |
+|         2 | monica   |   23 |      13 | content13 |         9 |
+|         1 | paul     |   35 |      13 | content13 |         9 |
+|        12 | kane     |   38 |      14 | content14 |         9 |
+|        11 | joy      |   30 |      14 | content14 |         9 |
+|        10 | julia    |   15 |      14 | content14 |         9 |
+|         9 | corona   |   29 |      14 | content14 |         9 |
+|         8 | boss     |   28 |      14 | content14 |         9 |
+|         7 | silvia   |   23 |      14 | content14 |         9 |
+|         6 | john     |   35 |      14 | content14 |         9 |
+|         5 | chuck    |   15 |      14 | content14 |         9 |
+|         4 | chandler |   29 |      14 | content14 |         9 |
+|         3 | ross     |   28 |      14 | content14 |         9 |
+|         2 | monica   |   23 |      14 | content14 |         9 |
+|         1 | paul     |   35 |      14 | content14 |         9 |
+|        12 | kane     |   38 |      15 | content15 |      NULL |
+|        11 | joy      |   30 |      15 | content15 |      NULL |
+|        10 | julia    |   15 |      15 | content15 |      NULL |
+|         9 | corona   |   29 |      15 | content15 |      NULL |
+|         8 | boss     |   28 |      15 | content15 |      NULL |
+|         7 | silvia   |   23 |      15 | content15 |      NULL |
+|         6 | john     |   35 |      15 | content15 |      NULL |
+|         5 | chuck    |   15 |      15 | content15 |      NULL |
+|         4 | chandler |   29 |      15 | content15 |      NULL |
+|         3 | ross     |   28 |      15 | content15 |      NULL |
+|         2 | monica   |   23 |      15 | content15 |      NULL |
+|         1 | paul     |   35 |      15 | content15 |      NULL |
+|        12 | kane     |   38 |      16 | content16 |      NULL |
+|        11 | joy      |   30 |      16 | content16 |      NULL |
+|        10 | julia    |   15 |      16 | content16 |      NULL |
+|         9 | corona   |   29 |      16 | content16 |      NULL |
+|         8 | boss     |   28 |      16 | content16 |      NULL |
+|         7 | silvia   |   23 |      16 | content16 |      NULL |
+|         6 | john     |   35 |      16 | content16 |      NULL |
+|         5 | chuck    |   15 |      16 | content16 |      NULL |
+|         4 | chandler |   29 |      16 | content16 |      NULL |
+|         3 | ross     |   28 |      16 | content16 |      NULL |
+|         2 | monica   |   23 |      16 | content16 |      NULL |
+|         1 | paul     |   35 |      16 | content16 |      NULL |
++-----------+----------+------+---------+-----------+-----------+
+</code></pre></div><h3 id="inner-join"><a href="#inner-join" class="header-anchor">#</a> INNER JOIN</h3> <p><code>ON</code>절의 조건을 만족하는 컬럼만 출력한다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>id <span class="token keyword">as</span> member_id<span class="token punctuation">,</span> m<span class="token punctuation">.</span>name<span class="token punctuation">,</span> m<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>id <span class="token keyword">as</span> post_id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>content<span class="token punctuation">,</span> p<span class="token punctuation">.</span>writer_id 
+<span class="token keyword">FROM</span> member m
+<span class="token keyword">INNER</span> <span class="token keyword">JOIN</span> post p
+<span class="token keyword">ON</span> m<span class="token punctuation">.</span>id <span class="token operator">=</span> p<span class="token punctuation">.</span>writer_id<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+-----------+----------+------+---------+-----------+-----------+
+| member_id | name     | age  | post_id | content   | writer_id |
++-----------+----------+------+---------+-----------+-----------+
+|         2 | monica   |   23 |       1 | content1  |         2 |
+|         2 | monica   |   23 |       2 | content2  |         2 |
+|         2 | monica   |   23 |       3 | content3  |         2 |
+|         3 | ross     |   28 |       4 | content4  |         3 |
+|         3 | ross     |   28 |       5 | content5  |         3 |
+|         4 | chandler |   29 |       6 | content6  |         4 |
+|         4 | chandler |   29 |       7 | content7  |         4 |
+|         7 | silvia   |   23 |       8 | content8  |         7 |
+|         7 | silvia   |   23 |       9 | content9  |         7 |
+|         8 | boss     |   28 |      10 | content10 |         8 |
+|         8 | boss     |   28 |      11 | content11 |         8 |
+|         9 | corona   |   29 |      12 | content12 |         9 |
+|         9 | corona   |   29 |      13 | content13 |         9 |
+|         9 | corona   |   29 |      14 | content14 |         9 |
++-----------+----------+------+---------+-----------+-----------+
+</code></pre></div><h3 id="left-outer-join"><a href="#left-outer-join" class="header-anchor">#</a> LEFT OUTER JOIN</h3> <p><code>ON</code>절의 조건을 만족하는 컬럼 + 왼쪽 테이블 컬럼</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>id <span class="token keyword">as</span> member_id<span class="token punctuation">,</span> m<span class="token punctuation">.</span>name<span class="token punctuation">,</span> m<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>id <span class="token keyword">as</span> post_id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>content<span class="token punctuation">,</span> p<span class="token punctuation">.</span>writer_id 
+<span class="token keyword">FROM</span> member m
+<span class="token keyword">LEFT</span> <span class="token keyword">OUTER</span> <span class="token keyword">JOIN</span> post p
+<span class="token keyword">ON</span> m<span class="token punctuation">.</span>id <span class="token operator">=</span> p<span class="token punctuation">.</span>writer_id<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><div class="highlighted"> </div><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>+-----------+----------+------+---------+-----------+-----------+
+| member_id | name     | age  | post_id | content   | writer_id |
++-----------+----------+------+---------+-----------+-----------+
+|         1 | paul     |   35 |    NULL | NULL      |      NULL |
+|         2 | monica   |   23 |       1 | content1  |         2 |
+|         2 | monica   |   23 |       2 | content2  |         2 |
+|         2 | monica   |   23 |       3 | content3  |         2 |
+|         3 | ross     |   28 |       4 | content4  |         3 |
+|         3 | ross     |   28 |       5 | content5  |         3 |
+|         4 | chandler |   29 |       6 | content6  |         4 |
+|         4 | chandler |   29 |       7 | content7  |         4 |
+|         5 | chuck    |   15 |    NULL | NULL      |      NULL |
+|         6 | john     |   35 |    NULL | NULL      |      NULL |
+|         7 | silvia   |   23 |       8 | content8  |         7 |
+|         7 | silvia   |   23 |       9 | content9  |         7 |
+|         8 | boss     |   28 |      10 | content10 |         8 |
+|         8 | boss     |   28 |      11 | content11 |         8 |
+|         9 | corona   |   29 |      12 | content12 |         9 |
+|         9 | corona   |   29 |      13 | content13 |         9 |
+|         9 | corona   |   29 |      14 | content14 |         9 |
+|        10 | julia    |   15 |    NULL | NULL      |      NULL |
+|        11 | joy      |   30 |    NULL | NULL      |      NULL |
+|        12 | kane     |   38 |    NULL | NULL      |      NULL |
++-----------+----------+------+---------+-----------+-----------+
+</code></pre></div><h3 id="right-outer-join"><a href="#right-outer-join" class="header-anchor">#</a> RIGHT OUTER JOIN</h3> <p><code>ON</code>절의 조건을 만족하는 컬럼 + 오른쪽 테이블 컬럼</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>id <span class="token keyword">as</span> member_id<span class="token punctuation">,</span> m<span class="token punctuation">.</span>name<span class="token punctuation">,</span> m<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>id <span class="token keyword">as</span> post_id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>content<span class="token punctuation">,</span> p<span class="token punctuation">.</span>writer_id 
+<span class="token keyword">FROM</span> member m
+<span class="token keyword">RIGHT</span> <span class="token keyword">OUTER</span> <span class="token keyword">JOIN</span> post p
+<span class="token keyword">ON</span> m<span class="token punctuation">.</span>id <span class="token operator">=</span> p<span class="token punctuation">.</span>writer_id<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><div class="highlight-lines"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><div class="highlighted"> </div><div class="highlighted"> </div><br><br></div><pre class="language-text"><code>+-----------+----------+------+---------+-----------+-----------+
+| member_id | name     | age  | post_id | content   | writer_id |
++-----------+----------+------+---------+-----------+-----------+
+|         2 | monica   |   23 |       1 | content1  |         2 |
+|         2 | monica   |   23 |       2 | content2  |         2 |
+|         2 | monica   |   23 |       3 | content3  |         2 |
+|         3 | ross     |   28 |       4 | content4  |         3 |
+|         3 | ross     |   28 |       5 | content5  |         3 |
+|         4 | chandler |   29 |       6 | content6  |         4 |
+|         4 | chandler |   29 |       7 | content7  |         4 |
+|         7 | silvia   |   23 |       8 | content8  |         7 |
+|         7 | silvia   |   23 |       9 | content9  |         7 |
+|         8 | boss     |   28 |      10 | content10 |         8 |
+|         8 | boss     |   28 |      11 | content11 |         8 |
+|         9 | corona   |   29 |      12 | content12 |         9 |
+|         9 | corona   |   29 |      13 | content13 |         9 |
+|         9 | corona   |   29 |      14 | content14 |         9 |
+|      NULL | NULL     | NULL |      15 | content15 |      NULL |
+|      NULL | NULL     | NULL |      16 | content16 |      NULL |
++-----------+----------+------+---------+-----------+-----------+
+</code></pre></div><h3 id="full-outer-join"><a href="#full-outer-join" class="header-anchor">#</a> FULL OUTER JOIN</h3> <p><code>MySQL</code>은 <code>FULL OUTER JOIN</code>을 지원하지 않는다. 따라서 <code>UNION</code>으로 흉내낼 수 있다.</p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>id <span class="token keyword">as</span> member_id<span class="token punctuation">,</span> m<span class="token punctuation">.</span>name<span class="token punctuation">,</span> m<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>id <span class="token keyword">as</span> post_id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>content<span class="token punctuation">,</span> p<span class="token punctuation">.</span>writer_id 
+    <span class="token keyword">FROM</span> post p
+    <span class="token keyword">LEFT</span> <span class="token keyword">OUTER</span> <span class="token keyword">JOIN</span> member m
+    <span class="token keyword">ON</span> m<span class="token punctuation">.</span>id <span class="token operator">=</span> p<span class="token punctuation">.</span>writer_id
+<span class="token punctuation">)</span>
+<span class="token keyword">UNION</span>
+<span class="token punctuation">(</span>
+    <span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>id <span class="token keyword">as</span> member_id<span class="token punctuation">,</span> m<span class="token punctuation">.</span>name<span class="token punctuation">,</span> m<span class="token punctuation">.</span>age<span class="token punctuation">,</span> p<span class="token punctuation">.</span>id <span class="token keyword">as</span> post_id<span class="token punctuation">,</span> p<span class="token punctuation">.</span>content<span class="token punctuation">,</span> p<span class="token punctuation">.</span>writer_id
+    <span class="token keyword">FROM</span> member m
+    <span class="token keyword">LEFT</span> <span class="token keyword">OUTER</span> <span class="token keyword">JOIN</span> post p
+    <span class="token keyword">ON</span> m<span class="token punctuation">.</span>id <span class="token operator">=</span> p<span class="token punctuation">.</span>writer_id
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+-----------+----------+------+---------+-----------+-----------+
+| member_id | name     | age  | post_id | content   | writer_id |
++-----------+----------+------+---------+-----------+-----------+
+|         2 | monica   |   23 |       1 | content1  |         2 |
+|         2 | monica   |   23 |       2 | content2  |         2 |
+|         2 | monica   |   23 |       3 | content3  |         2 |
+|         3 | ross     |   28 |       4 | content4  |         3 |
+|         3 | ross     |   28 |       5 | content5  |         3 |
+|         4 | chandler |   29 |       6 | content6  |         4 |
+|         4 | chandler |   29 |       7 | content7  |         4 |
+|         7 | silvia   |   23 |       8 | content8  |         7 |
+|         7 | silvia   |   23 |       9 | content9  |         7 |
+|         8 | boss     |   28 |      10 | content10 |         8 |
+|         8 | boss     |   28 |      11 | content11 |         8 |
+|         9 | corona   |   29 |      12 | content12 |         9 |
+|         9 | corona   |   29 |      13 | content13 |         9 |
+|         9 | corona   |   29 |      14 | content14 |         9 |
+|      NULL | NULL     | NULL |      15 | content15 |      NULL |
+|      NULL | NULL     | NULL |      16 | content16 |      NULL |
+|         1 | paul     |   35 |    NULL | NULL      |      NULL |
+|         5 | chuck    |   15 |    NULL | NULL      |      NULL |
+|         6 | john     |   35 |    NULL | NULL      |      NULL |
+|        10 | julia    |   15 |    NULL | NULL      |      NULL |
+|        11 | joy      |   30 |    NULL | NULL      |      NULL |
+|        12 | kane     |   38 |    NULL | NULL      |      NULL |
++-----------+----------+------+---------+-----------+-----------+
+</code></pre></div><h2 id="조건문"><a href="#조건문" class="header-anchor">#</a> 조건문</h2> <h3 id="if"><a href="#if" class="header-anchor">#</a> IF</h3> <p><code>IF(조건문, 참일 때 값, 거짓일 때 값)</code></p> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token number">3</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+---+
+| 3 |
++---+
+| 3 |
++---+
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token keyword">IF</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">&gt;</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'larger than'</span><span class="token punctuation">,</span> <span class="token string">'smaller than'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+----------------------------------------+
+| IF(3&gt;1, 'Larger than', 'Smaller than') |
++----------------------------------------+
+| Larger than                            |
++----------------------------------------+
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token keyword">IF</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token operator">&gt;</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'Larger than'</span><span class="token punctuation">,</span> <span class="token string">'Smaller than'</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> result<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+-------------+
+| result      |
++-------------+
+| Larger than |
++-------------+
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> name<span class="token punctuation">,</span> <span class="token keyword">IF</span><span class="token punctuation">(</span>age<span class="token operator">&gt;</span><span class="token number">20</span><span class="token punctuation">,</span> <span class="token string">'adult'</span><span class="token punctuation">,</span> <span class="token string">'minor'</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> result<span class="token punctuation">;</span>
+</code></pre></div><div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> <span class="token keyword">IF</span><span class="token punctuation">(</span>team <span class="token operator">IS</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span> <span class="token string">'Empty'</span><span class="token punctuation">,</span> <span class="token string">'Not Empty'</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> result<span class="token punctuation">;</span> 
+</code></pre></div><h3 id="ifnull"><a href="#ifnull" class="header-anchor">#</a> IFNULL</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> IFNULL<span class="token punctuation">(</span>name<span class="token punctuation">,</span> <span class="token string">&quot;unknown&quot;</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> <span class="token keyword">user</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="nvl"><a href="#nvl" class="header-anchor">#</a> NVL</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span> NVL<span class="token punctuation">(</span>team<span class="token punctuation">,</span> <span class="token string">&quot;No team&quot;</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> players<span class="token punctuation">;</span>
+</code></pre></div><h3 id="case-when"><a href="#case-when" class="header-anchor">#</a> CASE WHEN</h3> <div class="language-sql extra-class"><pre class="language-sql"><code><span class="token keyword">SELECT</span>
+	name<span class="token punctuation">,</span>
+	<span class="token keyword">CASE</span>
+		<span class="token keyword">WHEN</span> <span class="token punctuation">(</span>m<span class="token punctuation">.</span>score <span class="token operator">&gt;</span> <span class="token number">85</span><span class="token punctuation">)</span> <span class="token keyword">THEN</span> <span class="token string">'A'</span>
+		<span class="token keyword">WHEN</span> <span class="token punctuation">(</span>m<span class="token punctuation">.</span>score <span class="token operator">&gt;</span> <span class="token number">75</span><span class="token punctuation">)</span> <span class="token keyword">THEN</span> <span class="token string">'B'</span>
+		<span class="token keyword">WHEN</span> <span class="token punctuation">(</span>m<span class="token punctuation">.</span>score <span class="token operator">&gt;</span> <span class="token number">65</span><span class="token punctuation">)</span> <span class="token keyword">THEN</span> <span class="token string">'C'</span>
+		<span class="token keyword">ELSE</span> <span class="token string">'F'</span>
+	<span class="token keyword">END</span>
+    <span class="token keyword">AS</span> grade
+<span class="token keyword">FROM</span> member m<span class="token punctuation">;</span>
+</code></pre></div><div class="language- extra-class"><pre class="language-text"><code>+---------------+
+| name  | grade |
++---------------+
+| smith |     A |
+| paul  |     C |
+| jane  |     B |
++---------------+
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/post/55_db/01_MySQL/210102_ddl.html" class="prev">
+        MYSQL - DDL 정리
+      </a></span> <span class="next"><a href="/blog/post/55_db/01_MySQL/210104_constraint.html">
+        MYSQL - 제약조건
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"><!----></div></div>
+    <script src="/blog/assets/js/app.32362dc0.js" defer></script><script src="/blog/assets/js/3.8795c9a2.js" defer></script><script src="/blog/assets/js/249.2a26a296.js" defer></script>
+  </body>
+</html>
