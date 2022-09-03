@@ -703,27 +703,37 @@ appendfsync everysec # 디스크 동기화를 얼마나 자주할 것인가 (alw
 ## Redis PUB/SUB
 `Redis PUB/SUB`를 사용하면 Redis를 메시지 브로커로 사용할 수 있다. Redis PUB/SUB은 `채널(Channel)`을 통해 메시지를 전달한다.
 
-메시지 수신 역할을 할 터미널을 오픈하고 `subscribe <CHANNEL_NAME>` 명령어를 입력하면 채널을 구독하게 된다.
+메시지 수신 역할을 할 터미널을 오픈하고 `subscribe <CHANNEL_NAME>` 명령어를 입력하면 채널을 구독하게 된다. 채널이 없다면 자동으로 생성한다.
 ```
-> subscribe test_channel
+$ redis-cli
+
+> subscribe channel1
+Reading messages... (press Ctrl-C to quit)
 ```
+
 메시지 전송 역할을 할 터미널을 오픈하고 `publish <CHANNEL_NAME> <MESSAGE>` 명령어를 입력하면 채널로 메시지를 보내게 된다.
 ```
-> publish test_channel 'This is message 1'
-> publish test_channel 'This is message 2'
+$ redis-cli
+
+> publish channel1 "message1"
 ```
 수신 측 터미널에 메시지가 출력된다.
 ```
 > subscribe test_channel
 Reading messages... (press Ctrl-C to quit)
-1) "This is message 1"
-2) "This is message 2"
+1) "message1"
 ```
+`pubsub channels` 명령어로 채널 목록을 확인할 수 있다.
+```
+> pubsub channels
+```
+다음과 같이 여러 채널을 동시에 구독할 수도 있다. 
+```
+> subscribe channel1 channel2
+```
+한 채널을 여러 구독자가 구독할 수도 있으며, 구독자 하나도 없는 채널은 자동으로 삭제된다.
 
-`Redis PUB/SUB`은 다음과 같은 특징이 있다.
-- 한 채널을 여러 구독자가 구독할 수 있다. 
-- Kakfa 처럼 메시지를 저장(Queuing)하지 않기 때문에 구독 전 전송된 메시지는 읽을 수 없고, 메시지가 유실될 수도 있다.
-
+`Redis`는 Kafka와 달리 메시지를 디스크에 저장(Queuing)하지 않기 때문에 구독 전 전송된 메시지를 읽을 수 없으며, 메시지가 유실될 수도 있다. 따라서 메시지 영속성을 보장하려면 별도의 데이터베이스에 메시지를 저장해야한다.
 
 ## Redis Stream
 레디스 5.0부터 도입된 `Redis Stream`은 Redis Channel과 다르게 메시지를 저장(Queing)한다. 이 때문에 메시지 브로커보단 메시지 큐에 가깝다.
